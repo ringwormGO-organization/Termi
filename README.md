@@ -13,13 +13,13 @@ The goal of Termi is create independent terminal.
 # Checklist
 
 ### Termi C++ part
-- [] Windows version
-- [] Linux version
+- [ ] Windows version
+- [ ] Linux version
 
 ### Windows - installer and launcher
 
-- [] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
-- [] Lanucher and updater - C#
+- [ ] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
+- [ ] Lanucher and updater - C#
 
 ____________________________________
 
