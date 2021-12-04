@@ -29,7 +29,7 @@ We are accept contibutors, create **Pull Request**.
 
 # Build & Run
 
-### Sofware you need:
+### Software you need:
 
 - Visual Studio 2019 with ```.NET desktop development``` and ```Desktop development with C++``` components - Windows version
 - G++ complier - Linux version, install with: ```sudo apt-get install g++```
