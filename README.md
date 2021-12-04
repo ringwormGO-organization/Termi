@@ -31,7 +31,7 @@ We are accept contibutors, create **Pull Request**.
 
 ### Sofware you need:
 
-- Visual Studio 2019 with ```.NET desktop development``` and ```Desktop development with C++``` - Windows version
+- Visual Studio 2019 with ```.NET desktop development``` and ```Desktop development with C++``` components - Windows version
 - G++ complier - Linux version, install with: ```sudo apt-get install g++```
 
 ### Build & Run - Windows version
