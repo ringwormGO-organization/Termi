@@ -21,6 +21,10 @@ The goal of Termi is create independent terminal.
 - [ ] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [ ] Lanucher and updater - C#
 
+### Other
+
+- [ ] Independence
+
 ____________________________________
 
 Thanks for choosing Termi
