@@ -10,6 +10,8 @@ The goal of Termi is create independent terminal.
 
 "Independent" mean to be independent from terminal in operating system.
 
+We are accept contibutors, create **Pull Request**.
+
 # Checklist
 
 ### Termi C++ part
