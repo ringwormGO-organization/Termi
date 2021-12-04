@@ -1,8 +1,8 @@
 # Termi
-Powerful terminal made in C++
+Powerful terminal made in C++ and C#
 
 # More about Termi
-Termi is powerful terminal made in C++.
+Termi is powerful terminal made in C++ and C#
 
 It can be run on Windows and Linux.
 
