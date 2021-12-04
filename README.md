@@ -27,6 +27,20 @@ We are accept contibutors, create **Pull Request**.
 
 - [ ] Independence
 
+# Build & Run
+
+### Sofware you need:
+
+- Visual Studio 2019 with ```.NET desktop development``` and ```Desktop development with C++``` - Windows version
+- G++ complier - Linux version, install with: ```sudo apt-get install g++```
+
+### Build & Run - Windows version
+Open two Visual Studio Solutions, compile Termi project as .dll and compile & run Termi-Runner-Console as .exe
+
+### Build & Run - Linux version
+Type this in terminal:
+
+```g++ -o Termi Termi.cpp```
 ____________________________________
 
 Thanks for choosing Termi
