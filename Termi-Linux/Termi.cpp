@@ -1,5 +1,6 @@
-#include "Termi.h"
-
-extern int Add(int a, int b) {
-    return a + b;
+#include <iostream>
+using namespace std;
+int main()
+{
+    cout << "Help" << endl;   
 }
