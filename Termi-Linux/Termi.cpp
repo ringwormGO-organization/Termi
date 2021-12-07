@@ -1,11 +1,5 @@
-#include <iostream>
+#include "Termi.h"
 
-using namespace std;
-
-int main()
-{
-    cout << "Welcome to Termi" << endl;
-
-    cin.get();
-    return 0;
+extern int Add(int a, int b) {
+    return a + b;
 }
