@@ -2,6 +2,9 @@
 
 using namespace std;
 
+// should make the code prettier ( and it should prob be more organized) but I guess it's fine?
+// P.S I suck at optimation and organization
+
 int main()
 {
 
