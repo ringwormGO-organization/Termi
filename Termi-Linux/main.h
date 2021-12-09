@@ -2,7 +2,9 @@
 //If you disagree idc
 int main()
 {
-  //random shit random shit
+  
+  //there is no point in this
+  // But I'm doing it anyway
   
   return 0;
 }
