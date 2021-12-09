@@ -4,17 +4,31 @@ using namespace std;
 
 int main()
 {
-    int help = 1;
-    switch (1){
-    case 1:
-        cout << "There are no commands to help you with" << endl;
-        cout << "But here's a cool triangle" << endl;
-        cout << "   /|" << endl;
-        cout << "  / |" << endl;
-        cout << " /  |" << endl;
-        cout << "/   |" << endl;
-        cout << "-----" << endl;
-        break;
+
+    cout << "Welcome to Termi | Type help to see list of commands" << endl;
+    string input;
+    cin >> input;
+    string help = "help";
+    string test = "test";
+
+    if (input == help)
+    {
+        cout << "help - shows list of commands" << endl;
+        cout << "test - just a test command" << endl;
+                // Command result
     }
+
+    else if (input == test)
+    {
+        cout << "Testcommand working fine" << endl;
+                // Command result
+    }
+
+    else
+    {
+    cout <<  "Command not found" << endl;
+              // Wrong command entered
+    }
+
     return 0;
 }
