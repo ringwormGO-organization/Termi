@@ -9,18 +9,20 @@ namespace Termi_Runner_Console
 {
     class Program
     {
-        [DllImport("Termi.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("Termi.dll", EntryPoint = "Add", CallingConvention = CallingConvention.Cdecl)]
         public static extern int Add(int a, int b);
+
+        [DllImport("Termi.dll", EntryPoint = "Minus", CallingConvention = CallingConvention.Cdecl)]
+        public static extern int Minus(int a, int b);
+
+        [DllImport("Termi.dll", EntryPoint = "Terminal", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Terminal();
+
         public static void Main(string[] args)
         {
-            int number1;
-            int number2;
+            Terminal();
 
-            Console.WriteLine("Enter value of int a and int b: ");
-            number1 = Convert.ToInt32(Console.ReadLine());
-            number2 = Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Sum is: " + Add(number1, number2));
+            Console.ReadLine();
         }
     }
 }
