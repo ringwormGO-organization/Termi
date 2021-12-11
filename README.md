@@ -20,7 +20,7 @@ We are accept contibutors, create **Pull Request**.
 
 ### Windows - installer and launcher
 
-- [ ] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
+- [x] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [x] Lanucher and updater - C#
 
 ### Other
