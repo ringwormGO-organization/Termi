@@ -39,14 +39,14 @@ int main()
 
         else if (input == opencalc)
         {
-            int x, y;
-            int sum;
+            int a, b;
+            int res;
             cout << "Type a number: ";
-            cin >> x;
+            cin >> a;
             cout << "Type another number: ";
-            cin >> y;
-            sum = x + y;
-            cout << "Result: " << sum << endl;
+            cin >> b;
+            res = a + b;
+            cout << "Result: " << res << endl;
    
         }
 
