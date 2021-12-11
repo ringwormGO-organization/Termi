@@ -12,7 +12,7 @@ namespace Termi_Launcher
     {
         ready,
         failed,
-        downloadingGame,
+        downloadingTermi,
         downloadingUpdate
     }
 
@@ -23,8 +23,8 @@ namespace Termi_Launcher
     {
         private string rootPath;
         private string versionFile;
-        private string gameZip;
-        private string gameExe;
+        private string TermiZip;
+        private string TermiExe;
 
         private LauncherStatus _status;
         internal LauncherStatus Status
@@ -41,7 +41,7 @@ namespace Termi_Launcher
                     case LauncherStatus.failed:
                         PlayButton.Content = "Update Failed - Retry";
                         break;
-                    case LauncherStatus.downloadingGame:
+                    case LauncherStatus.downloadingTermi:
                         PlayButton.Content = "Downloading Termi";
                         break;
                     case LauncherStatus.downloadingUpdate:
@@ -59,8 +59,8 @@ namespace Termi_Launcher
 
             rootPath = Directory.GetCurrentDirectory();
             versionFile = Path.Combine(rootPath, "Version.txt");
-            gameZip = Path.Combine(rootPath, "net5.0.zip");
-            gameExe = Path.Combine(rootPath, "net5.0", "Termi-Runner-Console.exe");
+            TermiZip = Path.Combine(rootPath, "net5.0.zip");
+            TermiExe = Path.Combine(rootPath, "net5.0", "Termi-Runner-Console.exe");
         }
 
         private void CheckForUpdates()
@@ -87,7 +87,7 @@ namespace Termi_Launcher
                 catch (Exception ex)
                 {
                     Status = LauncherStatus.failed;
-                    MessageBox.Show($"Error checking for game updates: {ex}");
+                    MessageBox.Show($"Error checking for Termi updates: {ex}");
                 }
             }
             else
@@ -107,17 +107,17 @@ namespace Termi_Launcher
                 }
                 else
                 {
-                    Status = LauncherStatus.downloadingGame;
+                    Status = LauncherStatus.downloadingTermi;
                     _onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/file/d/1pMl73x0B1sa-EUOyNkHogCTmCvtf8xwc/view?usp=sharing"));
                 }
 
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadGameCompletedCallback);
-                webClient.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=1pMl73x0B1sa-EUOyNkHogCTmCvtf8xwc"), gameZip, _onlineVersion);
+                webClient.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=1pMl73x0B1sa-EUOyNkHogCTmCvtf8xwc"), TermiZip, _onlineVersion);
             }
             catch (Exception ex)
             {
                 Status = LauncherStatus.failed;
-                MessageBox.Show($"Error installing game files: {ex}");
+                MessageBox.Show($"Error installing Termi files: {ex}");
             }
         }
 
@@ -126,8 +126,8 @@ namespace Termi_Launcher
             try
             {
                 string onlineVersion = ((Version)e.UserState).ToString();
-                ZipFile.ExtractToDirectory(gameZip, rootPath, true);
-                File.Delete(gameZip);
+                ZipFile.ExtractToDirectory(TermiZip, rootPath, true);
+                File.Delete(TermiZip);
 
                 File.WriteAllText(versionFile, onlineVersion);
 
@@ -148,9 +148,9 @@ namespace Termi_Launcher
 
         private void PlayButton_Click(object sender, RoutedEventArgs e)
         {
-            if (File.Exists(gameExe) && Status == LauncherStatus.ready)
+            if (File.Exists(TermiExe) && Status == LauncherStatus.ready)
             {
-                ProcessStartInfo startInfo = new ProcessStartInfo(gameExe);
+                ProcessStartInfo startInfo = new ProcessStartInfo(TermiExe);
                 startInfo.WorkingDirectory = Path.Combine(rootPath, "net5.0");
                 Process.Start(startInfo);
 
