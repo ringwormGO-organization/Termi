@@ -27,13 +27,11 @@ int main()
         cin >> input;
         string help = "help";
         string opencalc = "opencalc";
-        string print = "COMMAND REMOVED";
 
         if (input == help)
         {
             cout << "help - shows list of commands" << endl;
             cout << "opencalc - opens a calculator (it can only add numbers currently)" << endl;
-            cout << "COMMAND REMOVED" << endl;
                     // Command result
         }
 
