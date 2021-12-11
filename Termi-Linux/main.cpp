@@ -1,5 +1,5 @@
-#include <iostream>
 #include "main.h"
+#include <iostream>
 #include <string>
 
 using namespace std;
@@ -11,30 +11,52 @@ using namespace std;
 int main()
 {
 
+    cout << "ooooooooooo ooooooooooo                          o88   " << endl;
+    cout << "88  888  88  888    88  oo oooooo  oo ooo oooo   oooo  " << endl;
+    cout << "    888      888ooo8     888    888 888 888 888   888 " << endl;
+    cout << "    888      888    oo   888        888 888 888   888  " << endl;
+    cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
+    cout << "-------------------------------------------------------" << endl;
     cout << "Welcome to Termi | Type help to see list of commands" << endl;
-    string input;
-    cin >> input;
-    string help = "help";
-    string test = "test";
-
-    if (input == help)
+    
+    // command loop
+    while (1)
     {
-        cout << "help - shows list of commands" << endl;
-        cout << "test - just a test command" << endl;
-                // Command result
-    }
+        cout << "Termi> ";
+        string input;
+        cin >> input;
+        string help = "help";
+        string opencalc = "opencalc";
+        string print = "COMMAND REMOVED";
 
-    else if (input == test)
-    {
-        cout << "Testcommand working fine" << endl;
-                // Command result
-    }
+        if (input == help)
+        {
+            cout << "help - shows list of commands" << endl;
+            cout << "opencalc - opens a calculator (it can only add numbers currently)" << endl;
+            cout << "COMMAND REMOVED" << endl;
+                    // Command result
+        }
 
-    else
-    {
-    cout <<  "Command not found" << endl;
-              // Wrong command entered
-    }
+        else if (input == opencalc)
+        {
+            int x, y;
+            int sum;
+            cout << "Type a number: ";
+            cin >> x;
+            cout << "Type another number: ";
+            cin >> y;
+            sum = x + y;
+            cout << "Result: " << sum << endl;
+   
+        }
 
+        else
+        {
+        cout <<  "Command not found" << endl;
+                // Wrong command entered
+        }
+
+    }
+    
     return 0;
 }
