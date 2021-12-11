@@ -15,13 +15,13 @@ We are accept contibutors, create **Pull Request**.
 # Checklist
 
 ### Termi C++ part
-- [ ] Windows version
-- [ ] Linux version
+- [x] Windows version
+- [x] Linux version
 
 ### Windows - installer and launcher
 
 - [ ] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
-- [ ] Lanucher and updater - C#
+- [x] Lanucher and updater - C#
 
 ### Other
 
