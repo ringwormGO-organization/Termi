@@ -35,8 +35,8 @@ int main()
 
         else if (input == opencalc)
         {
-            int a, b;
-            int res;
+            double a, b;
+            double res;
             cout << "Type a number: ";
             cin >> a;
             cout << "Type another number: ";
