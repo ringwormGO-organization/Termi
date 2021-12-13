@@ -1,2 +1,9 @@
+double sumOfTwoNumbers(double a, double b)
+{
+    return (a + b);
+}
 
-int main();
+double subOfTwoNumbers(double x, double y)
+{
+    return (x - y);
+}
