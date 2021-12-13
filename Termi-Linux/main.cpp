@@ -4,7 +4,7 @@
 
 using namespace std;
 
-// I really should start putting stuff inside main.h
+// P.S I added some stuff into main.h
 
 int main()
 {
@@ -29,21 +29,46 @@ int main()
         if (input == help)
         {
             cout << "help - shows list of commands" << endl;
-            cout << "opencalc - opens a calculator (it can only add numbers currently)" << endl;
+            cout << "opencalc - opens a calculator (it can only add numbers currently)" << endl;;
                     // Command result
         }
 
         else if (input == opencalc)
         {
-            double a, b;
-            double res;
-            cout << "Type a number: ";
-            cin >> a;
-            cout << "Type another number: ";
-            cin >> b;
-            res = a + b;
-            cout << "Result: " << res << endl;
-   
+            cout << "calc > ";
+            string inpOPR;
+            cin >> inpOPR;
+            string subt = "subt";
+            string add = "add";
+
+            if (inpOPR == subt)
+            {
+                double x, y;
+                double res;
+                cout << "Type a number: ";
+                cin >> x;
+                cout << "Type a  second number: ";
+                cin >> y;
+                cout << "Result: "
+                << subOfTwoNumbers(x, y)
+                << endl;
+
+            }
+
+            else if (inpOPR == add)
+            {
+                double a;
+                double b;
+                cout << "Type a number: ";
+                cin >> a;
+                cout << "Type a second number: ";
+                cin >> b;
+                cout << "Result: "
+                << sumOfTwoNumbers(a, b)
+                << endl;
+
+            }
+            
         }
 
         else
