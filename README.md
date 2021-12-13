@@ -37,6 +37,8 @@ We are accept contibutors, create **Pull Request**.
 ### Build & Run - Windows version
 Open two Visual Studio Solutions, compile Termi project as .dll and compile & run Termi-Runner-Console as .exe
 
+If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi-Installer.exe). This option is recommended for stable releases of Termi
+
 ### Build & Run - Linux version
 Type this in terminal:
 
