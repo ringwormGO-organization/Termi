@@ -1,0 +1,7 @@
+﻿  Termi.cpp
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(58,20): warning C4101: 'res': unreferenced local variable
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(72,20): warning C4101: 'res': unreferenced local variable
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(86,20): warning C4101: 'res': unreferenced local variable
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(100,20): warning C4101: 'res': unreferenced local variable
+  Termi.vcxproj -> E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll
+C:\src\vcpkg\scripts\buildsystems\msbuild\vcpkg.targets(199,5): warning : [vcpkg] Failed to gather app local DLL dependencies, program may not run. Set VcpkgApplocalDeps to false in your project file to suppress this warning. PowerShell arguments: -ExecutionPolicy Bypass -noprofile -File "C:\src\vcpkg\scripts\buildsystems\msbuild\applocal.ps1" "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll" "C:\src\vcpkg\installed\\x64-windows\debug\bin" "x64\Debug\Termi.tlog\Termi.write.1u.tlog" "x64\Debug\vcpkg.applocal.log"
