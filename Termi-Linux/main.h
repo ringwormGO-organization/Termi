@@ -1,8 +1,8 @@
 int main();
 
-double sumOfTwoNumbers(double a, double b)
+double sumOfTwoNumbers(double x, double y)
 {
-    return (a + b);
+    return (x + y);
 }
 
 double subOfTwoNumbers(double x, double y)
