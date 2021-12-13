@@ -73,7 +73,7 @@ namespace Termi_Launcher
                 try
                 {
                     WebClient webClient = new WebClient();
-                    Version onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/file/d/1pMl73x0B1sa-EUOyNkHogCTmCvtf8xwc/view?usp=sharing"));
+                    Version onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/uc?export=download&id=1yU_xMfNmCuh8xaRzqNVWqJMuxlGgl0qV")); //version
 
                     if (onlineVersion.IsDifferentThan(localVersion))
                     {
@@ -108,11 +108,11 @@ namespace Termi_Launcher
                 else
                 {
                     Status = LauncherStatus.downloadingTermi;
-                    _onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/file/d/1pMl73x0B1sa-EUOyNkHogCTmCvtf8xwc/view?usp=sharing"));
+                    _onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/uc?export=download&id=1yU_xMfNmCuh8xaRzqNVWqJMuxlGgl0qV")); //version
                 }
 
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadGameCompletedCallback);
-                webClient.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=1pMl73x0B1sa-EUOyNkHogCTmCvtf8xwc"), TermiZip, _onlineVersion);
+                webClient.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=1lsTAeZJiDXKkieRjuT7PfKLZ_IQMwr-s"), TermiZip, _onlineVersion); //zip
             }
             catch (Exception ex)
             {
