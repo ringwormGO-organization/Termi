@@ -4,7 +4,9 @@
 
 using namespace std;
 
-// P.S I added some stuff into main.h
+// should make the code prettier ( and it should prob be more organized) but I guess it's fine?
+// P.S I suck at organization
+// - StjepanBM1
 
 int main()
 {
@@ -23,6 +25,7 @@ int main()
         cout << "Termi> ";
         string input;
         cin >> input;
+        string exit = "exit";
         string help = "help";
         string opencalc = "opencalc";
 
@@ -35,40 +38,53 @@ int main()
 
         else if (input == opencalc)
         {
-            cout << "calc > ";
-            string inpOPR;
-            cin >> inpOPR;
-            string subt = "subt";
-            string add = "add";
-
-            if (inpOPR == subt)
+            cout << "-------------------------------------------------------" << endl;
+            cout << " " << endl;
+            cout << "Enter an operator (subt = subtraction | add = addition)" << endl;
+            cout << "Type exit to exit calculator" << endl;
+            cout << " " << endl;
+            cout << "-------------------------------------------------------" << endl;
+            while(1)
             {
-                double x, y;
-                double res;
-                cout << "Type a number: ";
-                cin >> x;
-                cout << "Type a  second number: ";
-                cin >> y;
-                cout << "Result: "
-                << subOfTwoNumbers(x, y)
-                << endl;
+                cout << "calc > ";
+                string inpOPR;
+                cin >> inpOPR;
+                string subt = "subt";
+                string add = "add";
 
+                if (inpOPR == subt)
+                {
+                    double x, y;
+                    double res;
+                    cout << "Type a number: ";
+                    cin >> x;
+                    cout << "Type a  second number: ";
+                    cin >> y;
+                    cout << "Result: "
+                    << subOfTwoNumbers(x, y)
+                    << endl;
+
+                }
+
+                else if (inpOPR == add)
+                {
+                    double x, y;
+                    double res;
+                    cout << "Type a number: ";
+                    cin >> x;
+                    cout << "Type a second number: ";
+                    cin >> y;
+                    cout << "Result: "
+                    << sumOfTwoNumbers(x, y)
+                    << endl;
+
+                }
+
+                else if (inpOPR == exit)
+                {
+                    break;
+                }
             }
-
-            else if (inpOPR == add)
-            {
-                double a;
-                double b;
-                cout << "Type a number: ";
-                cin >> a;
-                cout << "Type a second number: ";
-                cin >> b;
-                cout << "Result: "
-                << sumOfTwoNumbers(a, b)
-                << endl;
-
-            }
-            
         }
 
         else
