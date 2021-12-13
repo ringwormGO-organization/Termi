@@ -4,9 +4,7 @@
 
 using namespace std;
 
-// should make the code prettier ( and it should prob be more organized) but I guess it's fine?
-// P.S I suck at organization
-// - StjepanBM1
+// Added mult. and devision
 
 int main()
 {
@@ -18,7 +16,7 @@ int main()
     cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
     cout << "-------------------------------------------------------" << endl;
     cout << "Welcome to Termi | Type help to see list of commands" << endl;
-    
+
     // command loop
     while (1)
     {
@@ -38,12 +36,12 @@ int main()
 
         else if (input == opencalc)
         {
-            cout << "-------------------------------------------------------" << endl;
+            cout << "-----------------------------------------------------------------------------------------------" << endl;
             cout << " " << endl;
-            cout << "Enter an operator (subt = subtraction | add = addition)" << endl;
+            cout << "Enter an operator (subt = subtraction | add = addition | dev = devision | mul = multiplication)" << endl;
             cout << "Type exit to exit calculator" << endl;
             cout << " " << endl;
-            cout << "-------------------------------------------------------" << endl;
+            cout << "-----------------------------------------------------------------------------------------------" << endl;
             while(1)
             {
                 cout << "calc > ";
@@ -51,6 +49,9 @@ int main()
                 cin >> inpOPR;
                 string subt = "subt";
                 string add = "add";
+                string dev = "dev";
+                string mul = "mul";
+
 
                 if (inpOPR == subt)
                 {
@@ -80,9 +81,41 @@ int main()
 
                 }
 
+                else if (inpOPR == mul)
+                {
+                    double x, y;
+                    double res;
+                    cout << "Type a number: ";
+                    cin >> x;
+                    cout << "Type a second number: ";
+                    cin >> y;
+                    cout << "Result: "
+                    << mulOfTwoNumbers(x, y)
+                    << endl;
+
+                }
+
+                else if (inpOPR == dev)
+                {
+                    double x, y;
+                    double res;
+                    cout << "Type a number: ";
+                    cin >> x;
+                    cout << "Type a second number: ";
+                    cin >> y;
+                    cout << "Result: "
+                    << devOfTwoNumbers(x, y)
+                    << endl;
+
+                }
+
                 else if (inpOPR == exit)
                 {
                     break;
+                }
+                else
+                {
+                    cout << "ERROR = COMMAND NOT CORRECT / IT DOSENT EXIST" << endl;
                 }
             }
         }
@@ -94,6 +127,6 @@ int main()
         }
 
     }
-    
+
     return 0;
 }
