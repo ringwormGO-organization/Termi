@@ -1,10 +1,14 @@
 #include "main.h"
+#include "Calc.h"
+#include "Geocalc.h"
 #include <iostream>
 #include <string>
 
 using namespace std;
 
-// Added mult. and devision
+// should make the code prettier ( and it should prob be more organized) but I guess it's fine?
+// P.S I suck at organization
+// - StjepanBM1
 
 int main()
 {
@@ -16,6 +20,7 @@ int main()
     cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
     cout << "-------------------------------------------------------" << endl;
     cout << "Welcome to Termi | Type help to see list of commands" << endl;
+    system("color 17");
 
     // command loop
     while (1)
@@ -26,11 +31,16 @@ int main()
         string exit = "exit";
         string help = "help";
         string opencalc = "opencalc";
+        string geocalc = "geocalc";
+        string custset = "custset";
+
 
         if (input == help)
         {
             cout << "help - shows list of commands" << endl;
-            cout << "opencalc - opens a calculator (it can only add numbers currently)" << endl;;
+            cout << "opencalc - opens a calculator" << endl;;
+            cout << "geocalc - opens a geometric calculator" << endl;;
+            cout << "custset - opens user settings" << endl;;
                     // Command result
         }
 
@@ -120,13 +130,105 @@ int main()
             }
         }
 
-        else
+
+
+        else if (input == geocalc)
         {
-        cout <<  "Command not found" << endl;
-                // Wrong command entered
+
+            string calccho;
+            string GEO = "GEO";
+            cout << "-----------------------------------------------------------------------------------------------" << endl;
+            cout << " " << endl;
+            cout << "TYPE GEO TO START" << endl;
+            cout << "Type exit to exit calculator" << endl;
+            cout << " " << endl;
+            cout << "-----------------------------------------------------------------------------------------------" << endl;
+            cout << "> ";
+            cin >> calccho;
+
+            if (calccho == GEO)
+                while(1)
+                {
+                    cout << "Enter what to do (EXT = extent |SUR = surface area )";
+
+                    cout << "geocalc > ";
+                    string geoOPR;
+                    cin >> geoOPR;
+                    string EXT = "EXT";
+                    string SUR = "SUR";
+                    string TRA = "TRA";
+                    string REC = "REC";
+                    string SQU = "SQU";
+
+                    if (geoOPR == EXT)
+                    {
+                        cout << "SELECT WHAT GEOMETRY CHARCTER YOU WANT" << endl;
+                        cout << "TRA = TRIANGLE | REC = RECTANGLE | SQU = SQUARE" << endl;
+                        cout << " >";
+                        string TRA = "TRA";
+                        string REC = "REC";
+                        string SQU = "SQU";
+                        string extOPR;
+                        cin >> extOPR;
+
+                        if (extOPR == TRA)
+                        {
+                            double x, y, z;
+                            double res;
+                            cout << "Enter the length of first side : ";
+                            cin >> x;
+                            cout << "Enter the length of second side : ";
+                            cin >> y;
+                            cout << "Enter the length of third side : ";
+                            cin >> z;
+                            cout << "Result: "
+                            << opsgTrijustr(x, y, z)
+                            << endl;
+                        }
+
+                        else if (extOPR == REC)
+                        {
+                            double x,y;
+                            double res;
+                            cout << "Enter the length of first side : ";
+                            cin >> x;
+                            cout << "Enter the length of second side : ";
+                            cin >> y;
+                            cout << "Result: "
+                            << opsgDvijustr(x, y)
+                            << endl;
+                        }
+
+                        else if (extOPR == SQU)
+                        {
+                            double x;
+                            int sqe;
+                            sqe = 4;
+                            double res;
+                            cout << "Enter the length of one side : ";
+                            cin >> x;
+                            cout << "Result : "
+                            << opsgKvdjustr(x,sqe)
+                            << endl;
+
+                        }
+
+                        else
+                        {
+                            break;
+                        }
+
+
+                    }
+
+                }
+            }
+
+
+
+
         }
 
-    }
-
     return 0;
+
 }
