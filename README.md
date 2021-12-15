@@ -17,7 +17,7 @@ We are accept contibutors, create **Pull Request**.
 ### Termi C++ part
 - [x] Windows version
 - [x] Linux version
-- [ ] macOS version (maybe? pls)
+- [ ] macOS version (fyi Andrej I'm going to add it anyway!)
 
 ### Windows - installer and launcher
 
