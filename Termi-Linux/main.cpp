@@ -19,7 +19,7 @@ int main()
     cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
     cout << "-------------------------------------------------------" << endl;
     cout << "Welcome to Termi | Type help to see list of commands" << endl;
-    system("color 17");
+    system("color 1e");
 
     // command loop
     while (1)
