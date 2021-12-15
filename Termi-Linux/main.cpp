@@ -7,6 +7,7 @@
 using namespace std;
 
 // TO NOTE: FINISH FUNCTION FOR CALCULATING SURFACE AREA
+// P.S: We (by we I mean that I would probably develop it) should start developing macOS version of Termi
 // - StjepanBM1
 int main()
 {
