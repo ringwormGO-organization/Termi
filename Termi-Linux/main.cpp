@@ -12,14 +12,17 @@ using namespace std;
 int main()
 {
 
-    cout << "ooooooooooo ooooooooooo                          o88   " << endl;
-    cout << "88  888  88  888    88  oo oooooo  oo ooo oooo   oooo  " << endl;
-    cout << "    888      888ooo8     888    888 888 888 888   888 " << endl;
-    cout << "    888      888    oo   888        888 888 888   888  " << endl;
-    cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
-    cout << "-------------------------------------------------------" << endl;
-    cout << "Welcome to Termi | Type help to see list of commands" << endl;
-    system("color 1e");
+    cout << "ooooooooooo ooooooooooo                          o88    " << endl;
+    cout << "88  888  88  888    88  oo oooooo  oo ooo oooo   oooo   " << endl;
+    cout << "    888      888ooo8     888    888 888 888 888   888   " << endl;
+    cout << "    888      888    oo   888        888 888 888   888   " << endl;
+    cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o  " << endl;
+    cout << "------------------------------------------------------- " << endl;
+    cout << "           TYPE help TO SEE LIST OF ALL COMMANDS" << endl;
+    cout << "          (c)2021 ringwormGO all rights reserved" << endl;
+    cout << "-------------------------------------------------------  " << endl;
+
+    system("color 1E");
 
     // command loop
     while (1)
