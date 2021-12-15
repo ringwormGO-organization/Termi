@@ -6,10 +6,8 @@
 
 using namespace std;
 
-// should make the code prettier ( and it should prob be more organized) but I guess it's fine?
-// P.S I suck at organization
+// TO NOTE: FINISH FUNCTION FOR CALCULATING SURFACE AREA
 // - StjepanBM1
-
 int main()
 {
 
