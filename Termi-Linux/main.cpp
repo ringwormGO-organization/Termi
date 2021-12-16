@@ -3,12 +3,15 @@
 #include "Geocalc.h"
 #include <iostream>
 #include <string>
+#include <ctime>
+
 
 using namespace std;
 
-// TO NOTE: FINISH FUNCTION FOR CALCULATING SURFACE AREA
-// P.S: We (by we I mean that I would probably develop it) should start developing macOS version of Termi
+// TO NOTE: We should add a function which allows user to edit text files
+// P.S I added surface are function
 // - StjepanBM1
+
 int main()
 {
 
@@ -42,7 +45,7 @@ int main()
             cout << "help - shows list of commands" << endl;
             cout << "opencalc - opens a calculator" << endl;;
             cout << "geocalc - opens a geometric calculator" << endl;;
-            cout << "custset - opens user settings" << endl;;
+            cout << "custset -  [CURRENTLY NOT IN USE] opens user settings" << endl;;
                     // Command result
         }
 
@@ -162,11 +165,46 @@ int main()
                     string REC = "REC";
                     string SQU = "SQU";
 
-                    if (geoOPR == EXT)
+                    if (geoOPR == SUR)
                     {
-                        cout << "SELECT WHAT GEOMETRY CHARCTER YOU WANT" << endl;
+                        cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
+                        cout << "REC = RECTANGLE | SQU = SQUARE" << endl;
+                        cout << "> ";
+                        string TRA = "TRA";
+                        string REC = "REC";
+                        string SQU = "SQU";
+                        string surOPR;
+                        cin >> surOPR;
+
+                        if (surOPR == REC)
+                        {
+                            double x,y;
+                            double res;
+                            cout << "Enter the length of first side : ";
+                            cin >> x;
+                            cout << "Enter the length of second side : ";
+                            cin >> y;
+                            cout << "Result: "
+                            << povrsDvijustr(x, y)
+                            << endl;
+                        }
+
+                        else if (surOPR == SQU)
+                        {
+                            double x;
+                            double res;
+                            cout << "Enter the length of one side : ";
+                            cin >> x;
+                            cout << "Result : "
+                            << povrsKvdjustr(x)
+                            << endl;
+                    }
+
+                    else if (geoOPR == EXT)
+                    {
+                        cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
                         cout << "TRA = TRIANGLE | REC = RECTANGLE | SQU = SQUARE" << endl;
-                        cout << " >";
+                        cout << "> ";
                         string TRA = "TRA";
                         string REC = "REC";
                         string SQU = "SQU";
@@ -223,14 +261,15 @@ int main()
 
                     }
 
+
                 }
+
+
+
+
             }
-
-
-
-
         }
-
+    }
     return 0;
 
 }
