@@ -24,9 +24,6 @@ int main()
     cout << "           TYPE help TO SEE LIST OF ALL COMMANDS" << endl;
     cout << "          (c)2021 ringwormGO all rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
-
-    //system("color 1E");
-
     // command loop
     while (1)
     {
@@ -263,10 +260,6 @@ int main()
 
 
                 }
-
-
-
-
             }
         }
     }
