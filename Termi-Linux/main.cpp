@@ -25,7 +25,7 @@ int main()
     cout << "          (c)2021 ringwormGO all rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
 
-    system("color 1E");
+    //system("color 1E");
 
     // command loop
     while (1)
