@@ -50,6 +50,7 @@ Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\And
 Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Version.txt"; DestDir: "{app}"; Flags: ignoreversion
 Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\ref\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
+Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\net5.0\*"; DestDir: "{app}"; Flags: ignoreversion recursesubdirs createallsubdirs
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
