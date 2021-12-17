@@ -9,17 +9,16 @@ namespace Termi_Runner_Console
 {
     class Program
     {
-        [DllImport("Termi.dll", EntryPoint = "Add", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int Add(int a, int b);
-
-        [DllImport("Termi.dll", EntryPoint = "Minus", CallingConvention = CallingConvention.Cdecl)]
-        public static extern int Minus(int a, int b);
+        [DllImport("Termi.dll", EntryPoint = "Welcome", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Welcome();
 
         [DllImport("Termi.dll", EntryPoint = "Terminal", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Terminal();
 
         public static void Main(string[] args)
         {
+            Welcome();
+
             Terminal();
 
             Console.ReadLine();
