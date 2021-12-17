@@ -17,7 +17,7 @@ We are accept contibutors, create **Pull Request**.
 ### Termi C++ part
 - [x] Windows version
 - [x] Linux version
-- [x] macOS version (it's in the same repo as Linux version)
+- [x] macOS version (it's in the same folder/directory as Linux version)
 
 ### Windows - installer and launcher
 
@@ -40,7 +40,7 @@ Open two Visual Studio Solutions, compile Termi project as .dll and compile & ru
 
 If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi-Installer.exe). This option is recommended for stable releases of Termi
 
-### Build & Run - Linux version
+### Build & Run - Linux version & MacOS version (unsupported)
 Type this in terminal:
 
 ```g++ -o Termi Termi.cpp```
