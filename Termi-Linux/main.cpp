@@ -24,6 +24,7 @@ int main()
     cout << "           TYPE help TO SEE LIST OF ALL COMMANDS" << endl;
     cout << "          (c)2021 ringwormGO all rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
+
     // command loop
     while (1)
     {
@@ -195,6 +196,7 @@ int main()
                             cout << "Result : "
                             << povrsKvdjustr(x)
                             << endl;
+                        }
                     }
 
                     else if (geoOPR == EXT)
@@ -260,9 +262,12 @@ int main()
 
 
                 }
+
+
+
+
             }
         }
-    }
-    return 0;
 
+    return 0;
 }
