@@ -27,6 +27,7 @@ We are accept contibutors, create **Pull Request**.
 ### Other
 
 - [ ] Independence
+- [ ] Independence - OpenGL
 
 # Build & Run
 
