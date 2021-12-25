@@ -7,8 +7,8 @@
 
 using namespace std;
 
-// TO NOTE: We should add a function which allows user to edit text files
-// P.S I added surface are function
+// I updated the calculator!
+// We should add function where user can edit files!
 // - StjepanBM1
 
 int main()
