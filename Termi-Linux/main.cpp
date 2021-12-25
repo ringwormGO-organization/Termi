@@ -1,6 +1,5 @@
 #include "main.h"
 #include "Calc.h"
-#include "Geocalc.h"
 #include <iostream>
 #include <string>
 #include <ctime>
@@ -28,7 +27,7 @@ int main()
     // command loop
     while (1)
     {
-        cout << "Termi> ";
+        //cout << "Type Enter to start Termi" << endl;
         string input;
         cin >> input;
         string exit = "exit";
@@ -49,88 +48,41 @@ int main()
 
         else if (input == opencalc)
         {
-            cout << "-----------------------------------------------------------------------------------------------" << endl;
-            cout << " " << endl;
-            cout << "Enter an operator (subt = subtraction | add = addition | dev = devision | mul = multiplication)" << endl;
-            cout << "Type exit to exit calculator" << endl;
-            cout << " " << endl;
-            cout << "-----------------------------------------------------------------------------------------------" << endl;
-            while(1)
-            {
-                cout << "calc > ";
-                string inpOPR;
-                cin >> inpOPR;
-                string subt = "subt";
-                string add = "add";
-                string dev = "dev";
-                string mul = "mul";
 
+                char op;
+                float num1, num2;
 
-                if (inpOPR == subt)
-                {
-                    double x, y;
-                    double res;
-                    cout << "Type a number: ";
-                    cin >> x;
-                    cout << "Type a  second number: ";
-                    cin >> y;
-                    cout << "Result: "
-                    << subOfTwoNumbers(x, y)
-                    << endl;
+                cout << "Enter operator: +, -, *, /: ";
+                cin >> op;
 
-                }
+                cout << "Enter the first number: ";
+                cin >> num1;
+                cout << "Enter the second number: ";
+                cin >> num2;
 
-                else if (inpOPR == add)
-                {
-                    double x, y;
-                    double res;
-                    cout << "Type a number: ";
-                    cin >> x;
-                    cout << "Type a second number: ";
-                    cin >> y;
-                    cout << "Result: "
-                    << sumOfTwoNumbers(x, y)
-                    << endl;
+                switch(op) {
 
-                }
+                    case '+':
+                      cout << num1 << " + " << num2 << " = " << num1 + num2;
+                      break;
 
-                else if (inpOPR == mul)
-                {
-                    double x, y;
-                    double res;
-                    cout << "Type a number: ";
-                    cin >> x;
-                    cout << "Type a second number: ";
-                    cin >> y;
-                    cout << "Result: "
-                    << mulOfTwoNumbers(x, y)
-                    << endl;
+                    case '-':
+                      cout << num1 << " - " << num2 << " = " << num1 - num2;
+                      break;
 
-                }
+                    case '*':
+                      cout << num1 << " * " << num2 << " = " << num1 * num2;
+                      break;
 
-                else if (inpOPR == dev)
-                {
-                    double x, y;
-                    double res;
-                    cout << "Type a number: ";
-                    cin >> x;
-                    cout << "Type a second number: ";
-                    cin >> y;
-                    cout << "Result: "
-                    << devOfTwoNumbers(x, y)
-                    << endl;
+                    case '/':
+                      cout << num1 << " / " << num2 << " = " << num1 / num2;
+                      break;
 
-                }
-
-                else if (inpOPR == exit)
-                {
-                    break;
-                }
-                else
-                {
-                    cout << "ERROR = COMMAND NOT CORRECT / IT DOSENT EXIST" << endl;
-                }
-            }
+                    default:
+                      // If the operator is other than +, -, * or /, error message is shown
+                      cout << "Error! operator is not correct";
+                      break;
+                  }
         }
 
 
