@@ -21,7 +21,7 @@ int main()
     cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o  " << endl;
     cout << "------------------------------------------------------- " << endl;
     cout << "           TYPE help TO SEE LIST OF ALL COMMANDS" << endl;
-    cout << "          (c)2021 ringwormGO all rights reserved" << endl;
+    cout << "          ©2021 ringwormGO all rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
 
     // command loop
