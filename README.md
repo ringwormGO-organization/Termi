@@ -20,8 +20,7 @@ A Powerful Terminal made in C++ and C#
 - [x] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [x] Lanucher and updater - C#
 
-### Other
-
+### Independence
 - [ ] Independence
 - [ ] Independence - OpenGL
 
