@@ -46,4 +46,4 @@ ____________________________________
 
 Thanks for choosing Termi.
 
-© 2021 ringwormGO
+© 2022 ringwormGO

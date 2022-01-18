@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
 using System.IO;
+using System.Threading;
 
 namespace Termi_Runner_Console
 {
@@ -12,14 +10,20 @@ namespace Termi_Runner_Console
         [DllImport("Termi.dll", EntryPoint = "Welcome", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Welcome();
 
-        [DllImport("Termi.dll", EntryPoint = "Terminal", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Terminal();
+        public static string path = Directory.GetCurrentDirectory();
 
         public static void Main(string[] args)
         {
-            Welcome();
+            Functions.Clear();
+            Console.WriteLine(path);
+            Console.WriteLine(" ");
+            Console.WriteLine("Starting Termi...\nPlease wait...");
+            Thread.Sleep(1000);
 
-            Terminal();
+            Functions.Clear();
+
+            Welcome();
+            Input.Input_Main();
 
             Console.ReadLine();
         }

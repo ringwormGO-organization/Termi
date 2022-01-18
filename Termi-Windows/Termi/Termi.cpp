@@ -1,14 +1,18 @@
 #include <iostream>
 #include <stdlib.h>
-#include <string>
+#include <cstring>
 #include "windows.h"
 
 #include "Termi.h"
 #include "Header.h"
+#include "Commands.h"
+
+#define MAX 100
 
 using namespace std;
 
-void Floppy() {
+void Floppy() 
+{
     cout <<"%%%%&&&&..............%%%/  " << endl << 
                 "%%%%&&&&.........&&&..%%%%%   " << endl << 
                 "%%%%&&&&.........&&&..%%%%%%%" << endl << 
@@ -27,7 +31,8 @@ void Floppy() {
                 "%&&%%%%%%%%%%%%%%%%%%%%%%%&&%" << endl <<
                 "%&&%%%%%%%%%%%%%%%%%%%%%%%&&%" << endl;
 }
-void Calculator() {
+void Calculator() 
+{
     cout << "-----------------------------------------------------------------------------------------------" << endl;
     cout << " " << endl;
     cout << "Enter an operator (subt = subtraction | add = addition | dev = devision | mul = multiplication)" << endl;
@@ -39,11 +44,6 @@ void Calculator() {
         cout << "calc > ";
         string inpOPR;
         cin >> inpOPR;
-        string subt = "subt";
-        string add = "add";
-        string dev = "dev";
-        string mul = "mul";
-        string ex = "ex";
 
 
         if (inpOPR == subt)
@@ -136,11 +136,6 @@ void GeoCalc()
             cout << "geocalc > ";
             string geoOPR;
             cin >> geoOPR;
-            string EXT = "EXT";
-            string SUR = "SUR";
-            string TRA = "TRA";
-            string REC = "REC";
-            string SQU = "SQU";
 
             if (geoOPR == SUR)
             {
@@ -185,9 +180,7 @@ void GeoCalc()
                 cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
                 cout << "TRA = TRIANGLE | REC = RECTANGLE | SQU = SQUARE" << endl;
                 cout << "> ";
-                string TRA = "TRA";
-                string REC = "REC";
-                string SQU = "SQU";
+
                 string extOPR;
                 cin >> extOPR;
 
@@ -249,46 +242,15 @@ extern void Welcome()
     cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
     cout << "------------------------------------------------------- " << endl;
     cout << "           TYPE help TO SEE LIST OF ALL COMMANDS" << endl;
-    cout << "          (c)2021 ringwormGO All rights reserved" << endl;
+    cout << "          (C)2022 ringwormGO All rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
 }
 
-extern void Terminal() 
+extern void Help() 
 {
-    while (true)
-    {
-        cout << "Termi> ";
-
-        string command;
-        cin >> command;
-
-        if (command == "help" && '\n')
-        {
-            cout << "help > print help" << endl;
-            cout << "floppy > print floppy" << endl;
-            cout << "exit > exit Termi" << endl;
-            cout << "calculator > open calculator" << endl;
-            cout << "geo-calculator > open geo calculator" << endl;
-        }
-        else if (command == "floppy" && '\n')
-        {
-            Floppy();
-        }
-        else if (command == "exit" && '\n')
-        {
-            exit(0);
-        }
-        else if (command == "calculator" && '\n')
-        {
-            Calculator();
-        }
-        else if (command == "geo-calculator" && '\n')
-        {
-            GeoCalc();
-        }
-        else
-        {
-            cout << "Command invalid" << endl;
-        }
-    }
+    cout << "help > print help" << endl;
+    cout << "floppy > print floppy" << endl;
+    cout << "exit > exit Termi" << endl;
+    cout << "calculator > open calculator" << endl;
+    cout << "geo-calculator > open geo calculator" << endl;
 }
