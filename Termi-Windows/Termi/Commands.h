@@ -1,9 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 using namespace std;
 
 /* Calculator */
+string GEO = "GEO";
+
 string subt = "subt";
 string add = "add";
 string dev = "dev";

@@ -8,5 +8,6 @@
     <OldToolsVersion>Current</OldToolsVersion>
     <ApplicationIcon />
     <StartupObject />
+    <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
 </Project>

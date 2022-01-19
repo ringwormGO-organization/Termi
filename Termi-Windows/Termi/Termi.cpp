@@ -11,7 +11,7 @@
 
 using namespace std;
 
-void Floppy() 
+extern void Floppy()
 {
     cout <<"%%%%&&&&..............%%%/  " << endl << 
                 "%%%%&&&&.........&&&..%%%%%   " << endl << 
@@ -31,92 +31,55 @@ void Floppy()
                 "%&&%%%%%%%%%%%%%%%%%%%%%%%&&%" << endl <<
                 "%&&%%%%%%%%%%%%%%%%%%%%%%%&&%" << endl;
 }
-void Calculator() 
+
+extern void Calculator(double num1, char operation, double num2)
 {
-    cout << "-----------------------------------------------------------------------------------------------" << endl;
-    cout << " " << endl;
-    cout << "Enter an operator (subt = subtraction | add = addition | dev = devision | mul = multiplication)" << endl;
-    cout << "Type ex to exit calculator" << endl;
-    cout << " " << endl;
-    cout << "-----------------------------------------------------------------------------------------------" << endl;
-    while (1)
+    switch (operation)
     {
-        cout << "calc > ";
-        string inpOPR;
-        cin >> inpOPR;
-
-
-        if (inpOPR == subt)
+        case '+':
         {
-            double x, y;
-            double res;
-            cout << "Type a number: ";
-            cin >> x;
-            cout << "Type a  second number: ";
-            cin >> y;
-            cout << "Result: "
-                << subOfTwoNumbers(x, y)
-                << endl;
-
+            double sum = sumOfTwoNumbers(num1, num2);
+            cout << sum << '\n';
+            break;
         }
 
-        else if (inpOPR == add)
+        case '-':
         {
-            double x, y;
-            double res;
-            cout << "Type a number: ";
-            cin >> x;
-            cout << "Type a second number: ";
-            cin >> y;
-            cout << "Result: "
-                << sumOfTwoNumbers(x, y)
-                << endl;
-
+            double sub = subOfTwoNumbers(num1, num2);
+            cout << sub << '\n';
+            break;
         }
 
-        else if (inpOPR == mul)
+        case '*':
         {
-            double x, y;
-            double res;
-            cout << "Type a number: ";
-            cin >> x;
-            cout << "Type a second number: ";
-            cin >> y;
-            cout << "Result: "
-                << mulOfTwoNumbers(x, y)
-                << endl;
-
+            double mul = mulOfTwoNumbers(num1, num2);
+            cout << mul << '\n';
+            break;
         }
 
-        else if (inpOPR == dev)
+        case '/':
         {
-            double x, y;
-            double res;
-            cout << "Type a number: ";
-            cin >> x;
-            cout << "Type a second number: ";
-            cin >> y;
-            cout << "Result: "
-                << devOfTwoNumbers(x, y)
-                << endl;
-
+            double dev = devOfTwoNumbers(num1, num2);
+            cout << dev << '\n';
+            break;
         }
 
-        else if (inpOPR == ex)
+        case 'x':
         {
             break;
         }
-        else
+
+        default:
         {
-            cout << "ERROR = COMMAND NOT CORRECT / IT DOSENT EXIST" << endl;
+            cout << "Operator invalid!\n\n";
+            break;
         }
     }
 }
 
-void GeoCalc()
+extern void GeoCalc()
 {
     string calccho;
-    string GEO = "GEO";
     cout << "-----------------------------------------------------------------------------------------------" << endl;
     cout << " " << endl;
     cout << "TYPE GEO TO START" << endl;
@@ -137,7 +100,12 @@ void GeoCalc()
             string geoOPR;
             cin >> geoOPR;
 
-            if (geoOPR == SUR)
+            if (geoOPR == exit2)
+            {
+
+            }
+
+            else if(geoOPR == SUR)
             {
                 cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
                 cout << "REC = RECTANGLE | SQU = SQUARE" << endl;
@@ -230,6 +198,14 @@ void GeoCalc()
             }
         }
     }
+    else if (calccho == exit2)
+    {
+        
+    }
+    else
+    {
+
+    }
 }
 
 extern void Welcome()
@@ -248,9 +224,9 @@ extern void Welcome()
 
 extern void Help() 
 {
-    cout << "help > print help" << endl;
-    cout << "floppy > print floppy" << endl;
-    cout << "exit > exit Termi" << endl;
+    cout << "help > this" << endl;
     cout << "calculator > open calculator" << endl;
+    cout << "exit > exit Termi" << endl;
+    cout << "floppy > print floppy" << endl;
     cout << "geo-calculator > open geo calculator" << endl;
 }

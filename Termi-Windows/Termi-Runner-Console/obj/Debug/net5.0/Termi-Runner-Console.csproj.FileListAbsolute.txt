@@ -13,3 +13,4 @@ E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi
 E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\ref\Termi-Runner-Console.dll
 E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.pdb
 E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.genruntimeconfig.cache
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.csproj.AssemblyReference.cache

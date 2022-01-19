@@ -19,19 +19,19 @@ namespace Termi_Runner_Console
 
         public static void IsAdministrator()
         {
-            /*var identity = WindowsIdentity.GetCurrent();
-            var principal = new WindowsPrincipal(identity);*/
             if (!IsUserAnAdmin())
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("You need to run this application by administrator!");
-                Thread.Sleep(4000);
+                Thread.Sleep(2000);
                 Environment.Exit(0);
             }
             else
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Application have administartor privilges");
                 Thread.Sleep(1000);
+                Console.ResetColor();
             }
         }
 

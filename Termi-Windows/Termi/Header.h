@@ -1,3 +1,5 @@
+#pragma once
+
 
 //Calc
 double sumOfTwoNumbers(double a, double b)
