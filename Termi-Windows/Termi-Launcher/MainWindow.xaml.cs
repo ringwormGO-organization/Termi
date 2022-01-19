@@ -5,6 +5,7 @@ using System.IO;
 using System.IO.Compression;
 using System.Net;
 using System.Windows;
+using System.Security.Principal;
 
 namespace Termi_Launcher
 {
@@ -53,6 +54,17 @@ namespace Termi_Launcher
             }
         }
 
+        public static void IsAdministrator()
+        {
+            var identity = WindowsIdentity.GetCurrent();
+            var principal = new WindowsPrincipal(identity);
+            if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+            {
+                MessageBox.Show("You need to run this application by administrator!");
+                Environment.Exit(0);
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -61,6 +73,7 @@ namespace Termi_Launcher
             versionFile = Path.Combine(rootPath, "Version.txt");
             TermiZip = Path.Combine(rootPath, "net5.0.zip");
             TermiExe = Path.Combine(rootPath, "net5.0", "Termi-Runner-Console.exe");
+            IsAdministrator();
         }
 
         private void CheckForUpdates()

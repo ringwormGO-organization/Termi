@@ -6,5 +6,7 @@
     <FileUpgradeFlags>40</FileUpgradeFlags>
     <UpgradeBackupLocation>E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\Backup\</UpgradeBackupLocation>
     <OldToolsVersion>Current</OldToolsVersion>
+    <ApplicationIcon />
+    <StartupObject />
   </PropertyGroup>
 </Project>

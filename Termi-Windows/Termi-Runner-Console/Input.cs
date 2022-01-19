@@ -12,32 +12,39 @@ namespace Termi_Runner_Console
         [DllImport("Termi.dll", EntryPoint = "Help", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Help();
 
-        public static void Input_Main()
+        public static string TermiString = "Termi> ";
+
+        public static void Input_Start()
         {
             while (true)
             {
-                Console.Write("Termi> ");
-                Input_Start();
+                Console.Write(TermiString);
+                Input_Main();
             }
         }
 
-        private static void Input_Start()
+        private static void Input_Main()
         {
             string input;
 
             input = Console.ReadLine();
 
-            if (input == "help")
+            switch (input)
             {
-                Help();
-            }
-            else if (input == "exit")
-            {
-                Functions.Exit();
-            }
-            else
-            {
-                Console.WriteLine("Command invalid");
+                case "help":
+                    Help();
+                    break;
+
+                case "exit":
+                    Functions.Exit();
+                    break;
+
+                default:
+                    if (input.Length > 0) //if enter is pressed, do nothing
+                    {
+                        Console.WriteLine("Command invalid");
+                    }
+                    break;
             }
         }
     }
