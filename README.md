@@ -6,7 +6,7 @@ A Powerful Terminal made in C++ and C#
 - It can run on Windows and Linux.
 - The goal of Termi is create independent terminal.
 - `Independent` mean to be independent from terminal in operating system i.e. a separate kind of terminal.
-- We accept contibutors, create a **Pull Request** to contribute.
+- We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md)
 
 ## TO DO
 
@@ -34,7 +34,7 @@ A Powerful Terminal made in C++ and C#
 
 ### Build & Run - Windows
 - Open two Visual Studio Solutions, compile `Termi project` as a `.dll` and compile & run `Termi-Runner-Console` as an executable (`.exe`).
-- If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi-Installer.exe). This option is **recommended** for stable releases of Termi.
+- If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi-Installer.exe). When you launching installed app, run application as **ADMINISTRATOR**
 
 ### Build & Run - Linux version & MacOS version (unsupported)
 Compile `Termi.cpp`:
@@ -44,6 +44,6 @@ $ g++ -o Termi Termi.cpp
 ```
 ____________________________________
 
-Thanks for choosing Termi.
+Thank you for choosing Termi.
 
 © 2022 ringwormGO
