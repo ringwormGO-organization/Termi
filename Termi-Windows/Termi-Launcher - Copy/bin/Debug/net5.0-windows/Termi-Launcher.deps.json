@@ -6,15 +6,15 @@
   "compilationOptions": {},
   "targets": {
     ".NETCoreApp,Version=v5.0": {
-      "Termi-Runner-Console/1.0.0": {
+      "Termi-Launcher/1.0.0": {
         "runtime": {
-          "Termi-Runner-Console.dll": {}
+          "Termi-Launcher.dll": {}
         }
       }
     }
   },
   "libraries": {
-    "Termi-Runner-Console/1.0.0": {
+    "Termi-Launcher/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""
