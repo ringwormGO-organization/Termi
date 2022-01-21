@@ -1,9 +1,12 @@
-#include "main.h"
-#include "Calc.h"
 #include <iostream>
 #include <string>
 #include <ctime>
 
+#include "main.h"
+#include "Calc.h"
+#include "Commands.h"
+
+#define MAX 100
 
 using namespace std;
 
@@ -28,9 +31,9 @@ int main()
     // command loop
     while (1)
     {
-        //cout << "Type Enter to start Termi" << endl;
-        string input;
-        cin >> input;
+        cout << "Termi> ";
+        char input[MAX];
+        cin.getline(input, MAX);
         string exit = "exit";
         string help = "help";
         string opencalc = "opencalc";
@@ -108,15 +111,20 @@ int main()
                     cout << "Enter what to do (EXT = extent |SUR = surface area )";
 
                     cout << "geocalc > ";
-                    string geoOPR;
-                    cin >> geoOPR;
+                    char geoOPR[MAX];
+                    cin.getline(geoOPR, MAX);
                     string EXT = "EXT";
                     string SUR = "SUR";
                     string TRA = "TRA";
                     string REC = "REC";
                     string SQU = "SQU";
 
-                    if (geoOPR == SUR)
+                    if (geoOPR == "exit")
+                    {
+
+                    }
+
+                    else if(geoOPR == SUR)
                     {
                         cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
                         cout << "REC = RECTANGLE | SQU = SQUARE" << endl;
@@ -209,16 +217,10 @@ int main()
                         {
                             break;
                         }
-
-
                     }
 
 
                 }
-
-
-
-
             }
         }
 
