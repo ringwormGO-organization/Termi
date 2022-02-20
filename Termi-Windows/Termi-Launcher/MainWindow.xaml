@@ -12,5 +12,7 @@
         <Image Stretch="UniformToFill" Source="images/leaf-g3be2943cf_640.jpg"/>
         <TextBlock Name="VersionText" VerticalAlignment="Bottom" HorizontalAlignment="Right" FontSize="20" Foreground="White" Margin="0, 0, 5, 0"/>
         <Button Name="PlayButton" Content="Checking For Updates" Click="PlayButton_Click" Height="60" FontSize="28" FontWeight="Bold" Foreground="#DDFFFFFF" Margin="0, 0, 0, 15" VerticalAlignment="Bottom" HorizontalAlignment="Center" MinWidth="150" Background="#FFFF9700" Padding="10,1,10,1"/>
+        <Button x:Name="Repo" Content="GitHub repo&#xD;&#xA;" HorizontalAlignment="Right" Margin="0,0,10,27" VerticalAlignment="Bottom" Height="30" Width="125" FontSize="18" Foreground="White" Click="Repo_Button_Click" Background="#FFFF9700"/>
+        <Button x:Name="Repo_Copy" Content="Credits for picture&#xA;" HorizontalAlignment="Left" Margin="17,0,0,27" VerticalAlignment="Bottom" Height="30" Width="150" FontSize="18" Foreground="White" Click="Credits_Button_Click" Background="#FFFF9700" RenderTransformOrigin="-0.408,0.593"/>
     </Grid>
 </Window>

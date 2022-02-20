@@ -1,21 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj": {}
+    "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj": {}
   },
   "projects": {
-    "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj": {
+    "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj",
+        "projectUniqueName": "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj",
         "projectName": "Termi-Launcher",
-        "projectPath": "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj",
+        "projectPath": "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj",
         "packagesPath": "C:\\Users\\vangu\\.nuget\\packages\\",
-        "outputPath": "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Launcher\\obj\\",
+        "outputPath": "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+        ],
         "configFilePaths": [
           "C:\\Users\\vangu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net5.0-windows7.0"

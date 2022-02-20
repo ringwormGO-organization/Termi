@@ -6,6 +6,7 @@ using System.IO.Compression;
 using System.Net;
 using System.Windows;
 using System.Security.Principal;
+using System.Runtime.InteropServices;
 
 namespace Termi_Launcher
 {
@@ -22,6 +23,9 @@ namespace Termi_Launcher
     /// </summary>
     public partial class MainWindow : Window
     {
+        public static string version_link = "https://drive.google.com/uc?export=download&id=1yU_xMfNmCuh8xaRzqNVWqJMuxlGgl0qV";
+        public static string zip_link = "https://drive.google.com/uc?export=download&id=1lsTAeZJiDXKkieRjuT7PfKLZ_IQMwr-s";
+
         private string rootPath;
         private string versionFile;
         private string TermiZip;
@@ -86,7 +90,7 @@ namespace Termi_Launcher
                 try
                 {
                     WebClient webClient = new WebClient();
-                    Version onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/uc?export=download&id=1yU_xMfNmCuh8xaRzqNVWqJMuxlGgl0qV")); //version
+                    Version onlineVersion = new Version(webClient.DownloadString(version_link));
 
                     if (onlineVersion.IsDifferentThan(localVersion))
                     {
@@ -121,11 +125,11 @@ namespace Termi_Launcher
                 else
                 {
                     Status = LauncherStatus.downloadingTermi;
-                    _onlineVersion = new Version(webClient.DownloadString("https://drive.google.com/uc?export=download&id=1yU_xMfNmCuh8xaRzqNVWqJMuxlGgl0qV")); //version
+                    _onlineVersion = new Version(webClient.DownloadString(version_link));
                 }
 
                 webClient.DownloadFileCompleted += new AsyncCompletedEventHandler(DownloadGameCompletedCallback);
-                webClient.DownloadFileAsync(new Uri("https://drive.google.com/uc?export=download&id=1lsTAeZJiDXKkieRjuT7PfKLZ_IQMwr-s"), TermiZip, _onlineVersion); //zip
+                webClient.DownloadFileAsync(new Uri(zip_link), TermiZip, _onlineVersion);
             }
             catch (Exception ex)
             {
@@ -172,6 +176,68 @@ namespace Termi_Launcher
             else if (Status == LauncherStatus.failed)
             {
                 CheckForUpdates();
+            }
+        }
+
+        private void Repo_Button_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "https://github.com/ringwormGO-organization/Termi";
+
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    url = url.Replace("&", "^&");
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else
+                {
+                    throw;
+                }
+            }
+        }
+
+        private void Credits_Button_Click(object sender, RoutedEventArgs e)
+        {
+            string url = "https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/";
+
+            try
+            {
+                Process.Start(url);
+            }
+            catch
+            {
+                // hack because of this: https://github.com/dotnet/corefx/issues/10361
+                if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+                {
+                    url = url.Replace("&", "^&");
+                    Process.Start(new ProcessStartInfo(url) { UseShellExecute = true });
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+                {
+                    Process.Start("xdg-open", url);
+                }
+                else if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+                {
+                    Process.Start("open", url);
+                }
+                else
+                {
+                    throw;
+                }
             }
         }
     }
