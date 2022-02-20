@@ -24,8 +24,7 @@ A Powerful Terminal made in C++ and C#
 - [x] Lanucher and updater - C#
 
 ### Independence
-- [ ] Independence
-- [ ] Independence - OpenGL
+- [ ] Independence ([ImGUI](https://github.com/ocornut/imgui))
 
 ## Build & Run
 
