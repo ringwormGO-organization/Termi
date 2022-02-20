@@ -4,7 +4,6 @@
 
 #include "main.h"
 #include "Calc.h"
-#include "Commands.h"
 
 #define MAX 100
 
