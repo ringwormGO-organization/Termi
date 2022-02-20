@@ -5,6 +5,7 @@ Just drop a Pull Request :)
 1. Line width must be at most **100** characters.
 2. Use tabs, tabs ident size **MUST BE** 4!
 3. Indent both a case label and the case statement of a switch statement.
+4. When you sending binary (zip file) please name it as `net5.0` so we can easier upload to Google Drive.
 
 Right:
 
@@ -292,9 +293,8 @@ Wrong:
 2. If a commit only consists of formatting changes, say this clearly in the commit message by preceding it with [FORMATTING].
 
 ### Other points
-1. Do not use `LARGE_INTEGER`/`ULARGE_INTEGER` unless needed for using APIs. Use `int64`/`uint64` instead
-2. Use `#pragma once` instead of guard defines in headers
-3. Don't specify a calling convention for a function unless required (usually for APIs or exported symbols)
+1. Use `#pragma once` instead of guard defines in headers
+2. Don't specify a calling convention for a function unless required (usually for APIs or exported symbols)
 
 ### Resources used for this coding style:
 * https://reactos.org/wiki/Coding_Style (some parts are modificeted)
