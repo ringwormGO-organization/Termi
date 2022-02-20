@@ -1,4 +1,7 @@
 # Termi
+
+(Termi currently is just a terminal app but we are developing it to be a fully working terminal not just an app)
+
 A Powerful Terminal made in C++ and C#
 
 ## About Termi
