@@ -45,6 +45,9 @@ Compile `Termi.cpp`:
 ```sh
 $ g++ -o Termi Termi.cpp
 ```
+
+## Credits
+- [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
 ____________________________________
 
 Thank you for choosing Termi.
