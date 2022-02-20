@@ -1,25 +1,27 @@
 # Termi
-
 (Termi currently is just a terminal app but we are developing it to be a fully working terminal not just an app)
 
 A Powerful Terminal made in C++ and C#
 
 ## About Termi
 - Termi is a powerful terminal made in C++ and C#
-- It can run on Windows and Linux.
+- It can run on Windows, macOS and GNU/Linux.
 - The goal of Termi is create independent terminal.
-- `Independent` mean to be independent from terminal in operating system i.e. a separate kind of terminal.
+- `Independent` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering.
 - We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md)
 
-## TO DO
-
-### Termi C++ part
+## Checklist
+### Termi base C++ part
 - [x] Windows version
 - [x] Linux version
 - [x] macOS version (same folder/directory as Linux version)
 
-### Windows - installer and launcher
+### Termi C++ part
+- [ ] User Settings in JSON
+- [ ] Support all major commands
+- [ ] Include other host terminals
 
+### Windows - installer and launcher
 - [x] Setup in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [x] Lanucher and updater - C#
 
@@ -27,7 +29,6 @@ A Powerful Terminal made in C++ and C#
 - [ ] Independence ([ImGUI](https://github.com/ocornut/imgui))
 
 ## Build & Run
-
 ### Required software:
 
 - Visual Studio 2019 with `.NET desktop development` and `Desktop development with C++` components - Windows.
@@ -36,7 +37,7 @@ A Powerful Terminal made in C++ and C#
 
 ### Build & Run - Windows
 - Open two Visual Studio Solutions, compile `Termi project` as a `.dll` and compile & run `Termi-Runner-Console` as an executable (`.exe`).
-- If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi-Installer.exe). When you launching installed app, run application as **ADMINISTRATOR**
+- If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
 
 ### Build & Run - Linux version & MacOS version (unsupported)
 Compile `Termi.cpp`:
