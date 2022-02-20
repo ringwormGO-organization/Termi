@@ -2,7 +2,7 @@ Just drop a Pull Request :)
 
 # Coding sytle for Pull Requests
 ### Indentation and line width
-1. Line width much be at most **100** characters.
+1. Line width must be at most **100** characters.
 2. Use tabs, tabs ident size **MUST BE** 4!
 3. Indent both a case label and the case statement of a switch statement.
 
