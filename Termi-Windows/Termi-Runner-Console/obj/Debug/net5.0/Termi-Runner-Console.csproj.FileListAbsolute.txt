@@ -1,0 +1,16 @@
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\Termi-Runner-Console.exe
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\Termi-Runner-Console.deps.json
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\Termi-Runner-Console.runtimeconfig.json
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\Termi-Runner-Console.runtimeconfig.dev.json
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\Termi-Runner-Console.dll
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\ref\Termi-Runner-Console.dll
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\bin\Debug\net5.0\Termi-Runner-Console.pdb
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.GeneratedMSBuildEditorConfig.editorconfig
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.AssemblyInfoInputs.cache
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.AssemblyInfo.cs
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.csproj.CoreCompileInputs.cache
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.dll
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\ref\Termi-Runner-Console.dll
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.pdb
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.genruntimeconfig.cache
+E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi-Runner-Console\obj\Debug\net5.0\Termi-Runner-Console.csproj.AssemblyReference.cache
