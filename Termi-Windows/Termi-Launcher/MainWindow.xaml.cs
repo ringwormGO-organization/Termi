@@ -64,7 +64,7 @@ namespace Termi_Launcher
             var principal = new WindowsPrincipal(identity);
             if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
             {
-                MessageBox.Show("You need to run this application by administrator!");
+                MessageBox.Show("You need to run this application by administrator!", "Administrator");
                 Environment.Exit(0);
             }
         }
@@ -104,7 +104,7 @@ namespace Termi_Launcher
                 catch (Exception ex)
                 {
                     Status = LauncherStatus.failed;
-                    MessageBox.Show($"Error checking for Termi updates: {ex}");
+                    MessageBox.Show($"Error checking for Termi updates: {ex}", "Check error");
                 }
             }
             else
@@ -134,7 +134,7 @@ namespace Termi_Launcher
             catch (Exception ex)
             {
                 Status = LauncherStatus.failed;
-                MessageBox.Show($"Error installing Termi files: {ex}");
+                MessageBox.Show($"Error installing Termi files: {ex}", "Install error");
             }
         }
 
@@ -154,7 +154,7 @@ namespace Termi_Launcher
             catch (Exception ex)
             {
                 Status = LauncherStatus.failed;
-                MessageBox.Show($"Error finishing download: {ex}");
+                MessageBox.Show($"Error finishing download: {ex}", "Finish error");
             }
         }
 

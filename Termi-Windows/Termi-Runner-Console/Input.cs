@@ -43,20 +43,7 @@ namespace Termi_Runner_Console
                     break;
 
                 case "calculator":
-                    Console.WriteLine("Type numbers and operation to continue execution of calculator\n" +
-                        "Type 'x' to exit calculator.");
-                    double number1 = Convert.ToDouble(Console.ReadLine());
-                    char operation = Convert.ToChar(Console.ReadLine());
-                    double number2 = Convert.ToDouble(Console.ReadLine());
-
-                    try
-                    {
-                        Calculator(number1, operation, number2);
-                    }
-                    catch (Exception ex)
-                    {
-                        Console.WriteLine(ex);
-                    }
+                    Applications.Calc.CalculatorLogic();
                     break;
 
                 case "exit":

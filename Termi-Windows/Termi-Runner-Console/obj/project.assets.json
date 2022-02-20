@@ -8,20 +8,25 @@
     "net5.0": []
   },
   "packageFolders": {
-    "C:\\Users\\vangu\\.nuget\\packages\\": {}
+    "C:\\Users\\vangu\\.nuget\\packages\\": {},
+    "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Runner-Console\\Termi-Runner-Console.csproj",
+      "projectUniqueName": "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Runner-Console\\Termi-Runner-Console.csproj",
       "projectName": "Termi-Runner-Console",
-      "projectPath": "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Runner-Console\\Termi-Runner-Console.csproj",
+      "projectPath": "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Runner-Console\\Termi-Runner-Console.csproj",
       "packagesPath": "C:\\Users\\vangu\\.nuget\\packages\\",
-      "outputPath": "E:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\Andrej\\Termi\\Termi-Windows\\Termi-Runner-Console\\obj\\",
+      "outputPath": "C:\\Users\\vangu\\Documents\\GitHub\\Termi\\Termi-Windows\\Termi-Runner-Console\\obj\\",
       "projectStyle": "PackageReference",
+      "fallbackFolders": [
+        "C:\\Program Files (x86)\\Microsoft\\Xamarin\\NuGet\\"
+      ],
       "configFilePaths": [
         "C:\\Users\\vangu\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
       ],
       "originalTargetFrameworks": [
         "net5.0"
