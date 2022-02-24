@@ -1,2 +1,2 @@
-g++ main.cpp
-./a.out
+g++ -o Termi main.cpp
+./Termi
