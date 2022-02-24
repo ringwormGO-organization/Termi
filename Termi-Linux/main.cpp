@@ -43,7 +43,7 @@ int main()
             cout << "help - shows list of commands" << endl;
             cout << "opencalc - opens a calculator" << endl;;
             cout << "geocalc - opens a geometric calculator" << endl;;
-            cout << "microt - opens a micro terminal" << endl;;
+            cout << "filesys - opens file creation/editing" << endl;
                     // Command result
         }
 
