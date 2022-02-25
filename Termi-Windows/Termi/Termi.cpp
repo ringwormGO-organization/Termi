@@ -1,18 +1,18 @@
 #include <iostream>
-#include <stdlib.h>
+#include <fstream>
 #include <cstring>
-#include "windows.h"
+#include <Windows.h>
 
 #include "Termi.h"
 #include "Header.h"
 #include "Commands.h"
 
-#define MAX 100
-
-using namespace std;
+#define MAX 250
 
 extern void Floppy()
 {
+    using namespace std;
+
     cout <<"%%%%&&&&..............%%%/  " << endl << 
                 "%%%%&&&&.........&&&..%%%%%   " << endl << 
                 "%%%%&&&&.........&&&..%%%%%%%" << endl << 
@@ -32,8 +32,16 @@ extern void Floppy()
                 "%&&%%%%%%%%%%%%%%%%%%%%%%%&&%" << endl;
 }
 
-extern void Calculator(double num1, char operation, double num2)
+extern void Calculator()
 {
+    using namespace std;
+
+    double num1, num2;
+    char operation;
+
+    cout << "Type two numbers and operator\n";
+    cin >> num1 >> num2 >> operation;
+
     switch (operation)
     {
         case '+':
@@ -79,6 +87,8 @@ extern void Calculator(double num1, char operation, double num2)
 
 extern void GeoCalc()
 {
+    using namespace std;
+
     string calccho;
     cout << "-----------------------------------------------------------------------------------------------" << endl;
     cout << " " << endl;
@@ -210,6 +220,8 @@ extern void GeoCalc()
 
 extern void Welcome()
 {
+    using namespace std;
+
     cout << "ooooooooooo                              " << endl;
     cout << "    888      ooooooooooo                          o88   " << endl;
     cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << endl;
@@ -224,9 +236,78 @@ extern void Welcome()
 
 extern void Help() 
 {
+    using namespace std;
+
     cout << "help > this" << endl;
     cout << "calculator > open calculator" << endl;
     cout << "exit > exit Termi" << endl;
     cout << "floppy > print floppy" << endl;
     cout << "geo-calculator > open geo calculator" << endl;
+    cout << "filesystem - opens file creation/editing" << endl;
+    cout << "filesystem / openfile - opens a file" << endl;
+    cout << "filesystem / writefile - create and edit a file" << endl;
+}
+
+extern void Filesystem()
+{
+    using namespace std;
+
+    cout << "FILESYS> ";
+    char input1[MAX];
+    cin.getline(input1, MAX);
+    string openfile = "openfile";
+    string writefile = "writefile";
+
+    if (input1 == openfile)
+    {
+        fstream my_file;
+        cout << "OPENFILE> ";
+        char input2[MAX];
+        cin.getline(input2, MAX);
+        my_file.open(input2, ios::in);
+        if (!my_file) 
+        {
+            cout << "No such file" << endl;
+        }
+
+        else
+        {
+            char ch;
+
+            while (1) 
+            {
+                my_file >> ch;
+                if (my_file.eof())
+                    break;
+
+                cout << ch;
+            }
+
+        }
+        my_file.close();
+    }
+
+    else if (input1 == writefile)
+    {
+        cout << "WRITEFILE> ";
+        char input4[MAX];
+        cin.getline(input4, MAX);
+
+        ofstream MyFile(input4);
+
+        // Write to the file
+        cout << "What do you want your file to contain?" << endl;
+        cout << "/> ";
+        char input5[MAX];
+        cin.getline(input5, MAX);
+        MyFile << input5;
+
+        // Close the file
+        MyFile.close();
+    }
+
+    else 
+    {
+        cout << "Command invalid" << endl;
+    }
 }

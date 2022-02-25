@@ -1,19 +1,21 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Runtime.InteropServices;
-using System.Diagnostics;
-using System.IO;
 
 namespace Termi_Runner_Console
 {
     class Input
     {
         [DllImport("Termi.dll", EntryPoint = "Calculator", CallingConvention = CallingConvention.Cdecl)]
-        public static extern void Calculator(double num1, char operation, double num2);
+        public static extern void Calculator();
+
+        [DllImport("Termi.dll", EntryPoint = "  GeoCalc", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void GeoCalc();
 
         [DllImport("Termi.dll", EntryPoint = "Help", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Help();
+
+        [DllImport("Termi.dll", EntryPoint = "Filesystem", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Filesystem();
 
         public static string TermiString = "Termi> ";
 
@@ -43,7 +45,15 @@ namespace Termi_Runner_Console
                     break;
 
                 case "calculator":
-                    Applications.Calc.CalculatorLogic();
+                    Calculator();
+                    break;
+
+                case "geo-calc":
+                    GeoCalc();
+                    break;
+
+                case "filesystem":
+                    Filesystem();
                     break;
 
                 case "exit":

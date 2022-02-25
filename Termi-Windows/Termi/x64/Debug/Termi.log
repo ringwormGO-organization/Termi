@@ -1,9 +1,7 @@
 ﻿  Termi.cpp
-E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(122,28): warning C4101: 'res': unreferenced local variable
-E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(136,28): warning C4101: 'res': unreferenced local variable
-E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(158,28): warning C4101: 'res': unreferenced local variable
-E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(174,28): warning C4101: 'res': unreferenced local variable
-E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\Termi.cpp(190,28): warning C4101: 'res': unreferenced local variable
-     Creating library E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.lib and object E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.exp
-  Termi.vcxproj -> E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll
-C:\src\vcpkg\scripts\buildsystems\msbuild\vcpkg.targets(199,5): warning : [vcpkg] Failed to gather app local DLL dependencies, program may not run. Set VcpkgApplocalDeps to false in your project file to suppress this warning. PowerShell arguments: -ExecutionPolicy Bypass -noprofile -File "C:\src\vcpkg\scripts\buildsystems\msbuild\applocal.ps1" "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll" "C:\src\vcpkg\installed\\x64-windows\debug\bin" "x64\Debug\Termi.tlog\Termi.write.1u.tlog" "x64\Debug\vcpkg.applocal.log"
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(132,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(146,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(168,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(184,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(200,28): warning C4101: 'res': unreferenced local variable
+  Termi.vcxproj -> D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll
