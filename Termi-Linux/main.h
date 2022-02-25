@@ -1,3 +1,10 @@
 //Include this file for accesing Termi from other software
 
-int main();
+#pragma once
+
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <ctime>
+
+#define MAX 250
