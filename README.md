@@ -14,7 +14,7 @@ A Powerful Terminal made in C++ and C#
 ### Termi base C++ part
 - [x] Windows version
 - [x] Linux version
-- [x] macOS version (same folder/directory as Linux version)
+- [x] macOS version (same folder/directory as GNU/Linux version)
 
 ### Termi C++ part
 - [ ] User Settings in JSON
