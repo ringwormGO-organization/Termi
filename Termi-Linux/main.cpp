@@ -19,7 +19,7 @@ using namespace std;
 #define MAX 1000
 
 ////////////////////////////////////////////////////////////////////////////////////////
-// ERROR MSG SCREEN IS A MESS, BUT HEY IF IT WORKD
+// Added CD / RM / MKDIR FUNCTION
 // -StjepanBM1
 
 int main()
