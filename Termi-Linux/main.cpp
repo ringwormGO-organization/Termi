@@ -20,6 +20,7 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Added CD / RM / MKDIR FUNCTION
+// Removed error msg until further notice
 // -StjepanBM1
 
 int main()
@@ -166,12 +167,6 @@ int main()
                 cout << "ERROR >> COMMAND NOT FOUND" << endl;
             }
 
-        }
-
-        // ERROR MESSAGE
-        else if (input != opencalc && input != geocalc && input != filesys && input != help)
-        {
-            cout << "ERROR >> COMMAND NOT FOUND!" << endl;
         }
 
         // OPENCALC
