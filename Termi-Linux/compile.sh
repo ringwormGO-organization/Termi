@@ -1,3 +1,2 @@
-clear
-g++ -o Termi main.cpp Commands.cpp Calc.cpp
+g++ -o Termi main.cpp
 ./Termi
