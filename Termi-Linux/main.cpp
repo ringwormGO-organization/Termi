@@ -155,7 +155,7 @@ int main()
 
             else if (input1 == rm)
             {
-                cout << "rmr~/ ";
+                cout << "rm~/ ";
                 char input9[MAX];
                 cin.getline(input9, MAX);
 
