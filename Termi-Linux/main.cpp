@@ -1,3 +1,6 @@
+// IMPORTANT STUFF
+////////////////////////////////////////////////////////////////////////////////////////
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -6,9 +9,14 @@
 #include "main.h"
 #include "Calc.h"
 
-#define MAX 100
+
+#define MAX 1000
 
 using namespace std;
+
+////////////////////////////////////////////////////////////////////////////////////////
+// ERROR MSG SCREEN IS A MESS, BUT HEY IF IT WORKD
+// -StjepanBM1
 
 int main()
 {
@@ -30,7 +38,6 @@ int main()
         cout << "Termi> ";
         char input[MAX];
         cin.getline(input, MAX);
-        string exit = "exit";
         string help = "help";
         string opencalc = "opencalc";
         string geocalc = "geocalc";
@@ -41,10 +48,11 @@ int main()
         if (input == help)
         {
             cout << "help - shows list of commands" << endl;
-            cout << "opencalc - opens a calculator" << endl;;
-            cout << "geocalc - opens a geometric calculator" << endl;;
+            cout << "opencalc - opens a calculator" << endl;
+            cout << "geocalc - opens a geometric calculator" << endl;
             cout << "filesys - opens file creation/editing" << endl;
-                    // Command result
+            cout << "filesys / openfile - opens a file" << endl;
+            cout << "filesys / writefile - create and edit a file" << endl;
         }
 
         else if (input == filesys)
@@ -91,12 +99,25 @@ int main()
                 ofstream MyFile(input4);
 
                 // Write to the file
-                MyFile << "PLACE HOLDER TEXT!\n";
+                cout << "What do you want your file to contain?" << endl;
+                cout << "/> ";
+                char input5[MAX];
+                cin.getline(input5, MAX);
+                MyFile << input5;
 
                 // Close the file
                 MyFile.close();
             }
 
+            else{
+                cout << "ERROR >> COMMAND NOT FOUND" << endl;
+            }
+
+        }
+
+        else if (input != opencalc && input != geocalc && input != filesys && input != help)
+        {
+            cout << "ERROR >> COMMAND NOT FOUND!" << endl;
         }
 
         else if (input == opencalc)
@@ -261,12 +282,7 @@ int main()
 
                         }
 
-                        else
-                        {
-                            break;
-                        }
                     }
-
 
                 }
             }
