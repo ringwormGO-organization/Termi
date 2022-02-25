@@ -25,11 +25,11 @@ AppUpdatesURL={#MyAppURL}
 DefaultDirName={autopf}\{#MyAppName}
 ChangesAssociations=yes
 DisableProgramGroupPage=yes
-LicenseFile=E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\LICENSE
-InfoAfterFile=E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\README.md
+LicenseFile=D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\LICENSE
+InfoAfterFile=D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\README.md
 ; Uncomment the following line to run in non administrative install mode (install for current user only.)
 ;PrivilegesRequired=lowest
-OutputDir=C:\Users\vangu\Documents\GitHub\Termi\Termi-Windows\Installer
+OutputDir=D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Installer
 OutputBaseFilename=Termi
 Compression=lzma
 SolidCompression=yes
@@ -42,12 +42,12 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.dev.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.dev.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]
