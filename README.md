@@ -39,7 +39,7 @@ A Powerful Terminal made in C++ and C#
 - Open two Visual Studio Solutions, compile `Termi project` as a `.dll` and compile & run `Termi-Runner-Console` as an executable (`.exe`).
 - If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
 
-### Build & Run - Linux version & MacOS version (unsupported)
+### Build & Run - Linux version (& MacOS version which unsupported)
 Compile `Termi.cpp`:
 
 ```sh
