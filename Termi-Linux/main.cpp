@@ -5,18 +5,16 @@
 #include <fstream>
 #include <string>
 #include <ctime>
-#include <cstdio>
 #include <filesystem>
 #include <bits/stdc++.h>
 #include <sys/stat.h>
 #include <sys/types.h>
+#include "signal.h"
 
 #include "main.h"
 #include "Calc.h"
 
-using namespace std;
-
-#define MAX 1000
+#define MAX 250
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Added CD / RM / MKDIR FUNCTION
@@ -24,8 +22,23 @@ using namespace std;
 // Removed error msg until further notice
 // -StjepanBM1
 
+// We should put code in own functions
+// -Andrej
+
+// Structs
+struct sigaction sigIntHandler;
+
+// Fucntion which control keyboards events (Ctrl-C for example)
+void end(int sig)
+{
+    std::cout << "\nPress any key to continue...\n";
+    std::cin.get();
+    exit(sig);
+}
+
 int main()
 {
+    using namespace std;
 
     cout << "ooooooooooo                              " << endl;
     cout << "    888      ooooooooooo                          o88   " << endl;
@@ -38,22 +51,28 @@ int main()
     cout << "          (C)2022 ringwormGO All rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
 
+    // Strings / Commands
+    string help = "help";
+    string opencalc = "opencalc";
+    string geocalc = "geocalc";
+    string custset = "custset";
+    string filesys = "filesys";
+    string exit_command = "exit";
+
     // command loop
     while (1)
     {
+        // Catch CTRL-C
+        sigIntHandler.sa_handler = end;
+        sigemptyset(&sigIntHandler.sa_mask);
+        sigIntHandler.sa_flags = 0;
+        sigaction(SIGINT, &sigIntHandler, NULL);
+
         cout << "Termi> ";
         char input[MAX];
         cin.getline(input, MAX);
 
-        // STRINGS / COMMAND
-        string help = "help";
-        string opencalc = "opencalc";
-        string geocalc = "geocalc";
-        string custset = "custset";
-        string filesys = "filesys";
-
-
-        // HELP MESSAGE
+        // Help message
         if (input == help)
         {
             cout << "help - shows list of commands" << endl;
@@ -67,8 +86,14 @@ int main()
             cout << "filesys / rm - removes a file" << endl;
         }
 
-        // FILESYS
-        else if (input == filesys)
+        // Exit
+        else if (input == exit_command)
+        {
+            exit(0);
+        }
+
+        // Filesystem
+        else if(input == filesys)
         {
             cout << "FILESYS> ";
             char input1[MAX];
@@ -87,7 +112,8 @@ int main()
                 char input2[MAX];
                 cin.getline(input2, MAX);
                 my_file.open(input2, ios::in);
-                if (!my_file) {
+                if (!my_file) 
+                {
                     cout << "No such file" << endl;
                 }
 
@@ -95,7 +121,8 @@ int main()
                 {
                     char ch;
 
-                    while (1) {
+                    while (1) 
+                    {
                         my_file >> ch;
                         if (my_file.eof())
                             break;
@@ -164,56 +191,57 @@ int main()
                 int result = remove(input9);
             }
 
-            else{
+            else
+            {
                 cout << "ERROR >> COMMAND NOT FOUND" << endl;
             }
 
         }
 
-        // OPENCALC
+        // Open calculator
         else if (input == opencalc)
         {
 
-                char op;
-                float num1, num2;
+            char op;
+            float num1, num2;
 
-                cout << "Enter operator: +, -, *, /: ";
-                cin >> op;
+            cout << "Enter operator: +, -, *, /: ";
+            cin >> op;
 
-                cout << "Enter the first number: ";
-                cin >> num1;
-                cout << "Enter the second number: ";
-                cin >> num2;
+            cout << "Enter the first number: ";
+            cin >> num1;
+            cout << "Enter the second number: ";
+            cin >> num2;
 
-                switch(op) {
+            switch(op) 
+            {
 
-                    case '+':
-                      cout << num1 << " + " << num2 << " = " << num1 + num2 << endl;
-                      break;
+                case '+':
+                    cout << num1 << " + " << num2 << " = " << num1 + num2 << endl;
+                    break;
 
-                    case '-':
-                      cout << num1 << " - " << num2 << " = " << num1 - num2 << endl;
-                      break;
+                case '-':
+                    cout << num1 << " - " << num2 << " = " << num1 - num2 << endl;
+                    break;
 
-                    case '*':
-                      cout << num1 << " * " << num2 << " = " << num1 * num2 << endl;
-                      break;
+                case '*':
+                    cout << num1 << " * " << num2 << " = " << num1 * num2 << endl;
+                    break;
 
-                    case '/':
-                      cout << num1 << " / " << num2 << " = " << num1 / num2 << endl;
-                      break;
+                case '/':
+                    cout << num1 << " / " << num2 << " = " << num1 / num2 << endl;
+                    break;
 
-                    default:
-                      // If the operator is other than +, -, * or /, error message is shown
-                      cout << "Error! operator is not correct";
-                      break;
-                  }
+                default:
+                    // If the operator is other than +, -, * or /, error message is shown
+                    cout << "Error! operator is not correct";
+                    break;
+                }
         }
 
-        // GEOCALC
+        // Geo calculator
         else if (input == geocalc)
         {
-
             string calccho;
             string GEO = "GEO";
             cout << "-----------------------------------------------------------------------------------------------" << endl;
@@ -241,7 +269,7 @@ int main()
 
                     if (geoOPR == "exit")
                     {
-
+                        
                     }
 
                     else if(geoOPR == SUR)
