@@ -5,17 +5,23 @@
 #include <fstream>
 #include <string>
 #include <ctime>
+#include <cstdio>
+#include <filesystem>
+#include <bits/stdc++.h>
+#include <sys/stat.h>
+#include <sys/types.h>
 
 #include "main.h"
 #include "Calc.h"
 
+using namespace std;
 
 #define MAX 1000
 
-using namespace std;
-
 ////////////////////////////////////////////////////////////////////////////////////////
-// ERROR MSG SCREEN IS A MESS, BUT HEY IF IT WORKD
+// Added CD / RM / MKDIR FUNCTION
+// mkdir function while inside a folder wont work! It will be fixed later
+// Removed error msg until further notice
 // -StjepanBM1
 
 int main()
@@ -56,6 +62,9 @@ int main()
             cout << "filesys - opens file creation/editing" << endl;
             cout << "filesys / openfile - opens a file" << endl;
             cout << "filesys / writefile - create and edit a file" << endl;
+            cout << "filesys / mkdir - make a directory" << endl;
+            cout << "filesys / cd - cd into a directory" << endl;
+            cout << "filesys / rm - removes a file" << endl;
         }
 
         // FILESYS
@@ -66,6 +75,10 @@ int main()
             cin.getline(input1, MAX);
             string openfile = "openfile";
             string writefile = "writefile";
+            string rm = "rm";
+            string mdkir = "mkdir";
+            string rmdir = "rmdir";
+            string cd = "cd";
 
             if (input1 == openfile)
             {
@@ -113,16 +126,48 @@ int main()
                 MyFile.close();
             }
 
+            else if (input1 == mdkir)
+            {
+                cout << "mkdir~/ ";
+                char input6[MAX];
+                cin.getline(input6, MAX);
+
+                if (mkdir(input6, 0777) == -1)
+                {
+                    cerr << "Error :  " << strerror(errno) << endl;
+                }
+  
+                else
+                {
+                    cout << "Directory created" << endl;
+                }
+            }
+            
+            else if (input1 == cd)
+            {
+                cout << "cd~/ ";
+                char input7[MAX];
+                cin.getline(input7, MAX);
+                int chdir(const char *input7);
+
+                cout << input7;
+                char input8[MAX];
+                cin.getline(input7, MAX);
+            }
+
+            else if (input1 == rm)
+            {
+                cout << "rm~/ ";
+                char input9[MAX];
+                cin.getline(input9, MAX);
+
+                int result = remove(input9);
+            }
+
             else{
                 cout << "ERROR >> COMMAND NOT FOUND" << endl;
             }
 
-        }
-
-        // ERROR MESSAGE
-        else if (input != opencalc && input != geocalc && input != filesys && input != help)
-        {
-            cout << "ERROR >> COMMAND NOT FOUND!" << endl;
         }
 
         // OPENCALC
