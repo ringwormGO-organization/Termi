@@ -9,6 +9,11 @@
 
 #define MAX 250
 
+#define VERSION_MAJOR "0"
+#define VERSION_MINOR "1"
+#define VERSION_PATCH "2"
+#define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
+
 extern void Floppy()
 {
     using namespace std;
@@ -238,14 +243,17 @@ extern void Help()
 {
     using namespace std;
 
-    cout << "help > this" << endl;
-    cout << "calculator > open calculator" << endl;
-    cout << "exit > exit Termi" << endl;
-    cout << "floppy > print floppy" << endl;
-    cout << "geo-calculator > open geo calculator" << endl;
-    cout << "filesystem - opens file creation/editing" << endl;
-    cout << "filesystem / openfile - opens a file" << endl;
-    cout << "filesystem / writefile - create and edit a file" << endl;
+    cout << "Core (first command) is programmed in C++ but other functions which are programmed in" <<
+        " C# may require - to use it.\nExample: filesys-mkdir" << endl << endl;
+
+    cout << "help - shows list of commands (programmed in C++)" << endl;
+    cout << "calculator - opens a calculator (programmed in C++)" << endl;
+    cout << "geo-calc - opens a geometric calculator (programmed in C++)" << endl;
+    cout << "floppy > print floppy (programmed in C++)" << endl;
+    cout << "exit > exit Termi (programmed in C#)" << endl;
+    cout << "filesys - opens file creation/editing (programmed in C++)" << endl;
+    cout << "filesys / openfile - opens a file (programmed in C++)" << endl;
+    cout << "filesys / writefile - create and edit a file (programmed in C++)" << endl << endl;
 }
 
 extern void Filesystem()
@@ -304,10 +312,5 @@ extern void Filesystem()
 
         // Close the file
         MyFile.close();
-    }
-
-    else 
-    {
-        cout << "Command invalid" << endl;
     }
 }

@@ -1,7 +1,8 @@
 ﻿  Termi.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(132,28): warning C4101: 'res': unreferenced local variable
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(146,28): warning C4101: 'res': unreferenced local variable
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(168,28): warning C4101: 'res': unreferenced local variable
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(184,28): warning C4101: 'res': unreferenced local variable
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(200,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(137,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(151,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(173,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(189,28): warning C4101: 'res': unreferenced local variable
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\Termi.cpp(205,28): warning C4101: 'res': unreferenced local variable
+     Creating library D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Debug\Termi.lib and object D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Debug\Termi.exp
   Termi.vcxproj -> D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll

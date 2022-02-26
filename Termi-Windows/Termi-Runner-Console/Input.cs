@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Runtime.InteropServices;
+using System.IO;
 
 namespace Termi_Runner_Console
 {
     class Input
     {
+        [DllImport("Termi.dll", EntryPoint = "Floppy", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void Floppy();
+
         [DllImport("Termi.dll", EntryPoint = "Calculator", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Calculator();
 
@@ -16,6 +20,8 @@ namespace Termi_Runner_Console
 
         [DllImport("Termi.dll", EntryPoint = "Filesystem", CallingConvention = CallingConvention.Cdecl)]
         public static extern void Filesystem();
+
+        /* ---------------------------------------------------------------------------------------- */
 
         public static string TermiString = "Termi> ";
 
@@ -44,6 +50,10 @@ namespace Termi_Runner_Console
                     Help();
                     break;
 
+                case "floppy":
+                    Floppy();
+                    break;
+
                 case "calculator":
                     Calculator();
                     break;
@@ -52,8 +62,24 @@ namespace Termi_Runner_Console
                     GeoCalc();
                     break;
 
-                case "filesystem":
+                case "filesys":
                     Filesystem();
+                    break;
+
+                case "filesys-mkdir":
+                    Console.Write("Type a path to create directory: ");
+                    string path = Console.ReadLine();
+
+                    if (path == "")
+                    {
+                        path = Directory.GetCurrentDirectory();
+                    }
+
+                    Directory.CreateDirectory(path);
+                    break;
+
+                case "clear" or "cls":
+                    Functions.Clear();
                     break;
 
                 case "exit":

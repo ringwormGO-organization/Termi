@@ -30,7 +30,7 @@ namespace Termi_Runner_Console
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine("Application have administartor privilges");
-                Thread.Sleep(1000);
+                Thread.Sleep(500);
                 Console.ResetColor();
             }
         }
@@ -42,7 +42,7 @@ namespace Termi_Runner_Console
             Functions.Clear();
             Console.WriteLine(path + "\n");
             Console.WriteLine("Starting Termi...\nPlease wait...");
-            Thread.Sleep(1000);
+            Thread.Sleep(500);
 
             Functions.Clear();
 
