@@ -20,6 +20,7 @@ using namespace std;
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Added CD / RM / MKDIR FUNCTION
+// mkdir function while inside a folder wont work! It will be fixed later
 // Removed error msg until further notice
 // -StjepanBM1
 
