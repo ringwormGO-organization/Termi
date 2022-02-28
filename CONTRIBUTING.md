@@ -1,15 +1,31 @@
+# How to start contributing
 Just drop a Pull Request :)
+
+# Pull Request style
+1. Use CRLF. Set up your Git settings with this: `git config --global core.autocrlf true` and check if it is OK by `git config --global core.autocrlf`. It need to return `true`
+2. Use following style **WITH LOGIC**:
+
+```
+[LABEL NAME] Name of Pull Request
+```
+
+# Code organization
+1. `Termi-Windows` and `Termi-Linux` directories which contains files which load binaries.
+2. In `Programs/bin` directory are compiled binaries.
+3. In `Windows` or `Linux` directory are code to compile.
+4. In `Include.h` are all header files.
+5. If you want add new command, create new `.cpp` file in `Programs/Windows` or `Programs/Linux` directory and add it to shell script `compile.sh`.
+6. In `main.cpp` add your command and path to executable :)
 
 # Coding sytle for Pull Requests
 ### Indentation and line width
-1. Line width must be at most **100** characters.
+1. Line width much be at most **100** characters.
 2. Use tabs, tabs ident size **MUST BE** 4!
 3. Indent both a case label and the case statement of a switch statement.
-4. When you sending binary (zip file) please name it as `net5.0` so we can easier upload to Google Drive.
 
 Right:
 
-```
+```c
 switch (Condition)
 {
     case 1:
@@ -19,7 +35,7 @@ switch (Condition)
 ```
 Wrong:
 
-```
+```c
 switch (Condition)
 {
 case 1:
@@ -29,10 +45,20 @@ case 1:
 ```
 When a function call does not fit onto a line, align arguments like this:
 
-```
+```c
 FunctionCall(arg1,
              arg2,
              arg3);
+```
+
+When making new functions, use an return type.
+Right:
+```c
+int func() {}
+```
+Wrong:
+```c
+func() {}
 ```
 
 ### Spacing
@@ -54,7 +80,7 @@ FunctionCall(arg1,
 
 Right:
 
-```
+```c
 for (int i = 0; i < 5; i++)
     DoSomething();
 
@@ -63,7 +89,7 @@ func1(a, b);
 
 Wrong:
 
-```
+```c
 for (int i = 0 ; i < 5 ; i++)
     DoSomething();
     
@@ -74,14 +100,14 @@ func1(a , b) ;
 
 Right:
 
-```
+```c
 if (Condition)
     DoSomething();
 ```
 
 Wrong:
 
-```
+```c
 if(Condition)
     DoSomething();
 ```
@@ -94,7 +120,7 @@ Right:
 
 Wrong:
 
-```
+```c
 func (a, b);
 func( a, b );
 ```
@@ -104,7 +130,7 @@ func( a, b );
 
 Right:
 
-```
+```c
 x++;
 y++;
 
@@ -115,7 +141,7 @@ if (Condition)
 ```
 Also right but don't use it often
 
-```
+```c
 if (Condition) DoSomething(); 
 
 if (Condition)
@@ -123,7 +149,7 @@ if (Condition)
 ```
 Wrong:
 
-```
+```c
 x++; y++;
 ```
 
@@ -133,7 +159,7 @@ x++; y++;
 
 Right:
 
-```
+```c
 if (Condition)
     DoSomething();
 
@@ -167,7 +193,7 @@ else
 
 Wrong:
 
-```
+```c
 if (Condition) {
     DoSomething();
 }
@@ -195,7 +221,7 @@ else
 
 Right:
 
-```
+```c
 if (!func1())
     return;
 
@@ -211,7 +237,7 @@ if (j == 1)
 
 Wrong:
 
-```
+```c
 if (func1())
 {
     i = func2();
@@ -240,7 +266,7 @@ if (func1())
 2. Name a struct, class, union etc. with cappital letter and variable which lowercase letter
 
 **Right:**
-```
+```c
 struct Test
 {
   int number;
@@ -250,7 +276,7 @@ Test test;
 ```
 
 **Wrong:**
-```
+```c
 struct test
 {
   int Number;
@@ -264,7 +290,7 @@ test Test;
 
 Right:
 
-```
+```c
 // This is a one-line comment
 
 /* This is a C-style comment */
@@ -278,7 +304,7 @@ Right:
 
 Wrong:
 
-```
+```c
 //
 // This comment wastes two lines
 //
@@ -293,8 +319,9 @@ Wrong:
 2. If a commit only consists of formatting changes, say this clearly in the commit message by preceding it with [FORMATTING].
 
 ### Other points
-1. Use `#pragma once` instead of guard defines in headers
-2. Don't specify a calling convention for a function unless required (usually for APIs or exported symbols)
+1. Do not use `LARGE_INTEGER`/`ULARGE_INTEGER` unless needed for using APIs. Use `int64`/`uint64` instead
+2. Use `#pragma once` instead of guard defines in headers
+3. Don't specify a calling convention for a function unless required (usually for APIs or exported symbols)
 
 ### Resources used for this coding style:
 * https://reactos.org/wiki/Coding_Style (some parts are modificeted)
