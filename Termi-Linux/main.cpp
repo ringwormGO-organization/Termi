@@ -4,17 +4,17 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <string.h>
 #include <ctime>
 #include <filesystem>
-#include <bits/stdc++.h>
 #include <sys/stat.h>
-#include <sys/types.h>
 #include <signal.h>
 
 #include "main.h"
 #include "Calc.h"
 
-#define MAX 250
+#define MAX 500
+#define MAX_FILE 250
 
 ////////////////////////////////////////////////////////////////////////////////////////
 // Added CD / RM / MKDIR FUNCTION
@@ -30,7 +30,15 @@ void end(int sig)
 {
     std::cout << "\nPress any key to continue...\n";
     auto key = std::cin.get();
-    exit(sig);
+    if (key != 10)
+    {
+        /* we need to do something here; input is broken */
+        exit(0);
+    }
+    else
+    {
+        exit(sig);
+    }
 }
 
 //Other functions
@@ -70,7 +78,7 @@ void Filesystem()
     {
         fstream my_file;
         cout << "OPENFILE> ";
-        char input2[MAX];
+        char input2[MAX_FILE];
         cin.getline(input2, MAX);
         my_file.open(input2, ios::in);
         if (!my_file) 
@@ -98,7 +106,7 @@ void Filesystem()
     else if (input1 == writefile)
     {
         cout << "WRITEFILE> ";
-        char input4[MAX];
+        char input4[MAX_FILE];
         cin.getline(input4, MAX);
 
         ofstream MyFile(input4);
@@ -117,7 +125,7 @@ void Filesystem()
     else if (input1 == mdkir)
     {
         cout << "mkdir~/ ";
-        char input6[MAX];
+        char input6[MAX_FILE];
         cin.getline(input6, MAX);
 
         if (mkdir(input6, 0777) == -1)
@@ -134,7 +142,7 @@ void Filesystem()
     else if (input1 == cd)
     {
         cout << "cd~/ ";
-        char input7[MAX];
+        char input7[MAX_FILE];
         cin.getline(input7, MAX);
         int chdir(const char *input7);
 
@@ -146,7 +154,7 @@ void Filesystem()
     else if (input1 == rm)
     {
         cout << "rm~/ ";
-        char input9[MAX];
+        char input9[MAX_FILE];
         cin.getline(input9, MAX);
 
         int result = remove(input9);
