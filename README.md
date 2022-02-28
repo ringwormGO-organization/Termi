@@ -41,10 +41,10 @@ A Powerful Terminal made in C++ and C#
 - If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
 
 ### Build & Run - Linux version (& MacOS version which unsupported)
-Compile `Termi.cpp`:
+Run `.build.sh`:
 
 ```sh
-$ g++ -o Termi Termi.cpp
+$ chmod +x ./build.sh && ./build.sh
 ```
 
 ## Credits
