@@ -9,7 +9,7 @@ A Powerful Terminal made in C++ and C#
 - The goal of Termi is create independent terminal.
 - `Independent` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering.
 - We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md)
-- And plese read [organize part]() which talk about directory organization.
+- And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 
 ## Checklist
 ### Termi base C++ part
