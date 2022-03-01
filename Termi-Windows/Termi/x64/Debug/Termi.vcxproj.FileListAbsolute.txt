@@ -1,2 +1,2 @@
 E:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\Andrej\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Debug\Termi.dll
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Debug\Termi.exe

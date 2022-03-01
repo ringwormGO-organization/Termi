@@ -37,8 +37,9 @@ A Powerful Terminal made in C++ and C#
   - Install with ```sudo apt install g++``` if not already installed.
 
 ### Build & Run - Windows
-- Open two Visual Studio Solutions, compile `Termi project` as a `.dll` and compile & run `Termi-Runner-Console` as an executable (`.exe`).
-- If you want run Termi, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
+- Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
+- Open Termi Visual Studio Solution and compile it.
+- If you want run Termi as standard user, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run[Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
 
 ### Build & Run - Linux version (& MacOS version which unsupported)
 Run `.build.sh`:

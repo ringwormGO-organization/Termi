@@ -1,4 +1,7 @@
 #include "../Include.h"
+#include <filesystem>
+#include <sys/stat.h>
+#include <signal.h>
 
 //Filesystem
 int main()

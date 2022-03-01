@@ -18,15 +18,15 @@
     <ClCompile Include="Termi.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Check.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Termi.h">
+    <ClInclude Include="Calc.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Header.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands.h">
+    <ClInclude Include="Check.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
