@@ -16,25 +16,39 @@
 #define MAX_LENGTH_LINK 500 /* maximum length of link */
 #define MAX_DATABASE 250 /* maximum elements in database */
 
+/* line from text file */
 char line[MAX_LENGTH_LINK];
 
+/* struct which contains operarting system name */
 struct host_info
 {
     std::string name;
 };
 
+/* struct which contains informations about program */
 struct program
 {
     std::string name;
     std::string link;
 };
 
+/* struct which contains link which read links form text file */
 struct link_database
 {
     std::string link;
 };
 
-void InitDatabase(char* link);
-void search();
+/* struct which contains settings for package manager */
+struct Settings
+{
+    int install_mode;
+    std::string default_path;
+};
 
+/* Functions */
+void InitDatabase(char* link);
+void help();
+void search(char* link);
+
+/* Functions which initialize database and set up other things too */
 void Init();
