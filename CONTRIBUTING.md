@@ -17,6 +17,7 @@ Just drop a Pull Request :)
 5. If you want add new command, create new `.cpp` file in `Programs/Windows` or `Programs/Linux` directory and add it to shell script `compile.sh`.
 6. In `main.cpp` add your command and path to executable :)
 7. Some Windows application (compiled with MSVC using command line) use Linux executable. They are same for both platform.
+8. Package Manager has own folder.
 
 # Coding sytle for Pull Requests
 ### Indentation and line width
