@@ -18,7 +18,7 @@ A Powerful Terminal made in C++ and C#
 - [x] macOS version (same folder/directory as GNU/Linux version)
 
 ### Termi C++ part
-- [ ] User Settings in JSON
+- [ ] User settings in JSON
 - [ ] Support all major commands
 - [ ] Include other host terminals
 
