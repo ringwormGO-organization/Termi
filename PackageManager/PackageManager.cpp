@@ -1,23 +1,13 @@
-/*
+/**
+ * @author: Andrej Bartulin
  * PROJECT: Termi PackageManager
  * LICENSE: BSD-3-Clause-License
- * DESCRIPTION: Even if we use C++, this program will be very easy to convert to C (that is why we use .h header files)
+ * DESCRIPTION: C++ file for package manager
  * 
 */
 
-#include "PackageManager.h"
-
-void InitDatabase(char* link)
-{
-    int i, j;
-
-    link_database database[MAX_DATABASE];
-
-    for (i = j = 0; i < MAX_DATABASE; i++)
-    {
-        database[i].link = link;
-    }
-}
+#include "PackageManager.hpp"
+#include "Database.hpp"
 
 void help()
 {
@@ -33,16 +23,38 @@ void help()
     printf("\n");
 }
 
-void search(char* link)
+int search(std::string whatToSearch)
 {
-    FILE* f = fopen("database.txt", "r");
+    auto search = database.find(whatToSearch);
 
-    while (fgets(line, MAX_LENGTH_LINK, f))
+    if (search != database.end())
     {
-        if (!strcmp(line, link)) /* I don't know why is not here but work */
-        {
-            printf("Found link %s.\n", line);
-        }
+        std::cout << "Found " << search->first << " as " << search->second << '\n';
+        return 0;
+    }
+    else
+    {
+        std::cout << "Unable to found " << whatToSearch << "!\n";
+        return 1;
+    }
+}
+
+void add(std::string name, std::string link)
+{
+    int result = search(name);
+
+    if (result == 1)
+    {
+        database.insert
+        (
+            std::pair<std::string, std::string> (name, link)
+        );
+
+        search(name);
+    }
+    else
+    {
+        std::cout << "Already in database!\n";
     }
 }
 
@@ -65,27 +77,10 @@ void Init()
     #else
         host.name = "Other";
     #endif
-
-    FILE* f = fopen("database.txt", "r");
-    unsigned int lines;
-
-    if (f == NULL)
-    {
-        printf("There is no file to read database!");
-        return;
-    }
-
-    while (fgets(line, MAX_LENGTH_LINK, f))
-    {
-        InitDatabase(line);
-        lines++;
-    }
 }
 
 int main(int argc, char** argv)
 {
-    char input[MAX_LENGTH_NAME];
-
     if (argc == 1)
     {
         help();
@@ -94,7 +89,7 @@ int main(int argc, char** argv)
 
     Init();
 
-    if (strcmp(argv[1], "serach"))
+    if (strcmp(argv[1], "search"))
     {
         if (argv[2] == NULL)
         {
@@ -114,7 +109,14 @@ int main(int argc, char** argv)
         }
         else
         {
-            /* add(argv[2]); */
+            if (argv[3] == NULL)
+            {
+                printf("There is no download link or command!");
+            }
+            else
+            {
+                add(argv[2], argv[3]);
+            }
         }
     }
 
