@@ -13,17 +13,17 @@
 #include "main.h"
 #include "../Programs/Include.h"
 
-#define MAX 500
-#define MAX_FILE 250
-
 ////////////////////////////////////////////////////////////////////////////////////////
 // Added CD / RM / MKDIR FUNCTION
 // mkdir function while inside a folder wont work! It will be fixed later
 // Removed error msg until further notice
 // -StjepanBM1
 
-// Structs
+/* Structs */
 struct sigaction sigIntHandler;
+
+/* variable for string input */
+std::string input;
 
 // Fucntion which control keyboards events (Ctrl-C for example)
 void end(int sig)
@@ -71,20 +71,19 @@ int main()
     sigaction(SIGINT, &sigIntHandler, NULL);
 
 
-    // command loop
+    /* command loop */
     while (1)
     {
         cout << "Termi> ";
-        char input[MAX];
-        cin.getline(input, MAX);
+        getline(cin, input);
 
-        // Help message
+        /* Help message */
         if (input == help)
         {
             system("../Programs/bin/Help");
         }
 
-        // Exit
+        /* Exit */
         else if (input == exit_command)
         {
             exit(0);
@@ -92,26 +91,38 @@ int main()
         
         else if (input == clear)
         {
-            cout << "\033c"; //Better way to do on GNU/Linux
-            //system("clear");
+            cout << "\033c"; /* Better way to do on GNU/Linux */
+            /* system("clear"); */
         }
 
-        // Filesystem
+        /* Filesystem */
         else if(input == filesys)
         {
             system("../Programs/bin/filesys");
         }
 
-        // Open calculator
+        /* Open calculator */
         else if (input == opencalc)
         {
             system("../Programs/bin/calc");
         }
 
-        // Geo calculator
+        /* Geo calculator */
         else if (input == geocalc)
         {
             system("../Programs/bin/geocalc");
+        }
+
+        /* enter pressed */
+        else if (input.length() == 0)
+        {
+
+        }
+
+        /* wrong command */
+        else
+        {
+            cout << "Command inavlid!!\n";
         }
     }
 
