@@ -12,6 +12,8 @@ A Powerful Terminal made in C++ and C#
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 
 ## Checklist
+
+
 ### Termi base C++ part
 - [x] Windows version
 - [x] Linux version
