@@ -8,7 +8,7 @@ A Powerful Terminal made in C++ and C#
 - It can run on Windows, macOS and GNU/Linux.
 - The goal of Termi is create independent terminal.
 - `Independent` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering.
-- We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md)
+- We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 
 ## Checklist
@@ -31,21 +31,35 @@ A Powerful Terminal made in C++ and C#
 
 ## Build & Run
 ### Required software:
-
-- Visual Studio 2019 with `.NET desktop development` and `Desktop development with C++` components - Windows.
-- G++ complier - Linux version
+- Visual Studio 2019 or Visual Studio 2022 with `.NET desktop development` (if you use Visual Studio 2022, add .NET 5 runtime too) and `Desktop development with C++` components - Windows.
+- G++ complier - GNU/Linux
   - Install with ```sudo apt install g++``` if not already installed.
 
 ### Build & Run - Windows
 - Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
 - Open Termi Visual Studio Solution and compile it.
-- If you want run Termi as standard user, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run[Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
+- If you want run Termi as standard user, install [.NET SDK 5.0](https://dotnet.microsoft.com/en-us/download/dotnet/5.0) or above and run [Termi Installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe). When you launching installed app, run application as **ADMINISTRATOR**
 
-### Build & Run - Linux version (& MacOS version which unsupported)
+### Build & Run - GNU/Linux version (& macOS version which unsupported)
 Run `.build.sh`:
 
 ```sh
 $ chmod +x ./build.sh && ./build.sh
+```
+
+### Build & Run - Package Manager
+- Enter proper directory and choose command to compile.
+#### Windows (MSVC compiler)
+Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and paste command.
+
+```
+cl /EHsc PackageManager.cpp
+```
+
+#### Linux (G++ compiler)
+Open terminal and paste command
+```sh
+$ g++ -o PackageManager PackageManager.cpp
 ```
 
 ## Credits
