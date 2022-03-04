@@ -40,7 +40,7 @@ A Powerful Terminal made in C++ and C#
 ### Build & Run - Windows
 - Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
 - Open Termi Visual Studio Solution and compile it.
-- If you want run Termi as standard user, check latest release and download executable. When you launching installed app, run application as **ADMINISTRATOR**.
+- If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with `git pull`. When you launching installed app, run application as **ADMINISTRATOR**.
 
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
 Run `.build.sh`:
