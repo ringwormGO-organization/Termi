@@ -12,8 +12,6 @@ A Powerful Terminal made in C++ and C#
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 
 ## Checklist
-
-
 ### Termi base C++ part
 - [x] Windows version
 - [x] Linux version
@@ -36,6 +34,8 @@ A Powerful Terminal made in C++ and C#
 - Visual Studio 2019 or Visual Studio 2022 with `.NET desktop development` (if you use Visual Studio 2022, add .NET 5 runtime too) and `Desktop development with C++` components - Windows.
 - G++ complier - GNU/Linux
   - Install with ```sudo apt install g++``` if not already installed.
+- Git
+  - Install with ```sudo apt-get install git``` if not already installed on Linux machine.
 
 ### Build & Run - Windows
 - Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
