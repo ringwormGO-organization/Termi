@@ -4,7 +4,7 @@
 A Powerful Terminal made in C++
 
 ## About Termi
-- Termi is a powerful terminal made in C++
+- Termi is a powerful terminal made using C++.
 - It can run on Windows, macOS and GNU/Linux.
 - The goal of Termi is create independent terminal.
 - `Independent` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering system.
