@@ -62,7 +62,7 @@ $ g++ -o PackageManager PackageManager.cpp
 ```
 
 ## Credits
-- [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
+- Stack Overflow
 ____________________________________
 
 Thank you for choosing Termi.
