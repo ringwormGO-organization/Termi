@@ -6,6 +6,7 @@
 #include <string>
 #include <string.h>
 #include <ctime>
+#include <map>
 #include <filesystem>
 #include <sys/stat.h>
 #include <signal.h>
@@ -24,6 +25,15 @@ struct sigaction sigIntHandler;
 
 /* variable for string input */
 std::string input;
+
+/* commands list */
+std::map<std::string, std::string> commands =
+{
+    {"help", "../Programs/bin/Help"},
+    {"open-calc", "../Programs/bin/Calculator"},
+    {"geocalc", "../Programs/bin/GeoCalculator"},
+    {"filesys", "../Programs/bin/Filesystem"}
+};
 
 // Fucntion which control keyboards events (Ctrl-C for example)
 void end(int sig)
@@ -77,52 +87,33 @@ int main()
         cout << "Termi> ";
         getline(cin, input);
 
-        /* Help message */
-        if (input == help)
+        auto result = commands.find(input);
+        const char* run;
+
+        if (result != commands.end())
         {
-            system("../Programs/bin/Help");
+            run = result->second.c_str();
+            system(run);
         }
 
-        /* Exit */
-        else if (input == exit_command)
+        else if (input == "clear" || input == "cls")
+        {
+            std::cout << "\033c";
+        }
+
+        else if (input == "exit")
         {
             exit(0);
         }
+
+        else if (input.length() == 0) /* enter */
+        {
+
+        }
         
-        else if (input == clear)
-        {
-            cout << "\033c"; /* Better way to do on GNU/Linux */
-            /* system("clear"); */
-        }
-
-        /* Filesystem */
-        else if(input == filesys)
-        {
-            system("../Programs/bin/filesys");
-        }
-
-        /* Open calculator */
-        else if (input == opencalc)
-        {
-            system("../Programs/bin/calc");
-        }
-
-        /* Geo calculator */
-        else if (input == geocalc)
-        {
-            system("../Programs/bin/geocalc");
-        }
-
-        /* enter pressed */
-        else if (input.length() == 0)
-        {
-
-        }
-
-        /* wrong command */
         else
         {
-            cout << "Command inavlid!!\n";
+            std::cout << "'" << input << "'" << "is invalid command!\n";
         }
     }
 
