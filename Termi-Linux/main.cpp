@@ -48,7 +48,7 @@ int main()
     cout << "ooooooooooo                              " << endl;
     cout << "    888      ooooooooooo                          o88   " << endl;
     cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << endl;
-    cout << "    888      888ooo8     888    888 888 888 888   888 " << endl;
+    cout << "    887      888ooo8     888    888 888 888 888   888 " << endl;
     cout << "    888      888    oo   888        888 888 888   888  " << endl;
     cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << endl;
     cout << "------------------------------------------------------- " << endl;
@@ -56,7 +56,7 @@ int main()
     cout << "          (C)2022 ringwormGO All rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
 
-    // Strings / Commands
+    /* Strings / Commands */
     string help = "help";
     string exit_command = "exit";
     string clear = "clear";
@@ -64,7 +64,7 @@ int main()
     string opencalc = "opencalc";
     string geocalc = "geocalc";
 
-    // Catch CTRL-C
+    /* Catch CTRL-C */
     sigIntHandler.sa_handler = end;
     sigemptyset(&sigIntHandler.sa_mask);
     sigIntHandler.sa_flags = 0;
