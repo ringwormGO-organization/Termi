@@ -2,21 +2,78 @@
 #include <fstream>
 #include <string>
 #include <cstring>
+#include <map>
+
 #include <Windows.h>
 
 #include "Calc.h"
-#include "Check.hpp"
 
 #define MAX 250
 
 #define VERSION_MAJOR "0"
 #define VERSION_MINOR "1"
-#define VERSION_PATCH "3"
+#define VERSION_PATCH "4"
 #define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 std::string input;
 
-void Welcome()
+BOOL WINAPI end(DWORD signal) 
+{
+    if (signal == CTRL_C_EVENT)
+    {
+        std::cout << "\nPress any key to continue...\n";
+        auto key = std::cin.get();
+        if (key != 10)
+        {
+            /* we need to do something here; input is broken */
+            exit(0);
+        }
+        else
+        {
+            exit(signal);
+        }
+    }
+
+    return TRUE;
+}
+
+std::map<std::string, std::string> commands =
+{
+    {"help", "..\\..\\..\\..\\Programs\\bin\\help.exe"},
+    {"open-calc", "..\\..\\..\\..\\Programs\\bin\\calculator.exe"},
+    {"geocalc", "..\\..\\..\\..\\Programs\\bin\\GeoCalculator.exe"},
+    {"filesys", "..\\..\\..\\..\\Programs\\bin\\Filesystem.exe"},
+};
+
+void Check(std::string command)
+{
+    auto result = commands.find(command);
+    const char* run;
+
+    if (result != commands.end())
+    {
+        run = result->second.c_str();
+        system(run);
+    }
+    else if (command == "clear" || command == "cls")
+    {
+        std::cout << "\033c";
+    }
+    else if (command == "exit")
+    {
+        exit(0);
+    }
+    else if (command.length() == 0) /* enter */
+    {
+
+    }
+    else
+    {
+        std::cout << "'" << command << "'" << "is invalid command!\n";
+    }
+}
+
+int main()
 {
     using namespace std;
 
@@ -30,19 +87,12 @@ void Welcome()
     cout << "           TYPE help TO SEE LIST OF ALL COMMANDS" << endl;
     cout << "          (C)2022 ringwormGO All rights reserved" << endl;
     cout << "-------------------------------------------------------  " << endl;
-}
-
-int main()
-{
-    using namespace std;
-
-    Welcome();
 
     while (true)
     {
         cout << "Termi> ";
         getline(cin, input);
-        check(input);
+        Check(input);
     }
 
     return 0;
