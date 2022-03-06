@@ -3,5 +3,57 @@
 
 CMakeFiles/Termi-OpenGL.dir/glad.c.o: glad.c
 
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imgui.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imgui_internal.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imstb_textedit.h
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o: imgui/imgui_demo.cpp
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imgui_draw.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imgui_internal.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imstb_rectpack.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imstb_textedit.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imstb_truetype.h
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o: imgui/imgui_impl_glfw.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o: imgui/imgui_impl_glfw.h
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui_impl_opengl3.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui_impl_opengl3.h
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imgui_internal.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imgui_tables.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imstb_textedit.h
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: imgui/imgui_internal.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: imgui/imgui_widgets.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: imgui/imstb_textedit.h
+
+CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o: imgui/imgui_impl_glfw.h
+CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o: imgui/imgui_impl_opengl3.h
+CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o: imgui_code.cpp
+CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o: imgui_code.hpp
+
+CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui/imconfig.h
+CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui/imgui.h
+CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui/imgui_impl_glfw.h
+CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui/imgui_impl_opengl3.h
+CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui_code.hpp
 CMakeFiles/Termi-OpenGL.dir/main.cpp.o: main.cpp
 
