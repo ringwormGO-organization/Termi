@@ -1,0 +1,1 @@
+/usr/bin/c++ CMakeFiles/Termi-OpenGL.dir/glad.c.o CMakeFiles/Termi-OpenGL.dir/main.cpp.o -o Termi-OpenGL  -lGL -ldl -lglfw 
