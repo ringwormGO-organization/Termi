@@ -52,6 +52,7 @@ void Filesys()
     string openfile = "openfile";
     string writefile = "writefile";
     string rm = "rm";
+    string list = "list";
     string mdkir = "mkdir";
     string rmdir = "rmdir";
     string cd = "cd";
@@ -332,7 +333,6 @@ void GeoCalc()
 
         }
     }
-}
 
 /* Structs */
 struct sigaction sigIntHandler;
@@ -445,4 +445,5 @@ int main(void)
 
 
     return 0;
+    }
 }
