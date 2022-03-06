@@ -1,68 +1,82 @@
-#include<iostream>
+/**
+ * @author Andrej Bartulin
+ * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Main file
+ * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+*/
 
-#include<glad/glad.h>
-#include<GLFW/glfw3.h>
+#include "imgui.h"
+#include "imgui_impl_glfw.h"
+#include "imgui_impl_opengl3.h"
+
+#include "imgui_code.hpp"
+
+#include <iostream>
+
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.hpp"
+
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
+#define WIDTH 900
+#define HEIGHT 900
 
 int main()
 {
-	// Initialize GLFW
+	std::cout << "\n\n";
+
 	glfwInit();
-
-
-
-	// Tell GLFW what version of OpenGL we are using 
-	// In this case we are using OpenGL 3.3
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-	// Tell GLFW we are using the CORE profile
-	// So that means we only have the modern functions
-	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-
-
-	// Create a GLFWwindow object of 800 by 800 pixels, naming it "YoutubeOpenGL"
-	GLFWwindow* window = glfwCreateWindow(800, 800, "Termi (independet version; OpenGL and Dear ImGUI", NULL, NULL);
-	// Error check if the window fails to create
-	if (window == NULL)
-	{
-		std::cout << "Failed to create GLFW window" << std::endl;
-		glfwTerminate();
-		return -1;
-	}
-	// Introduce the window into the current context
+	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Termi (independet version; OpenGL and Dear ImGUI)", NULL, NULL);
 	glfwMakeContextCurrent(window);
+	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
+	/*
+	//load image
+	int width, height;
+	int channels; // number of color components. Example: RGB has 3 color components.
+	unsigned char* pixels = stbi_load("termi.png", &width, &height, &channels, 4);
 
+	// change window icon
+	GLFWimage images[1];
+	images[0].width = width;
+	images[1].height = height;
+	images[2].pixels = pixels;
 
-	//Load GLAD so it configures OpenGL
-	gladLoadGL();
-	// Specify the viewport of OpenGL in the Window
-	// In this case the viewport goes from x = 0, y = 0, to x = 800, y = 800
-	glViewport(0, 0, 800, 800);
+	glfwSetWindowIcon(window, 1, images); 
+	*/
+	//code is commented because it is couse segmentation fault
 
+	/* Initialize ImGUI */
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
-
-	// Specify the color of the background
-	glClearColor(0.07f, 0.13f, 0.17f, 1.0f);
-	// Clean the back buffer and assign the new color to it
-	glClear(GL_COLOR_BUFFER_BIT);
-	// Swap the back buffer with the front buffer
-	glfwSwapBuffers(window);
-
-
-
-	// Main while loop
-	while (!glfwWindowShouldClose(window))
+	while(!glfwWindowShouldClose(window))
 	{
-		// Take care of all GLFW events
+		glClear(GL_COLOR_BUFFER_BIT);
+
+		/* Tell OpenGL a new frame is about to begin */
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
+
+		/* main ImGUI code */
+		main_code();
+
+		/* Renders the ImGUI elements */
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+		glfwSwapBuffers(window);
 		glfwPollEvents();
 	}
 
-
-
-	// Delete window before ending the program
-	glfwDestroyWindow(window);
-	// Terminate GLFW before ending the program
 	glfwTerminate();
+
 	return 0;
 }
