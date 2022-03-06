@@ -56,4 +56,5 @@ CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui/imgui_impl_glfw.h
 CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui/imgui_impl_opengl3.h
 CMakeFiles/Termi-OpenGL.dir/main.cpp.o: imgui_code.hpp
 CMakeFiles/Termi-OpenGL.dir/main.cpp.o: main.cpp
+CMakeFiles/Termi-OpenGL.dir/main.cpp.o: stb_image.hpp
 

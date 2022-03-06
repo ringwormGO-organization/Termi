@@ -15,6 +15,9 @@
 
 #include <iostream>
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "stb_image.hpp"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -29,6 +32,22 @@ int main()
 	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Termi (independet version; OpenGL and Dear ImGUI", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
+	/*
+	//load image
+	int width, height;
+	int channels; // number of color components. Example: RGB has 3 color components.
+	unsigned char* pixels = stbi_load("termi.png", &width, &height, &channels, 4);
+
+	// change window icon
+	GLFWimage images[1];
+	images[0].width = width;
+	images[1].height = height;
+	images[2].pixels = pixels;
+
+	glfwSetWindowIcon(window, 1, images); 
+	*/ 
+	//code is commented because it is couse segmentation fault
 
 	/* Initialize ImGUI */
 	IMGUI_CHECKVERSION();
