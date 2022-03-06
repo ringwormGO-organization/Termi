@@ -1,0 +1,3 @@
+/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles/rebuild_cache.dir
+/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles/edit_cache.dir
+/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles/Termi-OpenGL.dir
