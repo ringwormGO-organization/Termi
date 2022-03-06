@@ -1,14 +1,9 @@
-/*
-    ¤ @author: Stjepan Bilić Matišić (StjepanBM1)
-    ¤ Project name: Termi™ (GNU/Linux Version)
-    ¤ License: BSD-3-Clause-License
-
-    ¤ Project description:
-        Version of Termi™ ment for GNU/Linux.
-
+/**
+ * @author Stjepan Bilić Matišić
+ * PROJECT: Termi-Linux version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Main file for Linux Version
 */
-
-
 
 // IMPORTANT STUFF
 ////////////////////////////////////////////////////////////////////////////////////////
