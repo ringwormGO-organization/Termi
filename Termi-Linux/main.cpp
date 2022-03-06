@@ -25,19 +25,314 @@
 #include <sys/types.h>
 
 #include "Calc.h"
-#include "main.h"
 
 #define MAX 1000
 #define MAX_FILE 25
 
+#define VERSION_MAJOR "0"
+#define VERSION_MINOR "1"
+#define VERSION_PATCH "4"
+#define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 using namespace std;
+
 ////////////////////////////////////////////////////////////////////////////////////////
 // Andrej's update for Termi-Linux was a mess.
 // As a result some functions have been removed until further notice
 // Thank you for understanding
 // -StjepanBM1
 
+/* Functions */
+
+void Filesys()
+{
+    cout << "FILESYS> ";
+    char input1[MAX];
+    cin.getline(input1, MAX);
+    string openfile = "openfile";
+    string writefile = "writefile";
+    string rm = "rm";
+    string mdkir = "mkdir";
+    string rmdir = "rmdir";
+    string cd = "cd";
+
+    if (input1 == openfile)
+    {
+        fstream my_file;
+        cout << "OPENFILE> ";
+        char input2[MAX_FILE];
+        cin.getline(input2, MAX);
+        my_file.open(input2, ios::in);
+        if (!my_file) 
+        {
+            cout << "No such file" << endl;
+        }
+
+        else 
+        {
+            char ch;
+
+            while (1) 
+            {
+                my_file >> ch;
+                if (my_file.eof())
+                    break;
+
+                cout << ch;
+            }
+
+        }
+        my_file.close();
+    }
+
+    else if (input1 == list)
+    {
+        cout << "LIST: ";
+        DIR *dr;
+        struct dirent *en;
+        dr = opendir("."); //open all directory
+        if (dr) {
+            while ((en = readdir(dr)) != NULL) 
+            {
+                cout << "   \n"<< en->d_name; //print all directory name
+            }
+            closedir(dr); //close all directory
+                cout << "\n" << endl;
+        }
+    }
+    
+
+    else if (input1 == writefile)
+    {
+        cout << "WRITEFILE> ";
+        char input4[MAX_FILE];
+        cin.getline(input4, MAX);
+
+        ofstream MyFile(input4);
+
+        // Write to the file
+        cout << "What do you want your file to contain?" << endl;
+        cout << "/> ";
+        char input5[MAX];
+        cin.getline(input5, MAX);
+        MyFile << input5;
+
+        // Close the file
+        MyFile.close();
+    }
+
+    else if (input1 == mdkir)
+    {
+        cout << "mkdir~/ ";
+        char input6[MAX_FILE];
+        cin.getline(input6, MAX);
+
+        if (mkdir(input6, 0777) == -1)
+        {
+            cerr << "Error :  " << strerror(errno) << endl;
+        }
+
+        else
+        {
+            cout << "Directory created" << endl;
+        }
+    }
+    
+    else if (input1 == cd)
+    {
+        cout << "cd~/ ";
+        char input7[MAX_FILE];
+        cin.getline(input7, MAX);
+        int chdir(const char *input7);
+
+        cout << input7;
+        char input8[MAX];
+        cin.getline(input7, MAX);
+    }
+
+    else if (input1 == rm)
+    {
+        cout << "rm~/ ";
+        char input9[MAX_FILE];
+        cin.getline(input9, MAX);
+
+        int result = remove(input9);
+    }
+
+    else
+    {
+        cout << "ERROR >> COMMAND NOT FOUND" << endl;
+    }
+}
+
+void OpenCalc()
+{
+    char op;
+    float num1, num2;
+
+    cout << "Enter operator: +, -, *, /: ";
+    cin >> op;
+
+    cout << "Enter the first number: ";
+    cin >> num1;
+    cout << "Enter the second number: ";
+    cin >> num2;
+
+    switch(op) 
+    {
+        case '+':
+            cout << num1 << " + " << num2 << " = " << num1 + num2 << endl;
+            break;
+
+        case '-':
+            cout << num1 << " - " << num2 << " = " << num1 - num2 << endl;
+            break;
+
+        case '*':
+            cout << num1 << " * " << num2 << " = " << num1 * num2 << endl;
+            break;
+
+        case '/':
+            cout << num1 << " / " << num2 << " = " << num1 / num2 << endl;
+            break;
+
+        default:
+            // If the operator is other than +, -, * or /, error message is shown
+            cout << "Error! operator is not correct";
+            break;
+        }
+}
+
+void GeoCalc()
+{
+    string calccho;
+    string GEO = "GEO";
+    cout << "-----------------------------------------------------------------------------------------------" << endl;
+    cout << " " << endl;
+    cout << "TYPE GEO TO START" << endl;
+    cout << "Type exit to exit calculator" << endl;
+    cout << " " << endl;
+    cout << "-----------------------------------------------------------------------------------------------" << endl;
+    cout << "> ";
+    cin >> calccho;
+
+    if (calccho == GEO)
+        while(1)
+        {
+            cout << "Enter what to do (EXT = extent |SUR = surface area )";
+
+            cout << "geocalc > ";
+            char geoOPR[MAX];
+            cin.getline(geoOPR, MAX);
+            string EXT = "EXT";
+            string SUR = "SUR";
+            string TRA = "TRA";
+            string REC = "REC";
+            string SQU = "SQU";
+
+            if (geoOPR == "exit")
+            {
+
+            }
+
+            else if(geoOPR == SUR)
+            {
+                cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
+                cout << "REC = RECTANGLE | SQU = SQUARE" << endl;
+                cout << "> ";
+                string TRA = "TRA";
+                string REC = "REC";
+                string SQU = "SQU";
+                string surOPR;
+                cin >> surOPR;
+
+                if (surOPR == REC)
+                {
+                    double x,y;
+                    double res;
+                    cout << "Enter the length of first side : ";
+                    cin >> x;
+                    cout << "Enter the length of second side : ";
+                    cin >> y;
+                    cout << "Result: "
+                    << povrsDvijustr(x, y)
+                    << endl;
+                }
+
+                else if (surOPR == SQU)
+                {
+                    double x;
+                    double res;
+                    cout << "Enter the length of one side : ";
+                    cin >> x;
+                    cout << "Result : "
+                    << povrsKvdjustr(x)
+                    << endl;
+                }
+            }
+
+            else if (geoOPR == EXT)
+            {
+                cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
+                cout << "TRA = TRIANGLE | REC = RECTANGLE | SQU = SQUARE" << endl;
+                cout << "> ";
+                string TRA = "TRA";
+                string REC = "REC";
+                string SQU = "SQU";
+                string extOPR;
+                cin >> extOPR;
+
+                if (extOPR == TRA)
+                {
+                    double x, y, z;
+                    double res;
+                    cout << "Enter the length of first side : ";
+                    cin >> x;
+                    cout << "Enter the length of second side : ";
+                    cin >> y;
+                    cout << "Enter the length of third side : ";
+                    cin >> z;
+                    cout << "Result: "
+                    << opsgTrijustr(x, y, z)
+                    << endl;
+                }
+
+                else if (extOPR == REC)
+                {
+                    double x,y;
+                    double res;
+                    cout << "Enter the length of first side : ";
+                    cin >> x;
+                    cout << "Enter the length of second side : ";
+                    cin >> y;
+                    cout << "Result: "
+                    << opsgDvijustr(x, y)
+                    << endl;
+                }
+
+                else if (extOPR == SQU)
+                {
+                    double x;
+                    int sqe;
+                    sqe = 4;
+                    double res;
+                    cout << "Enter the length of one side : ";
+                    cin >> x;
+                    cout << "Result : "
+                    << opsgKvdjustr(x,sqe)
+                    << endl;
+
+                }
+                /* wrong command */
+                else
+                {
+                    
+                }
+            }
+
+        }
+    }
+}
 
 /* Structs */
 struct sigaction sigIntHandler;
@@ -63,7 +358,6 @@ void end(int sig)
 
 int main(void)
 {
-
     cout << "ooooooooooo                              " << endl;
     cout << "    888      ooooooooooo                          o88   " << endl;
     cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << endl;
@@ -78,10 +372,8 @@ int main(void)
     // command loop
     while (1)
     {
-
         cout << "Termi> ";
-        char input[MAX];
-        cin.getline(input, MAX);
+        getline(cin, input);
 
         // Strings / Commands
         string help = "help";
@@ -104,6 +396,7 @@ int main(void)
             cout << "help - shows list of commands" << endl;
             cout << "opencalc - opens a calculator" << endl;
             cout << "geocalc - opens a geometric calculator" << endl;
+            cout << "clear or cls - clear console" << endl;
             cout << "exit - closes Termi" << endl;
             cout << "----------FILESYS COMMANDS" << endl;
             cout << "filesys - opens file creation/editing" << endl;
@@ -116,122 +409,23 @@ int main(void)
 
         else if (input == filesys)
         {
-            cout << "FILESYS> ";
-            char input1[MAX];
-            cin.getline(input1, MAX);
-            string openfile = "openfile";
-            string writefile = "writefile";
-            string rm = "rm";
-            string mdkir = "mkdir";
-            string rmdir = "rmdir";
-            string cd = "cd";
+            Filesys();
+        }
 
-            if (input1 == openfile)
-            {
-                fstream my_file;
-                cout << "OPENFILE> ";
-                char input2[MAX_FILE];
-                cin.getline(input2, MAX);
-                my_file.open(input2, ios::in);
-                if (!my_file) 
-                {
-                    cout << "No such file" << endl;
-                }
+        else if (input == opencalc)
+        {
+            OpenCalc();                
+        }
 
-                else 
-                {
-                    char ch;
 
-                    while (1) 
-                    {
-                        my_file >> ch;
-                        if (my_file.eof())
-                            break;
+        else if (input == geocalc)
+        {
+            GeoCalc();
+        }
 
-                        cout << ch;
-                    }
-
-                }
-                my_file.close();
-            }
-
-            else if (input1 == list)
-            {
-                cout << "LIST: ";
-                DIR *dr;
-                struct dirent *en;
-                dr = opendir("."); //open all directory
-                if (dr) {
-                    while ((en = readdir(dr)) != NULL) {
-                        cout << "   \n"<< en->d_name; //print all directory name
-                    }
-                    closedir(dr); //close all directory
-                        cout << "\n" << endl;
-                }
-            }
-            
-
-            else if (input1 == writefile)
-            {
-                cout << "WRITEFILE> ";
-                char input4[MAX_FILE];
-                cin.getline(input4, MAX);
-
-                ofstream MyFile(input4);
-
-                // Write to the file
-                cout << "What do you want your file to contain?" << endl;
-                cout << "/> ";
-                char input5[MAX];
-                cin.getline(input5, MAX);
-                MyFile << input5;
-
-                // Close the file
-                MyFile.close();
-            }
-
-            else if (input1 == mdkir)
-            {
-                cout << "mkdir~/ ";
-                char input6[MAX_FILE];
-                cin.getline(input6, MAX);
-
-                if (mkdir(input6, 0777) == -1)
-                {
-                    cerr << "Error :  " << strerror(errno) << endl;
-                }
-
-                else
-                {
-                    cout << "Directory created" << endl;
-                }
-            }
-            
-            else if (input1 == cd)
-            {
-                cout << "cd~/ ";
-                char input7[MAX_FILE];
-                cin.getline(input7, MAX);
-                int chdir(const char *input7);
-
-                cout << input7;
-                char input8[MAX];
-                cin.getline(input7, MAX);
-            }
-
-            else if (input1 == rm)
-            {
-                cout << "rm~/ ";
-                char input9[MAX_FILE];
-                cin.getline(input9, MAX);
-
-                int result = remove(input9);
-            }
-
-            else
-            {
-                cout << "ERROR >> COMMAND NOT FOUND" << endl;
-            }
+        else if (input == clear || input == "cls")
+        {
+            cout << "\033c";
         }
 
         else if (input == exit)
@@ -239,178 +433,16 @@ int main(void)
             return(0);
         }
 
-        else if (input == opencalc)
+        else if (input.length() == 0) /* enter */
         {
 
-                char op;
-                float num1, num2;
-
-                cout << "Enter operator: +, -, *, /: ";
-                cin >> op;
-
-                cout << "Enter the first number: ";
-                cin >> num1;
-                cout << "Enter the second number: ";
-                cin >> num2;
-
-                switch(op) {
-
-                    case '+':
-                      cout << num1 << " + " << num2 << " = " << num1 + num2 << endl;
-                      break;
-
-                    case '-':
-                      cout << num1 << " - " << num2 << " = " << num1 - num2 << endl;
-                      break;
-
-                    case '*':
-                      cout << num1 << " * " << num2 << " = " << num1 * num2 << endl;
-                      break;
-
-                    case '/':
-                      cout << num1 << " / " << num2 << " = " << num1 / num2 << endl;
-                      break;
-
-                    default:
-                      // If the operator is other than +, -, * or /, error message is shown
-                      cout << "Error! operator is not correct";
-                      break;
-                  }
         }
 
-
-
-        else if (input == geocalc)
+        else
         {
-
-            string calccho;
-            string GEO = "GEO";
-            cout << "-----------------------------------------------------------------------------------------------" << endl;
-            cout << " " << endl;
-            cout << "TYPE GEO TO START" << endl;
-            cout << "Type exit to exit calculator" << endl;
-            cout << " " << endl;
-            cout << "-----------------------------------------------------------------------------------------------" << endl;
-            cout << "> ";
-            cin >> calccho;
-
-            if (calccho == GEO)
-                while(1)
-                {
-                    cout << "Enter what to do (EXT = extent |SUR = surface area )";
-
-                    cout << "geocalc > ";
-                    char geoOPR[MAX];
-                    cin.getline(geoOPR, MAX);
-                    string EXT = "EXT";
-                    string SUR = "SUR";
-                    string TRA = "TRA";
-                    string REC = "REC";
-                    string SQU = "SQU";
-
-                    if (geoOPR == "exit")
-                    {
-
-                    }
-
-                    else if(geoOPR == SUR)
-                    {
-                        cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
-                        cout << "REC = RECTANGLE | SQU = SQUARE" << endl;
-                        cout << "> ";
-                        string TRA = "TRA";
-                        string REC = "REC";
-                        string SQU = "SQU";
-                        string surOPR;
-                        cin >> surOPR;
-
-                        if (surOPR == REC)
-                        {
-                            double x,y;
-                            double res;
-                            cout << "Enter the length of first side : ";
-                            cin >> x;
-                            cout << "Enter the length of second side : ";
-                            cin >> y;
-                            cout << "Result: "
-                            << povrsDvijustr(x, y)
-                            << endl;
-                        }
-
-                        else if (surOPR == SQU)
-                        {
-                            double x;
-                            double res;
-                            cout << "Enter the length of one side : ";
-                            cin >> x;
-                            cout << "Result : "
-                            << povrsKvdjustr(x)
-                            << endl;
-                        }
-                    }
-
-                    else if (geoOPR == EXT)
-                    {
-                        cout << "SELECT WHAT GEOMETRIC CHARCTER YOU WANT" << endl;
-                        cout << "TRA = TRIANGLE | REC = RECTANGLE | SQU = SQUARE" << endl;
-                        cout << "> ";
-                        string TRA = "TRA";
-                        string REC = "REC";
-                        string SQU = "SQU";
-                        string extOPR;
-                        cin >> extOPR;
-
-                        if (extOPR == TRA)
-                        {
-                            double x, y, z;
-                            double res;
-                            cout << "Enter the length of first side : ";
-                            cin >> x;
-                            cout << "Enter the length of second side : ";
-                            cin >> y;
-                            cout << "Enter the length of third side : ";
-                            cin >> z;
-                            cout << "Result: "
-                            << opsgTrijustr(x, y, z)
-                            << endl;
-                        }
-
-                        else if (extOPR == REC)
-                        {
-                            double x,y;
-                            double res;
-                            cout << "Enter the length of first side : ";
-                            cin >> x;
-                            cout << "Enter the length of second side : ";
-                            cin >> y;
-                            cout << "Result: "
-                            << opsgDvijustr(x, y)
-                            << endl;
-                        }
-
-                        else if (extOPR == SQU)
-                        {
-                            double x;
-                            int sqe;
-                            sqe = 4;
-                            double res;
-                            cout << "Enter the length of one side : ";
-                            cin >> x;
-                            cout << "Result : "
-                            << opsgKvdjustr(x,sqe)
-                            << endl;
-
-                        }
-                        /* wrong command */
-                        else
-                        {
-                            
-                        }
-                    }
-
-                }
-            }
+            std::cout << "'" << input << "'" << "is invalid command!\n";
         }
+
 
     return 0;
 }
