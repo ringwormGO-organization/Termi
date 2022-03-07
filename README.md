@@ -55,8 +55,18 @@ $ g++ -o Termi main.cpp
 1. Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and paste command: `cl /std:c++20 /EHsc PackageManager.cpp`.
 2. For GNU/Linux type: `g++ -o PackageManager PackageManager.cpp`.
 
+## Development picture
+![image](https://user-images.githubusercontent.com/83548580/157011432-f1dc9427-e490-4873-919b-ee0e927bd549.png)
+
+Termi-OpenGL running on Windows 11 Pro 21H2
+
+## External dependencies
+- [OpenGL](https://www.opengl.org/)
+- [ImGUI](https://github.com/ocornut/imgui)
+- [stb](https://github.com/nothings/stb)
+
 ## Credits
-- Stack Overflow - for most of problems
+- [Stack Overflow](https://stackoverflow.com/) - solution for most of problems
 - [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 ____________________________________
