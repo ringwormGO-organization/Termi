@@ -21,15 +21,17 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define WIDTH 900
-#define HEIGHT 900
+Canvas canvas;
 
 int main()
 {
 	std::cout << "\n\n";
 
+	canvas.width = 900;
+	canvas.height = 900;
+
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Termi (independet version; OpenGL and Dear ImGUI", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(canvas.width, canvas.height, "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 

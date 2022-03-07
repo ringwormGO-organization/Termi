@@ -30,6 +30,7 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imconfig.h
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui.h
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui_impl_opengl3.cpp
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui_impl_opengl3.h
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui_impl_opengl3_loader.h
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imconfig.h
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imgui.h

@@ -76,9 +76,22 @@ include CMakeFiles/Termi-OpenGL.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/Termi-OpenGL.dir/flags.make
 
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imgui.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui.cpp
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui.cpp > CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.i
+
+CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui.cpp -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.s
+
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o: imgui/imgui_demo.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_demo.cpp
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.i: cmake_force
@@ -91,7 +104,7 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.s: cmake_force
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o: imgui/imgui_draw.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_draw.cpp
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.i: cmake_force
@@ -104,7 +117,7 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.s: cmake_force
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o: imgui/imgui_impl_glfw.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_impl_glfw.cpp
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.i: cmake_force
@@ -117,7 +130,7 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.s: cmake_force
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o: imgui/imgui_impl_opengl3.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_impl_opengl3.cpp
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.i: cmake_force
@@ -130,7 +143,7 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.s: cmake_force
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o: imgui/imgui_tables.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_tables.cpp
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.i: cmake_force
@@ -143,7 +156,7 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.s: cmake_force
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o: imgui/imgui_widgets.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_6) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_widgets.cpp
 
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.i: cmake_force
@@ -153,19 +166,6 @@ CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.i: cmake_force
 CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.s: cmake_force
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.s"
 	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui_widgets.cpp -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.s
-
-CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: CMakeFiles/Termi-OpenGL.dir/flags.make
-CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o: imgui/imgui.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/CMakeFiles --progress-num=$(CMAKE_PROGRESS_7) "Building CXX object CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o -c /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui.cpp
-
-CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui.cpp > CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.i
-
-CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/vangu/Documents/ringwormGO/Termi/Termi-Linux-OpenGL/imgui/imgui.cpp -o CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.s
 
 CMakeFiles/Termi-OpenGL.dir/glad.c.o: CMakeFiles/Termi-OpenGL.dir/flags.make
 CMakeFiles/Termi-OpenGL.dir/glad.c.o: glad.c
@@ -208,13 +208,13 @@ CMakeFiles/Termi-OpenGL.dir/main.cpp.s: cmake_force
 
 # Object files for target Termi-OpenGL
 Termi__OpenGL_OBJECTS = \
+"CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o" \
-"CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/glad.c.o" \
 "CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o" \
 "CMakeFiles/Termi-OpenGL.dir/main.cpp.o"
@@ -222,13 +222,13 @@ Termi__OpenGL_OBJECTS = \
 # External object files for target Termi-OpenGL
 Termi__OpenGL_EXTERNAL_OBJECTS =
 
+Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui_demo.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui_draw.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_glfw.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui_impl_opengl3.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui_tables.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui_widgets.cpp.o
-Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui/imgui.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/glad.c.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/imgui_code.cpp.o
 Termi-OpenGL: CMakeFiles/Termi-OpenGL.dir/main.cpp.o

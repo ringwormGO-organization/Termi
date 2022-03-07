@@ -15,6 +15,12 @@
 
 #include <iostream>
 
-void print();
+struct Canvas
+{
+    int width;
+    int height;
+};
+
+void Print();
 
 void main_code();
