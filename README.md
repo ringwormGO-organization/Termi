@@ -15,7 +15,7 @@ A Powerful Terminal made in C++
 ### Termi base C++ part
 - [x] Windows version
 - [x] GNU/Linux version
-- [x] macOS version (same folder/directory as GNU/Linux version)
+- [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
 ### Termi C++ part
 - [ ] User settings in JSON
@@ -23,7 +23,8 @@ A Powerful Terminal made in C++
 - [ ] Include other host terminals
 
 ### Independence
-- [ ] Independence ([ImGUI](https://github.com/ocornut/imgui))
+- [x] Independence (Windows & GNU/Linux [ImGUI](https://github.com/ocornut/imgui) base)
+- [ ] Independence (Windows & GNU/Linux [ImGUI](https://github.com/ocornut/imgui))
 
 ## Build & Run
 ### Required software:
@@ -37,32 +38,25 @@ A Powerful Terminal made in C++
 - Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
 - Open Termi Visual Studio Solution and compile it.
 - If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with `git pull`. When you launching installed app, run application as **ADMINISTRATOR**.
-- If you run application from Visual Studio, loading executables won't work because running from `Debug` folder/directory isn't same as running from Visual Studio!
+- If you running application from Visual Studio, loading executables won't work because running from `Debug` folder/directory isn't same as running from Visual Studio!
 
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
-Run `.build.sh`:
-
 ```sh
-$ chmod +x ./build.sh && ./build.sh
+$ g++ -o Termi main.cpp
 ```
+
+### Build & Run (OpenGL)
+1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
+2. For GNU/Linux type: `cmake . && make && ./Termi-OpenGL`. If you can't compile project try with: `cmake && sudo make && ./Termi-OpenGL`. IF you still can't compile project check [this video](https://www.youtube.com/watch?v=643CUhCoyCo).
 
 ### Build & Run - Package Manager
-- Enter proper directory and choose command to compile.
-#### Windows (MSVC compiler)
-Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and paste command.
-
-```
-cl /EHsc PackageManager.cpp
-```
-
-#### Linux (G++ compiler)
-Open terminal and paste command
-```sh
-$ g++ -o PackageManager PackageManager.cpp
-```
+1. Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and paste command: `cl /std:c++20 /EHsc PackageManager.cpp`.
+2. For GNU/Linux type: `g++ -o PackageManager PackageManager.cpp`.
 
 ## Credits
-- Stack Overflow
+- Stack Overflow - for most of problems
+- [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
+- [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 ____________________________________
 
 Thank you for choosing Termi.
