@@ -47,7 +47,7 @@ $ g++ -o Termi main.cpp
 
 ### Build & Run (OpenGL)
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
-2. For GNU/Linux type: `cmake . && ./Termi-OpenGL`. If you can't compile project try with: `sudo cmake && ./Termi-OpenGL`.
+2. For GNU/Linux type: `cmake . && make && ./Termi-OpenGL`. If you can't compile project try with: `cmake && sudo make && ./Termi-OpenGL`.
 
 ### Build & Run - Package Manager
 1. Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and paste command: `cl /std:c++20 /EHsc PackageManager.cpp`.
