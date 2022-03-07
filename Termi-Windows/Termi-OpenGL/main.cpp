@@ -1,14 +1,15 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
+ * @mainteiner Stjepan Bilić Matišić
+ * PROJECT: Termi-linux version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
 */
 
-#include "imgui.h"
-#include "imgui_impl_glfw.h"
-#include "imgui_impl_opengl3.h"
+#include "imgui/imgui.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
 
 #include "imgui_code.hpp"
 
@@ -20,15 +21,17 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-#define WIDTH 900
-#define HEIGHT 900
+Canvas canvas;
 
 int main()
 {
 	std::cout << "\n\n";
 
+	canvas.width = 900;
+	canvas.height = 900;
+
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(WIDTH, HEIGHT, "Termi (independet version; OpenGL and Dear ImGUI)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(canvas.width, canvas.height, "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 
@@ -45,7 +48,7 @@ int main()
 	images[2].pixels = pixels;
 
 	glfwSetWindowIcon(window, 1, images); 
-	*/
+	*/ 
 	//code is commented because it is couse segmentation fault
 
 	/* Initialize ImGUI */
