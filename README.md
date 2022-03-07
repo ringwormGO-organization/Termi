@@ -30,9 +30,11 @@ A Powerful Terminal made in C++
 ### Required software:
 - Visual Studio 2019 or Visual Studio 2022 and `Desktop development with C++` components (if you use Visual Studio 2019, add support for Visual Studio 2019) - Windows.
 - G++ complier - GNU/Linux
-  - Install with ```sudo apt install g++``` if not already installed.
+  - Install with ```sudo apt-get install g++``` if not already installed on GNU/Linux machine.
+- CMake
+  - Install with ```sudo apt-get install cmake``` if not already installed on GNU/Linux machine.
 - Git
-  - Install with ```sudo apt-get install git``` if not already installed on Linux machine.
+  - Install with ```sudo apt-get install git``` if not already installed on GNU/Linux machine.
 
 ### Build & Run - Windows
 - Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
