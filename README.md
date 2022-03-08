@@ -18,8 +18,8 @@ A Powerful Terminal made in C++
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
 ### Termi C++ part
-- [ ] User settings in JSON
-- [ ] Support all major commands
+- [ ] User settings in JSON files
+- [ ] Support most of major commands
 - [ ] Include other host terminals
 
 ### Independence
