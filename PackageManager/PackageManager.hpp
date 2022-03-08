@@ -38,9 +38,16 @@ struct Settings
     std::string default_path;
 };
 
+/* struct which contains information about Termi installation */
+struct Install
+{
+    std::string install_path;
+    bool isAdditionEnabled;
+};
+
 /* Functions */
 void help();
-int search(std::string whatToSearch);
+void search(std::string whatToSearch);
 void add(std::string name, std::string link);
 
 /* Functions which initialize database and set up other things too */
