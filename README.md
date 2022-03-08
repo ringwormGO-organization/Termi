@@ -35,6 +35,8 @@ A Powerful Terminal made in C++
   - Install with ```sudo apt-get install cmake``` if not already installed on GNU/Linux machine.
 - Git
   - Install with ```sudo apt-get install git``` if not already installed on GNU/Linux machine.
+- OpenGL - for OpenGL
+  - Check [this video](https://www.youtube.com/watch?v=643CUhCoyCo) to install it on GNU/Linux machine.
 
 ### Build & Run - Windows
 - Open `Developer Command Prompt for VS 2019` or `Developer Command Prompt for VS 2022` and run `compile.bat`.
