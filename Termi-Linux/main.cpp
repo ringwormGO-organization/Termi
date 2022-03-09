@@ -218,6 +218,7 @@ void GeoCalc()
     cin >> calccho;
 
     if (calccho == GEO)
+    {
         while(1)
         {
             cout << "Enter what to do (EXT = extent |SUR = surface area )";
@@ -330,9 +331,9 @@ void GeoCalc()
                     
                 }
             }
-
         }
     }
+}
 
 /* Structs */
 struct sigaction sigIntHandler;
@@ -417,7 +418,6 @@ int main(void)
             OpenCalc();                
         }
 
-
         else if (input == geocalc)
         {
             GeoCalc();
@@ -442,8 +442,7 @@ int main(void)
         {
             std::cout << "'" << input << "'" << "is invalid command!\n";
         }
-
+    }
 
     return 0;
-    }
 }
