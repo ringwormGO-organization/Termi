@@ -11,6 +11,8 @@
 
 void help()
 {
+    printf("Termi package manager designed to install addition to Termi");
+
     printf("There is no enough arguments! See help down below\n\n");
     printf("search <software name> - search software in database\n");
     printf("add <software name> - add software download link to database\n");
@@ -23,39 +25,24 @@ void help()
     printf("\n");
 }
 
-int search(std::string whatToSearch)
+void search(std::string whatToSearch)
 {
     auto search = database.find(whatToSearch);
 
     if (search != database.end())
     {
         std::cout << "Found " << search->first << " as " << search->second << '\n';
-        return 0;
     }
     else
     {
         std::cout << "Unable to found " << whatToSearch << "!\n";
-        return 1;
     }
 }
 
 void add(std::string name, std::string link)
 {
-    int result = search(name);
-
-    if (result == 1)
-    {
-        database.insert
-        (
-            std::pair<std::string, std::string> (name, link)
-        );
-
-        search(name);
-    }
-    else
-    {
-        std::cout << "Already in database!\n";
-    }
+    auto position(end(database));
+    position = database.insert(position, { name, link });
 }
 
 void Init()
@@ -101,7 +88,7 @@ int main(int argc, char** argv)
         }
     }
 
-    else if (strcmp(argv[1], "add"))
+    if (strcmp(argv[1], "add"))
     {
         if (argv[2] == NULL)
         {

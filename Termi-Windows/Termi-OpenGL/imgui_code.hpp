@@ -1,6 +1,7 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
+ * @mainteiner Stjepan Bilić Matišić
+ * PROJECT: Termi-linux version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
@@ -14,6 +15,12 @@
 
 #include <iostream>
 
-void print();
+struct Canvas
+{
+    int width;
+    int height;
+};
+
+void Print();
 
 void main_code();

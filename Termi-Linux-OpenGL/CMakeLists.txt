@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.17)
+cmake_minimum_required(VERSION 3.16)
 
 project(Termi-OpenGL)
 
-file(GLOB SRC CONFIGURE_DEPENDS "imgui/*.cpp")
+file(GLOB SRC CONFIGURE_DEPENDS "imgui/*.hpp" "imgui/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC} glad.c imgui_code.cpp main.cpp)
 
