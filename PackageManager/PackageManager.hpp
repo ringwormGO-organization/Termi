@@ -46,7 +46,7 @@ struct Install
 };
 
 /* Functions */
-void help();
+void help(int type);
 void search(std::string whatToSearch);
 void add(std::string name, std::string link);
 
