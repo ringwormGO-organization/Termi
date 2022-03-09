@@ -46,8 +46,13 @@ A Powerful Terminal made in C++
 
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
 ```sh
-$ g++ -o Termi main.cpp
+$ cmake . && make`
 ```
+or
+```sh
+$ chmod +x ./build.sh && ./build.sh
+```
+from root directory.
 
 ### Build & Run (OpenGL)
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
