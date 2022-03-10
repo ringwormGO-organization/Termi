@@ -12,7 +12,7 @@
 
 #define VERSION_MAJOR "0"
 #define VERSION_MINOR "1"
-#define VERSION_PATCH "4"
+#define VERSION_PATCH "5"
 #define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 std::string input;
@@ -39,15 +39,16 @@ BOOL WINAPI end(DWORD signal)
 
 std::map<std::string, std::string> commands =
 {
-    {"help", "..\\..\\..\\..\\Programs\\bin\\help.exe"},
-    {"open-calc", "..\\..\\..\\..\\Programs\\bin\\calculator.exe"},
-    {"geocalc", "..\\..\\..\\..\\Programs\\bin\\GeoCalculator.exe"},
-    {"filesys", "..\\..\\..\\..\\Programs\\bin\\Filesystem.exe"},
+    {"help", "Programs\\bin\\help.exe"},
+    {"open-calc", "Programs\\bin\\calculator.exe"},
+    {"geocalc", "Programs\\bin\\GeoCalculator.exe"},
+    {"filesys", "Programs\\bin\\Filesystem.exe"},
 };
 
 void Check(std::string command)
 {
     auto result = commands.find(command);
+
     const char* run;
 
     if (result != commands.end())
@@ -55,21 +56,25 @@ void Check(std::string command)
         run = result->second.c_str();
         system(run);
     }
-    else if (command == "clear" || command == "cls")
+
+    else if(command == "clear" || command == "cls")
     {
         std::cout << "\033c";
     }
+
     else if (command == "exit")
     {
         exit(0);
     }
+
     else if (command.length() == 0) /* enter */
     {
 
     }
+
     else
     {
-        std::cout << "'" << command << "'" << "is invalid command!\n";
+        std::cout << "'" << command << "'" << " is invalid command!\n";
     }
 }
 

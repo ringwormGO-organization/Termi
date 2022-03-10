@@ -1,10 +1,8 @@
-#pragma once
+int Calc();
 
-
-//Calc
-double sumOfTwoNumbers(double a, double b)
+double sumOfTwoNumbers(double x, double y)
 {
-    return (a + b);
+    return (x + y);
 }
 
 double subOfTwoNumbers(double x, double y)
@@ -22,7 +20,6 @@ double devOfTwoNumbers(double x, double y)
     return (x / y);
 }
 
-//GeoCalc
 double opsgTrijustr(double x, double y, double z)
 {
     return(x + y + z);
@@ -35,15 +32,15 @@ double opsgDvijustr(double x, double y)
 
 double opsgKvdjustr(double x, int sqe)
 {
-    return(x * sqe);
+    return(x*sqe);
 }
 
 double povrsDvijustr(double x, double y)
 {
-    return(x * y);
+    return(x*y);
 }
 
 double povrsKvdjustr(double x)
 {
-    return(x * x);
+    return(x*x);
 }

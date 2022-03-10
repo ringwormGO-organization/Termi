@@ -145,7 +145,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Calc.h" />
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="resource1.h" />
     <ClInclude Include="Useful.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Termi1.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="C:\Users\vangu\Downloads\termi.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
