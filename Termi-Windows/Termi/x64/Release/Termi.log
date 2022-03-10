@@ -1,0 +1,6 @@
+﻿  Termi.cpp
+  Generating code
+  Previous IPDB and IOBJ mismatch, fall back to full compilation.
+  All 225 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Finished generating code
+  Termi.vcxproj -> D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi\x64\Release\Termi.exe

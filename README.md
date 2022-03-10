@@ -39,10 +39,10 @@ A Powerful Terminal made in C++
   - Check [this video](https://www.youtube.com/watch?v=643CUhCoyCo) to install it on GNU/Linux machine.
 
 ### Build & Run - Windows
-- Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat```.
+- Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.
 - Open Termi Visual Studio Solution and compile it.
-- If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with ```git pull```. When you launching installed app, run application as **ADMINISTRATOR**.
-- If you running application from Visual Studio, loading executables won't work because running from ```Debug``` folder/directory isn't same as running from Visual Studio!
+- If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with ```git pull```. When you launching installed app, run application as **ADMINISTRATOR**. You can also use installer in `Termi-Windows\Installer` directory.
+- If you running application from Visual Studio, loading executables won't work because running from ```Release``` folder/directory isn't same as running from Visual Studio!
 
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
 ```sh
