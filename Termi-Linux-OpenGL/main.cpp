@@ -18,6 +18,8 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.hpp"
 
+#include "Settings.hpp"
+
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
@@ -34,6 +36,19 @@ int main()
 	GLFWwindow* window = glfwCreateWindow(canvas.width, canvas.height, "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	if (window == NULL)
+	{
+		std::cout << "Unable to create OpenGL window!\nExiting...\n";
+		return 0;
+	}
+	else
+	{
+		#ifdef PRINT_WHEN_WINDOW_IS_CREATED
+			std::cout << "OpenGL window is created.\n";
+		#endif
+	}
+
+
 
 	/*
 	//load image
