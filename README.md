@@ -22,13 +22,17 @@ A Powerful Terminal made in C++
 - [ ] Support most of major commands
 - [ ] Include other host terminals
 
+### Windows - installer and launcher
+- [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
+- [x] Lanucher and updater - C#
+
 ### Independence
 - [x] Independence (Windows & GNU/Linux [ImGUI](https://github.com/ocornut/imgui) base)
 - [ ] Independence (Windows & GNU/Linux [ImGUI](https://github.com/ocornut/imgui))
 
 ## Build & Run
 ### Required software:
-- Visual Studio 2019 or Visual Studio 2022 and ```Desktop development with C++``` components (if you use Visual Studio 2019, add support for Visual Studio 2019) - Windows.
+- Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++``` and ```.NET 5.0 Runtime``` components (if you use Visual Studio 2012, add support for Visual Studio 2019) - Windows.
 - G++ complier - GNU/Linux
   - Install with ```sudo apt-get install g++``` if not already installed on GNU/Linux machine.
 - CMake
@@ -41,8 +45,10 @@ A Powerful Terminal made in C++
 ### Build & Run - Windows
 - Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.
 - Open Termi Visual Studio Solution and compile it.
-- If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with ```git pull```. You can also use [installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe) but you need download MSVC C++ runtime enviroment.
 - If you running application from Visual Studio, loading executables won't work because running from ```Release``` folder/directory isn't same as running from Visual Studio!
+- Also you can build launcher and installer for Windows version too :)
+- If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with ```git pull```. You can also use [installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe) but you need still need to download ```MSVC C++ runtime enviroment```b and ```.NET 5.0 Runtime```. It is recommended that you run the application as an administrator, especially if launcher downloading new update because writing to ```C:\Programs Files``` or similiar directory require administartor priviliges.
+
 
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
 ```sh
@@ -73,6 +79,7 @@ Termi-OpenGL running on Windows 11 Pro 21H2
 - [stb](https://github.com/nothings/stb)
 
 ## Credits
+- [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
 - [Stack Overflow](https://stackoverflow.com/) - solution for most of problems
 - [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code

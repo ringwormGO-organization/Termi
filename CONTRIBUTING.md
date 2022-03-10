@@ -22,7 +22,7 @@ Just drop a Pull Request :)
 # Code organization (new)
 1. `Termi` for Windows directory contains Visual Studio solution. In `x64\Release` is `Programs` directory.
 2. There is code to compile binaries.
-3. To compile Windows installer, change path to your own and "real" `Programs` directory cut into new `Programs` directory.
+3. To compile Windows installer, change path to your own and installer version update may late.
 4. Package Manager has own folder.
 
 # Coding sytle for Pull Requests
