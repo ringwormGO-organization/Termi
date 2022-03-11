@@ -16,6 +16,7 @@
 #include "Settings.hpp"
 
 #include <iostream>
+#include <fstream>
 
 struct Canvas
 {
@@ -28,7 +29,17 @@ struct Status
 	bool alReadyPrinted;
 };
 
+class ContextMenu
+{
+    public:
+        std::string log_1;
 
-void Print();
+        void DrawContextMenu();
+
+    private:
+        void DrawNewTab();
+};
 
 void main_code();
+
+extern ContextMenu* contextmenu;
