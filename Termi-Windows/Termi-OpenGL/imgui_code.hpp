@@ -1,9 +1,9 @@
 /**
  * @author Andrej Bartulin
  * @mainteiner Stjepan Bilić Matišić
- * PROJECT: Termi-linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
- * DESCRIPTION: Main file
+ * DESCRIPTION: Header file for ImGUI code
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
 */
 
@@ -13,6 +13,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include "Settings.hpp"
+
 #include <iostream>
 
 struct Canvas
@@ -20,6 +22,12 @@ struct Canvas
     int width;
     int height;
 };
+
+struct Status
+{
+	bool alReadyPrinted;
+};
+
 
 void Print();
 
