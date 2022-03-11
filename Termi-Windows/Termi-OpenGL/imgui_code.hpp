@@ -1,10 +1,9 @@
 /**
  * @author Andrej Bartulin
- * @mainteiner Stjepan Bilić Matišić
- * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Compile this Visual Studio solution
 */
 
 #pragma once
@@ -16,6 +15,7 @@
 #include "Settings.hpp"
 
 #include <iostream>
+#include <fstream>
 
 struct Canvas
 {
@@ -28,7 +28,17 @@ struct Status
 	bool alReadyPrinted;
 };
 
+class ContextMenu
+{
+    public:
+        std::string log_1;
 
-void Print();
+        void DrawContextMenu();
+
+    private:
+        void DrawNewTab();
+};
 
 void main_code();
+
+extern ContextMenu* contextmenu;

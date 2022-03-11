@@ -1,10 +1,9 @@
 /**
  * @author Andrej Bartulin
- * @mainteiner Stjepan Bilić Matišić
- * PROJECT: Termi-linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Compile this Visual Studio solution
 */
 
 #include "imgui/imgui.h"
@@ -14,6 +13,8 @@
 #include "imgui_code.hpp"
 
 #include <iostream>
+#include <string>
+#include <fstream>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.hpp"
@@ -23,17 +24,12 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
-Canvas canvas;
-
 int main()
 {
 	std::cout << "\n\n";
 
-	canvas.width = 900;
-	canvas.height = 900;
-
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(canvas.width, canvas.height, "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(900, 900, "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -47,7 +43,6 @@ int main()
 			std::cout << "OpenGL window is created.\n";
 		#endif
 	}
-
 
 
 	/*
@@ -85,6 +80,10 @@ int main()
 
 		/* main ImGUI code */
 		main_code();
+
+		#ifdef PRINT_FPS
+				auto FPS = printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		#endif
 
 		/* Renders the ImGUI elements */
 		ImGui::Render();

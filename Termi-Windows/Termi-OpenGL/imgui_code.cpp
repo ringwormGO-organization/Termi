@@ -1,10 +1,9 @@
 /**
  * @author Andrej Bartulin
- * @mainteiner Stjepan Bilić Matišić
- * PROJECT: Termi-linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file for ImGUI
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Compile this Visual Studio solution
 */
 
 #include "imgui_code.hpp"
@@ -13,30 +12,66 @@ using namespace std;
 
 Status status;
 
-void Print()
+ContextMenu* contextmenu;
+
+/* Code for ContextMenu class */
+
+/* PRIVATE INSTANCES OF ContextMenu class */
+
+/* Draw new teminal tab */
+void ContextMenu::DrawNewTab()
 {
-    cout << "Test string\n";
+    
+}
+
+/* Draw context menu */
+void ContextMenu::DrawContextMenu()
+{
+    if (ImGui::BeginMenu("File"))
+    {
+        if (ImGui::MenuItem("New terminal tab", "Ctrl+N"))
+        {
+            
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Exit", "Ctrl+W"))
+        {
+            exit(0);
+        }
+
+        ImGui::Separator();
+
+        if (ImGui::MenuItem("Nothing"))
+        {
+            /* do nothing */
+        }
+
+        ImGui::EndMenu();
+    }
 }
 
 void main_code()
 {
     /* ImGUI window creation */
-    ImGui::Begin("Termi");
-    #ifdef PRINT_WHEN_WINDOW_IS_CREATED
-    	if (status.alReadyPrinted == false)
-	{
-    		std::cout << "ImGUI window is created.\n";
-		status.alReadyPrinted = true;
-	}
+    ImGui::SetNextWindowPos(ImVec2((float)0, (float)0));
+    ImGui::SetNextWindowSize(ImVec2((float)900, (float)900));
+    ImGui::Begin("Termi", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
 
-	if (status.alReadyPrinted == true)
-		/* do nothing */
+    #ifdef PRINT_WHEN_WINDOW_IS_CREATED
+        if (!status.alReadyPrinted)
+        {
+            std::cout << "ImGUI window is created.\n";
+            status.alReadyPrinted = true;
+        }
+
+        if (status.alReadyPrinted)
+            /* do nothing */
     #endif
 
-
-    if (ImGui::Button("Print"))
-        Print();
-
+    contextmenu->DrawContextMenu();
+        
     /* End of window */
     ImGui::End();
 }
