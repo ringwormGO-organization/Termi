@@ -52,11 +52,7 @@ A Powerful Terminal made in C++
 
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
 ```sh
-$ cmake . && make`
-```
-or
-```sh
-$ chmod +x ./build.sh && ./build.sh
+$ cd Termi-Linux && chmod +x ./compile.sh && ./compile.sh
 ```
 from root directory.
 
