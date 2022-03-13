@@ -1,8 +1,8 @@
 /**
  * @author: Andrej Bartulin
- * PROJECT: Termi PackageManager
+ * PROJECT: Termi Package Manager
  * LICENSE: BSD-3-Clause-License
- * DESCRIPTION: Header file for package manager
+ * DESCRIPTION: Main header file for package manager
  * 
 */
 
@@ -18,18 +18,8 @@
 #define MAX_LENGTH_LINK 500 /* maximum length of link */
 #define MAX_DATABASE 250 /* maximum elements in database */
 
-/* struct which contains operarting system name */
-struct host_info
-{
-    std::string name;
-};
-
-/* struct which contains informations about program */
-struct program
-{
-    std::string name;
-    std::string link;
-};
+/* GitHub repo link */
+const char* repo_link = "https://github.com/ringwormGO-organization/Termi";
 
 /* struct which contains settings for package manager */
 struct Settings
@@ -41,14 +31,47 @@ struct Settings
 /* struct which contains information about Termi installation */
 struct Install
 {
+    std::string host;
     std::string install_path;
     bool isAdditionEnabled;
 };
 
-/* Functions */
-void help(int type);
-void search(std::string whatToSearch);
-void add(std::string name, std::string link);
+/* Class which contains functions  */
+class Functions
+{
+    public:
+        /* Set up what we need */
+        Functions();
 
-/* Functions which initialize database and set up other things too */
-void Init();
+        /* Help function */
+        void Help(int type);
+
+        /* Serach function - returns a command or link */
+        const char* Search(std::string name);
+
+        /* Add function */
+        void Add(std::string name, std::string link);
+
+        /* Remove function */
+        void Remove(std::string name);
+
+        /* Install functions */
+        int Install(std::string name);
+        int Install(std::string name, std::string link);
+
+        /* Uninstall functions */
+        void Uninstall(std::string name);
+        void Uninstall(std::string name, std::string path);
+
+        /* Settings function */
+        void Settings();
+
+    private:
+        /* Download a file or folder */
+        int Download(int type);
+};
+
+extern Settings settings;
+extern Install install;
+
+extern Functions* functions;

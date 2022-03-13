@@ -1,15 +1,44 @@
 /**
  * @author: Andrej Bartulin
- * PROJECT: Termi PackageManager
+ * PROJECT: Termi Package Manager
  * LICENSE: BSD-3-Clause-License
- * DESCRIPTION: C++ file for package manager
+ * DESCRIPTION: Main C++ file for package manager
  * 
 */
 
 #include "PackageManager.hpp"
 #include "Database.hpp"
 
-void help(int type)
+Settings settings;
+Install install;
+
+Functions* functions;
+
+/* Set up what we need */
+Functions::Functions()
+{
+    #ifdef _WIN32
+        install.host = "Windows32";
+        system("cls");
+    #elif _WIN64
+        install.host = "Windows64";
+        system("cls");
+    #elif __APPLE__ || __MACH__
+        install.host = "Mac OSX";
+    #elif __linux__
+        install.host = "GNU/Linux";
+        system("clear");
+    #elif __FreeBSD__
+        install.host = "FreeBSD";
+    #elif __unix || __unix__
+        install.host = "Unix";
+    #else
+        install.host = "Other";
+    #endif
+}
+
+/* Help function */
+void Functions::Help(int type)
 {
     /**
      * 0: Do not print any argument warning and/or error
@@ -17,7 +46,8 @@ void help(int type)
      * 2. Print wrong argument error.
     */
 
-    printf("Termi package manager designed to install addition to Termi\n\n");
+    printf("Termi package manager designed to install addition to Termi\n");
+    printf("Termi's GitHub repo: %s\n\n", repo_link);
 
     switch (type)
     {
@@ -47,9 +77,10 @@ void help(int type)
     printf("\n");
 }
 
-void search(std::string whatToSearch)
+/* Serach function - returns a command or link */
+const char* Functions::Search(std::string name)
 {
-    auto search = database.find(whatToSearch);
+    auto search = database.find(name);
 
     if (search != database.end())
     {
@@ -57,60 +88,97 @@ void search(std::string whatToSearch)
     }
     else
     {
-        std::cout << "Unable to found " << whatToSearch << "!\n";
+        std::cout << "Unable to found " << name << "!\n";
     }
+
+    return search->second.c_str();
 }
 
-void add(std::string name, std::string link)
+/* Add function */
+void Functions::Add(std::string name, std::string link)
 {
     auto position(end(database));
     position = database.insert
     (
-        position, 
+        position,
         { 
             name, 
             link 
         }
     );
 
-    search(name);
+    Search(name);
 }
 
-void Init()
+/* Remove function */
+void Functions::Remove(std::string name)
 {
-    host_info host;
+    database.erase(name);
 
-    #ifdef _WIN32
-        host.name = "Windows32";
-        system("cls");
-    #elif _WIN64
-        host.name = "Windows64";
-        system("cls");
-    #elif __APPLE__ || __MACH__
-        host.name = "Mac OSX";
-    #elif __linux__
-        host.name = "GNU/Linux";
-        system("clear");
-    #elif __FreeBSD__
-        host.name = "FreeBSD";
-    #elif __unix || __unix__
-        host.name = "Unix";
-    #else
-        host.name = "Other";
-    #endif
+    Search(name);
 }
 
+/* Install functions */
+int Functions::Install(std::string name)
+{
+    if (Download(0) == 0)
+    {
+        /* continue */
+    }
+    else
+    {
+        printf("Package Manager can't find name or link. Try add name or link to database or try call this function with following arguments: \n");
+        printf(" <name> <link> \n");
+        printf("If you still can't download, report an issue on Termi's GitHub (see help for link).");
+        return 1;
+    }
+}
+
+int Functions::Install(std::string name, std::string link)
+{
+
+}
+
+/* Uninstall functions */
+void Functions::Uninstall(std::string name)
+{
+
+}
+
+void Functions::Uninstall(std::string name, std::string path)
+{
+
+}
+
+/* Settings function */
+void Functions::Settings()
+{
+    
+}
+
+/* PRIVATE STUFF OF CLASS */
+
+/* Download a file or folder */
+int Functions::Download(int type)
+{
+    /**
+     * 0: Find link from database
+     * 1: Download using direct link from temp variable
+    */
+
+    return 0;
+}
+
+/* main function */
 int main(int argc, char** argv)
 {
     if (argc == 1)
     {
-        help(1);
+        functions->Help(1);
         return 0;
     }
 
-    Init();
-
-    if (strlen(argv[1]) == 6)
+    if (!strcmp(argv[1], "search"))
     {
         if (argv[2] == NULL)
         {
@@ -118,11 +186,11 @@ int main(int argc, char** argv)
         }
         else
         {
-            search(argv[2]);
+            functions->Search(argv[2]);
         }
     }
 
-    if (strlen(argv[1]) == 3)
+    else if (!strcmp(argv[1], "add"))
     {
         if (argv[2] == NULL)
         {
@@ -136,12 +204,12 @@ int main(int argc, char** argv)
             }
             else
             {
-                add(argv[2], argv[3]);
+                functions->Add(argv[2], argv[3]);
             }
         }
     }
 
-    else if (strlen(argv[1]) == 2)
+    else if (!strcmp(argv[1], "remove"))
     {
         if (argv[2] == NULL)
         {
@@ -149,11 +217,11 @@ int main(int argc, char** argv)
         }
         else
         {
-            /* remove(argv[2]); */
+            functions->Remove(argv[2]);
         }
     }
 
-    else if (strlen(argv[1]) == 2)
+    else if (!strcmp(argv[1], "install"))
     {
         if (argv[2] == NULL)
         {
@@ -165,7 +233,7 @@ int main(int argc, char** argv)
         }
     }
 
-    else if (strlen(argv[1]) == 9)
+    else if (!strcmp(argv[1], "uninstall"))
     {
         if (argv[2] == NULL)
         {
@@ -177,7 +245,7 @@ int main(int argc, char** argv)
         }
     }
 
-    else if (strlen(argv[1]) == 8)
+    else if (!strcmp(argv[1], "settings"))
     {
         if (argv[2] == NULL)
         {
@@ -189,14 +257,14 @@ int main(int argc, char** argv)
         }
     }
 
-    else if (strlen(argv[1]) == 4)
+    else if (!strcmp(argv[1], "help"))
     {
-        help(0);
+        functions->Help(0);
     }
 
     else
     {
-        help(2);
+        functions->Help(2);
     }
 
     return 0;

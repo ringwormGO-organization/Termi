@@ -1,3 +1,11 @@
+/**
+ * @author: Andrej Bartulin
+ * PROJECT: Termi Package Manager
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Database
+ * 
+*/
+
 #pragma once
 
 /* include */
@@ -5,7 +13,7 @@
 #include <map>
 
 /* commands */
-std::string test_command;
+std::string test_command = "echo Hello";
 std::string opengl_command;
 std::string lua_command;
 
