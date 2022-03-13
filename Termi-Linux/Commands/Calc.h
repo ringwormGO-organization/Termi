@@ -1,5 +1,4 @@
-int Calc();
-
+#pragma once
 double sumOfTwoNumbers(double x, double y)
 {
     return (x + y);
