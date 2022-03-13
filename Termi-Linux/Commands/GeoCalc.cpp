@@ -1,10 +1,13 @@
-#pragma once
+#include <iostream>
+#include <fstream>
 
 using namespace std;
 
+#define MAX 1000
+
 #include "Calc.h"
 
-int GeoCalc()
+int main()
 {
     string calccho;
     string GEO = "GEO";

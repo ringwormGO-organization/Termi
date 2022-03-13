@@ -17,6 +17,7 @@
 #include <fstream>
 #include <exception>
 #include <memory>
+#include <map>
 #include <filesystem>
 #include <sys/stat.h>
 #include <signal.h>
@@ -24,17 +25,13 @@
 #include <dirent.h>
 #include <sys/types.h>
 
-//#include "Commands/Calc.h"
-#include "Commands/Filesys.h"
-#include "Commands/GeoCalc.h"
-#include "Commands/OpenCalc.h"
 
 #define MAX 1000
 #define MAX_FILE 25
 
 #define VERSION_MAJOR "0"
 #define VERSION_MINOR "1"
-#define VERSION_PATCH "4"
+#define VERSION_PATCH "7"
 #define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 using namespace std;
@@ -70,7 +67,14 @@ void end(int sig)
     }
 }
 
-int main(void)
+std::map<std::string, std::string> commands = 
+{
+    {"open-calc", "./bin/OpenCalc"},
+    {"geocalc", "./bin/GeoCalc"},
+    {"filesys", "./bin/filesys"},
+};
+
+int main()
 {
 
     cout << "ooooooooooo                              " << endl;
@@ -90,15 +94,6 @@ int main(void)
         cout << "Termi> ";
         getline(cin, input);
 
-        // Strings / Commands
-        string help = "help";
-        string exit = "exit";
-        string clear = "clear";
-        string filesys = "filesys";
-        string list = "list";
-        string opencalc = "opencalc";
-        string geocalc = "geocalc";
-
         // Catch CTRL-C
         sigIntHandler.sa_handler = end;
         sigemptyset(&sigIntHandler.sa_mask);
@@ -106,7 +101,16 @@ int main(void)
         sigaction(SIGINT, &sigIntHandler, NULL);
 
 
-        if (input == help)
+        auto result = commands.find(input);
+        const char* run;
+
+        if (result != commands.end())
+        {
+            run = result->second.c_str();
+            system(run);
+        }
+
+        else if (input == "help")
         {
             cout << "help - shows list of commands" << endl;
             cout << "opencalc - opens a calculator" << endl;
@@ -122,30 +126,14 @@ int main(void)
             cout << "filesys / rm - removes a file" << endl;
         }
 
-        else if (input == filesys)
+        else if (input == "clear" || input == "cls")
         {
-            Filesys();
+            std::cout << "\033c";
         }
 
-        else if (input == opencalc)
+        else if (input == "exit")
         {
-            OpenCalc();                
-        }
-
-
-        else if (input == geocalc)
-        {
-            GeoCalc();
-        }
-
-        else if (input == clear || input == "cls")
-        {
-            cout << "\033c";
-        }
-
-        else if (input == exit)
-        {
-            return(0);
+            exit(0);
         }
 
         else if (input.length() == 0) /* enter */
@@ -155,7 +143,7 @@ int main(void)
 
         else
         {
-            std::cout << "'" << input << "'" << "is invalid command!\n";
+            std::cout << "'" << input << "'" << " is invalid command!\n";
         }
     }
 }

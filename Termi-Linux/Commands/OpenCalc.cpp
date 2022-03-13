@@ -1,8 +1,10 @@
-#pragma once
+#include <iostream>
+
 using namespace std;
+
 #include "Calc.h"
 
-int OpenCalc()
+int main()
 {
     char op;
     float num1, num2;
@@ -30,6 +32,11 @@ int OpenCalc()
             break;
 
         case '/':
+            if (num2 == 0)
+            {
+                cout << "Cannot divide with zero! Exiting...\n";
+                return 0;
+            }
             cout << num1 << " / " << num2 << " = " << num1 / num2 << endl;
             break;
 
@@ -38,5 +45,6 @@ int OpenCalc()
             cout << "Error! operator is not correct";
             break;
     }
+
     return 0;
 }
