@@ -77,6 +77,7 @@ Termi-OpenGL running on Windows 11 Pro 21H2
 - [OpenGL](https://www.opengl.org/)
 - [ImGUI](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
+- [curl](https://github.com/curl/curl)
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)

@@ -9,6 +9,9 @@
 #include "PackageManager.hpp"
 #include "Database.hpp"
 
+#include <curl/curl.h>
+#include <curl/easy.h>
+
 Settings settings;
 Install install;
 
@@ -121,7 +124,7 @@ void Functions::Remove(std::string name)
 /* Install functions */
 int Functions::Install(std::string name)
 {
-    if (Download(0) == 0)
+    if (Download(name.c_str(), 0) == 0)
     {
         /* continue */
     }
@@ -136,7 +139,7 @@ int Functions::Install(std::string name)
 
 int Functions::Install(std::string name, std::string link)
 {
-
+    return 0;
 }
 
 /* Uninstall functions */
@@ -159,12 +162,33 @@ void Functions::Settings()
 /* PRIVATE STUFF OF CLASS */
 
 /* Download a file or folder */
-int Functions::Download(int type)
+int Functions::Download(const char* name, int type)
 {
     /**
      * 0: Find link from database
      * 1: Download using direct link from temp variable
     */
+
+    CURL *curl;
+    FILE *fp;
+    CURLcode res;
+    const char* url = Search(name);
+    const char* outfilename = Search(name);
+
+   if (type == 0)
+   {
+        curl = curl_easy_init();                                                                                                                                                                                                                                                           
+        if (curl)
+        {   
+            fp = fopen(outfilename, "wb");
+            curl_easy_setopt(curl, CURLOPT_URL, url);
+            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+            res = curl_easy_perform(curl);
+            curl_easy_cleanup(curl);
+            fclose(fp);
+        }
+   }
 
     return 0;
 }

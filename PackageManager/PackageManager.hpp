@@ -36,6 +36,13 @@ struct Install
     bool isAdditionEnabled;
 };
 
+/* Required for curl */
+size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream) 
+{
+    size_t written = fwrite(ptr, size, nmemb, stream);
+    return written;
+}
+
 /* Class which contains functions  */
 class Functions
 {
@@ -68,7 +75,7 @@ class Functions
 
     private:
         /* Download a file or folder */
-        int Download(int type);
+        int Download(const char* name, int type);
 };
 
 extern Settings settings;
