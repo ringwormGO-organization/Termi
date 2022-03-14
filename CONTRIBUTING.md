@@ -3,7 +3,7 @@ Just drop a Pull Request :)
 
 # Pull Request style
 1. Use CRLF. Set up your Git settings with this: `git config --global core.autocrlf true` and check if it is OK by `git config --global core.autocrlf`. It need to return `true`
-2. Use following style **WITH LOGIC**:
+2. Use following style **WITH LOGIC**, check labels:
 
 ```
 [LABEL NAME] Name of Pull Request
@@ -24,6 +24,8 @@ Just drop a Pull Request :)
 2. There is code to compile binaries.
 3. To compile Windows installer, change path to your own and installer version update may late.
 4. Package Manager has own folder.
+5. GNU/Linux version have `Commands` and `bin` directory. It is same as in Windows version, just it is not in `Programs` directory.
+6. If you want add new command, create new `.cpp` file in `Commands` directory, add it to shell script or batch file and add it to `std::map` "database".
 
 # Coding sytle for Pull Requests
 ### Indentation and line width
