@@ -80,6 +80,7 @@ Termi-OpenGL running on Windows 11 Pro 21H2
 - [Stack Overflow](https://stackoverflow.com/) - solution for most of problems
 - [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
+- [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
 ____________________________________
 
 Thank you for choosing Termi.

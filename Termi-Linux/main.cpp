@@ -11,19 +11,11 @@
 #include <iostream>
 #include <fstream>
 #include <string>
-#include <string.h>
-#include <stdlib.h>
-#include <ctime>
 #include <fstream>
-#include <exception>
-#include <memory>
 #include <map>
 #include <filesystem>
 #include <sys/stat.h>
 #include <signal.h>
-#include <stdio.h>
-#include <dirent.h>
-#include <sys/types.h>
 
 
 #define MAX 1000
@@ -31,7 +23,7 @@
 
 #define VERSION_MAJOR "0"
 #define VERSION_MINOR "1"
-#define VERSION_PATCH "7"
+#define VERSION_PATCH "8"
 #define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 using namespace std;
@@ -49,13 +41,13 @@ using namespace std;
 struct sigaction sigIntHandler;
 
 /* variable for string input */
-std::string input;
+string input;
 
 // Fucntion which control keyboards events (Ctrl-C for example)
 void end(int sig)
 {
-    std::cout << "\nPress any key to continue...\n";
-    auto key = std::cin.get();
+    cout << "\nPress any key to continue...\n";
+    auto key = cin.get();
     if (key != 10)
     {
         /* we need to do something here; input is broken */
@@ -72,11 +64,11 @@ std::map<std::string, std::string> commands =
     {"open-calc", "./bin/OpenCalc"},
     {"geocalc", "./bin/GeoCalc"},
     {"filesys", "./bin/filesys"},
+    {"neofetch", "./bin/neofetch"},
 };
 
 int main()
 {
-
     cout << "ooooooooooo                              " << endl;
     cout << "    888      ooooooooooo                          o88   " << endl;
     cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << endl;
@@ -100,7 +92,6 @@ int main()
         sigIntHandler.sa_flags = 0;
         sigaction(SIGINT, &sigIntHandler, NULL);
 
-
         auto result = commands.find(input);
         const char* run;
 
@@ -115,6 +106,7 @@ int main()
             cout << "help - shows list of commands" << endl;
             cout << "opencalc - opens a calculator" << endl;
             cout << "geocalc - opens a geometric calculator" << endl;
+            cout << "neofetch - fetch computer information" << endl;
             cout << "clear or cls - clear console" << endl;
             cout << "exit - closes Termi" << endl;
             cout << "----------FILESYS COMMANDS" << endl;
@@ -128,7 +120,7 @@ int main()
 
         else if (input == "clear" || input == "cls")
         {
-            std::cout << "\033c";
+            cout << "\033c";
         }
 
         else if (input == "exit")
@@ -143,7 +135,7 @@ int main()
 
         else
         {
-            std::cout << "'" << input << "'" << " is invalid command!\n";
+            cout << "'" << input << "'" << " is invalid command!\n";
         }
     }
 }
