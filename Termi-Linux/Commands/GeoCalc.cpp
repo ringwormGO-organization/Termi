@@ -1,3 +1,10 @@
+/**
+ * @author Stjepan Bilić Matišić
+ * PROJECT: Termi-Linux version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Geo calculator main file
+*/
+
 #include <iostream>
 #include <fstream>
 

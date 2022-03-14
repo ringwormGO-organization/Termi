@@ -1,3 +1,10 @@
+/**
+ * @author Stjepan Bilić Matišić
+ * PROJECT: Termi-Linux version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Filesystem main file
+*/
+
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -21,7 +28,6 @@ using namespace std;
 
 int main()
 {
-
     cout << "FILESYS> ";
     char input1[MAX];
     cin.getline(input1, MAX);

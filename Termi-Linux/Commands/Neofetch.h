@@ -1,3 +1,10 @@
+/**
+ * @author Andrej Bartulin
+ * PROJECT: Termi-Linux version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Neofetch main file
+*/
+
 #pragma once
 
 #include <iostream>
