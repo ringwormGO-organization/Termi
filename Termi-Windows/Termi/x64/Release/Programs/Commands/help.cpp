@@ -1,4 +1,11 @@
-#include "../Include.h"
+/**
+ * @author Andrej Bartulin
+ * PROJECT: Termi-Windows version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Help main file
+*/
+
+#include "Include.h"
 
 //Print help
 int main(int argc, char** argv)

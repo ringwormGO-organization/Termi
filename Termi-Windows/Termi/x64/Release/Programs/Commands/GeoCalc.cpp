@@ -1,10 +1,21 @@
-#include "../Include.h"
+/**
+ * @author Stjepan Bilić Matišić
+ * PROJECT: Termi-Windows version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Geo calculator main file
+*/
 
-// Geo caluclator
+#include <iostream>
+#include <fstream>
+
+using namespace std;
+
+#define MAX 1000
+
+#include "Calc.h"
+
 int main()
 {
-    using namespace std;
-
     string calccho;
     string GEO = "GEO";
     cout << "-----------------------------------------------------------------------------------------------" << endl;
@@ -18,6 +29,7 @@ int main()
 
     if (calccho == GEO)
     {
+    
         while(1)
         {
             cout << "Enter what to do (EXT = extent |SUR = surface area )";
@@ -33,7 +45,7 @@ int main()
 
             if (geoOPR == "exit")
             {
-                
+
             }
 
             else if(geoOPR == SUR)
@@ -124,10 +136,15 @@ int main()
                     << endl;
 
                 }
+                /* wrong command */
+                else
+                {
+                    
+                }
 
             }
+
         }
     }
-
     return 0;
 }

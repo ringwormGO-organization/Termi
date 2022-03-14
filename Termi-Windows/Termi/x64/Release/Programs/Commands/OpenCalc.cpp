@@ -1,10 +1,18 @@
-#include "../Include.h"
+/**
+ * @author Stjepan Bilić Matišić
+ * PROJECT: Termi-Windows version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Calculator main file
+*/
 
-//Calculator
+#include <iostream>
+
+using namespace std;
+
+#include "Calc.h"
+
 int main()
 {
-    using namespace std;
-
     char op;
     float num1, num2;
 
@@ -31,6 +39,11 @@ int main()
             break;
 
         case '/':
+            if (num2 == 0)
+            {
+                cout << "Cannot divide with zero! Exiting...\n";
+                return 0;
+            }
             cout << num1 << " / " << num2 << " = " << num1 / num2 << endl;
             break;
 
@@ -38,7 +51,7 @@ int main()
             // If the operator is other than +, -, * or /, error message is shown
             cout << "Error! operator is not correct";
             break;
-        }
+    }
 
     return 0;
 }

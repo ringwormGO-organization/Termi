@@ -1,7 +1,17 @@
-#include "../Include.h"
+/**
+ * @author Stjepan Bilić Matišić
+ * @author Andrej Bartulin
+ * PROJECT: Termi-Windows version
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Windows filesystem main file
+*/
+
+#include "Include.h"
 #include <filesystem>
-#include <sys/stat.h>
-#include <signal.h>
+
+#include <direct.h>
+#include <stdlib.h>
+#include <stdio.h>
 
 //Filesystem
 int main()
@@ -72,7 +82,7 @@ int main()
         char input6[MAX_FILE];
         cin.getline(input6, MAX);
 
-        if (mkdir(input6, 0777) == -1)
+        if (_mkdir(input6) == -1)
         {
             cerr << "Error :  " << strerror(errno) << endl;
         }
