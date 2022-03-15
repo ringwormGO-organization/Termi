@@ -35,6 +35,8 @@ A Powerful Terminal made in C++
 - Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++``` and ```.NET 5.0 Runtime``` components (if you use Visual Studio 2012, add support for Visual Studio 2019) - Windows.
 - G++ complier - GNU/Linux
   - Install with ```sudo apt-get install g++``` if not already installed on GNU/Linux machine.
+- build-essential - GNU/Linux
+  - Install with ```sudo apt-get install build-essential``` if not already installed on GNU/Linux machine.
 - CMake
   - Install with ```sudo apt-get install cmake``` if not already installed on GNU/Linux machine.
 - Git
