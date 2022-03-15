@@ -38,7 +38,7 @@ struct Inforamtion
     string memory;
 } info;
 
-string extract(string file) 
+static string extract(string file) 
 {
     string distro;
     string line_pre_array = parse("PRETTY_NAME", file);
@@ -57,7 +57,7 @@ string extract(string file)
  * 
  * In own function
 */
-string distro() 
+static string distro() 
 {
     // Check if running Android.
     if (system("which getprop > /dev/null 2>&1")) 

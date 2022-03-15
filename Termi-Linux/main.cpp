@@ -28,15 +28,6 @@
 
 using namespace std;
 
-////////////////////////////////////////////////////////////////////////////////////////
-// Andrej's update for Termi-Linux was a mess.
-// As a result some functions have been removed until further notice
-// Thank you for understanding
-// -StjepanBM1
-
-/* Functions */
-
-
 /* Structs */
 struct sigaction sigIntHandler;
 
