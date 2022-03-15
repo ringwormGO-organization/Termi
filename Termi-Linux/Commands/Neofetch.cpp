@@ -11,6 +11,8 @@
 #include <vector>
 #include <fstream>
 #include <chrono>
+#include <algorithm>
+#include <filesystem>
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -29,12 +31,180 @@ struct Inforamtion
     char user[HOST_NAME_MAX];
     char computer[LOGIN_NAME_MAX];
 
-    const char* OS;
+    string OS;
     int uptime;
 
-    const char* cpu;
+    string cpu;
     string memory;
 } info;
+
+string extract(string file) 
+{
+    string distro;
+    string line_pre_array = parse("PRETTY_NAME", file);
+    vector<string> result = explode(line_pre_array, '=');
+    distro = result[1]; // Second element.
+    // Trim `"` from the string.
+    distro.erase(remove(distro.begin(), distro.end(), '\"'), distro.end());
+    return distro;
+}
+
+/* 
+ * Parse `/etc/os-release` for the PRETTY_NAME string
+ * and extract the value of the variable.
+ * Returns the name of the distro.
+ * Example: Gentoo/Linux.
+ * 
+ * In own function
+*/
+string distro() 
+{
+    // Check if running Android.
+    if (system("which getprop > /dev/null 2>&1")) 
+    {
+        // No getprop command, resume as normal.
+        filesystem::path bedrock_file = "/bedrock/etc/os-release";
+        filesystem::path normal_file = "/etc/os-release";
+        filesystem::path weird_file = "/var/lib/os-release";
+        if (filesystem::exists(bedrock_file)) 
+        {
+            return extract("/bedrock/etc/os-release");
+        } else if (filesystem::exists(normal_file)) 
+        {
+            return extract("/etc/os-release");
+        } else if (filesystem::exists(weird_file)) 
+        {
+            return extract("/var/lib/os-release");
+        } 
+        else 
+        {
+            return "N/A (could not read '/bedrock/etc/os-release', '/etc/os-release', nor '/var/lib/os-release')";
+        }
+    } 
+    else 
+    {
+        // getprop command found, return Android version.
+        const string& command = "getprop ro.build.version.release";
+        system((command + " > temp.txt").c_str());
+ 
+        ifstream ifs("temp.txt");
+        string ret{istreambuf_iterator<char>(ifs), istreambuf_iterator<char>() };
+        ifs.close(); // must close the inout stream so the file can be cleaned up
+        if (remove("temp.txt") != 0) 
+        {
+            perror("Error deleting temporary file");
+        }
+        string message = "Android " + ret;
+        message.erase(remove(message.begin(), message.end(), '\n'), message.end());
+        return message;
+    }
+}
+
+/* 
+ * Run the command and count the lines of output, 
+ * optionally subtract from the count to account for extra lines,
+ * then assemble and return the message as a string.
+ * 
+ * In own function
+*/
+static string count(string cmd, string manager, int remove = 0) 
+{
+    const string& command = cmd + "| wc -l";
+    system((command + " > temp.txt").c_str());
+ 
+    ifstream ifs("temp.txt");
+    string ret{ istreambuf_iterator<char>(ifs), istreambuf_iterator<char>() };
+    ifs.close(); // must close the inout stream so the file can be cleaned up
+    if (std::remove("temp.txt") != 0) 
+    {
+        perror("Error deleting temporary file");
+    }
+    int amount = stoi(ret);
+    amount = amount - remove;
+    string message = ret + " (" + manager + ")";
+    message.erase(std::remove(message.begin(), message.end(), '\n'), message.end());
+    return message;
+}
+
+static PackageManager findPackageManager() 
+{
+    if (system("which apk > /dev/null 2>&1") == 0) 
+    {
+        return APK;
+    } 
+
+    else if (system("which dnf > /dev/null 2>&1") == 0) 
+    {
+        return DNF;
+    } 
+
+    else if (system("which dpkg-query > /dev/null 2>&1") == 0) 
+    {
+        return DPKG;
+    } 
+
+    else if (system("which eopkg > /dev/null 2>&1") == 0) 
+    {
+        return EOPKG;
+    } 
+
+    else if (system("which pacman > /dev/null 2>&1") == 0) 
+    {
+        return PACMAN;
+    } 
+
+    else if (system("which pkg > /dev/null 2>&1") == 0) {
+
+        return PKG;
+    } 
+
+    else if (system("which qlist > /dev/null 2>&1") == 0) 
+    {
+        return QLIST;
+    } 
+
+    else if (system("which rpm > /dev/null 2>&1") == 0) 
+    {
+        return RPM;
+    } 
+
+    else if (system("which xbps-query > /dev/null 2>&1") == 0) 
+    {
+        return XBPS;
+    } 
+
+    else 
+    {
+        return UNKNOWN;
+    }
+}
+
+/* Return package counts */
+string packages() 
+{
+    switch (findPackageManager()) 
+    {
+        case APK:
+            return count("apk info", "apk");
+        case DNF:
+            return count("dnf list installed", "dnf");
+        case DPKG:
+            return count("dpkg-query -f '${binary:Package}\n' -W", "dpkg");
+        case EOPKG:
+            return count("eopkg list-installed", "eopkg");
+        case PACMAN:
+            return count("pacman -Qq", "pacman");
+        case PKG:
+            return count("pkg -l", "Portage");
+        case QLIST:
+            return count("qlist -I", "Portage");
+        case RPM:
+            return count("rpm -qa", "rpm");
+        case XBPS:
+            return count("xbps-query -l", "xbps");
+        default: return "N/A (no supported pacakge managers found)";
+    }
+}
 
 
 int main()
@@ -63,10 +233,10 @@ int main()
     /* CPU */
     string cpu;
     string line_pre_array = parse("model name", "/proc/cpuinfo");
-    vector<std::string> result = explode(line_pre_array, ':');
+    vector<string> result = explode(line_pre_array, ':');
     cpu = result[1];
     cpu = regex_replace(cpu, regex("^ +"), "");
-    info.cpu = cpu.c_str();
+    info.cpu = cpu;
 
     /* Memory */
     string total_line = parse("MemTotal", "/proc/meminfo");
@@ -105,8 +275,9 @@ int main()
     cout << "--------------------------------------------\n";
 
     cout << "\n";
-    cout << "\tOperating system: " << info.OS << "\t\n";
+    cout << "\tOperating system: " << info.OS  << ", " << distro() << "\t\n";
     cout << "\tUptime: " << info.uptime << " hours" << "\t\n\n";
+    cout << "\tPackages: " << packages() << "\t\n";
 
     cout << "\tCPU: " << info.cpu << "\t\n";
     cout << "\tMemory: " << info.memory << "\t\n";
