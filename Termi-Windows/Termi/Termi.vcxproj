@@ -144,7 +144,6 @@
     <ClCompile Include="Termi.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Calc.h" />
     <ClInclude Include="resource.h" />
     <ClInclude Include="resource1.h" />
     <ClInclude Include="Useful.hpp" />

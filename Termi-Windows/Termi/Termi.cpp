@@ -6,18 +6,16 @@
 
 #include <Windows.h>
 
-#include "Calc.h"
-
 #define MAX 250
 
 #define VERSION_MAJOR "0"
 #define VERSION_MINOR "1"
-#define VERSION_PATCH "5"
+#define VERSION_PATCH "7"
 #define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 std::string input;
 
-BOOL WINAPI end(DWORD signal) 
+BOOL WINAPI end(DWORD signal)
 {
     if (signal == CTRL_C_EVENT)
     {
@@ -40,9 +38,10 @@ BOOL WINAPI end(DWORD signal)
 std::map<std::string, std::string> commands =
 {
     {"help", "Programs\\bin\\help.exe"},
-    {"open-calc", "Programs\\bin\\calculator.exe"},
-    {"geocalc", "Programs\\bin\\GeoCalculator.exe"},
-    {"filesys", "Programs\\bin\\Filesystem.exe"},
+    {"open-calc", "Programs\\bin\\OpenCalc.exe"},
+    {"geocalc", "Programs\\bin\\GeoCalc.exe"},
+    {"filesys", "Programs\\bin\\filesys.exe"},
+    {"neofetch", "Programs\\bin\\Neofetch.exe"},
 };
 
 void Check(std::string command)

@@ -1,17 +1,21 @@
 cls
 
-cl /EHsc Linux/Calculator.cpp
-move Calculator.exe bin/Calculator.exe
-del Calculator.obj
+cl /EHsc Commands/OpenCalc.cpp
+move OpenCalc.exe bin/OpenCalc.exe
+del OpenCalc.obj
 
-cl /std:c++20 /EHsc Windows/Filesystem.cpp
-move Filesystem.exe bin/Filesystem.exe
-del Filesystem.obj
+cl /std:c++20 /EHsc Commands/filesys.cpp
+move filesys.exe bin/filesys.exe
+del filesys.obj
 
-cl /EHsc Linux/GeoCalculator.cpp
-move GeoCalculator.exe bin/GeoCalculator.exe
-del GeoCalculator.obj
+cl /EHsc Commands/GeoCalc.cpp
+move GeoCalc.exe bin/GeoCalc.exe
+del GeoCalc.obj
 
-cl /EHsc Linux/help.cpp
+cl /EHsc Commands/help.cpp
 move help.exe bin/help.exe
 del help.obj
+
+cl /EHsc Commands/Neofetch.cpp
+move Neofetch.exe bin/Neofetch.exe
+del Neofetch.obj
