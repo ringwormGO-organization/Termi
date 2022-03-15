@@ -81,6 +81,7 @@ Termi-OpenGL running on Windows 11 Pro 21H2
 - [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
+- Other artcicles on internet
 ____________________________________
 
 Thank you for choosing Termi.

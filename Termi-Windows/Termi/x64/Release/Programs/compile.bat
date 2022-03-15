@@ -1,5 +1,13 @@
 cls
 
+del bin/OpenCalc.exe
+del bin/filesys.exe
+del bin/GeoCalc.exe
+del bin/help.exe
+del bin/Neofetch.exe
+
+cls
+
 cl /EHsc Commands/OpenCalc.cpp
 move OpenCalc.exe bin/OpenCalc.exe
 del OpenCalc.obj
