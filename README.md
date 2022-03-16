@@ -1,6 +1,8 @@
 # Termi
 (Termi currently is just a terminal app but we are developing it to be a fully working terminal not just an app)
 
+**From now, non-OpenGL version will not be supported!**
+
 A Powerful Terminal made in C++
 
 ## About Termi

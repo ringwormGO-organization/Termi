@@ -9,7 +9,15 @@ Just drop a Pull Request :)
 [LABEL NAME] Name of Pull Request
 ```
 
-# Code organization (before)
+# Directory rganization (old but still current)
+1. `Termi` for Windows directory contains Visual Studio solution. In `x64\Release` is `Programs` directory.
+2. There is code to compile binaries.
+3. To compile Windows installer, change path to your own and installer version update may late.
+4. Package Manager has own folder.
+5. GNU/Linux version have `Commands` and `bin` directory. It is same as in Windows version, just it is not in `Programs` directory.
+6. If you want add new command, create new `.cpp` file in `Commands` directory, add it to shell script or batch file and add it to `std::map` "database".
+
+# Directory organization (before)
 1. `Termi-Windows` and `Termi-Linux` directories which contains files which load binaries.
 2. In `Programs/bin` directory are compiled binaries.
 3. In `Windows` or `Linux` directory are code to compile.
@@ -19,13 +27,6 @@ Just drop a Pull Request :)
 7. Some Windows application (compiled with MSVC using command line) use Linux executable. They are same for both platform.
 8. Package Manager has own folder.
 
-# Code organization (new)
-1. `Termi` for Windows directory contains Visual Studio solution. In `x64\Release` is `Programs` directory.
-2. There is code to compile binaries.
-3. To compile Windows installer, change path to your own and installer version update may late.
-4. Package Manager has own folder.
-5. GNU/Linux version have `Commands` and `bin` directory. It is same as in Windows version, just it is not in `Programs` directory.
-6. If you want add new command, create new `.cpp` file in `Commands` directory, add it to shell script or batch file and add it to `std::map` "database".
 
 # Coding sytle for Pull Requests
 ### Indentation and line width
