@@ -53,7 +53,6 @@ A Powerful Terminal made in C++
 - Also you can build launcher and installer for Windows version too :)
 - If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with ```git pull```. You can also use [installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe) but you need still need to download ```MSVC C++ runtime enviroment```b and ```.NET 5.0 Runtime```. It is recommended that you run the application as an administrator, especially if launcher downloading new update because writing to ```C:\Programs Files``` or similiar directory require administartor priviliges.
 
-
 ### Build & Run - GNU/Linux version (& macOS version which unsupported)
 ```sh
 $ cd Termi-Linux && chmod +x ./compile.sh && ./compile.sh
