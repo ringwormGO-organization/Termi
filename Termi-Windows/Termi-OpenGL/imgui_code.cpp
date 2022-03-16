@@ -31,7 +31,7 @@ void ContextMenu::DrawContextMenu()
     {
         if (ImGui::MenuItem("New terminal tab", "Ctrl+N"))
         {
-            
+
         }
 
         ImGui::Separator();
@@ -57,7 +57,7 @@ void main_code()
     /* ImGUI window creation */
     ImGui::SetNextWindowPos(ImVec2((float)0, (float)0));
     ImGui::SetNextWindowSize(ImVec2((float)900, (float)900));
-    ImGui::Begin("Termi", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::Begin("Termi", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse | ImGuiWindowFlags_AlwaysAutoResize);
 
     #ifdef PRINT_WHEN_WINDOW_IS_CREATED
         if (!status.alReadyPrinted)

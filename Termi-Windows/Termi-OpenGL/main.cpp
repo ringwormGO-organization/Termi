@@ -45,21 +45,10 @@ int main()
 	}
 
 
-	/*
-	//load image
-	int width, height;
-	int channels; // number of color components. Example: RGB has 3 color components.
-	unsigned char* pixels = stbi_load("termi.png", &width, &height, &channels, 4);
-
-	// change window icon
 	GLFWimage images[1];
-	images[0].width = width;
-	images[1].height = height;
-	images[2].pixels = pixels;
-
-	glfwSetWindowIcon(window, 1, images); 
-	*/ 
-	//code is commented because it is couse segmentation fault
+	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
+	glfwSetWindowIcon(window, 1, images);
+	stbi_image_free(images[0].pixels);
 
 	/* Initialize ImGUI */
 	IMGUI_CHECKVERSION();
