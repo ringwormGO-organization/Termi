@@ -3,6 +3,8 @@
 
 **From now, non-OpenGL version will not be supported!**
 
+**If you want use non-OpenGL version, manually install files!**
+
 A Powerful Terminal made in C++
 
 ## About Termi

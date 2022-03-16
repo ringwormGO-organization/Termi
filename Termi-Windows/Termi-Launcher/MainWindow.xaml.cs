@@ -23,8 +23,8 @@ namespace Termi_Launcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static string version_link = "https://drive.google.com/uc?export=download&id=1EcxcxDkSXB6B-rOGmgzvKhGF2Qfex3QQ";
-        public static string zip_link = "https://drive.google.com/uc?export=download&id=1seQID1pZlF_lhvCZ1ab2jSp-_xh5NiO2";
+        public static string version_link = "https://drive.google.com/uc?export=download&id=1Zgbp2Gef2xbTiK51cr2Yr1SORHXOtF-5";
+        public static string zip_link = "https://drive.google.com/uc?export=download&id=1xruLFebdpdswNMiy1juYfh9-9pqdYv-y";
 
         private string rootPath;
         private string versionFile;
@@ -73,9 +73,9 @@ namespace Termi_Launcher
             InitializeComponent();
 
             rootPath = Directory.GetCurrentDirectory();
-            versionFile = Path.Combine(rootPath, "Version.txt");
-            TermiZip = Path.Combine(rootPath, "Release.zip");
-            TermiExe = Path.Combine(rootPath, "Release", "Termi.exe");
+            versionFile = Path.Combine(rootPath, "Version2.txt");
+            TermiZip = Path.Combine(rootPath, "Termi-OpenGL.zip");
+            TermiExe = Path.Combine(rootPath, "Debug", "Termi-OpenGL.exe");
             IsAdministrator();
         }
 
@@ -167,7 +167,7 @@ namespace Termi_Launcher
             if (File.Exists(TermiExe) && Status == LauncherStatus.ready)
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo(TermiExe);
-                startInfo.WorkingDirectory = Path.Combine(rootPath, "Release");
+                startInfo.WorkingDirectory = Path.Combine(rootPath, "Debug");
                 Process.Start(startInfo);
 
                 Close();

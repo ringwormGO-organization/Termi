@@ -2,7 +2,7 @@
 ; SEE THE DOCUMENTATION FOR DETAILS ON CREATING INNO SETUP SCRIPT FILES!
 
 #define MyAppName "Termi"
-#define MyAppVersion "0.1.5"
+#define MyAppVersion "0.2.0" ; Version with non-OpenGL and OpenGL version
 #define MyAppPublisher "ringwormGO"
 #define MyAppURL "https://github.com/ringwormGO-organization/Termi"
 #define MyAppExeName "Termi-Launcher.exe"
