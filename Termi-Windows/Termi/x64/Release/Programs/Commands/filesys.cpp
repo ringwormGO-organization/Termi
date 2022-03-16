@@ -1,6 +1,5 @@
 /**
  * @author Stjepan Bilić Matišić
- * @author Andrej Bartulin
  * PROJECT: Termi-Windows version
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Windows filesystem main file
@@ -42,16 +41,11 @@ int main()
 
         else 
         {
-            char ch;
-
-            while (1) 
-            {
-                my_file >> ch;
-                if (my_file.eof())
-                    break;
-
-                cout << ch;
-            }
+            std::string str; 
+        while (getline(my_file, str))
+        {
+            cout << str << endl;
+        }
 
         }
         my_file.close();
