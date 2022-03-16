@@ -10,7 +10,7 @@
 
 #define VERSION_MAJOR "0"
 #define VERSION_MINOR "1"
-#define VERSION_PATCH "7"
+#define VERSION_PATCH "8"
 #define VERSION "v" VERSION_MAJOR "." VERSION_MINOR "." VERSION_PATCH
 
 std::string input;
