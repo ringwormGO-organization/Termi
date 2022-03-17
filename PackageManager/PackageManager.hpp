@@ -74,8 +74,10 @@ class Functions
         void Settings();
 
     private:
-        /* Download a file or folder */
-        int Download(const char* name, int type);
+        /* Download a file or folder - found link from database */
+        int Download(const char* name);
+        /* Download a file or folder*/
+        int Download(const char* name, const char* link);
 };
 
 extern Settings settings;

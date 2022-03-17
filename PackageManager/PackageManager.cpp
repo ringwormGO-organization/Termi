@@ -124,22 +124,33 @@ void Functions::Remove(std::string name)
 /* Install functions */
 int Functions::Install(std::string name)
 {
-    if (Download(name.c_str(), 0) == 0)
+    if (Download(name.c_str()) == 0)
     {
-        /* continue */
+        return 0;
     }
     else
     {
         printf("Package Manager can't find name or link. Try add name or link to database or try call this function with following arguments: \n");
         printf(" <name> <link> \n");
-        printf("If you still can't download, report an issue on Termi's GitHub (see help for link).");
+        printf("If you still can't download, report an issue on Termi's GitHub (see help for link).\n");
         return 1;
     }
 }
 
 int Functions::Install(std::string name, std::string link)
 {
-    return 0;
+    if (install.host == "GNU/Linux")
+    {
+        if (Download(name.c_str(), link.c_str()) == 0)
+        {
+            return 0;
+        }
+
+        else
+        {
+            return 1;
+        }
+    }
 }
 
 /* Uninstall functions */
@@ -162,35 +173,53 @@ void Functions::Settings()
 /* PRIVATE STUFF OF CLASS */
 
 /* Download a file or folder */
-int Functions::Download(const char* name, int type)
+int Functions::Download(const char* name)
 {
-    /**
-     * 0: Find link from database
-     * 1: Download using direct link from temp variable
-    */
-
     CURL *curl;
     FILE *fp;
     CURLcode res;
-    const char* url = Search(name);
-    const char* outfilename = Search(name);
+    const char* url;
+    const char* outfilename = name;
 
-   if (type == 0)
-   {
-        curl = curl_easy_init();                                                                                                                                                                                                                                                           
-        if (curl)
-        {   
-            fp = fopen(outfilename, "wb");
-            curl_easy_setopt(curl, CURLOPT_URL, url);
-            curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
-            curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
-            res = curl_easy_perform(curl);
-            curl_easy_cleanup(curl);
-            fclose(fp);
-        }
-   }
+    if (!(url == Search(name)))
+    {
+        return 1;
+    }
 
-    return 0;
+    curl = curl_easy_init();                                                                                                                                                                                                                                                           
+    if (curl)
+    {   
+        fp = fopen(outfilename, "wb");
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        fclose(fp);
+        return 0;
+    }
+}
+
+int Functions::Download(const char* name, const char* link)
+{
+    CURL *curl;
+    FILE *fp;
+    CURLcode res;
+    const char* url = link;
+    const char* outfilename = name;
+
+    curl = curl_easy_init();                                                                                                                                                                                                                                                           
+    if (curl)
+    {   
+        fp = fopen(outfilename, "wb");
+        curl_easy_setopt(curl, CURLOPT_URL, url);
+        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
+        curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        res = curl_easy_perform(curl);
+        curl_easy_cleanup(curl);
+        fclose(fp);
+        return 0;
+    }
 }
 
 /* main function */
@@ -253,7 +282,14 @@ int main(int argc, char** argv)
         }
         else
         {
-            /* install(argv[2]); */
+            if (argv[3] == NULL)
+            {
+                functions->Install(argv[2]);
+            }
+            else
+            {
+                functions->Install(argv[2], argv[3]);
+            }
         }
     }
 
