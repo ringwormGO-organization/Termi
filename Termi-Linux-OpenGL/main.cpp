@@ -16,6 +16,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <signal.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.hpp"
@@ -25,12 +26,35 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+struct sigaction sigIntHandler;
+
+void end(int sig)
+{
+	std::cout << "\nPress any key to continue...\n";
+    auto key = std::cin.get();
+    if (key != 10)
+    {
+        /* we need to do something here; input is broken */
+        exit(0);
+    }
+    else
+    {
+        exit(sig);
+    }
+}
+
 int main()
 {
 	std::cout << "\n\n";
 
+	// Catch CTRL-C
+	sigIntHandler.sa_handler = end;
+	sigemptyset(&sigIntHandler.sa_mask);
+	sigIntHandler.sa_flags = 0;
+	sigaction(SIGINT, &sigIntHandler, NULL);
+
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(900, 900, "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(window_width, window_height, "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -72,7 +96,7 @@ int main()
 		main_code();
 
 		#ifdef PRINT_FPS
-				auto FPS = printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		#endif
 
 		/* Renders the ImGUI elements */

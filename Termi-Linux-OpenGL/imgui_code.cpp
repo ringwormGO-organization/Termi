@@ -11,67 +11,114 @@
 
 using namespace std;
 
-Status status;
+Renderer* render;
 
-ContextMenu* contextmenu;
-
-/* Code for ContextMenu class */
-
-/* PRIVATE INSTANCES OF ContextMenu class */
+/* Code for Renderer class */
+/* PRIVATE INSTANCES OF Renderer class */
 
 /* Draw new teminal tab */
-void ContextMenu::DrawNewTab()
+void Renderer::DrawNewTab()
+{
+    
+}
+
+void Renderer::Color()
+{
+
+}
+
+void Renderer::Font()
 {
     
 }
 
 /* Draw context menu */
-void ContextMenu::DrawContextMenu()
+void Renderer::DrawContextMenu()
 {
-    if (ImGui::BeginMenu("File"))
+    if (ImGui::BeginMenuBar())
     {
-        if (ImGui::MenuItem("New terminal tab", "Ctrl+N"))
+        if (ImGui::BeginMenu("File"))
         {
-            
+            if (ImGui::MenuItem("New terminal tab", "Ctrl+N"))
+            {
+                
+            }
+
+            if (ImGui::MenuItem("New terminal profile", "Ctrl+Shift+N"))
+            {
+                
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Exit", "Ctrl+W"))
+            {
+                exit(0);
+            }
+
+            ImGui::EndMenu();
         }
 
-        ImGui::Separator();
-
-        if (ImGui::MenuItem("Exit", "Ctrl+W"))
+        if (ImGui::BeginMenu("Edit"))
         {
-            exit(0);
+            if (ImGui::MenuItem("Color picker"))
+            {
+                Color();
+            }
+
+            if (ImGui::MenuItem("Font picker"))
+            {
+                Font();
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("Change theme", "Ctrl+T"))
+            {
+                cout << "In progress!\n\n";
+            }
+
+            ImGui::EndMenu();
         }
 
-        ImGui::Separator();
-
-        if (ImGui::MenuItem("Nothing"))
-        {
-            /* do nothing */
-        }
-
-        ImGui::EndMenu();
+        ImGui::EndMenuBar();
     }
+}
+
+/* Terminal/console part */
+void Renderer::Console()
+{
+
 }
 
 void main_code()
 {
     /* ImGUI window creation */
-    ImGui::SetNextWindowPos(ImVec2((float)0, (float)0));
-    ImGui::SetNextWindowSize(ImVec2((float)900, (float)900));
-    ImGui::Begin("Termi", NULL, ImGuiWindowFlags_NoMove | ImGuiWindowFlags_NoCollapse);
+    ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
+    ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
+    ImGui::Begin
+    (  "Termi", 
+        NULL, 
+        ImGuiWindowFlags_NoMove  | 
+        ImGuiWindowFlags_NoCollapse | 
+        ImGuiWindowFlags_AlwaysAutoResize | 
+        ImGuiWindowFlags_NoTitleBar | 
+        ImGuiWindowFlags_MenuBar
+    );
 
     #ifdef PRINT_WHEN_WINDOW_IS_CREATED
-        if (!status.alReadyPrinted)
+        if (!alReadyPrinted)
         {
             std::cout << "ImGUI window is created.\n";
-            status.alReadyPrinted = true;
+            alReadyPrinted = true;
         }
 
-        if (status.alReadyPrinted)
+        if (alReadyPrinted)
             /* do nothing */
     #endif
 
-    contextmenu->DrawContextMenu();
+    render->DrawContextMenu();
+    render->Console();
         
     /* End of window */
     ImGui::End();

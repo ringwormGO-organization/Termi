@@ -18,28 +18,28 @@
 #include <iostream>
 #include <fstream>
 
-struct Canvas
-{
-    int width;
-    int height;
-};
+/* All variables which is required */
+static float pos_x = 0;
+static float pos_y = 0;
+static float window_width = 900;
+static float window_height = 900;
 
-struct Status
-{
-	bool alReadyPrinted;
-};
+static bool isDarkTheme = false;
 
-class ContextMenu
+static bool alReadyPrinted;
+
+class Renderer
 {
     public:
-        std::string log_1;
-
         void DrawContextMenu();
+        void Console();
 
     private:
         void DrawNewTab();
+        void Color();
+        void Font();
 };
 
 void main_code();
 
-extern ContextMenu* contextmenu;
+extern Renderer* render;
