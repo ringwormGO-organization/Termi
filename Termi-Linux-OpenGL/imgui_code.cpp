@@ -22,11 +22,6 @@ void Renderer::DrawNewTab()
     
 }
 
-void Renderer::Font()
-{
-    
-}
-
 /* Draw context menu */
 void Renderer::DrawContextMenu()
 {
@@ -72,6 +67,24 @@ void Renderer::DrawContextMenu()
             ImGui::EndMenu();
         }
 
+        if (ImGui::BeginMenu("Help"))
+        {
+
+            if (ImGui::MenuItem("About ImGUI", "Ctrl+A"))
+            {
+                ImGui::ShowDemoWindow();
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem("About Termi", "Ctrl+Shift+A"))
+            {
+                
+            }
+
+            ImGui::EndMenu();
+        }
+
         ImGui::EndMenuBar();
     }
 }
@@ -79,7 +92,19 @@ void Renderer::DrawContextMenu()
 /* Terminal/console part */
 void Renderer::Console()
 {
+    ImGuiIO& io1 = ImGui::GetIO(); (void)io1;
 
+    static char text[4096] = "Termi> ";
+
+    ImGui::InputTextMultiline("##source", text, IM_ARRAYSIZE(text), ImVec2(window_width, window_height - 100), ImGuiInputTextFlags_EnterReturnsTrue);
+}
+
+void Renderer::Font()
+{
+    if (isFont == true)
+        isFont = false;
+    else
+        isFont == true;
 }
 
 void main_code()
@@ -94,7 +119,8 @@ void main_code()
         ImGuiWindowFlags_NoCollapse | 
         ImGuiWindowFlags_AlwaysAutoResize | 
         ImGuiWindowFlags_NoTitleBar | 
-        ImGuiWindowFlags_MenuBar
+        ImGuiWindowFlags_MenuBar |
+        ImGuiInputTextFlags_AllowTabInput
     );
 
     #ifdef PRINT_WHEN_WINDOW_IS_CREATED
@@ -108,8 +134,16 @@ void main_code()
             /* do nothing */
     #endif
 
+    #ifdef PRINT_FPS
+        ImGui::SetCursorPosX(window_width + window_width / 200 - 100);
+        ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", ImGui::GetIO().Framerate);
+    #endif
+
     render->DrawContextMenu();
     render->Console();
+
+    if (isFont)
+        ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", ".");
         
     /* End of window */
     ImGui::End();

@@ -13,6 +13,8 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
+#include "imgui_file_dialog/ImGuiFileDialog.h"
+
 #include "Settings.hpp"
 
 #include <iostream>
@@ -25,6 +27,7 @@ static float window_width = 900;
 static float window_height = 900;
 
 static bool isDarkTheme = false;
+static bool isFont = false;
 
 static bool alReadyPrinted;
 
@@ -33,10 +36,10 @@ class Renderer
     public:
         void DrawContextMenu();
         void Console();
+        void Font();
 
     private:
         void DrawNewTab();
-        void Font();
 };
 
 void main_code();

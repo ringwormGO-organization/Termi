@@ -31,8 +31,8 @@ A Powerful Terminal made in C++
 - [x] Lanucher and updater - C#
 
 ### Independence
-- [x] Independence (Windows & GNU/Linux [ImGUI](https://github.com/ocornut/imgui) base)
-- [ ] Independence (Windows & GNU/Linux [ImGUI](https://github.com/ocornut/imgui))
+- [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) base)
+- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui))
 
 ## Build & Run
 ### Required software:
@@ -76,7 +76,8 @@ Termi-OpenGL running on Windows 11 Pro 21H2
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
-- [ImGUI](https://github.com/ocornut/imgui)
+- [ImGui](https://github.com/ocornut/imgui)
+- [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [stb](https://github.com/nothings/stb)
 - [curl](https://github.com/curl/curl)
 

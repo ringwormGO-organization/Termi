@@ -4,7 +4,7 @@ set(CMAKE_BUILD_TYPE Debug)
 
 project(Termi-OpenGL)
 
-file(GLOB SRC CONFIGURE_DEPENDS "imgui/*.hpp" "imgui/*.cpp")
+file(GLOB SRC CONFIGURE_DEPENDS "imgui_file_dialog/*.h" "imgui_file_dialog/*.cpp" "imgui/*.hpp" "imgui/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC} glad.c imgui_code.cpp main.cpp)
 
