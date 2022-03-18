@@ -22,11 +22,6 @@ void Renderer::DrawNewTab()
     
 }
 
-void Renderer::Color()
-{
-
-}
-
 void Renderer::Font()
 {
     
@@ -61,12 +56,8 @@ void Renderer::DrawContextMenu()
 
         if (ImGui::BeginMenu("Edit"))
         {
-            if (ImGui::MenuItem("Color picker"))
-            {
-                Color();
-            }
 
-            if (ImGui::MenuItem("Font picker"))
+            if (ImGui::MenuItem("Font picker", "Ctrl+F"))
             {
                 Font();
             }
