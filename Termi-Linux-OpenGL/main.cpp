@@ -47,7 +47,7 @@ int main()
 {
 	std::cout << "\n\n";
 
-	// Catch CTRL-C
+	/* Catch CTRL-C */
 	sigIntHandler.sa_handler = end;
 	sigemptyset(&sigIntHandler.sa_mask);
 	sigIntHandler.sa_flags = 0;
@@ -94,6 +94,12 @@ int main()
 
 		/* main ImGUI code */
 		main_code();
+
+		/*ImGui demo window */
+		if (isDemoWindow == true)
+		{
+			ImGui::ShowDemoWindow();
+		}
 
 		#ifdef PRINT_FPS
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
