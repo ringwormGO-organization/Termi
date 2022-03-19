@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Settings file
- * INFORMATION: Compile this Visual Studio solution
+ * INFORMATION: Compile solution, else check Victor Gordan's video
  * INFORMATION2: Uncomment line to enbable setting, comment to disable setting
 */
 

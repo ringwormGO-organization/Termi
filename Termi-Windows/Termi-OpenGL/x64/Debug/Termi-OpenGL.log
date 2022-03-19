@@ -1,4 +1,4 @@
-﻿  imgui_code.cpp
-  main.cpp
-  Generating Code...
+﻿  main.cpp
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-OpenGL\main.cpp(71,54): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-OpenGL\main.cpp(71,40): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Termi-OpenGL.vcxproj -> D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\Termi-OpenGL.exe
