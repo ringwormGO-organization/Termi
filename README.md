@@ -25,6 +25,7 @@ A Powerful Terminal made in C++
 - [ ] User settings in JSON files
 - [ ] Support most of major commands
 - [ ] Include other host terminals
+- [ ] Arguments
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
@@ -32,7 +33,8 @@ A Powerful Terminal made in C++
 
 ### Independence
 - [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) base)
-- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui))
+- [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui))
+- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) real console and changing font)
 
 ## Build & Run
 ### Required software:
