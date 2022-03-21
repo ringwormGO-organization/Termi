@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code
- * INFORAMTION: Compile solution, else check Victor Gordan's video
+ * INFORAMTION:Compile solution, else check Victor Gordan's video
 */
 
 #pragma once
@@ -16,8 +16,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <map>
+#include <string>
 
 /* All variables which is required */
 static float pos_x = 0;
@@ -31,10 +31,10 @@ static bool isDemoWindow = false;
 
 static bool alReadyPrinted;
 
-/* Commands - command and path */
-static std::map<std::string, std::string> commands = 
+/* Commands list - command and path */
+static std::map<const std::string, const std::string> commands = 
 {
-    {"Termi", "../Termi-Linux/Termi"}
+    {"test", "test"}
 };
 
 /* Renderer class */
