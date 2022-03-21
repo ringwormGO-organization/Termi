@@ -29,8 +29,6 @@ struct Console
     bool                  AutoScroll;
     bool                  ScrollToBottom;
 
-
-
     Console()
     {
         ClearLog();
@@ -41,6 +39,7 @@ struct Console
         Commands.push_back("help");
         Commands.push_back("clear");
         Commands.push_back("cls");
+        Commands.push_back("exit");
 
         for (auto& x: commands) 
         {
@@ -98,7 +97,12 @@ struct Console
         if (BeginPopupContextItem())
         {
             if (MenuItem("Close Console"))
-                *p_open = false;
+            {
+                if (*p_open != NULL)
+                { 
+                    *p_open = false;
+                }
+            }
             EndPopup();
         }
 
@@ -252,6 +256,7 @@ struct Console
         {
             ClearLog();
         }
+
         else if (Stricmp(command_line.c_str(), "help") == 0)
         {
             AddLog("Commands:");
@@ -260,6 +265,13 @@ struct Console
                 AddLog("- %s", Commands[i]);
             }
         }
+
+        else if (Stricmp(command_line.c_str(), "exit") == 0)
+        {
+            AddLog("Exiting...");
+            exit(0);
+        }
+
         else
         {
             AddLog("Unknown command: '%s'\n", command_line.c_str());
@@ -491,7 +503,7 @@ void main_code()
     SetNextWindowSize(ImVec2(window_width, window_height));
     Begin
     (  "Termi", 
-        nullptr, 
+        NULL, 
         ImGuiWindowFlags_NoMove  | 
         ImGuiWindowFlags_NoCollapse | 
         ImGuiWindowFlags_AlwaysAutoResize | 
@@ -521,7 +533,7 @@ void main_code()
 
     /* Draw console */
     static Console console;
-    console.Draw("Interactive console - until real console", nullptr);
+    console.Draw("Interactive console - until real console", NULL);
 
     /* Font dialog */
     if (isFont == true)

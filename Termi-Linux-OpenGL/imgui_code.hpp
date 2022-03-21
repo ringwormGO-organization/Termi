@@ -17,8 +17,8 @@
 
 #include <iostream>
 #include <fstream>
-#include <string>
 #include <map>
+#include <string>
 
 /* All variables which is required */
 static float pos_x = 0;
@@ -35,7 +35,7 @@ static bool alReadyPrinted;
 /* Commands list - command and path */
 static std::map<const std::string, const std::string> commands = 
 {
-    {"Termi", "../Termi-Linux/Termi"}
+    {"test", "test"}
 };
 
 /* Renderer class */
