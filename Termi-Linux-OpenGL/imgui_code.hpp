@@ -32,8 +32,8 @@ static bool isDemoWindow = false;
 
 static bool alReadyPrinted;
 
-/* Commands - command and path */
-static std::map<std::string, std::string> commands = 
+/* Commands list - command and path */
+static std::map<const std::string, const std::string> commands = 
 {
     {"Termi", "../Termi-Linux/Termi"}
 };

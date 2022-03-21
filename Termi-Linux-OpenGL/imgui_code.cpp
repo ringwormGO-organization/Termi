@@ -9,14 +9,15 @@
 
 #include "imgui_code.hpp"
 
-#include "imgui_file_dialog/ImGuiFileDialog.h"
-
 using namespace std;
 using namespace ImGui;
 
 Renderer* render;
 
-/* Console struct - everything for console */
+/* 
+ * Console struct - everything for console
+ * Credits from imgui_demo.cpp
+*/
 struct Console
 {
     char                  InputBuf[256];
@@ -28,6 +29,8 @@ struct Console
     bool                  AutoScroll;
     bool                  ScrollToBottom;
 
+
+
     Console()
     {
         ClearLog();
@@ -38,6 +41,12 @@ struct Console
         Commands.push_back("help");
         Commands.push_back("clear");
         Commands.push_back("cls");
+
+        for (auto& x: commands) 
+        {
+            Commands.push_back(x.first.c_str());
+        }
+
         AutoScroll = true;
         ScrollToBottom = false;
         AddLog("Termi> ");
@@ -76,66 +85,66 @@ struct Console
 
     void Draw(const char* title, bool* p_open)
     {
-        ImGui::SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-        if (!ImGui::Begin(title, p_open))
+        SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
+        if (!Begin(title, p_open))
         {
-            ImGui::End();
+            End();
             return;
         }
 
         // As a specific feature guaranteed by the library, after calling Begin() the last Item represent the title bar.
         // So e.g. IsItemHovered() will return true when hovering the title bar.
         // Here we create a context menu only available from the title bar.
-        if (ImGui::BeginPopupContextItem())
+        if (BeginPopupContextItem())
         {
-            if (ImGui::MenuItem("Close Console"))
+            if (MenuItem("Close Console"))
                 *p_open = false;
-            ImGui::EndPopup();
+            EndPopup();
         }
 
-        ImGui::TextWrapped(
+        TextWrapped(
             "This example implements a console with basic coloring, completion (TAB key) and history (Up/Down keys). A more elaborate "
             "implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-        ImGui::TextWrapped("Enter 'HELP' for help.");
+        TextWrapped("Enter 'HELP' for help.");
 
         // TODO: display items starting from the bottom
 
-        if (ImGui::SmallButton("Add Debug Text"))  { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); }
-        ImGui::SameLine();
-        if (ImGui::SmallButton("Add Debug Error")) { AddLog("[error] something went wrong"); }
-        ImGui::SameLine();
-        if (ImGui::SmallButton("Clear"))           { ClearLog(); }
-        ImGui::SameLine();
-        bool copy_to_clipboard = ImGui::SmallButton("Copy");
-        //static float t = 0.0f; if (ImGui::GetTime() - t > 0.02f) { t = ImGui::GetTime(); AddLog("Spam %f", t); }
+        if (SmallButton("Add Debug Text"))  { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); }
+        SameLine();
+        if (SmallButton("Add Debug Error")) { AddLog("[error] something went wrong"); }
+        SameLine();
+        if (SmallButton("Clear"))           { ClearLog(); }
+        SameLine();
+        bool copy_to_clipboard = SmallButton("Copy");
+        //static float t = 0.0f; if (GetTime() - t > 0.02f) { t = GetTime(); AddLog("Spam %f", t); }
 
-        ImGui::Separator();
+        Separator();
 
         // Options menu
-        if (ImGui::BeginPopup("Options"))
+        if (BeginPopup("Options"))
         {
-            ImGui::Checkbox("Auto-scroll", &AutoScroll);
-            ImGui::EndPopup();
+            Checkbox("Auto-scroll", &AutoScroll);
+            EndPopup();
         }
 
         // Options, Filter
-        if (ImGui::Button("Options"))
-            ImGui::OpenPopup("Options");
-        ImGui::SameLine();
+        if (Button("Options"))
+            OpenPopup("Options");
+        SameLine();
         Filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
-        ImGui::Separator();
+        Separator();
 
         // Reserve enough left-over height for 1 separator + 1 input text
-        const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
-        ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
-        if (ImGui::BeginPopupContextWindow())
+        const float footer_height_to_reserve = GetStyle().ItemSpacing.y + GetFrameHeightWithSpacing();
+        BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
+        if (BeginPopupContextWindow())
         {
-            if (ImGui::Selectable("Clear")) ClearLog();
-            ImGui::EndPopup();
+            if (Selectable("Clear")) ClearLog();
+            EndPopup();
         }
 
         // Display every line as a separate entry so we can change their color or add custom widgets.
-        // If you only want raw text you can use ImGui::TextUnformatted(log.begin(), log.end());
+        // If you only want raw text you can use TextUnformatted(log.begin(), log.end());
         // NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
         // to only process visible items. The clipper will automatically measure the height of your first item and then
         // "seek" to display only items in the visible area.
@@ -158,9 +167,9 @@ struct Console
         // If your items are of variable height:
         // - Split them into same height items would be simpler and facilitate random-seeking into your list.
         // - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
-        ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
+        PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
         if (copy_to_clipboard)
-            ImGui::LogToClipboard();
+            LogToClipboard();
         for (int i = 0; i < Items.Size; i++)
         {
             const char* item = Items[i];
@@ -174,26 +183,26 @@ struct Console
             if (strstr(item, "[error]"))          { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
             else if (strncmp(item, "# ", 2) == 0) { color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; }
             if (has_color)
-                ImGui::PushStyleColor(ImGuiCol_Text, color);
-            ImGui::TextUnformatted(item);
+                PushStyleColor(ImGuiCol_Text, color);
+            TextUnformatted(item);
             if (has_color)
-                ImGui::PopStyleColor();
+                PopStyleColor();
         }
         if (copy_to_clipboard)
-            ImGui::LogFinish();
+            LogFinish();
 
-        if (ScrollToBottom || (AutoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY()))
-            ImGui::SetScrollHereY(1.0f);
+        if (ScrollToBottom || (AutoScroll && GetScrollY() >= GetScrollMaxY()))
+            SetScrollHereY(1.0f);
         ScrollToBottom = false;
 
-        ImGui::PopStyleVar();
-        ImGui::EndChild();
-        ImGui::Separator();
+        PopStyleVar();
+        EndChild();
+        Separator();
 
         // Command-line
         bool reclaim_focus = false;
         ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-        if (ImGui::InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
+        if (InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
         {
             char* s = InputBuf;
             Strtrim(s);
@@ -204,11 +213,11 @@ struct Console
         }
 
         // Auto-focus on window apparition
-        ImGui::SetItemDefaultFocus();
+        SetItemDefaultFocus();
         if (reclaim_focus)
-            ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+            SetKeyboardFocusHere(-1); // Auto focus previous widget
 
-        ImGui::End();
+        End();
     }
 
     void ExecCommand(string command_line)
@@ -235,10 +244,11 @@ struct Console
         if (command != commands.end())
         {
             /* execute execuatable */
+            AddLog(command_line.c_str());
         }
 
         // Process command
-        if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
+        else if(Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
         {
             ClearLog();
         }
@@ -471,10 +481,7 @@ void Renderer::DrawContextMenu()
 
 void Renderer::Font()
 {
-    if (isFont == true)
-    {
-        ImGuiFileDialog::Instance()->OpenDialog("ChooseFileDlgKey", "Choose File", ".cpp,.h,.hpp", ".");
-    }
+    
 }
 
 void main_code()
@@ -515,6 +522,12 @@ void main_code()
     /* Draw console */
     static Console console;
     console.Draw("Interactive console - until real console", nullptr);
+
+    /* Font dialog */
+    if (isFont == true)
+    {
+        render->Font();
+    }
 
     /* Get window width and height */
     window_width = GetWindowWidth();
