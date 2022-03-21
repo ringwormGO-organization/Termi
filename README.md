@@ -79,7 +79,6 @@ Termi-OpenGL running on Windows 11 Pro 21H2
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
 - [ImGui](https://github.com/ocornut/imgui)
-- [ImGuiFileDialog](https://github.com/aiekick/ImGuiFileDialog)
 - [stb](https://github.com/nothings/stb)
 - [curl](https://github.com/curl/curl)
 
