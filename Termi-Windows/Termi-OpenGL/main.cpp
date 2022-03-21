@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file
- * INFORAMTION: Compile this Visual Studio solution
+ * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #include "imgui/imgui.h"
@@ -16,6 +16,8 @@
 #include <string>
 #include <fstream>
 
+#include <Windows.h>
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.hpp"
 
@@ -24,12 +26,49 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+static BOOL WINAPI end(DWORD dwCtrlType)
+{
+	int key;
+
+	switch (dwCtrlType)
+	{
+		case CTRL_C_EVENT: // Ctrl+C
+			std::cout << "\nPress any key to continue...\n";
+			key = std::cin.get();
+			if (key != 10)
+			{
+				/* we need to do something here; input is broken */
+				exit(0);
+			}
+			else
+			{
+				exit(0);
+			}
+			break;
+		case CTRL_BREAK_EVENT: // Ctrl+Break
+			break;
+		case CTRL_CLOSE_EVENT: // Closing the console window
+			break;
+		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
+			break;
+		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
+			break;
+	}
+
+	// Return TRUE if handled this message, further handler functions won't be called.
+	// Return FALSE to pass this message to further handlers until default handler calls ExitProcess().
+	return FALSE;
+}
+
 int main()
 {
 	std::cout << "\n\n";
 
+	/* Catch CTRL-C */
+	SetConsoleCtrlHandler(end, TRUE);
+
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(900, 900, "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(window_width, window_height, "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -70,8 +109,14 @@ int main()
 		/* main ImGUI code */
 		main_code();
 
+		/*ImGui demo window */
+		if (isDemoWindow == true)
+		{
+			ImGui::ShowDemoWindow();
+		}
+
 		#ifdef PRINT_FPS
-				auto FPS = printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		#endif
 
 		/* Renders the ImGUI elements */
