@@ -15,11 +15,12 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <signal.h>
 
 #include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.hpp"
+#include "stb_image.h"
 
 #include "Settings.hpp"
 
@@ -32,27 +33,27 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 
 	switch (dwCtrlType)
 	{
-		case CTRL_C_EVENT: // Ctrl+C
-			std::cout << "\nPress any key to continue...\n";
-			key = std::cin.get();
-			if (key != 10)
-			{
-				/* we need to do something here; input is broken */
-				exit(0);
-			}
-			else
-			{
-				exit(0);
-			}
-			break;
-		case CTRL_BREAK_EVENT: // Ctrl+Break
-			break;
-		case CTRL_CLOSE_EVENT: // Closing the console window
-			break;
-		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
-			break;
-		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
-			break;
+	case CTRL_C_EVENT: // Ctrl+C
+		std::cout << "\nPress any key to continue...\n";
+		key = std::cin.get();
+		if (key != 10)
+		{
+			/* we need to do something here; input is broken */
+			exit(0);
+		}
+		else
+		{
+			exit(0);
+		}
+		break;
+	case CTRL_BREAK_EVENT: // Ctrl+Break
+		break;
+	case CTRL_CLOSE_EVENT: // Closing the console window
+		break;
+	case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
+		break;
+	case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
+		break;
 	}
 
 	// Return TRUE if handled this message, further handler functions won't be called.
