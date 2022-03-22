@@ -72,9 +72,9 @@ from root directory.
 2. For Linux open terminal and type ```cmake . && make && pkg [arguments]```.
 
 ## Development picture
-![image](https://user-images.githubusercontent.com/83548580/157011432-f1dc9427-e490-4873-919b-ee0e927bd549.png)
+![image](https://user-images.githubusercontent.com/83548580/159558616-dcb718f9-52b3-482c-9893-f0f7f4ca94c3.png)
 
-Termi-OpenGL running on Windows 11 Pro 21H2
+Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
