@@ -9,6 +9,9 @@
 
 #include "imgui_code.hpp"
 
+#pragma GCC diagnostic ignored "-Wpointer-arith"
+#pragma GCC diagnostic ignored "-Wformat-security" 
+
 using namespace std;
 using namespace ImGui;
 
@@ -109,7 +112,7 @@ struct Console
         TextWrapped(
             "This example implements a console with basic coloring, completion (TAB key) and history (Up/Down keys). A more elaborate "
             "implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-        TextWrapped("Enter 'HELP' for help.");
+        TextWrapped("Enter 'help' for help.");
 
         // TODO: display items starting from the bottom
 
