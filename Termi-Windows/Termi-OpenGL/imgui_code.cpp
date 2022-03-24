@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file for ImGUI
- * INFORAMTION: ICompile solution, else check Victor Gordan's video
+ * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #include "imgui_code.hpp"
@@ -404,7 +404,7 @@ void Renderer::DrawContextMenu()
 {
     if (BeginMenuBar())
     {
-        if (BeginMenu("File"))
+        if (BeginMenu("Terminal"))
         {
             if (MenuItem("New terminal tab", "Ctrl+N"))
             {
@@ -435,13 +435,11 @@ void Renderer::DrawContextMenu()
                 {
                     Font();
                     isFont = true;
-                    goto end;
                 }
 
-                if (isFont == true)
+                else
                 {
                     isFont = false;
-                    goto end;
                 }
             }
 
@@ -453,19 +451,14 @@ void Renderer::DrawContextMenu()
                 {
                     StyleColorsLight();
                     isDarkTheme = true;
-                    goto end;
                 }
 
-                if (isDarkTheme == true)
+                else
                 {
                     StyleColorsDark();
                     isDarkTheme = false;
-                    goto end;
                 }
             }
-
-            end:
-                static int temp = 0;
 
             EndMenu();
         }
