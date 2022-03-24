@@ -74,7 +74,7 @@ from root directory.
 2. For Linux open terminal and type ```cmake . && make && pkg [arguments]```.
 
 ## Development picture
-![image](https://user-images.githubusercontent.com/83548580/159558616-dcb718f9-52b3-482c-9893-f0f7f4ca94c3.png)
+![image](https://user-images.githubusercontent.com/83548580/159910200-8fa25e94-ba38-4b34-a84c-21d48f381603.png)
 
 Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 
