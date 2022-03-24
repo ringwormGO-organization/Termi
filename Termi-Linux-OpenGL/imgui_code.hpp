@@ -1,6 +1,5 @@
 /**
  * @author Andrej Bartulin
- * @mainteiner Stjepan Bilić Matišić
  * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code

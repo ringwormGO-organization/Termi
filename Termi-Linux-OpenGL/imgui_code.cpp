@@ -1,6 +1,5 @@
 /**
  * @author Andrej Bartulin
- * @mainteiner Stjepan Bilić Matišić
  * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file for ImGUI
@@ -112,7 +111,7 @@ struct Console
         TextWrapped(
             "This example implements a console with basic coloring, completion (TAB key) and history (Up/Down keys). A more elaborate "
             "implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-        TextWrapped("Enter 'help' for help.");
+        TextWrapped("Enter 'HELP' for help.");
 
         // TODO: display items starting from the bottom
 
@@ -406,7 +405,7 @@ void Renderer::DrawContextMenu()
 {
     if (BeginMenuBar())
     {
-        if (BeginMenu("File"))
+        if (BeginMenu("Terminal"))
         {
             if (MenuItem("New terminal tab", "Ctrl+N"))
             {
@@ -437,13 +436,11 @@ void Renderer::DrawContextMenu()
                 {
                     Font();
                     isFont = true;
-                    goto end;
                 }
 
-                if (isFont == true)
+                else
                 {
                     isFont = false;
-                    goto end;
                 }
             }
 
@@ -455,19 +452,14 @@ void Renderer::DrawContextMenu()
                 {
                     StyleColorsLight();
                     isDarkTheme = true;
-                    goto end;
                 }
 
-                if (isDarkTheme == true)
+                else
                 {
                     StyleColorsDark();
                     isDarkTheme = false;
-                    goto end;
                 }
             }
-
-            end:
-                static int temp = 0;
 
             EndMenu();
         }
