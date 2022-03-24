@@ -139,17 +139,19 @@ int Functions::Install(std::string name)
 
 int Functions::Install(std::string name, std::string link)
 {
-    if (install.host == "GNU/Linux")
-    {
-        if (Download(name.c_str(), link.c_str()) == 0)
-        {
-            return 0;
-        }
+    auto result = database.find(name);
 
-        else
-        {
-            return 1;
-        }
+    if (result != database.end())
+    {
+        return Download(name.c_str(), link.c_str());
+    }
+
+    else
+    {
+        printf("Package Manager can't find name or link. Try add name or link to database or try call this function with following arguments: \n");
+        printf(" <name> <link> \n");
+        printf("If you still can't download, report an issue on Termi's GitHub (see help for link).\n");
+        return 1;
     }
 }
 
@@ -178,13 +180,8 @@ int Functions::Download(const char* name)
     CURL *curl;
     FILE *fp;
     CURLcode res;
-    const char* url;
+    const char* url = Search(name);
     const char* outfilename = name;
-
-    if (!(url == Search(name)))
-    {
-        return 1;
-    }
 
     curl = curl_easy_init();                                                                                                                                                                                                                                                           
     if (curl)
