@@ -8,11 +8,10 @@
 
 #include "imgui_code.hpp"
 
-#pragma GCC diagnostic ignored "-Wpointer-arith"
-#pragma GCC diagnostic ignored "-Wformat-security" 
-
 using namespace std;
 using namespace ImGui;
+
+#pragma GCC diagnostic ignored "-Wformat-security" 
 
 Renderer* render;
 
@@ -39,6 +38,7 @@ struct Console
 
         // "CLASSIFY" is here to provide the test case where "C"+[tab] completes to "CL" and display multiple matches.
         Commands.push_back("help");
+        Commands.push_back("credits");
         Commands.push_back("clear");
         Commands.push_back("cls");
         Commands.push_back("exit");
@@ -91,21 +91,6 @@ struct Console
         {
             End();
             return;
-        }
-
-        // As a specific feature guaranteed by the library, after calling Begin() the last Item represent the title bar.
-        // So e.g. IsItemHovered() will return true when hovering the title bar.
-        // Here we create a context menu only available from the title bar.
-        if (BeginPopupContextItem())
-        {
-            if (MenuItem("Close Console"))
-            {
-                if (*p_open != NULL)
-                { 
-                    *p_open = false;
-                }
-            }
-            EndPopup();
         }
 
         TextWrapped(
@@ -226,7 +211,7 @@ struct Console
         End();
     }
 
-    void ExecCommand(string command_line)
+    void ExecCommand(string command_line, ...)
     {
         AddLog("# %s\n", command_line.c_str());
 
@@ -266,6 +251,15 @@ struct Console
             {
                 AddLog("- %s", Commands[i]);
             }
+        }
+
+        else if (Stricmp(command_line.c_str(), "credits") == 0)
+        {
+            AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+            AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
+            AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
+            AddLog("LICENSE > BSD-3-Clause-License");
+            AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
         }
 
         else if (Stricmp(command_line.c_str(), "exit") == 0)
