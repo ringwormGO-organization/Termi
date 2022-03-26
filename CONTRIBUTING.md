@@ -3,13 +3,18 @@ Just drop a Pull Request :)
 
 # Pull Request style
 1. Use CRLF. Set up your Git settings with this: `git config --global core.autocrlf true` and check if it is OK by `git config --global core.autocrlf`. It need to return `true`
-2. Use following style **WITH LOGIC**, check labels:
+2. You can use LF too, we don't care for now.
+3. Use following style **WITH LOGIC**, check labels:
 
 ```
 [LABEL NAME] Name of Pull Request
 ```
+# Directory organization (OpenGL)
+1. Linux version have own folder while Windows version is in `Termi-Windows` directory.
+2. Code is in "root" while commands will be in `Commands` directory.
+3. If you want add new command, create new `.cpp` file in `Commands` directory, and add it to `std::map` "database". **- THIS CURRENTLY DON'T WORK!**
 
-# Directory rganization (old but still current)
+# Directory organization (old but still current)
 1. `Termi` for Windows directory contains Visual Studio solution. In `x64\Release` is `Programs` directory.
 2. There is code to compile binaries.
 3. To compile Windows installer, change path to your own and installer version update may late.
