@@ -11,13 +11,13 @@
 using namespace std;
 using namespace ImGui;
 
-#pragma GCC diagnostic ignored "-Wformat-security" 
+#pragma GCC diagnostic ignored "-Wformat-security"
 
 Renderer* render;
 
-/* 
- * Console struct - everything for console
- * Credits from imgui_demo.cpp
+/*
+ * Console struct - everything for drawing and managing console
+ * Code from imgui_demo.cpp
 */
 struct Console
 {
@@ -32,7 +32,7 @@ struct Console
 
     Console()
     {
-        ClearLog();
+        FullClearLog();
         memset(InputBuf, 0, sizeof(InputBuf));
         HistoryPos = -1;
 
@@ -43,29 +43,39 @@ struct Console
         Commands.push_back("cls");
         Commands.push_back("exit");
 
-        for (auto& x: commands) 
+        for (auto& x : commands)
         {
             Commands.push_back(x.first.c_str());
         }
 
         AutoScroll = true;
         ScrollToBottom = false;
+
         AddLog("Termi> ");
     }
     ~Console()
     {
-        ClearLog();
+        FullClearLog();
         for (int i = 0; i < History.Size; i++)
             free(History[i]);
     }
 
     // Portable helpers
-    static int   Stricmp(const char* s1, const char* s2)         { int d; while ((d = toupper(*s2) - toupper(*s1)) == 0 && *s1) { s1++; s2++; } return d; }
+    static int   Stricmp(const char* s1, const char* s2) { int d; while ((d = toupper(*s2) - toupper(*s1)) == 0 && *s1) { s1++; s2++; } return d; }
     static int   Strnicmp(const char* s1, const char* s2, int n) { int d = 0; while (n > 0 && (d = toupper(*s2) - toupper(*s1)) == 0 && *s1) { s1++; s2++; n--; } return d; }
-    static char* Strdup(const char* s)                           { IM_ASSERT(s); size_t len = strlen(s) + 1; void* buf = malloc(len); IM_ASSERT(buf); return (char*)memcpy(buf, (const void*)s, len); }
-    static void  Strtrim(char* s)                                { char* str_end = s + strlen(s); while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0; }
+    static char* Strdup(const char* s) { IM_ASSERT(s); size_t len = strlen(s) + 1; void* buf = malloc(len); IM_ASSERT(buf); return (char*)memcpy(buf, (const void*)s, len); }
+    static void  Strtrim(char* s) { char* str_end = s + strlen(s); while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0; }
 
     void ClearLog()
+    {
+        for (int i = 0; i < Items.Size; i++)
+            free(Items[i]);
+        Items.clear();
+
+        TypeTermi();
+    }
+
+    void FullClearLog()
     {
         for (int i = 0; i < Items.Size; i++)
             free(Items[i]);
@@ -79,35 +89,25 @@ struct Console
         va_list args;
         va_start(args, fmt);
         vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
-        buf[IM_ARRAYSIZE(buf)-1] = 0;
+        buf[IM_ARRAYSIZE(buf) - 1] = 0;
         va_end(args);
         Items.push_back(Strdup(buf));
     }
 
     void Draw(const char* title, bool* p_open)
     {
-        SetNextWindowSize(ImVec2(520, 600), ImGuiCond_FirstUseEver);
-        if (!Begin(title, p_open))
-        {
-            End();
-            return;
-        }
-
-        TextWrapped(
-            "This example implements a console with basic coloring, completion (TAB key) and history (Up/Down keys). A more elaborate "
-            "implementation may want to store entries along with extra data such as timestamp, emitter, etc.");
-        TextWrapped("Enter 'HELP' for help.");
-
         // TODO: display items starting from the bottom
 
-        if (SmallButton("Add Debug Text"))  { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); }
+        if (SmallButton("Add Debug Text")) { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); }
         SameLine();
         if (SmallButton("Add Debug Error")) { AddLog("[error] something went wrong"); }
         SameLine();
-        if (SmallButton("Clear"))           { ClearLog(); }
+        if (SmallButton("Clear")) { ClearLog(); }
         SameLine();
         bool copy_to_clipboard = SmallButton("Copy");
         //static float t = 0.0f; if (GetTime() - t > 0.02f) { t = GetTime(); AddLog("Spam %f", t); }
+        SameLine();
+        TextWrapped("Enter 'help' for help.");
 
         Separator();
 
@@ -134,30 +134,32 @@ struct Console
             EndPopup();
         }
 
-        // Display every line as a separate entry so we can change their color or add custom widgets.
-        // If you only want raw text you can use TextUnformatted(log.begin(), log.end());
-        // NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
-        // to only process visible items. The clipper will automatically measure the height of your first item and then
-        // "seek" to display only items in the visible area.
-        // To use the clipper we can replace your standard loop:
-        //      for (int i = 0; i < Items.Size; i++)
-        //   With:
-        //      ImGuiListClipper clipper;
-        //      clipper.Begin(Items.Size);
-        //      while (clipper.Step())
-        //         for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-        // - That your items are evenly spaced (same height)
-        // - That you have cheap random access to your elements (you can access them given their index,
-        //   without processing all the ones before)
-        // You cannot this code as-is if a filter is active because it breaks the 'cheap random-access' property.
-        // We would need random-access on the post-filtered list.
-        // A typical application wanting coarse clipping and filtering may want to pre-compute an array of indices
-        // or offsets of items that passed the filtering test, recomputing this array when user changes the filter,
-        // and appending newly elements as they are inserted. This is left as a task to the user until we can manage
-        // to improve this example code!
-        // If your items are of variable height:
-        // - Split them into same height items would be simpler and facilitate random-seeking into your list.
-        // - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
+        /* 
+         *  Display every line as a separate entry so we can change their color or add custom widgets.
+         *  If you only want raw text you can use TextUnformatted(log.begin(), log.end());
+         *  NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
+         *  to only process visible items. The clipper will automatically measure the height of your first item and then
+         *  "seek" to display only items in the visible area.
+         *  To use the clipper we can replace your standard loop:
+         *      for (int i = 0; i < Items.Size; i++)
+         *  With:
+         *      ImGuiListClipper clipper;
+         *      clipper.Begin(Items.Size);
+         *      while (clipper.Step())
+         *          for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+         *  - That your items are evenly spaced (same height)
+         *  That you have cheap random access to your elements (you can access them given their index,
+         *  without processing all the ones before)
+         *   You cannot this code as-is if a filter is active because it breaks the 'cheap random-access' property.
+         *  We would need random-access on the post-filtered list.
+         * A typical application wanting coarse clipping and filtering may want to pre-compute an array of indices
+         * or offsets of items that passed the filtering test, recomputing this array when user changes the filter,
+         * and appending newly elements as they are inserted. This is left as a task to the user until we can manage
+         * to improve this example code!
+         * If your items are of variable height:
+         * - Split them into same height items would be simpler and facilitate random-seeking into your list.
+         * - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
+        */
         PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
         if (copy_to_clipboard)
             LogToClipboard();
@@ -171,7 +173,7 @@ struct Console
             // (e.g. make Items[] an array of structure, store color/type etc.)
             ImVec4 color;
             bool has_color = false;
-            if (strstr(item, "[error]"))          { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
+            if (strstr(item, "[error]")) { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
             else if (strncmp(item, "# ", 2) == 0) { color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; }
             if (has_color)
                 PushStyleColor(ImGuiCol_Text, color);
@@ -207,8 +209,6 @@ struct Console
         SetItemDefaultFocus();
         if (reclaim_focus)
             SetKeyboardFocusHere(-1); // Auto focus previous widget
-
-        End();
     }
 
     void ExecCommand(string command_line, ...)
@@ -216,9 +216,11 @@ struct Console
         AddLog("# %s\n", command_line.c_str());
 
         auto command = commands.find(command_line);
-        
-        // Insert into history. First find match and delete it so it can be pushed to the back.
-        // This isn't trying to be smart or optimal.
+
+        /* 
+         * Insert into history.First find matchand delete it so it can be pushed to the back.
+         * This isn't trying to be smart or optimal
+        */
         HistoryPos = -1;
         for (int i = History.Size - 1; i >= 0; i--)
         {
@@ -229,7 +231,7 @@ struct Console
                 break;
             }
         }
-        
+
         History.push_back(Strdup(command_line.c_str()));
 
         if (command != commands.end())
@@ -238,8 +240,7 @@ struct Console
             AddLog(command_line.c_str());
         }
 
-        // Process command
-        else if(Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
+        else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
         {
             ClearLog();
         }
@@ -275,6 +276,12 @@ struct Console
 
         // On command input, we scroll to bottom even if AutoScroll==false
         ScrollToBottom = true;
+        TypeTermi();
+    }
+
+    void TypeTermi()
+    {
+        AddLog("\nTermi> ");
     }
 
     // In C++11 you'd be better off using lambdas for this sort of forwarding callbacks
@@ -386,12 +393,14 @@ struct Console
     }
 };
 
+Console* console;
+
 /* Code for Renderer class */
 /* PRIVATE INSTANCES OF Renderer class */
 /* Draw new teminal tab */
 void Renderer::DrawNewTab()
 {
-    
+
 }
 
 /* Draw context menu */
@@ -403,12 +412,12 @@ void Renderer::DrawContextMenu()
         {
             if (MenuItem("New terminal tab", "Ctrl+N"))
             {
-                
+
             }
 
             if (MenuItem("New terminal profile", "Ctrl+Shift+N"))
             {
-                
+
             }
 
             Separator();
@@ -458,31 +467,13 @@ void Renderer::DrawContextMenu()
             EndMenu();
         }
 
-        if (BeginMenu("Help"))
-        {
-
-            if (MenuItem("About ImGUI", "Ctrl+A"))
-            {
-                
-            }
-
-            Separator();
-
-            if (MenuItem("About Termi", "Ctrl+Shift+A"))
-            {
-                
-            }
-
-            EndMenu();
-        }
-
         EndMenuBar();
     }
 }
 
 void Renderer::Font()
 {
-    
+
 }
 
 void main_code()
@@ -491,31 +482,31 @@ void main_code()
     SetNextWindowPos(ImVec2(pos_x, pos_y));
     SetNextWindowSize(ImVec2(window_width, window_height));
     Begin
-    (  "Termi", 
-        NULL, 
-        ImGuiWindowFlags_NoMove  | 
-        ImGuiWindowFlags_NoCollapse | 
-        ImGuiWindowFlags_AlwaysAutoResize | 
-        ImGuiWindowFlags_NoTitleBar | 
+    ("Termi",
+        NULL,
+        ImGuiWindowFlags_NoMove |
+        ImGuiWindowFlags_NoCollapse |
+        ImGuiWindowFlags_AlwaysAutoResize |
+        ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_MenuBar |
         ImGuiInputTextFlags_AllowTabInput
     );
 
-    #ifdef PRINT_WHEN_WINDOW_IS_CREATED
-        if (!alReadyPrinted)
-        {
-            cout << "ImGui window is created.\n";
-            alReadyPrinted = true;
-        }
+#ifdef PRINT_WHEN_WINDOW_IS_CREATED
+    if (!alReadyPrinted)
+    {
+        cout << "ImGui window is created.\n";
+        alReadyPrinted = true;
+    }
 
-        if (alReadyPrinted)
-            /* do nothing */
-    #endif
+    if (alReadyPrinted)
+        /* do nothing */
+#endif
 
-    #ifdef PRINT_FPS
+#ifdef PRINT_FPS
         SetCursorPosX(window_width + window_width / 200 - 100);
-        TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
-    #endif
+    TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
+#endif
 
     /* Draw menu bar */
     render->DrawContextMenu();
@@ -534,7 +525,7 @@ void main_code()
     window_width = GetWindowWidth();
     window_height = GetWindowHeight();
 
-        
+
     /* End of window */
     End();
 }
