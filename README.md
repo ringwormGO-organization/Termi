@@ -24,9 +24,10 @@ A Powerful Terminal made in C++
 ### Termi C++ part
 - [ ] User settings in JSON files
 - [ ] Support most of major commands
-- [ ] Include other host terminals
+- [ ] Include other host terminals (may not be in first release)
 - [ ] Arguments
 - [ ] Library for connecting ```AddLog()``` functions
+- [ ] Translation (also may not be in first release)
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
