@@ -13,6 +13,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "Settings.hpp"
+#include "Translation.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -27,9 +28,12 @@ static float window_height = 900;
 
 static bool isDarkTheme = false;
 static bool isFont = false;
+static bool language_dialog = false;
 static bool isDemoWindow = false;
 
 static bool alReadyPrinted;
+
+static const char* language;
 
 /* Commands list - command and path */
 static std::map<const std::string, const std::string> commands = 
@@ -42,10 +46,15 @@ class Renderer
 {
     public:
         void DrawContextMenu();
-        void Font();
+        void Font(bool* p_open);
+
+        
+        const char* ChooseLanguage(const char* word);
+        void ChooseLanguageDialog(bool* p_open);
 
     private:
         void DrawNewTab();
+        int CheckFile(char name[200]);
 };
 
 /* Main code for starting ImGui */

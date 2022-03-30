@@ -27,7 +27,7 @@ A Powerful Terminal made in C++
 - [ ] Include other host terminals (may not be in first release)
 - [ ] Arguments
 - [ ] Library for connecting ```AddLog()``` functions
-- [ ] Translation (also may not be in first release)
+- [x] Translation (may not be fully finished in first release)
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)

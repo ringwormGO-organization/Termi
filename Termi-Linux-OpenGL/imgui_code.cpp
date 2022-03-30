@@ -11,6 +11,8 @@
 using namespace std;
 using namespace ImGui;
 
+using namespace Translation;
+
 #pragma GCC diagnostic ignored "-Wformat-security"
 
 Renderer* render;
@@ -29,6 +31,7 @@ struct Console
     ImGuiTextFilter       Filter;
     bool                  AutoScroll;
     bool                  ScrollToBottom;
+    bool                  Copy;  
 
     Console()
     {
@@ -94,36 +97,9 @@ struct Console
         Items.push_back(Strdup(buf));
     }
 
-    void Draw(const char* title, bool* p_open)
+    void Draw()
     {
         // TODO: display items starting from the bottom
-
-        if (SmallButton("Add Debug Text")) { AddLog("%d some text", Items.Size); AddLog("some more text"); AddLog("display very important message here!"); }
-        SameLine();
-        if (SmallButton("Add Debug Error")) { AddLog("[error] something went wrong"); }
-        SameLine();
-        if (SmallButton("Clear")) { ClearLog(); }
-        SameLine();
-        bool copy_to_clipboard = SmallButton("Copy");
-        //static float t = 0.0f; if (GetTime() - t > 0.02f) { t = GetTime(); AddLog("Spam %f", t); }
-        SameLine();
-        TextWrapped("Enter 'help' for help.");
-
-        Separator();
-
-        // Options menu
-        if (BeginPopup("Options"))
-        {
-            Checkbox("Auto-scroll", &AutoScroll);
-            EndPopup();
-        }
-
-        // Options, Filter
-        if (Button("Options"))
-            OpenPopup("Options");
-        SameLine();
-        Filter.Draw("Filter (\"incl,-excl\") (\"error\")", 180);
-        Separator();
 
         // Reserve enough left-over height for 1 separator + 1 input text
         const float footer_height_to_reserve = GetStyle().ItemSpacing.y + GetFrameHeightWithSpacing();
@@ -131,6 +107,7 @@ struct Console
         if (BeginPopupContextWindow())
         {
             if (Selectable("Clear")) ClearLog();
+            if (Selectable("Copy")) Copy = true;
             EndPopup();
         }
 
@@ -161,7 +138,7 @@ struct Console
          * - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
         */
         PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
-        if (copy_to_clipboard)
+        if (Copy)
             LogToClipboard();
         for (int i = 0; i < Items.Size; i++)
         {
@@ -181,7 +158,7 @@ struct Console
             if (has_color)
                 PopStyleColor();
         }
-        if (copy_to_clipboard)
+        if (Copy)
             LogFinish();
 
         if (ScrollToBottom || (AutoScroll && GetScrollY() >= GetScrollMaxY()))
@@ -195,7 +172,7 @@ struct Console
         // Command-line
         bool reclaim_focus = false;
         ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-        if (InputText("Input", InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
+        if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
         {
             char* s = InputBuf;
             Strtrim(s);
@@ -391,9 +368,7 @@ struct Console
         }
         return 0;
     }
-};
-
-Console* console;
+} console;
 
 /* Code for Renderer class */
 /* PRIVATE INSTANCES OF Renderer class */
@@ -403,26 +378,42 @@ void Renderer::DrawNewTab()
 
 }
 
+/* Check if file exists */
+int Renderer::CheckFile(char name[200])
+{
+    fstream file;
+    file.open(name);
+
+    if (!file)
+    {
+        return 1;
+    }
+
+    file.close();
+
+    return 0;
+}
+
 /* Draw context menu */
 void Renderer::DrawContextMenu()
 {
     if (BeginMenuBar())
     {
-        if (BeginMenu("Terminal"))
+        if (BeginMenu(ChooseLanguage("terminal")))
         {
-            if (MenuItem("New terminal tab", "Ctrl+N"))
+            if (MenuItem(ChooseLanguage("new tab"), "Ctrl+N"))
             {
 
             }
 
-            if (MenuItem("New terminal profile", "Ctrl+Shift+N"))
+            if (MenuItem((ChooseLanguage("new profile")), "Ctrl+Shift+N"))
             {
 
             }
 
             Separator();
 
-            if (MenuItem("Exit", "Ctrl+X"))
+            if (MenuItem(ChooseLanguage("exit"), "Ctrl+X"))
             {
                 exit(0);
             }
@@ -430,14 +421,13 @@ void Renderer::DrawContextMenu()
             EndMenu();
         }
 
-        if (BeginMenu("Edit"))
+        if (BeginMenu(ChooseLanguage("edit")))
         {
-
-            if (MenuItem("Font picker", "Ctrl+F"))
+            if (MenuItem(ChooseLanguage("font picker"), "Ctrl+F"))
             {
                 if (isFont == false)
                 {
-                    Font();
+                    Font(NULL);
                     isFont = true;
                 }
 
@@ -449,9 +439,9 @@ void Renderer::DrawContextMenu()
 
             Separator();
 
-            if (MenuItem("Change theme", "Ctrl+T"))
+            if (MenuItem(ChooseLanguage("change theme"), "Ctrl+T"))
             {
-                if (isDarkTheme == false)
+                if (!isDarkTheme)
                 {
                     StyleColorsLight();
                     isDarkTheme = true;
@@ -464,6 +454,17 @@ void Renderer::DrawContextMenu()
                 }
             }
 
+            Separator();
+
+            if (MenuItem(ChooseLanguage("change language"), "Ctrl+L"))
+            {
+                if (!language_dialog)
+                {
+                    ChooseLanguageDialog(NULL);
+                    language_dialog = true;
+                }
+            }
+
             EndMenu();
         }
 
@@ -471,9 +472,96 @@ void Renderer::DrawContextMenu()
     }
 }
 
-void Renderer::Font()
+/* Font dialog */
+void Renderer::Font(bool* p_open)
 {
+    ImGuiIO& io = ImGui::GetIO();
+    static char filename[250];
+    static float size_pixels = 16;
 
+    SetWindowPos(ImVec2(200, 200));
+    SetWindowSize(ImVec2(200, 200));
+    if (!Begin("Font dialog", p_open))
+    {
+        End();
+        return;
+    }
+
+    if (BeginPopupContextWindow())
+    {
+        if (Button("Close window")) isFont = false;
+        EndPopup();
+    }
+
+    if (InputText("Enter name of font file", filename, IM_ARRAYSIZE(filename)))
+    SameLine();
+    if (InputFloat("Enter size of font", &size_pixels));
+ 
+    End();
+}
+
+/* Choose language function - return word on specified language */
+const char* Renderer::ChooseLanguage(const char* word)
+{
+    if (language == "croatian")
+    {
+        if (word == "input") return Croatian::input;
+
+        if (word == "terminal") return Croatian::terminal;
+        if (word == "edit") return Croatian::edit;
+
+        if (word == "new tab") return Croatian::new_tab;
+        if (word == "new profile") return Croatian::new_profile;
+        if (word == "exit") return Croatian::exit_string;
+
+        if (word == "font picker") return Croatian::font_picker;
+        if (word == "change theme") return Croatian::change_theme;
+        if (word == "change language") return Croatian::change_language;
+    }
+
+    /* Default language - English */
+    else
+    {
+        if (word == "input") return English::input;
+
+        if (word == "terminal") return English::terminal;
+        if (word == "edit") return English::edit;
+
+        if (word == "new tab") return English::new_tab;
+        if (word == "new profile") return English::new_profile;
+        if (word == "exit") return English::exit_string;
+
+        if (word == "font picker") return English::font_picker;
+        if (word == "change theme") return English::change_theme;
+        if (word == "change language") return English::change_language;
+    }
+}
+
+/* Choose a language using dialog */
+void Renderer::ChooseLanguageDialog(bool *p_open)
+{
+    SetWindowPos(ImVec2(200, 200));
+    SetWindowSize(ImVec2(500, 500));
+    if (!Begin("Language dialog", p_open))
+    {
+        End();
+        return;
+    }
+
+    if (BeginPopupContextWindow())
+    {
+        if (Button("Close window")) isFont = false;
+        EndPopup();
+    }
+
+    Text("Choose language / Odaberi jezik");
+    Text(" "); /* empty space */
+
+    if (Button("English (default)")) language = "english";
+    if (Button("Croatian / Hrvatski")) language = "croatian";
+    if (Button("Close window / Zatvori prozor")) language_dialog = false;
+
+    End();
 }
 
 void main_code()
@@ -504,7 +592,7 @@ void main_code()
 #endif
 
 #ifdef PRINT_FPS
-        SetCursorPosX(window_width + window_width / 200 - 100);
+    SetCursorPosX(window_width + window_width / 200 - 100);
     TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
 #endif
 
@@ -512,13 +600,18 @@ void main_code()
     render->DrawContextMenu();
 
     /* Draw console */
-    static Console console;
-    console.Draw("Interactive console - until real console", NULL);
+    console.Draw();
 
     /* Font dialog */
-    if (isFont == true)
+    if (isFont)
     {
-        render->Font();
+        render->Font(NULL);
+    }
+
+    /* Language dialog */
+    if (language_dialog)
+    {
+        render->ChooseLanguageDialog(NULL);
     }
 
     /* Get window width and height */

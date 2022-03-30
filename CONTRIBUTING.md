@@ -32,6 +32,11 @@ Just drop a Pull Request :)
 7. Some Windows application (compiled with MSVC using command line) use Linux executable. They are same for both platform.
 8. Package Manager has own folder.
 
+# Add language (not programming language) to Termi
+1. In `Translation.hpp` add new namespace followed by language name.
+2. Copy stuff from above, use same names for variables, just translate.
+3. In `imgui_code.cpp` in `ChooseLanguage` function copy stuff above and change namespace name.
+4. Last thing to do is to add button to `ChooseLanguageDialog` function and give to variable proper value.
 
 # Coding sytle for Pull Requests
 ### Indentation and line width
