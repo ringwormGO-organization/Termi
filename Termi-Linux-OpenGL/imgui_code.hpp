@@ -12,16 +12,13 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#ifdef __cplusplus
-    #include "Settings.hpp"
-    #include "Translation.hpp"
+#include "Settings.hpp"
+#include "Translation.hpp"
 
-
-    #include <iostream>
-    #include <fstream>
-    #include <map>
-    #include <string>
-#endif
+#include <iostream>
+#include <fstream>
+#include <map>
+#include <string>
 
 /* All variables which is required */
 static float pos_x = 0;
@@ -31,12 +28,16 @@ static float window_height = 900;
 
 static bool isDarkTheme = false;
 static bool isFont = false;
+static bool font_change = false;
 static bool language_dialog = false;
 static bool isDemoWindow = false;
 
 static bool alReadyPrinted;
 
 static const char* language;
+
+static char font_filename[250];
+static float size_pixels = 16;
 
 /* Commands list - command and path */
 static std::map<const std::string, const std::string> commands = 
@@ -51,15 +52,16 @@ static std::map<const std::string, const std::string> commands =
 */
 class Console
 {
-    char                  InputBuf[256];
-    ImVector<char*>       Items;
-    ImVector<const char*> Commands;
-    ImVector<char*>       History;
-    int                   HistoryPos;    // -1: new line, 0..History.Size-1 browsing history.
-    ImGuiTextFilter       Filter;
-    bool                  AutoScroll;
-    bool                  ScrollToBottom;
-    bool                  Copy;
+    protected:
+        char                  InputBuf[256];
+        ImVector<char*>       Items;
+        ImVector<const char*> Commands;
+        ImVector<char*>       History;
+        int                   HistoryPos;    // -1: new line, 0..History.Size-1 browsing history.
+        ImGuiTextFilter       Filter;
+        bool                  AutoScroll;
+        bool                  ScrollToBottom;
+        bool                  Copy;
 
     public:
         Console();
@@ -103,7 +105,7 @@ class Renderer
 
     private:
         void DrawNewTab();
-        int CheckFile(char name[200]);
+        int CheckFile(char name[250]);
 };
 
 /* Main code for starting ImGui */

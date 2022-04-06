@@ -1,3 +1,11 @@
+/**
+ * @author Andrej Bartulin
+ * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
+ * LICENSE: BSD-3-Clause-License
+ * DESCRIPTION: Translation file
+ * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+*/
+
 #pragma once
 
 namespace Translation

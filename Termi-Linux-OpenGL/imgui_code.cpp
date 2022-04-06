@@ -218,7 +218,7 @@ void Console::ExecCommand(string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
-        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+        AddLog(u8"AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
         AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > BSD-3-Clause-License");
@@ -245,7 +245,6 @@ void Console::TypeTermi()
 {
     AddLog("\nTermi> ");
 }
-
 
 int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
 {
@@ -453,9 +452,7 @@ void Renderer::DrawContextMenu()
 /* Font dialog */
 void Renderer::Font(bool* p_open)
 {
-    ImGuiIO& io = ImGui::GetIO();
-    static char filename[250];
-    static float size_pixels = 16;
+    ImGuiIO& io1 = GetIO();
 
     SetWindowPos(ImVec2(200, 200));
     SetWindowSize(ImVec2(200, 200));
@@ -471,10 +468,11 @@ void Renderer::Font(bool* p_open)
         EndPopup();
     }
 
-    if (InputText("Enter name of font file", filename, IM_ARRAYSIZE(filename)))
-    SameLine();
-    if (InputFloat("Enter size of font", &size_pixels));
- 
+    if (InputText("Enter name of font file", font_filename, IM_ARRAYSIZE(font_filename), ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
+    }
+    
     End();
 }
 
@@ -531,7 +529,7 @@ void Renderer::ChooseLanguageDialog(bool *p_open)
 
     if (BeginPopupContextWindow())
     {
-        if (Button("Close window")) isFont = false;
+        if (Button("Close window")) language_dialog = false;
         EndPopup();
     }
 
