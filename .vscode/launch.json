@@ -6,9 +6,7 @@
         "request": "launch",
         "program": "${workspaceFolder}/PackageManager/pkg",
         "args": [
-            "install",
-            "main.js",
-            "https://ringwormgo-web.ringwormgo.repl.co/main.js"
+            
         ],
         "stopAtEntry": false,
         "cwd": "${workspaceFolder}/PackageManager/",

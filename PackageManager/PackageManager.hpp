@@ -68,7 +68,7 @@ class Functions
         Functions();
 
         /* Help function */
-        void Help(int type);
+        void Help(int type, char* argument);
 
         /* Serach function - returns a command or link */
         const char* Search(std::string name);
@@ -98,9 +98,6 @@ class Functions
 
         char Swap();
 };
-
-/* Set up what we need */
-void Init();
 
 extern Settings settings;
 extern Install install;

@@ -30,7 +30,7 @@ Functions::Functions()
 }
 
 /* Help function */
-void Functions::Help(int type)
+void Functions::Help(int type, char* argument)
 {
     /**
      * 0: Do not print any argument warning and/or error
@@ -51,7 +51,7 @@ void Functions::Help(int type)
             break;
 
         case 2:
-            printf("There is wrong argument/arguments! See help down below\n\n");
+            printf("'%s' is wrong argument! See help down below\n\n", argument);
             break;
 
         default:
@@ -64,7 +64,7 @@ void Functions::Help(int type)
     printf("install <software name> - install software, if it is not in database, you can add it or type download link\n");
     printf("uninstall <software name> - uninstall software from computer\n");
     printf("settings - open settings\n\n");
-    printf("Sometimes, instead of donwload link, you can use command which you normally paste to terminal\n");
+    printf("Sometimes, instead of download link, you can use command which you normally paste to terminal\n");
     printf("Also is recommended to run this package manager as administartor/sudo");
     printf("\n");
 }
@@ -231,12 +231,6 @@ int Functions::Download(const char* name, const char* link)
     return 0;
 }
 
-/* Set up what we need */
-void Init()
-{
-    
-}
-
 /* main function */
 int main(int argc, char** argv)
 {
@@ -259,7 +253,7 @@ int main(int argc, char** argv)
 
     if (argc == 1)
     {
-        functions->Help(1);
+        functions->Help(1, NULL);
         return 0;
     }
 
@@ -351,12 +345,12 @@ int main(int argc, char** argv)
 
     else if (!strcmp(argv[1], "help"))
     {
-        functions->Help(0);
+        functions->Help(0, NULL);
     }
 
     else
     {
-        functions->Help(2);
+        functions->Help(2, argv[1]);
     }
 
     return 0;
