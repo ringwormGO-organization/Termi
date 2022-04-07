@@ -4,9 +4,14 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/Termi-Linux-OpenGL/Termi-OpenGL",
+        "program": "${workspaceFolder}/PackageManager/pkg",
+        "args": [
+            "install",
+            "main.js",
+            "https://ringwormgo-web.ringwormgo.repl.co/main.js"
+        ],
         "stopAtEntry": false,
-        "cwd": "${workspaceFolder}/Termi-Linux-OpenGL/",
+        "cwd": "${workspaceFolder}/PackageManager/",
         "environment": [],
         "externalConsole": false,
         "MIMode": "gdb",

@@ -6,6 +6,12 @@
  * 
 */
 
+#ifdef _WIN32
+        #define USE_UNIX_LIMITS
+    #elif _WIN64
+        #define USE_UNIX_LIMITS
+    #else
+#endif
 #include "PackageManager.hpp"
 #include "Database.hpp"
 
@@ -20,24 +26,7 @@ Functions* functions;
 /* Set up what we need */
 Functions::Functions()
 {
-    #ifdef _WIN32
-        install.host = "Windows32";
-        system("cls");
-    #elif _WIN64
-        install.host = "Windows64";
-        system("cls");
-    #elif __APPLE__ || __MACH__
-        install.host = "Mac OSX";
-    #elif __linux__
-        install.host = "GNU/Linux";
-        system("clear");
-    #elif __FreeBSD__
-        install.host = "FreeBSD";
-    #elif __unix || __unix__
-        install.host = "Unix";
-    #else
-        install.host = "Other";
-    #endif
+
 }
 
 /* Help function */
@@ -139,20 +128,7 @@ int Functions::Install(std::string name)
 
 int Functions::Install(std::string name, std::string link)
 {
-    auto result = database.find(name);
-
-    if (result != database.end())
-    {
-        return Download(name.c_str(), link.c_str());
-    }
-
-    else
-    {
-        printf("Package Manager can't find name or link. Try add name or link to database or try call this function with following arguments: \n");
-        printf(" <name> <link> \n");
-        printf("If you still can't download, report an issue on Termi's GitHub (see help for link).\n");
-        return 1;
-    }
+    return Download(name.c_str(), link.c_str());
 }
 
 /* Uninstall functions */
@@ -169,7 +145,17 @@ void Functions::Uninstall(std::string name, std::string path)
 /* Settings function */
 void Functions::Settings()
 {
-    
+    int id;
+
+    printf("Enter id of setting to change (zero is help): ");
+    scanf("%d", &id);
+
+    switch (id)
+    {
+        default:
+            printf("Wrong setting id!");
+            break;
+    }
 }
 
 /* PRIVATE STUFF OF CLASS */
@@ -183,18 +169,31 @@ int Functions::Download(const char* name)
     const char* url = Search(name);
     const char* outfilename = name;
 
+    char tmpfilename[PATH_MAX];
+    snprintf(tmpfilename, PATH_MAX - 1, "./%s.XXXXXX", outfilename);
+
     curl = curl_easy_init();                                                                                                                                                                                                                                                           
     if (curl)
     {   
-        fp = fopen(outfilename, "wb");
+        fp = fopen(tmpfilename, "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(fp);
-        return 0;
     }
+    else
+    {
+        return 1;
+    }
+
+    if (host == 4)
+    {
+        rename(tmpfilename, outfilename);
+    }
+
+    return 0;
 }
 
 int Functions::Download(const char* name, const char* link)
@@ -205,23 +204,59 @@ int Functions::Download(const char* name, const char* link)
     const char* url = link;
     const char* outfilename = name;
 
+    char tmpfilename[PATH_MAX];
+    snprintf(tmpfilename, PATH_MAX - 1, "./%s.XXXXXX", outfilename);
+
     curl = curl_easy_init();                                                                                                                                                                                                                                                           
     if (curl)
     {   
-        fp = fopen(outfilename, "wb");
+        fp = fopen(tmpfilename, "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
         curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(fp);
-        return 0;
     }
+    else
+    {
+        return 1;
+    }
+
+    if (host == 4)
+    {
+        rename(tmpfilename, outfilename);
+    }
+
+    return 0;
+}
+
+/* Set up what we need */
+void Init()
+{
+    
 }
 
 /* main function */
 int main(int argc, char** argv)
 {
+    /* OS */
+    #ifdef _WIN32
+        host = 1;
+    #elif _WIN64
+        host = 2;
+    #elif __APPLE__ || __MACH__
+        host = 3;
+    #elif __linux__
+        host = 4;
+    #elif __FreeBSD__
+        host = 5;
+    #elif __unix || __unix__
+        host = 6;
+    #else
+        host = 7;
+    #endif
+
     if (argc == 1)
     {
         functions->Help(1);
