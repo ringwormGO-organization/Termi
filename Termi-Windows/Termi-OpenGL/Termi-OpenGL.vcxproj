@@ -181,6 +181,7 @@
     <ClInclude Include="imgui_code.hpp" />
     <ClInclude Include="Settings.hpp" />
     <ClInclude Include="stb_image.h" />
+    <ClInclude Include="Translation.hpp" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="termi.png" />

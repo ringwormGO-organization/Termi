@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code
- * INFORAMTION:Compile solution, else check Victor Gordan's video
+ * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #pragma once
@@ -13,6 +13,7 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 #include "Settings.hpp"
+#include "Translation.hpp"
 
 #include <iostream>
 #include <fstream>
@@ -27,9 +28,16 @@ static float window_height = 900;
 
 static bool isDarkTheme = false;
 static bool isFont = false;
+static bool font_change = false;
+static bool language_dialog = false;
 static bool isDemoWindow = false;
 
 static bool alReadyPrinted;
+
+static const char* language;
+
+static char font_filename[250];
+static float size_pixels = 16;
 
 /* Commands list - command and path */
 static std::map<const std::string, const std::string> commands = 
@@ -37,18 +45,71 @@ static std::map<const std::string, const std::string> commands =
     {"test", "test"}
 };
 
+/*
+ * Console class - everything for drawing and managing console
+ * Setting up functions here
+ * Code from imgui_demo.cpp
+*/
+class Console
+{
+    protected:
+        char                  InputBuf[256];
+        ImVector<char*>       Items;
+        ImVector<const char*> Commands;
+        ImVector<char*>       History;
+        int                   HistoryPos;    // -1: new line, 0..History.Size-1 browsing history.
+        ImGuiTextFilter       Filter;
+        bool                  AutoScroll;
+        bool                  ScrollToBottom;
+        bool                  Copy;
+
+    public:
+        Console();
+        ~Console();
+
+    protected:
+        // Portable helpers
+        static int   Stricmp(const char* s1, const char* s2) { int d; while ((d = toupper(*s2) - toupper(*s1)) == 0 && *s1) { s1++; s2++; } return d; };
+        static int   Strnicmp(const char* s1, const char* s2, int n) { int d = 0; while (n > 0 && (d = toupper(*s2) - toupper(*s1)) == 0 && *s1) { s1++; s2++; n--; } return d; };
+        static char* Strdup(const char* s) { IM_ASSERT(s); size_t len = strlen(s) + 1; void* buf = malloc(len); IM_ASSERT(buf); return (char*)memcpy(buf, (const void*)s, len); };
+        static void  Strtrim(char* s) { char* str_end = s + strlen(s); while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0; };
+
+    public:
+        void ClearLog();
+        void FullClearLog();
+        void AddLog(const char* fmt, ...);
+        void Draw();
+        void ExecCommand(std::string command_line, ...);
+        void TypeTermi();
+
+    protected:
+        // In C++11 you'd be better off using lambdas for this sort of forwarding callbacks
+        static int TextEditCallbackStub(ImGuiInputTextCallbackData* data)
+        {
+            Console* con = (Console*)data->UserData;
+            return con->TextEditCallback(data);
+        }
+
+        int TextEditCallback(ImGuiInputTextCallbackData* data);
+};
+
 /* Renderer class */
 class Renderer
 {
     public:
         void DrawContextMenu();
-        void Font();
+        void Font(bool* p_open);
+
+        const char* ChooseLanguage(const char* word);
+        void ChooseLanguageDialog(bool* p_open);
 
     private:
         void DrawNewTab();
+        int CheckFile(char name[250]);
 };
 
 /* Main code for starting ImGui */
 void main_code();
 
+extern Console console;
 extern Renderer* render;
