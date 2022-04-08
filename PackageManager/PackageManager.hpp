@@ -60,6 +60,19 @@ size_t write_data(void *ptr, size_t size, size_t nmemb, FILE *stream)
     return written;
 }
 
+/* Required for us */
+int isEnding (std::string const &fullString, std::string const &ending) 
+{
+    if (fullString.length() >= ending.length()) {
+        return (0 == fullString.compare (fullString.length() - ending.length(), ending.length(), ending));
+    } 
+
+    else 
+    {
+        return 1;
+    }
+}
+
 /* Class which contains functions  */
 class Functions
 {

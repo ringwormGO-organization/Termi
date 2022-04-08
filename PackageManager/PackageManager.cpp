@@ -115,6 +115,16 @@ int Functions::Install(std::string name)
 {
     if (Download(name.c_str()) == 0)
     {
+         if (isEnding(name, ".tar.gz") | isEnding(name, ".zip"))
+        {
+            /* unpack */
+        }
+
+        else
+        {
+            /* move to right folder */
+        }
+
         return 0;
     }
     else
@@ -128,7 +138,25 @@ int Functions::Install(std::string name)
 
 int Functions::Install(std::string name, std::string link)
 {
-    return Download(name.c_str(), link.c_str());
+    if (Download(name.c_str(), link.c_str()) == 0)
+    {
+        if (isEnding(name, ".tar.gz") | isEnding(name, ".zip"))
+        {
+            /* unpack */
+        }
+
+        else
+        {
+            /* move to right folder */
+        }
+
+        return 0;
+    }
+    
+    else
+    {
+        return 1;
+    }
 }
 
 /* Uninstall functions */
@@ -146,6 +174,8 @@ void Functions::Uninstall(std::string name, std::string path)
 void Functions::Settings()
 {
     int id;
+
+    std::string temp_path;
 
     printf("Enter id of setting to change (zero is help): ");
     scanf("%d", &id);
@@ -333,14 +363,7 @@ int main(int argc, char** argv)
 
     else if (!strcmp(argv[1], "settings"))
     {
-        if (argv[2] == NULL)
-        {
-            printf("There is no setting to change!\n");
-        }
-        else
-        {
-            /* settings(argv[2]); */
-        }
+        functions->Settings();
     }
 
     else if (!strcmp(argv[1], "help"))
