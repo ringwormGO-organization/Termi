@@ -85,6 +85,7 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 - [ImGui](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
 - [curl](https://github.com/curl/curl)
+- [indicators](https://github.com/p-ranav/indicators)
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)

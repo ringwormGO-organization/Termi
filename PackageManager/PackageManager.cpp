@@ -23,7 +23,44 @@ Install install;
 
 Functions* functions;
 
-/* Set up what we need */
+/* Required for curl */
+// https://curl.se/libcurl/c/CURLOPT_XFERINFOFUNCTION.html
+int download_progress_callback(void* clientp, curl_off_t dltotal,
+                               curl_off_t dlnow, curl_off_t ultotal,
+                               curl_off_t ulnow)
+{
+    indicators::ProgressBar* progress_bar =
+        static_cast<indicators::ProgressBar*>(clientp);
+
+    if (progress_bar->is_completed())
+    {
+        ;
+    }
+    else if (dltotal == 0)
+    {
+        progress_bar->set_progress(0);
+    }
+    else
+    {
+        int percentage =
+            static_cast<float>(dlnow) / static_cast<float>(dltotal) * 100;
+        progress_bar->set_progress(percentage);
+    }
+
+    // If your callback function returns CURL_PROGRESSFUNC_CONTINUE it will
+    // cause libcurl to continue executing the default progress function. return
+    // CURL_PROGRESSFUNC_CONTINUE;
+
+    return 0;
+}
+
+int download_progress_default_callback(void* clientp, curl_off_t dltotal,
+                                       curl_off_t dlnow, curl_off_t ultotal,
+                                       curl_off_t ulnow)
+{
+    return CURL_PROGRESSFUNC_CONTINUE;
+}
+
 Functions::Functions()
 {
 
@@ -202,13 +239,31 @@ int Functions::Download(const char* name)
     char tmpfilename[PATH_MAX];
     snprintf(tmpfilename, PATH_MAX - 1, "./%s.XXXXXX", outfilename);
 
+    indicators::ProgressBar progress_bar
+    {
+        indicators::option::BarWidth{30}, indicators::option::Start{" ["},
+        indicators::option::Fill{"█"}, indicators::option::Lead{"█"},
+        indicators::option::Remainder{"-"}, indicators::option::End{"]"},
+        indicators::option::PrefixText{outfilename},
+        // indicators::option::ForegroundColor{indicators::Color::yellow},
+        indicators::option::ShowElapsedTime{true},
+        indicators::option::ShowRemainingTime{true},
+        // indicators::option::FontStyles{
+        //     std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
+    };
+
     curl = curl_easy_init();                                                                                                                                                                                                                                                           
     if (curl)
     {   
         fp = fopen(tmpfilename, "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION,
+                         download_progress_callback);
+        curl_easy_setopt(curl, CURLOPT_XFERINFODATA,
+                         static_cast<void*>(&progress_bar));
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
+        // Perform a file transfer synchronously.
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(fp);
@@ -237,13 +292,31 @@ int Functions::Download(const char* name, const char* link)
     char tmpfilename[PATH_MAX];
     snprintf(tmpfilename, PATH_MAX - 1, "./%s.XXXXXX", outfilename);
 
+    indicators::ProgressBar progress_bar
+    {
+        indicators::option::BarWidth{30}, indicators::option::Start{" ["},
+        indicators::option::Fill{"█"}, indicators::option::Lead{"█"},
+        indicators::option::Remainder{"-"}, indicators::option::End{"]"},
+        indicators::option::PrefixText{outfilename},
+        // indicators::option::ForegroundColor{indicators::Color::yellow},
+        indicators::option::ShowElapsedTime{true},
+        indicators::option::ShowRemainingTime{true},
+        // indicators::option::FontStyles{
+        //     std::vector<indicators::FontStyle>{indicators::FontStyle::bold}}
+    };
+
     curl = curl_easy_init();                                                                                                                                                                                                                                                           
     if (curl)
     {   
         fp = fopen(tmpfilename, "wb");
         curl_easy_setopt(curl, CURLOPT_URL, url);
-        curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, NULL);
         curl_easy_setopt(curl, CURLOPT_WRITEDATA, fp);
+        curl_easy_setopt(curl, CURLOPT_XFERINFOFUNCTION,
+                         download_progress_callback);
+        curl_easy_setopt(curl, CURLOPT_XFERINFODATA,
+                         static_cast<void*>(&progress_bar));
+        curl_easy_setopt(curl, CURLOPT_NOPROGRESS, 0);
+        // Perform a file transfer synchronously.
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(fp);

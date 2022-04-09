@@ -16,6 +16,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "indicators.hpp"
+
 /* For Unix systems package manager will include limits.h */
 #ifdef USE_UNIX_LIMITS
         #define NGROUPS_MAX    65536	/* supplemental group IDs are available */
@@ -109,7 +111,7 @@ class Functions
         /* Download a file or folder*/
         int Download(const char* name, const char* link);
 
-        char Swap();
+        static int Progress(void* ptr, double TotalToDownload, double NowDownloaded, double TotalToUpload, double NowUploaded);
 };
 
 extern Settings settings;
