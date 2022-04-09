@@ -180,7 +180,7 @@ void Console::ExecCommand(string command_line, ...)
     auto command = commands.find(command_line);
 
     /* 
-        * Insert into history.First find matchand delete it so it can be pushed to the back.
+        * Insert into history. First find matchand delete it so it can be pushed to the back.
         * This isn't trying to be smart or optimal
     */
     HistoryPos = -1;
@@ -445,6 +445,27 @@ void Renderer::DrawContextMenu()
             EndMenu();
         }
 
+        if (BeginMenu(ChooseLanguage("about")))
+        {
+            if (MenuItem(ChooseLanguage("about termi")))
+            {
+                if (termi_dialog == false) 
+                    termi_dialog = true;
+                else 
+                    termi_dialog = false;
+            }
+
+            if (MenuItem(ChooseLanguage("about imgui")))
+            {
+                if (imgui_dialog == false) 
+                    imgui_dialog = true;
+                else 
+                    imgui_dialog = false;
+            }
+
+            EndMenu();
+        }
+
         EndMenuBar();
     }
 }
@@ -485,6 +506,7 @@ const char* Renderer::ChooseLanguage(const char* word)
 
         if (word == "terminal") return Croatian::terminal;
         if (word == "edit") return Croatian::edit;
+        if (word == "about") return Croatian::about;
 
         if (word == "new tab") return Croatian::new_tab;
         if (word == "new profile") return Croatian::new_profile;
@@ -493,6 +515,9 @@ const char* Renderer::ChooseLanguage(const char* word)
         if (word == "font picker") return Croatian::font_picker;
         if (word == "change theme") return Croatian::change_theme;
         if (word == "change language") return Croatian::change_language;
+
+        if (word == "about termi") return Croatian::about_termi;
+        if (word == "about imgui") return Croatian::about_imgui;
     }
 
     /* Default language - English */
@@ -502,6 +527,7 @@ const char* Renderer::ChooseLanguage(const char* word)
 
         if (word == "terminal") return English::terminal;
         if (word == "edit") return English::edit;
+        if (word == "about") return English::about;
 
         if (word == "new tab") return English::new_tab;
         if (word == "new profile") return English::new_profile;
@@ -510,6 +536,9 @@ const char* Renderer::ChooseLanguage(const char* word)
         if (word == "font picker") return English::font_picker;
         if (word == "change theme") return English::change_theme;
         if (word == "change language") return English::change_language;
+
+        if (word == "about termi") return English::about_termi;
+        if (word == "about imgui") return English::about_imgui;
     }
 
     /* nothing matches */
@@ -539,6 +568,55 @@ void Renderer::ChooseLanguageDialog(bool *p_open)
     if (Button("English (default)")) language = "english";
     if (Button("Croatian / Hrvatski")) language = "croatian";
     if (Button("Close window / Zatvori prozor")) language_dialog = false;
+
+    End();
+}
+
+/* Dialog about Termi */
+void Renderer::TermiDialog(bool* p_open)
+{
+    SetWindowPos(ImVec2(200, 200));
+    SetWindowSize(ImVec2(400, 600));
+    if (!Begin(ChooseLanguage("about termi"), p_open))
+    {
+        End();
+        return;
+    }
+
+    if (BeginPopupContextWindow())
+    {
+        if (Button("Close window")) language_dialog = false;
+        EndPopup();
+    }
+
+    Text(u8"AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+    Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
+    Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
+    Text("LICENSE > BSD-3-Clause-License");
+    Text("REPO > https://github.com/ringwormGO-organization/Termi");
+
+    End();
+}
+
+/* Dialog about ImGui */
+void Renderer::ImGuiDialog(bool* p_open)
+{
+    SetWindowPos(ImVec2(200, 200));
+    SetWindowSize(ImVec2(400, 200));
+    if (!Begin(ChooseLanguage("about imgui"), p_open))
+    {
+        End();
+        return;
+    }
+
+    if (BeginPopupContextWindow())
+    {
+        if (Button("Close window")) language_dialog = false;
+        EndPopup();
+    }
+
+    Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
+    Text("REPO > https://github.com/ocornut/imgui");
 
     End();
 }
@@ -591,6 +669,18 @@ void main_code()
     if (language_dialog)
     {
         render->ChooseLanguageDialog(NULL);
+    }
+
+    /* About Termi dialog */
+    if (termi_dialog)
+    {
+        render->TermiDialog(NULL);
+    }
+
+    /* About ImGui dialog */
+    if (imgui_dialog)
+    {
+        render->ImGuiDialog(NULL);
     }
 
     /* Get window width and height */

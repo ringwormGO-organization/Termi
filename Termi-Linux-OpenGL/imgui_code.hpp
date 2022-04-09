@@ -23,14 +23,16 @@
 /* All variables which is required */
 static float pos_x = 0;
 static float pos_y = 0;
-static float window_width = 900;
-static float window_height = 900;
+static float window_width = 650;
+static float window_height = 650;
 
 static bool isDarkTheme = false;
 static bool isFont = false;
 static bool font_change = false;
 static bool language_dialog = false;
 static bool isDemoWindow = false;
+static bool termi_dialog = false;
+static bool imgui_dialog = false;
 
 static bool alReadyPrinted;
 
@@ -102,6 +104,9 @@ class Renderer
 
         const char* ChooseLanguage(const char* word);
         void ChooseLanguageDialog(bool* p_open);
+
+        void TermiDialog(bool* p_open);
+        void ImGuiDialog(bool* p_open);
 
     private:
         void DrawNewTab();

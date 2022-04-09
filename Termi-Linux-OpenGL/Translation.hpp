@@ -16,6 +16,7 @@ namespace Translation
 
         static const char* terminal = "Terminal";
         static const char* edit = "Uredi";
+        static const char* about = "O Termiju";
 
         static const char* new_tab = "Nova kartica";
         static const char* new_profile = "Novi profil";
@@ -24,6 +25,9 @@ namespace Translation
         static const char* font_picker = "Odaberi font";
         static const char* change_theme = "Promijeni temu";
         static const char* change_language = "Promijeni jezik";
+
+        static const char* about_termi = "O Termiju";
+        static const char* about_imgui = "O ImGui-u";
     };
 
     /* Default language */
@@ -33,6 +37,7 @@ namespace Translation
 
         static const char* terminal = "Terminal";
         static const char* edit = "Edit";
+        static const char* about = "About";
 
         static const char* new_tab = "New Tab";
         static const char* new_profile = "New profile";
@@ -41,5 +46,8 @@ namespace Translation
         static const char* font_picker = "Font picker";
         static const char* change_theme = "Change theme";
         static const char* change_language = "Change language";
+
+        static const char* about_termi = "About Termi";
+        static const char* about_imgui = "About ImGui";
     };
 };
