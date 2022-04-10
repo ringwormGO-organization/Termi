@@ -292,6 +292,11 @@ int Functions::Download(const char* name, const char* link)
     char tmpfilename[PATH_MAX];
     snprintf(tmpfilename, PATH_MAX - 1, "./%s.XXXXXX", outfilename);
 
+    if (host == 4)
+    {
+        int fd = mkstemp(tmpfilename);
+    }
+
     indicators::ProgressBar progress_bar
     {
         indicators::option::BarWidth{30}, indicators::option::Start{" ["},
@@ -320,7 +325,18 @@ int Functions::Download(const char* name, const char* link)
         res = curl_easy_perform(curl);
         curl_easy_cleanup(curl);
         fclose(fp);
+
+        if (res == CURLE_OK)
+        {
+            printf("Downloaded %s as %s.\n", tmpfilename, outfilename);
+        }
+        
+        else
+        {
+            printf("Unable to download %s as %s!\n", tmpfilename, outfilename);
+        }
     }
+
     else
     {
         return 1;
