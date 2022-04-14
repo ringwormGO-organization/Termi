@@ -2,7 +2,7 @@
 Just drop a Pull Request :)
 
 # Pull Request style
-1. Use CRLF. Set up your Git settings with this: `git config --global core.autocrlf true` and check if it is OK by `git config --global core.autocrlf`. It need to return `true`
+1. Use LF. Set up your Git settings with this: `git config --global core.autocrlf false` and check if it is OK by `git config --global core.autocrlf`. It need to return `true`
 2. You can use LF too, we don't care for now.
 3. Use following style **WITH LOGIC**, check labels:
 
@@ -37,6 +37,11 @@ Just drop a Pull Request :)
 2. Copy stuff from above, use same names for variables, just translate.
 3. In `imgui_code.cpp` in `ChooseLanguage` function copy stuff above and change namespace name.
 4. Last thing to do is to add button to `ChooseLanguageDialog` function and give to variable proper value.
+
+# Add command to Termi
+1. Create new file in `Commands` folder and create main function for command.
+2. Put command and function name and `commands` `std::map`.
+3. Put main command code in `imgui_code.cpp`.
 
 # Coding sytle for Pull Requests
 ### Indentation and line width

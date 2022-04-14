@@ -15,7 +15,10 @@
 #include "Settings.hpp"
 #include "Translation.hpp"
 
+#include "Commands/Neofetch.hpp"
+
 #include <iostream>
+#include <functional>
 #include <fstream>
 #include <map>
 #include <string>
@@ -41,10 +44,10 @@ static const char* language;
 static char font_filename[250];
 static float size_pixels = 16;
 
-/* Commands list - command and path */
-static std::map<const std::string, const std::string> commands = 
+/* Commands list - command and function */
+static std::map<const std::string, std::function<void()>> commands = 
 {
-    {"test", "test"}
+    {"neofetch", neofetch}
 };
 
 /*

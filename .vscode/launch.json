@@ -4,12 +4,12 @@
         "name": "(gdb) Launch",
         "type": "cppdbg",
         "request": "launch",
-        "program": "${workspaceFolder}/PackageManager/pkg",
+        "program": "${workspaceFolder}/Termi-Linux-OpenGL/Termi-OpenGL",
         "args": [
 
         ],
         "stopAtEntry": false,
-        "cwd": "${workspaceFolder}/PackageManager/",
+        "cwd": "${workspaceFolder}/Termi-Linux-OpenGL/",
         "environment": [],
         "externalConsole": false,
         "MIMode": "gdb",

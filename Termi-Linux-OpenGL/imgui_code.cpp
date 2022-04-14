@@ -18,6 +18,84 @@ using namespace Translation;
 Console console;
 Renderer* render;
 
+/* Commands main code */
+
+void neofetch()
+{
+     /* Username and computer name */
+    gethostname(info.computer, HOST_NAME_MAX);
+    getlogin_r(info.user, LOGIN_NAME_MAX);
+
+    /* OS */
+    #ifdef _WIN32
+        info.OS = "Windows32";
+    #elif _WIN64
+        info.OS = "Windows64";
+    #elif __APPLE__ || __MACH__
+        info.OS = "Mac OSX";
+    #elif __linux__
+        info.OS = "GNU/Linux";
+    #elif __FreeBSD__
+        info.OS = "FreeBSD";
+    #elif __unix || __unix__
+        info.OS = "Unix";
+    #else
+        info.OS = "Other";
+    #endif
+
+    /* CPU */
+    string cpu;
+    string line_pre_array = parse("model name", "/proc/cpuinfo");
+    vector<string> result = explode(line_pre_array, ':');
+    cpu = result[1];
+    cpu = regex_replace(cpu, regex("^ +"), "");
+    info.cpu = cpu;
+
+    /* Memory */
+    string total_line = parse("MemTotal", "/proc/meminfo");
+    vector<string> total_line_vector = explode(total_line, ' ');
+    int total_size = stoi(total_line_vector[1]);
+    if (total_size > 1024) 
+    {
+        int total = total_size / 1024;
+        string message_total = to_string(total);
+        string message = message_total + "MB";
+        info.memory = message;
+    }
+
+    else 
+    {
+        string message_total = to_string(total_size);
+        string message = message_total + "KB";
+        info.memory = message;
+    }
+
+    /* Uptime */
+    chrono::milliseconds uptime(0u);
+    double uptime_seconds;
+    if (ifstream("/proc/uptime", ios::in) >> uptime_seconds)
+    {
+        uptime = chrono::milliseconds
+        (
+            static_cast<unsigned long long>(uptime_seconds * 1000.0)
+        );
+    }
+    info.uptime = uptime_seconds / 3600;
+
+    console.AddLog("\n");
+    console.AddLog("\t %s @ %s\n", info.user, info.computer);
+    console.AddLog("--------------------------------------------\n");
+
+    console.AddLog("\n");
+    console.AddLog("\tOperating system: %s, %s\t\n", info.OS.c_str(), distro().c_str());
+    console.AddLog("\tUptime: %d hours\t\n\n", info.uptime);
+    console.AddLog("\tPackages: %s\t\n", packages().c_str());
+
+    console.AddLog("\tCPU: %s\t\n", info.cpu.c_str());
+    console.AddLog("\tMemory: %s\t\n", info.memory.c_str());
+    console.AddLog("\n");
+}
+
 /*
  * Console class - everything for drawing and managing console
  * Code for functions here
@@ -199,12 +277,12 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
-        AddLog(command_line.c_str());
+        commands[command_line]();
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
     {
-        ClearLog();
+        FullClearLog();
     }
 
     else if (Stricmp(command_line.c_str(), "help") == 0)
@@ -218,7 +296,7 @@ void Console::ExecCommand(string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
-        AddLog(u8"AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
         AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > BSD-3-Clause-License");
@@ -589,7 +667,7 @@ void Renderer::TermiDialog(bool* p_open)
         EndPopup();
     }
 
-    Text(u8"AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+    Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
     Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
     Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
     Text("LICENSE > BSD-3-Clause-License");
