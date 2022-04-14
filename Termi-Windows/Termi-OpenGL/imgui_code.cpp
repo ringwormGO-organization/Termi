@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file for ImGUI
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #include "imgui_code.hpp"
@@ -15,8 +15,110 @@ using namespace Translation;
 
 #pragma warning(disable : 4996)
 
+#pragma comment(lib, "Advapi32.lib")
+#pragma comment(lib, "Kernel32.lib")
+
 Console console;
 Renderer* render;
+
+/* Commands main code */
+
+/*
+ * Return version of Windows operating system
+ *
+ * In own function
+*/
+static const char* OperatingSystem()
+{
+    OSVERSIONINFO vi;
+    vi.dwOSVersionInfoSize = sizeof(vi);
+    if (GetVersionEx(&vi) == 0)
+    {
+        return 0;
+    }
+    switch (vi.dwPlatformId)
+    {
+    case VER_PLATFORM_WIN32s:
+        return "Windows 3.x";
+    case VER_PLATFORM_WIN32_WINDOWS:
+        return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+    case VER_PLATFORM_WIN32_NT:
+        return "Windows NT";
+    default:
+        return "Unknown";
+    }
+}
+
+/* Uptime part - in own functions */
+/* Return uptime time in seoconds */
+uint64_t UptimeS()
+{
+    return GetTickCount64() / 1000;
+}
+
+/* Return uptime time in minutes */
+uint64_t UptimeM()
+{
+    return GetTickCount64() / 60000;
+}
+
+/* Return uptime time in hours */
+uint64_t UptimeH()
+{
+    return GetTickCount64() / 3600000;
+}
+
+/* neofetch main function */
+void neofetch()
+{
+    /* Username and computer name */
+    TCHAR username[UNLEN + 1];
+    DWORD username_len = UNLEN + 1;
+    GetUserName((TCHAR*)username, &username_len);
+
+    TCHAR computer[UNLEN + 1];
+    DWORD computer_len = UNLEN + 1;
+    GetComputerName((TCHAR*)computer, &computer_len);
+
+    char new_username[UNLEN];
+    char new_computer[UNLEN];
+
+    wcstombs(new_username, username, wcslen(username) + 1);
+    wcstombs(new_computer, computer, wcslen(computer) + 1);
+
+    /* Memory */
+    MEMORYSTATUSEX statex;
+    statex.dwLength = sizeof(statex);
+    GlobalMemoryStatusEx(&statex);
+
+    console.AddLog("\n");
+    console.AddLog("\t %s @ %s\n", new_username, new_computer);
+    console.AddLog("--------------------------------------------\n");
+
+    console.AddLog("\n");
+    console.AddLog("\tOperating system: %s\t\n", OperatingSystem());
+
+    if (UptimeH() < 1)
+    {
+        console.AddLog("\tUptime : %d minutes\t\n", UptimeM());
+    }
+    else
+    {
+        console.AddLog("\tUptime : %d hours\t\n", UptimeH());
+    }
+
+    int regs[4] = { 0 };
+    char vendor[13];
+    __cpuid(regs, 0);              // mov eax,0; cpuid
+    memcpy(vendor, &regs[1], 4);   // copy EBX
+    memcpy(vendor + 4, &regs[3], 4); // copy EDX
+    memcpy(vendor + 8, &regs[2], 4); // copy ECX
+    vendor[12] = '\0';
+
+    console.AddLog("\tCPU: %s\t\n", vendor);
+    console.AddLog("\tMemory: %f GB\t\n", (float)statex.ullTotalPhys / (1024 * 1024 * 1024));
+    console.AddLog("\n");
+}
 
 /*
  * Console class - everything for drawing and managing console
@@ -155,7 +257,7 @@ void Console::Draw()
     Separator();
 
     // Command-line
-    bool reclaim_focus = false;
+    bool reclaim_focus = true;
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
     if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
@@ -199,12 +301,12 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
-        AddLog(command_line.c_str());
+        commands[command_line]();
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
     {
-        ClearLog();
+        FullClearLog();
     }
 
     else if (Stricmp(command_line.c_str(), "help") == 0)
@@ -218,7 +320,7 @@ void Console::ExecCommand(string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
-        AddLog(u8"AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
         AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > BSD-3-Clause-License");
@@ -395,7 +497,7 @@ void Renderer::DrawContextMenu()
                 exit(0);
             }
 
-            EndMenu();
+            ImGui::EndMenu();
         }
 
         if (BeginMenu(ChooseLanguage("edit")))
@@ -442,7 +544,7 @@ void Renderer::DrawContextMenu()
                 }
             }
 
-            EndMenu();
+            ImGui::EndMenu();
         }
 
         if (BeginMenu(ChooseLanguage("about")))
@@ -463,7 +565,7 @@ void Renderer::DrawContextMenu()
                     imgui_dialog = false;
             }
 
-            EndMenu();
+            ImGui::EndMenu();
         }
 
         EndMenuBar();
@@ -589,7 +691,7 @@ void Renderer::TermiDialog(bool* p_open)
         EndPopup();
     }
 
-    Text(u8"AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+    Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
     Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
     Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
     Text("LICENSE > BSD-3-Clause-License");

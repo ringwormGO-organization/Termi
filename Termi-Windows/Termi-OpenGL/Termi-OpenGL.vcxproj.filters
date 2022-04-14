@@ -19,6 +19,9 @@
     <Filter Include="Header Files\imgui">
       <UniqueIdentifier>{1a7f0f2c-1f40-4980-99e6-c0836255a9cc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Commands">
+      <UniqueIdentifier>{2c40bbdb-4e94-4639-9b1e-32da3801434e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="glad.c">
@@ -91,6 +94,9 @@
     </ClInclude>
     <ClInclude Include="Translation.hpp">
       <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\Neofetch.hpp">
+      <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
