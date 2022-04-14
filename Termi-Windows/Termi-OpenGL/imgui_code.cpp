@@ -257,7 +257,7 @@ void Console::Draw()
     Separator();
 
     // Command-line
-    bool reclaim_focus = true;
+    bool reclaim_focus = false;
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
     if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
