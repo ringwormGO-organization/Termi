@@ -39,6 +39,8 @@ static bool imgui_dialog = false;
 
 static bool alReadyPrinted;
 
+static bool help_focus = false;
+
 static const char* language;
 
 static char font_filename[250];

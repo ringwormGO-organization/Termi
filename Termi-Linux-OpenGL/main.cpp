@@ -68,7 +68,6 @@ int main()
 		#endif
 	}
 
-
 	GLFWimage images[1];
 	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
 	glfwSetWindowIcon(window, 1, images);

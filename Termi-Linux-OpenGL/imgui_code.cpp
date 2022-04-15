@@ -232,8 +232,12 @@ void Console::Draw()
     EndChild();
     Separator();
 
-    // Command-line
-    bool reclaim_focus = false;
+    bool reclaim_focus;
+    if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !help_focus)
+    {
+        ImGui::SetKeyboardFocusHere(0);
+        help_focus = true;
+    }
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
     if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
