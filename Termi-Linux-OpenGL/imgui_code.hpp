@@ -16,6 +16,7 @@
 #include "Translation.hpp"
 
 #include "Commands/Neofetch.hpp"
+#include "Commands/filesys.hpp"
 
 #include <iostream>
 #include <functional>
@@ -49,7 +50,8 @@ static float size_pixels = 16;
 /* Commands list - command and function */
 static std::map<const std::string, std::function<void()>> commands = 
 {
-    {"neofetch", neofetch}
+    {"neofetch", neofetch},
+    {"list", list}
 };
 
 /*
@@ -88,6 +90,8 @@ class Console
         void Draw();
         void ExecCommand(std::string command_line, ...);
         void TypeTermi();
+
+        char* s;
 
     protected:
         // In C++11 you'd be better off using lambdas for this sort of forwarding callbacks

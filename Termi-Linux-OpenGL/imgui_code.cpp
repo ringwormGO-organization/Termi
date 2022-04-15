@@ -96,6 +96,22 @@ void neofetch()
     console.AddLog("\n");
 }
 
+void list()
+{
+    DIR *dr;
+    struct dirent *en;
+    dr = opendir("."); //open all directory
+    if (dr) 
+    {
+        while ((en = readdir(dr)) != NULL) 
+        {
+            console.AddLog("%s\n", en->d_name); //print all directory name
+        }
+        closedir(dr); //close all directory
+        console.AddLog("\n");
+    }
+}
+
 /*
  * Console class - everything for drawing and managing console
  * Code for functions here
@@ -232,7 +248,7 @@ void Console::Draw()
     EndChild();
     Separator();
 
-    bool reclaim_focus;
+    bool reclaim_focus = false;
     if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !help_focus)
     {
         ImGui::SetKeyboardFocusHere(0);
@@ -241,7 +257,7 @@ void Console::Draw()
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
     if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
-        char* s = InputBuf;
+        s = InputBuf;
         Strtrim(s);
         if (s[0])
             ExecCommand(s);
