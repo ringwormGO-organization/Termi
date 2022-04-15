@@ -169,7 +169,9 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Commands\filesys.hpp" />
     <ClInclude Include="Commands\Neofetch.hpp" />
+    <ClInclude Include="dirent.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
     <ClInclude Include="imgui\imgui_impl_glfw.h" />

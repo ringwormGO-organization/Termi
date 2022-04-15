@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code
  * INFORAMTION: Compile solution, else check Victor Gordan's video
@@ -16,6 +16,7 @@
 #include "Translation.hpp"
 
 #include "Commands/Neofetch.hpp"
+#include "Commands/filesys.hpp"
 
 #include <iostream>
 #include <functional>
@@ -37,7 +38,11 @@ static bool isDemoWindow = false;
 static bool termi_dialog = false;
 static bool imgui_dialog = false;
 
+static bool fps = true;
+
 static bool alReadyPrinted;
+
+static bool help_focus = false;
 
 static const char* language;
 
@@ -47,7 +52,8 @@ static float size_pixels = 16;
 /* Commands list - command and function */
 static std::map<const std::string, std::function<void()>> commands = 
 {
-    {"neofetch", neofetch}
+    {"neofetch", neofetch},
+    {"list", list}
 };
 
 /*
@@ -86,6 +92,8 @@ class Console
         void Draw();
         void ExecCommand(std::string command_line, ...);
         void TypeTermi();
+
+        char* s;
 
     protected:
         // In C++11 you'd be better off using lambdas for this sort of forwarding callbacks

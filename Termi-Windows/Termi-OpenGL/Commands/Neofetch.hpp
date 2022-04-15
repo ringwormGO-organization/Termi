@@ -70,3 +70,40 @@ static std::string parse(std::string field, std::string file)
     thefile.close(); // Close the file.
     return line_pre_array;
 }
+
+static const char* szFeatures[] =
+{
+    "x87 FPU On Chip",
+    "Virtual-8086 Mode Enhancement",
+    "Debugging Extensions",
+    "Page Size Extensions",
+    "Time Stamp Counter",
+    "RDMSR and WRMSR Support",
+    "Physical Address Extensions",
+    "Machine Check Exception",
+    "CMPXCHG8B Instruction",
+    "APIC On Chip",
+    "Unknown1",
+    "SYSENTER and SYSEXIT",
+    "Memory Type Range Registers",
+    "PTE Global Bit",
+    "Machine Check Architecture",
+    "Conditional Move/Compare Instruction",
+    "Page Attribute Table",
+    "36-bit Page Size Extension",
+    "Processor Serial Number",
+    "CFLUSH Extension",
+    "Unknown2",
+    "Debug Store",
+    "Thermal Monitor and Clock Ctrl",
+    "MMX Technology",
+    "FXSAVE/FXRSTOR",
+    "SSE Extensions",
+    "SSE2 Extensions",
+    "Self Snoop",
+    "Multithreading Technology",
+    "Thermal Monitor",
+    "Unknown4",
+    "Pending Break Enable"
+};
+

@@ -98,6 +98,12 @@
     <ClInclude Include="Commands\Neofetch.hpp">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Commands\filesys.hpp">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="dirent.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="termi.png">
