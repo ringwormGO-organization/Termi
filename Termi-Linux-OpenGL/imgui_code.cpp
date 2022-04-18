@@ -10,6 +10,7 @@
 
 using namespace std;
 using namespace ImGui;
+using namespace nlohmann;
 
 using namespace Translation;
 
@@ -17,6 +18,8 @@ using namespace Translation;
 
 Console console;
 Renderer* render;
+
+json j;
 
 /* Commands main code */
 
@@ -493,7 +496,7 @@ void Renderer::DrawContextMenu()
                 exit(0);
             }
 
-            EndMenu();
+            ImGui::EndMenu();
         }
 
         if (BeginMenu(ChooseLanguage("edit")))
@@ -535,12 +538,28 @@ void Renderer::DrawContextMenu()
             {
                 if (!language_dialog)
                 {
-                    ChooseLanguageDialog(NULL);
                     language_dialog = true;
+                    ChooseLanguageDialog(NULL);
                 }
             }
 
-            EndMenu();
+            Separator();
+
+            if (MenuItem(ChooseLanguage("configure settings"), "Ctrl+S"))
+            {
+                Settings(j, 0);
+            }
+
+            if (MenuItem(ChooseLanguage("settings dialog"), "Ctrl+Shift+S"))
+            {
+                if (!settings_dialog)
+                {
+                    settings_dialog = true;
+                    SettingsDialog(NULL);
+                }
+            }
+
+            ImGui::EndMenu();
         }
 
         if (BeginMenu(ChooseLanguage("about")))
@@ -561,7 +580,7 @@ void Renderer::DrawContextMenu()
                     imgui_dialog = false;
             }
 
-            EndMenu();
+            ImGui::EndMenu();
         }
 
         EndMenuBar();
@@ -616,6 +635,10 @@ const char* Renderer::ChooseLanguage(const char* word)
 
         if (word == "about termi") return Croatian::about_termi;
         if (word == "about imgui") return Croatian::about_imgui;
+
+        if (word == "settings") return Croatian::settings;
+        if (word == "configure settings") return Croatian::configure_settings;
+        if (word == "settings dialog") return Croatian::settings_dialog;
     }
 
     /* Default language - English */
@@ -637,6 +660,10 @@ const char* Renderer::ChooseLanguage(const char* word)
 
         if (word == "about termi") return English::about_termi;
         if (word == "about imgui") return English::about_imgui;
+
+        if (word == "settings") return English::settings;
+        if (word == "configure settings") return English::configure_settings;
+        if (word == "settings dialog") return English::settings_dialog;
     }
 
     /* nothing matches */
@@ -719,6 +746,70 @@ void Renderer::ImGuiDialog(bool* p_open)
     End();
 }
 
+template<typename T>
+int Renderer::Settings(T, int id)
+{
+    auto mode = ios::app | ios::in;
+    string temp_str = "";
+
+    if (CheckFile("settings.json") != 0)
+    {
+        fstream json_file_new("settings.json", mode);
+    }
+
+    else /* temporary */
+    {
+        remove("settings.json");
+    }
+
+    fstream json_file("settings.json", mode);
+
+    switch (id)
+    {
+        case 0:
+            /* set up all defaults and read file */
+
+            j["width"] = window_width;
+            j["height"] = window_height;
+            json_file << j;
+            break;
+
+        case 1:
+            /* read resulution */
+            break;
+            
+
+        default:
+            console.AddLog("Invalid id %d!\n", id);
+            break;
+    }
+
+    json_file.close();
+    return 0;
+}
+
+void Renderer::SettingsDialog(bool* p_open)
+{
+    SetWindowPos(ImVec2(200, 200));
+    SetWindowSize(ImVec2(400, 600));
+    if (!Begin(ChooseLanguage("settings dialog"), p_open))
+    {
+        language_dialog = false;
+        End();
+        return;
+    }
+
+    int id = 0;
+
+    if (InputInt("Enter id: ", &id, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        Settings(j, id);
+    }
+
+    language_dialog = false;
+    End();
+}
+
 void main_code()
 {
     /* ImGUI window creation */
@@ -741,9 +832,6 @@ void main_code()
         cout << "ImGui window is created.\n";
         alReadyPrinted = true;
     }
-
-    if (alReadyPrinted)
-        /* do nothing */
 #endif
 
 #ifdef PRINT_FPS
@@ -779,6 +867,12 @@ void main_code()
     if (imgui_dialog)
     {
         render->ImGuiDialog(NULL);
+    }
+
+    /* Settings dialog */
+    if (settings_dialog)
+    {
+        render->SettingsDialog(NULL);
     }
 
     /* Get window width and height */

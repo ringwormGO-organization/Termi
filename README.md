@@ -71,10 +71,6 @@ from root directory.
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
 2. For GNU/Linux type: ```cmake . && make && ./Termi-OpenGL```. If you can't compile project try with: ```cmake && sudo make && ./Termi-OpenGL```. If you still can't compile project check [this video](https://www.youtube.com/watch?v=643CUhCoyCo).
 
-### Build & Run - Package Manager
-1. For Windows open terminal and type ```cmake .``` and open Visual Studio solution, compile it. If you get error about ```ALL_BUILD``` project, ignore it and find executable file in ```Debug``` folder.
-2. For Linux open terminal and type ```cmake . && make && pkg [arguments]```.
-
 ## Development picture
 ![image](https://user-images.githubusercontent.com/83548580/159910200-8fa25e94-ba38-4b34-a84c-21d48f381603.png)
 
@@ -85,6 +81,7 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 - [ImGui](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
 - [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` copy for Windows
+- [json](https://github.com/nlohmann/json)
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)

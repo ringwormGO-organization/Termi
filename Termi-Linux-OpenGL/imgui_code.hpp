@@ -24,6 +24,8 @@
 #include <map>
 #include <string>
 
+#include "json.hpp"
+
 /* All variables which is required */
 static float pos_x = 0;
 static float pos_y = 0;
@@ -37,6 +39,7 @@ static bool language_dialog = false;
 static bool isDemoWindow = false;
 static bool termi_dialog = false;
 static bool imgui_dialog = false;
+static bool settings_dialog = false;
 
 static bool alReadyPrinted;
 
@@ -53,6 +56,13 @@ static std::map<const std::string, std::function<void()>> commands =
     {"neofetch", neofetch},
     {"list", list}
 };
+
+/* Required for us */
+static int isStarting (std::string const &fullString, std::string const &starting) 
+{
+    if (fullString.length() <= starting.length()) { return 0; }
+    else { return 0; }
+}
 
 /*
  * Console class - everything for drawing and managing console
@@ -116,6 +126,10 @@ class Renderer
 
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
+
+        template<typename T>
+        int Settings(T, int id);
+        void SettingsDialog(bool* p_open);
 
     private:
         void DrawNewTab();

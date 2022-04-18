@@ -44,6 +44,8 @@ void end(int sig)
 
 int main()
 {
+	using namespace nlohmann;
+
 	std::cout << "\n\n";
 
 	/* Catch CTRL-C */
@@ -68,6 +70,8 @@ int main()
 		#endif
 	}
 
+	
+
 	GLFWimage images[1];
 	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
 	glfwSetWindowIcon(window, 1, images);
@@ -81,6 +85,8 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	
+	json j;
+	static_cast<double>(render->Settings(j, 0)); /* casting test */
 
 	while(!glfwWindowShouldClose(window))
 	{
