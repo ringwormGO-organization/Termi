@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Main file
  * INFORAMTION: Compile solution, else check Victor Gordan's video
@@ -15,7 +15,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <signal.h>
+#include <Windows.h>
 
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
@@ -31,27 +31,27 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 
 	switch (dwCtrlType)
 	{
-	case CTRL_C_EVENT: // Ctrl+C
-		std::cout << "\nPress any key to continue...\n";
-		key = std::cin.get();
-		if (key != 10)
-		{
-			/* we need to do something here; input is broken */
-			exit(0);
-		}
-		else
-		{
-			exit(0);
-		}
-		break;
-	case CTRL_BREAK_EVENT: // Ctrl+Break
-		break;
-	case CTRL_CLOSE_EVENT: // Closing the console window
-		break;
-	case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
-		break;
-	case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
-		break;
+		case CTRL_C_EVENT: // Ctrl+C
+			std::cout << "\nPress any key to continue...\n";
+			key = std::cin.get();
+			if (key != 10)
+			{
+				/* we need to do something here; input is broken */
+				exit(0);
+			}
+			else
+			{
+				exit(0);
+			}
+			break;
+		case CTRL_BREAK_EVENT: // Ctrl+Break
+			break;
+		case CTRL_CLOSE_EVENT: // Closing the console window
+			break;
+		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
+			break;
+		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
+			break;
 	}
 
 	// Return TRUE if handled this message, further handler functions won't be called.
@@ -61,6 +61,8 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 
 int main()
 {
+	using namespace nlohmann;
+
 	std::cout << "\n\n";
 
 	/* Catch CTRL-C */
@@ -82,6 +84,7 @@ int main()
 		#endif
 	}
 
+	
 	GLFWimage images[1];
 	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
 	glfwSetWindowIcon(window, 1, images);
@@ -95,6 +98,9 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 	
+	json j;
+	static_cast<double>(render->Settings(j, 0)); /* casting test */
+
 	while(!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
