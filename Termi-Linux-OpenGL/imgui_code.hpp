@@ -51,13 +51,15 @@ static char font_filename[250];
 static float size_pixels = 16;
 
 /* Commands list - command and function */
-static std::map<const std::string, std::function<void()>> commands = 
+static std::map<const std::string, std::function<void(std::string, std::string)>> commands = 
 {
     {"neofetch", neofetch},
-    {"list", list}
+    {"openfile", openfile},
+    {"list", list},
+    {"writefile", writefile}
 };
 
-/* Required for us */
+/* Check if some string start with some std::string value */
 static int isStarting (std::string const &fullString, std::string const &starting) 
 {
     if (fullString.length() <= starting.length()) { return 0; }

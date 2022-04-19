@@ -23,7 +23,7 @@ json j;
 
 /* Commands main code */
 
-void neofetch()
+void neofetch(std::string argument, std::string argument2)
 {
      /* Username and computer name */
     gethostname(info.computer, HOST_NAME_MAX);
@@ -99,7 +99,28 @@ void neofetch()
     console.AddLog("\n");
 }
 
-void list()
+void openfile(std::string file, std::string argument)
+{
+    fstream my_file;
+    my_file.open(file, ios::in);
+    if (!my_file) 
+    {
+        console.AddLog("No such file %s!\n", file.c_str());
+    }
+
+    else 
+    {
+        std::string str; 
+        while (getline(my_file, str))
+        {
+            console.AddLog("%s\n", str.c_str());
+        }
+    }
+    console.AddLog("\n");
+    my_file.close();
+}
+
+void list(std::string argument, std::string argument2)
 {
     DIR *dr;
     struct dirent *en;
@@ -113,6 +134,16 @@ void list()
         closedir(dr); //close all directory
         console.AddLog("\n");
     }
+}
+
+void writefile(std::string file, std::string content)
+{
+    auto mode = ios::in;
+
+    ofstream myfile;
+    myfile.open(file, mode);
+    myfile << content;
+    myfile.close();
 }
 
 /*
@@ -276,6 +307,37 @@ void Console::Draw()
 
 void Console::ExecCommand(string command_line, ...)
 {
+    const char* tmp;
+    string arg;
+    string arg2;
+    bool _switch = false;
+    bool __switch = false;
+    tmp = strtok(const_cast<char*>(command_line.c_str()), " ");
+
+    while (tmp != NULL)
+    {
+        if (_switch)
+        {
+            if (__switch)
+            {
+                arg2 = tmp;
+            }
+
+            else
+            {
+                arg = tmp;
+            }
+        }
+
+        else
+        {
+            command_line = tmp;
+            _switch = true;
+        }
+        
+        tmp = strtok(NULL, " , ");
+    }
+
     AddLog("# %s\n", command_line.c_str());
 
     auto command = commands.find(command_line);
@@ -300,7 +362,7 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
-        commands[command_line]();
+        commands[command_line](arg, arg2);
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)

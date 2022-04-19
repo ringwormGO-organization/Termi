@@ -24,7 +24,7 @@
 #include <limits.h>
 #include <sys/unistd.h>
 
-void neofetch();
+void neofetch(std::string argument, std::string argument2);
 
 enum PackageManager 
 {

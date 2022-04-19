@@ -9,4 +9,6 @@
 
 #include <dirent.h>
 
-void list();
+void openfile(std::string file, std::string argument);
+void list(std::string argument, std::string argument2);
+void writefile(std::string file, std::string content);
