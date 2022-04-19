@@ -25,7 +25,7 @@ A Powerful Terminal made in C++
 - [ ] User settings in JSON files
 - [ ] Support most of major commands
 - [ ] Include other host terminals (may not be in first release)
-- [ ] Arguments
+- [x] Arguments
 - [ ] Library for connecting ```AddLog()``` functions
 - [x] Translation (may not be fully finished in first release)
 
