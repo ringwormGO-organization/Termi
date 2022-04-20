@@ -146,6 +146,46 @@ void writefile(std::string file, std::string content)
     myfile.close();
 }
 
+double calc(string op, double num1, double num2)
+{
+    if (!strcmp(op.c_str(), "+"))
+    {
+        return (num1 + num2);
+    }
+
+    else if(!strcmp(op.c_str(), "-"))
+    {
+        return (num1 - num2);
+    }
+
+    else if (!strcmp(op.c_str(), "*"))
+    {
+        return (num1 * num2);
+    }
+
+    if (!strcmp(op.c_str(), "/"))
+    {
+        if (num2 == 0)
+        {
+            console.AddLog("Cannot divide with 0!\n");
+            return 1;
+        }
+
+        else
+        {
+            return (num1 / num2);
+        }
+    }
+
+    else
+    {
+        console.AddLog("Invalid operator %s!\n", op.c_str());
+        return 1;
+    }
+
+    return 1;
+}
+
 /*
  * Console class - everything for drawing and managing console
  * Code for functions here
@@ -163,6 +203,7 @@ Console::Console()
     Commands.push_back("clear");
     Commands.push_back("cls");
     Commands.push_back("exit");
+    Commands.push_back("calc");
 
     for (auto& x : commands)
     {
@@ -174,13 +215,13 @@ Console::Console()
 
     AddLog("Termi> ");
 }
+
 Console::~Console()
 {
     FullClearLog();
     for (int i = 0; i < History.Size; i++)
         free(History[i]);
 }
-
 
 void Console::ClearLog()
 {
@@ -307,41 +348,6 @@ void Console::Draw()
 
 void Console::ExecCommand(string command_line, ...)
 {
-    const char* tmp;
-    string arg;
-    string arg2;
-    bool _switch = false;
-    bool __switch = false;
-    tmp = strtok(const_cast<char*>(command_line.c_str()), " ");
-
-    while (tmp != NULL)
-    {
-        if (_switch)
-        {
-            if (__switch)
-            {
-                arg2 = tmp;
-            }
-
-            else
-            {
-                arg = tmp;
-            }
-        }
-
-        else
-        {
-            command_line = tmp;
-            _switch = true;
-        }
-        
-        tmp = strtok(NULL, " , ");
-    }
-
-    AddLog("# %s\n", command_line.c_str());
-
-    auto command = commands.find(command_line);
-
     /* 
         * Insert into history. First find matchand delete it so it can be pushed to the back.
         * This isn't trying to be smart or optimal
@@ -359,10 +365,99 @@ void Console::ExecCommand(string command_line, ...)
 
     History.push_back(Strdup(command_line.c_str()));
 
+    string arg;
+    string arg2;
+    string arg3;
+    bool _switch = false;
+    bool __switch = false;
+    bool ___switch = false;
+
+    if (isStarting(command_line, "calc"))
+    {
+        char* tmp = new char[200];
+
+        tmp = strtok(const_cast<char*>(command_line.c_str()), " ");
+
+        while (tmp != NULL)
+        {
+            if (_switch)
+            {
+                if (__switch)
+                {
+                    if (___switch)
+		            {
+			            arg3 = tmp;
+		            }
+
+                    else
+                    {
+                        arg2 = tmp;
+                        ___switch = true;
+                    }
+                }
+
+                else
+                {
+                    arg = tmp;
+                    __switch = true;
+                }
+            }
+
+            else
+            {
+                command_line = tmp;
+                _switch = true;
+            }
+            
+            tmp = std::strtok(NULL, " , ");
+        }
+    }
+
+    else
+    {
+        const char* tmp2 = new char[200];
+
+        tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
+
+        while (tmp2 != NULL)
+        {
+            if (_switch)
+            {
+                if (__switch)
+                {
+                    arg2 = tmp2;
+                }
+
+                else
+                {
+                    arg = tmp2;
+                    __switch = true;
+                }
+            }
+
+            else
+            {
+                command_line = tmp2;
+                _switch = true;
+            }
+            
+            tmp2 = strtok(NULL, " , ");
+        }
+    }
+
+    AddLog("# %s\n", command_line.c_str());
+
+    auto command = commands.find(command_line);
+
     if (command != commands.end())
     {
         /* execute execuatable */
         commands[command_line](arg, arg2);
+    }
+
+    else if (Stricmp(command_line.c_str(), "calc") == 0)
+    {
+        console.AddLog("Result is: %e.\n", calc(arg, stod(arg2), stod(arg3)));
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -519,7 +614,7 @@ void Renderer::DrawNewTab()
 }
 
 /* Check if file exists */
-int Renderer::CheckFile(char name[200])
+int Renderer::CheckFile(const char* name)
 {
     fstream file;
     file.open(name);

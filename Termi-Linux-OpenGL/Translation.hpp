@@ -56,6 +56,6 @@ namespace Translation
 
         static const char* settings = "Settings";
         static const char* configure_settings = "Configure settings";
-        static const char* settings_dialog = "Settings dilaog";
+        static const char* settings_dialog = "Settings dialog";
     };
 };

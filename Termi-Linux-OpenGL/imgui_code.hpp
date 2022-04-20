@@ -17,6 +17,7 @@
 
 #include "Commands/Neofetch.hpp"
 #include "Commands/filesys.hpp"
+#include "Commands/calc.hpp"
 
 #include <iostream>
 #include <functional>
@@ -63,7 +64,7 @@ static std::map<const std::string, std::function<void(std::string, std::string)>
 static int isStarting (std::string const &fullString, std::string const &starting) 
 {
     if (fullString.length() <= starting.length()) { return 0; }
-    else { return 0; }
+    else { return 1; }
 }
 
 /*
@@ -135,7 +136,7 @@ class Renderer
 
     private:
         void DrawNewTab();
-        int CheckFile(char name[250]);
+        int CheckFile(const char* name);
 };
 
 /* Main code for starting ImGui */
