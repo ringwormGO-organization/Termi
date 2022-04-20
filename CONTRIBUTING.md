@@ -40,8 +40,9 @@ Just drop a Pull Request :)
 
 # Add command to Termi
 1. Create new file in `Commands` folder and create main function for command.
-2. Put command and function name and `commands` `std::map`.
+2. Put command and function name in `commands` `std::map`.
 3. Put main command code in `imgui_code.cpp`.
+4. Don't forget for arguments even if it is not needed!
 
 # Coding sytle for Pull Requests
 ### Indentation and line width

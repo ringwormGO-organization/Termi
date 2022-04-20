@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code
  * INFORAMTION: Compile solution, else check Victor Gordan's video
@@ -24,6 +24,8 @@
 #include <map>
 #include <string>
 
+#include "json.hpp"
+
 /* All variables which is required */
 static float pos_x = 0;
 static float pos_y = 0;
@@ -37,8 +39,7 @@ static bool language_dialog = false;
 static bool isDemoWindow = false;
 static bool termi_dialog = false;
 static bool imgui_dialog = false;
-
-static bool fps = true;
+static bool settings_dialog = false;
 
 static bool alReadyPrinted;
 
@@ -50,11 +51,20 @@ static char font_filename[250];
 static float size_pixels = 16;
 
 /* Commands list - command and function */
-static std::map<const std::string, std::function<void()>> commands = 
+static std::map<const std::string, std::function<void(std::string, std::string)>> commands = 
 {
     {"neofetch", neofetch},
-    {"list", list}
+    {"openfile", openfile},
+    {"list", list},
+    {"writefile", writefile}
 };
+
+/* Check if some string start with some std::string value */
+static int isStarting (std::string const &fullString, std::string const &starting) 
+{
+    if (fullString.length() <= starting.length()) { return 0; }
+    else { return 0; }
+}
 
 /*
  * Console class - everything for drawing and managing console
@@ -119,9 +129,13 @@ class Renderer
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
 
+        template<typename T>
+        int Settings(T, int id);
+        void SettingsDialog(bool* p_open);
+
     private:
         void DrawNewTab();
-        int CheckFile(char name[250]);
+        int CheckFile(const char* name);
 };
 
 /* Main code for starting ImGui */

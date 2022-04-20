@@ -25,7 +25,7 @@
 #include <wchar.h>
 #include <intrin.h>
 
-void neofetch();
+void neofetch(std::string argument, std::string argument2);
 
 static bool isWanted(const std::string& line, std::string field)
 {
@@ -106,4 +106,3 @@ static const char* szFeatures[] =
     "Unknown4",
     "Pending Break Enable"
 };
-
