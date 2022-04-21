@@ -10,7 +10,6 @@
 
 using namespace std;
 using namespace ImGui;
-using namespace nlohmann;
 
 using namespace Translation;
 
@@ -18,8 +17,6 @@ using namespace Translation;
 
 Console console;
 Renderer* render;
-
-json j;
 
 /* Commands main code */
 
@@ -613,22 +610,6 @@ void Renderer::DrawNewTab()
 
 }
 
-/* Check if file exists */
-int Renderer::CheckFile(const char* name)
-{
-    fstream file;
-    file.open(name);
-
-    if (!file)
-    {
-        return 1;
-    }
-
-    file.close();
-
-    return 0;
-}
-
 /* Draw context menu */
 void Renderer::DrawContextMenu()
 {
@@ -704,7 +685,10 @@ void Renderer::DrawContextMenu()
 
             if (MenuItem(ChooseLanguage("configure settings"), "Ctrl+S"))
             {
-                Settings(j, 0);
+                for (int i = 0; i < 4; i++)
+                {
+                    Settings(i);
+                }
             }
 
             if (MenuItem(ChooseLanguage("settings dialog"), "Ctrl+Shift+S"))
@@ -763,7 +747,7 @@ void Renderer::Font(bool* p_open)
         EndPopup();
     }
 
-    if (InputText("Enter name of font file", font_filename, IM_ARRAYSIZE(font_filename), ImGuiInputTextFlags_EnterReturnsTrue))
+    if (InputText("Enter name of font file", font_name, IM_ARRAYSIZE(font_name), ImGuiInputTextFlags_EnterReturnsTrue))
     {
         //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
     }
@@ -903,45 +887,146 @@ void Renderer::ImGuiDialog(bool* p_open)
     End();
 }
 
-template<typename T>
-int Renderer::Settings(T, int id)
+int Renderer::Settings(int id)
 {
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
-    if (CheckFile("settings.json") != 0)
+    char* tmp = new char[200];
+    string arg;
+    string arg2;
+    bool _switch = false;
+    bool __switch = false;
+
+    if (CheckFile("settings.txt") != 0)
     {
-        fstream json_file_new("settings.json", mode);
+        fstream new_file("settings.txt", mode);
     }
 
-    else /* temporary */
-    {
-        remove("settings.json");
-    }
-
-    fstream json_file("settings.json", mode);
+    fstream file("settings.txt", mode);
 
     switch (id)
     {
-        case 0:
-            /* set up all defaults and read file */
+        case 1: /* read width */
+            while (getline(file, temp_str))
+            {
+                if (strcmp(temp_str.c_str(), "width"))
+                {
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
 
-            j["width"] = window_width;
-            j["height"] = window_height;
-            json_file << j;
+                    while (tmp != NULL)
+                    {
+                        if (_switch)
+                        {
+                            arg = tmp;
+                            return stof(arg);
+                        }
+
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+
+                    break;
+                }               
+            }
+            
             break;
 
-        case 1:
-            /* read resulution */
+        case 2:
+            while (getline(file, temp_str))
+            {
+                if (strcmp(temp_str.c_str(), "height"))
+                {
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                    while (tmp != NULL)
+                    {
+                        if (_switch)
+                        {
+                            arg = tmp;
+                            return stof(arg);
+                        }
+
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+                    break;
+                }
+            }
+            break;
+
+        case 3: /* font name */
+            while (getline(file, temp_str))
+            {
+                if (strcmp(temp_str.c_str(), "font"))
+                {
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                    while (tmp != NULL)
+                    {
+                        if (_switch)
+                        {
+                            strcpy(font_name, const_cast<char*>(tmp));
+                            return 0;
+                        }
+
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+                    break;
+                }
+            }
+            break;
+
+        case 4:
+            while (getline(file, temp_str))
+            {
+                if (strcmp(temp_str.c_str(), "font-size"))
+                {
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                    while (tmp != NULL)
+                    {
+                        if (_switch)
+                        {
+                            arg = tmp;
+                            return stof(arg);
+                        }
+
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+                    break;
+                }
+            }
             break;
             
-
         default:
             console.AddLog("Invalid id %d!\n", id);
             break;
     }
 
-    json_file.close();
+    file.close();
     return 0;
 }
 
@@ -960,18 +1045,34 @@ void Renderer::SettingsDialog(bool* p_open)
 
     if (InputInt("Enter id: ", &id, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
     {
-        Settings(j, id);
+        Settings(id);
     }
 
     language_dialog = false;
     End();
 }
 
+/* Check if file exists */
+int Renderer::CheckFile(const char* name)
+{
+    fstream file;
+    file.open(name);
+
+    if (!file)
+    {
+        return 1;
+    }
+
+    file.close();
+
+    return 0;
+}
+
 void main_code()
 {
     /* ImGUI window creation */
     SetNextWindowPos(ImVec2(pos_x, pos_y));
-    SetNextWindowSize(ImVec2(window_width, window_height));
+    SetNextWindowSize(ImVec2(static_cast<float>(render->Settings(1)), static_cast<float>(render->Settings(2))));
     Begin
     ("Termi",
         NULL,

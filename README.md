@@ -22,7 +22,7 @@ A Powerful Terminal made in C++
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
 ### Termi C++ part
-- [ ] User settings in JSON files
+- [x] User settings in text files
 - [ ] Support most of major commands
 - [ ] Include other host terminals (may not be in first release)
 - [x] Arguments

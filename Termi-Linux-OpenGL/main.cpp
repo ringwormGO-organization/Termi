@@ -44,8 +44,6 @@ void end(int sig)
 
 int main()
 {
-	using namespace nlohmann;
-
 	std::cout << "\n\n";
 
 	/* Catch CTRL-C */
@@ -55,13 +53,13 @@ int main()
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(window_width, window_height, "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(static_cast<float>(render->Settings(1)), static_cast<float>(render->Settings(2)), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
 	{
 		std::cout << "Unable to create OpenGL window!\nExiting...\n";
-		return 0;
+		return 1;
 	}
 	else
 	{
@@ -69,8 +67,6 @@ int main()
 			std::cout << "OpenGL window is created.\n";
 		#endif
 	}
-
-	
 
 	GLFWimage images[1];
 	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
@@ -84,9 +80,26 @@ int main()
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
-	
-	json j;
-	static_cast<double>(render->Settings(j, 0)); /* casting test */
+
+	render->Settings(3);
+
+	if (strcmp(font_name, "default"))
+	{
+		
+	}
+
+	else
+	{
+		if (render->CheckFile(font_name) == 0)
+		{
+			io.Fonts->AddFontFromFileTTF(font_name, static_cast<float>(render->Settings(4)));
+		}
+
+		else
+		{
+			std::cout << "No such file " << font_name << "!\n";
+		}
+	}
 
 	while(!glfwWindowShouldClose(window))
 	{
