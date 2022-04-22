@@ -17,14 +17,13 @@
 
 #include "Commands/Neofetch.hpp"
 #include "Commands/filesys.hpp"
+#include "Commands/calc.hpp"
 
 #include <iostream>
 #include <functional>
 #include <fstream>
 #include <map>
 #include <string>
-
-#include "json.hpp"
 
 /* All variables which is required */
 static float pos_x = 0;
@@ -47,8 +46,7 @@ static bool help_focus = false;
 
 static const char* language;
 
-static char font_filename[250];
-static float size_pixels = 16;
+static char font_name[250];
 
 /* Commands list - command and function */
 static std::map<const std::string, std::function<void(std::string, std::string)>> commands = 
@@ -63,7 +61,7 @@ static std::map<const std::string, std::function<void(std::string, std::string)>
 static int isStarting (std::string const &fullString, std::string const &starting) 
 {
     if (fullString.length() <= starting.length()) { return 0; }
-    else { return 0; }
+    else { return 1; }
 }
 
 /*
@@ -129,13 +127,13 @@ class Renderer
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
 
-        template<typename T>
-        int Settings(T, int id);
+        int Settings(int id);
         void SettingsDialog(bool* p_open);
+
+        int CheckFile(const char* name);
 
     private:
         void DrawNewTab();
-        int CheckFile(const char* name);
 };
 
 /* Main code for starting ImGui */
