@@ -143,6 +143,29 @@ void writefile(std::string file, std::string content)
     myfile.close();
 }
 
+void new_dir(std::string folder, std::string argument)
+{
+    if (mkdir(folder.c_str(), 0777) == -1)
+    {
+        console.AddLog("Error while creating directory!\n");
+    }
+
+    else
+    {
+        console.AddLog("Directory %s created!\n", folder.c_str());
+    }
+}
+
+void cd(std::string folder, std::string argument)
+{
+    chdir(folder.c_str());
+}
+
+void rm(std::string folder, std::string argument)
+{
+    remove(folder.c_str());
+}
+
 double calc(string op, double num1, double num2)
 {
     if (!strcmp(op.c_str(), "+"))
@@ -326,8 +349,12 @@ void Console::Draw()
         ImGui::SetKeyboardFocusHere(0);
         help_focus = true;
     }
+
+    char cwd[PATH_MAX];
+    getcwd(cwd, sizeof(cwd));
+
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-    if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
+    if (InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
         s = InputBuf;
         Strtrim(s);

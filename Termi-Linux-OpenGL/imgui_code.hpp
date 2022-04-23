@@ -25,6 +25,11 @@
 #include <map>
 #include <string>
 
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include <limits.h>
+
 /* All variables which is required */
 static float pos_x = 0;
 static float pos_y = 0;
@@ -54,7 +59,10 @@ static std::map<const std::string, std::function<void(std::string, std::string)>
     {"neofetch", neofetch},
     {"openfile", openfile},
     {"list", list},
-    {"writefile", writefile}
+    {"writefile", writefile},
+    {"mkdir", new_dir},
+    {"cd", cd},
+    {"rm", rm}
 };
 
 /* Check if some string start with some std::string value */

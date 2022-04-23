@@ -1,4 +1,4 @@
-width 600
-height 600
+width 650
+height 650
 font default
 size 16
