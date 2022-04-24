@@ -5,11 +5,12 @@
 
 **If you want use non-OpenGL version, manually install files!**
 
-A Powerful Terminal made in C++
+A Powerful Terminal made in C++ which own commands
 
 ## About Termi
 - Termi is a powerful terminal made using C++.
 - It can run on Windows, macOS and GNU/Linux.
+- Have own commands.
 - The goal of Termi is create independent terminal.
 - ```Independent``` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering system.
 - We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
@@ -24,9 +25,8 @@ A Powerful Terminal made in C++
 ### Termi C++ part
 - [x] User settings in text files
 - [ ] Support most of major commands
-- [ ] Include other host terminals (may not be in first release)
 - [x] Arguments
-- [ ] Library for connecting ```AddLog()``` functions
+- [ ]Loading executables (tlib)
 - [x] Translation (may not be fully finished in first release)
 
 ### Windows - installer and launcher
