@@ -23,12 +23,9 @@ using namespace Translation;
 Console console;
 Renderer* render;
 
-/* Commands main code */
-
-/*
+/* 
+ * Commands main code
  * Return version of Windows operating system
- *
- * In own function
 */
 static const char* OperatingSystem()
 {
@@ -40,18 +37,17 @@ static const char* OperatingSystem()
     }
     switch (vi.dwPlatformId)
     {
-    case VER_PLATFORM_WIN32s:
-        return "Windows 3.x";
-    case VER_PLATFORM_WIN32_WINDOWS:
-        return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-    case VER_PLATFORM_WIN32_NT:
-        return "Windows NT";
-    default:
-        return "Unknown";
-}
+        case VER_PLATFORM_WIN32s:
+            return "Windows 3.x";
+        case VER_PLATFORM_WIN32_WINDOWS:
+            return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+        case VER_PLATFORM_WIN32_NT:
+            return "Windows NT";
+        default:
+            return "Unknown";
+    }
 }
 
-/* Uptime part - in own functions */
 /* Return uptime time in seoconds */
 uint64_t UptimeS()
 {
@@ -432,14 +428,14 @@ void openfile(std::string file, std::string argument)
 {
     fstream my_file;
     my_file.open(file, ios::in);
-    if (!my_file) 
+    if (!my_file)
     {
         console.AddLog("No such file %s!\n", file.c_str());
     }
 
-    else 
+    else
     {
-        std::string str; 
+        std::string str;
         while (getline(my_file, str))
         {
             console.AddLog("%s\n", str.c_str());
@@ -500,7 +496,7 @@ double calc(string op, double num1, double num2)
         return (num1 + num2);
     }
 
-    else if(!strcmp(op.c_str(), "-"))
+    else if (!strcmp(op.c_str(), "-"))
     {
         return (num1 - num2);
     }
@@ -531,6 +527,47 @@ double calc(string op, double num1, double num2)
     }
 
     return 1;
+}
+
+void new_dir(std::string folder, std::string argument)
+{
+    if (_mkdir(folder.c_str()) == -1)
+    {
+        console.AddLog("Error while creating directory!\n");
+    }
+
+    else
+    {
+        console.AddLog("Directory %s created!\n", folder.c_str());
+    }
+}
+
+void cd(std::string folder, std::string argument)
+{
+    chdir(folder.c_str());
+}
+
+void rm(std::string folder, std::string argument)
+{
+    remove(folder.c_str());
+}
+
+void echo(std::string content, std::string argument)
+{
+    console.AddLog("%s", content.c_str());
+}
+
+void yes(std::string argument, std::string argument2)
+{
+    /*while (true)
+    {
+        console.AddLog("yes\n");
+    }*/
+
+    for (int i = 0; i < 100000; i++)
+    {
+        console.AddLog("y\n");
+    }
 }
 
 /*
@@ -676,8 +713,12 @@ void Console::Draw()
         ImGui::SetKeyboardFocusHere(0);
         help_focus = true;
     }
+
+    char cwd[PATH_MAX];
+    _getcwd(cwd, PATH_MAX);
+
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-    if (InputText(render->ChooseLanguage("input"), InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
+    if (InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
         s = InputBuf;
         Strtrim(s);
@@ -1239,6 +1280,8 @@ void Renderer::ImGuiDialog(bool* p_open)
 
 int Renderer::Settings(int id)
 {
+    int temp_id = id;
+
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
@@ -1251,129 +1294,131 @@ int Renderer::Settings(int id)
     if (CheckFile("settings.txt") != 0)
     {
         fstream new_file("settings.txt", mode);
+        new_file << "width: 650\nheight 650\nfont default\nsize 16";
+        Settings(temp_id); /* yes, recursion */
     }
 
     fstream file("settings.txt", mode);
 
     switch (id)
     {
-        case 1: /* read width */
-            while (getline(file, temp_str))
+    case 1: /* read width */
+        while (getline(file, temp_str))
+        {
+            if (strcmp(temp_str.c_str(), "width"))
             {
-                if (strcmp(temp_str.c_str(), "width"))
+                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                while (tmp != NULL)
                 {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
+                    if (_switch)
                     {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
+                        arg = tmp;
+                        return stof(arg);
                     }
 
-                    break;
-                }               
-            }
-            
-            break;
-
-        case 2:
-            while (getline(file, temp_str))
-            {
-                if (strcmp(temp_str.c_str(), "height"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
+                    else
                     {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
+                        temp_str = tmp;
+                        _switch = true;
                     }
-                    break;
+
+                    tmp = strtok(NULL, " , ");
                 }
-            }
-            break;
 
-        case 3: /* font name */
-            while (getline(file, temp_str))
+                break;
+            }
+        }
+
+        break;
+
+    case 2:
+        while (getline(file, temp_str))
+        {
+            if (strcmp(temp_str.c_str(), "height"))
             {
-                if (strcmp(temp_str.c_str(), "font"))
+                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                while (tmp != NULL)
                 {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
+                    if (_switch)
                     {
-                        if (_switch)
-                        {
-                            strcpy(font_name, const_cast<char*>(tmp));
-                            return 0;
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
+                        arg = tmp;
+                        return stof(arg);
                     }
-                    break;
-                }
-            }
-            break;
 
-        case 4:
-            while (getline(file, temp_str))
+                    else
+                    {
+                        temp_str = tmp;
+                        _switch = true;
+                    }
+
+                    tmp = strtok(NULL, " , ");
+                }
+                break;
+            }
+        }
+        break;
+
+    case 3: /* font name */
+        while (getline(file, temp_str))
+        {
+            if (strcmp(temp_str.c_str(), "font"))
             {
-                if (strcmp(temp_str.c_str(), "font-size"))
+                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                while (tmp != NULL)
                 {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
+                    if (_switch)
                     {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
+                        strcpy(font_name, const_cast<char*>(tmp));
+                        return 0;
                     }
-                    break;
+
+                    else
+                    {
+                        temp_str = tmp;
+                        _switch = true;
+                    }
+
+                    tmp = strtok(NULL, " , ");
                 }
+                break;
             }
-            break;
-            
-        default:
-            console.AddLog("Invalid id %d!\n", id);
-            break;
+        }
+        break;
+
+    case 4:
+        while (getline(file, temp_str))
+        {
+            if (strcmp(temp_str.c_str(), "font-size"))
+            {
+                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                while (tmp != NULL)
+                {
+                    if (_switch)
+                    {
+                        arg = tmp;
+                        return stof(arg);
+                    }
+
+                    else
+                    {
+                        temp_str = tmp;
+                        _switch = true;
+                    }
+
+                    tmp = strtok(NULL, " , ");
+                }
+                break;
+            }
+        }
+        break;
+
+    default:
+        console.AddLog("Invalid id %d!\n", id);
+        break;
     }
 
     file.close();
