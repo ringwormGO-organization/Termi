@@ -206,6 +206,24 @@ double calc(string op, double num1, double num2)
     return 1;
 }
 
+void echo(std::string content, std::string argument)
+{
+    console.AddLog("%s", content.c_str());
+}
+
+void yes(std::string argument, std::string argument2)
+{
+    /*while (true)
+    {
+        console.AddLog("yes\n");
+    }*/
+
+    for (int i = 0; i < 100000; i++)
+    {
+        console.AddLog("y\n");
+    }
+}
+
 /*
  * Console class - everything for drawing and managing console
  * Code for functions here

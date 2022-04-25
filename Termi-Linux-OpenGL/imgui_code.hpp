@@ -18,6 +18,7 @@
 #include "Commands/Neofetch.hpp"
 #include "Commands/filesys.hpp"
 #include "Commands/calc.hpp"
+#include "Commands/other.hpp"
 
 #include <iostream>
 #include <functional>
@@ -54,15 +55,17 @@ static const char* language;
 static char font_name[250];
 
 /* Commands list - command and function */
-static std::map<const std::string, std::function<void(std::string, std::string)>> commands = 
+static std::map<const std::string, const std::function<void(const std::string, const std::string)>> commands = 
 {
+    {"cd", cd},
+    {"echo", echo},
+    {"list", list},
+    {"mkdir", new_dir},
     {"neofetch", neofetch},
     {"openfile", openfile},
-    {"list", list},
+    {"rm", rm},
     {"writefile", writefile},
-    {"mkdir", new_dir},
-    {"cd", cd},
-    {"rm", rm}
+    {"yes", yes}
 };
 
 /* Check if some string start with some std::string value */
