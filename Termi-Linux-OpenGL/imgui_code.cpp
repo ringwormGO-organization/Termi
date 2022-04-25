@@ -19,7 +19,7 @@ Console console;
 Renderer* render;
 
 /* Commands main code */
-
+/* Neofetch command */
 void neofetch(std::string argument, std::string argument2)
 {
      /* Username and computer name */
@@ -916,6 +916,8 @@ void Renderer::ImGuiDialog(bool* p_open)
 
 int Renderer::Settings(int id)
 {
+    int temp_id = id;
+
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
@@ -928,6 +930,8 @@ int Renderer::Settings(int id)
     if (CheckFile("settings.txt") != 0)
     {
         fstream new_file("settings.txt", mode);
+        new_file << "width: 650\nheight 650\nfont default\nsize 16";
+        Settings(temp_id); /* yes, recursion */
     }
 
     fstream file("settings.txt", mode);
