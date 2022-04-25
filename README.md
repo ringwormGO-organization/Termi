@@ -26,7 +26,7 @@ A Powerful Terminal made in C++ which own commands
 - [x] User settings in text files
 - [ ] Support most of major commands
 - [x] Arguments
-- [ ]Loading executables (tlib)
+- [ ] Loading executables (tlib)
 - [x] Translation (may not be fully finished in first release)
 
 ### Windows - installer and launcher
