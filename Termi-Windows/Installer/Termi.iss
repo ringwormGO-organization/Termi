@@ -4,7 +4,7 @@
 ; To compile change path to your own
 
 #define MyAppName "Termi"
-#define MyAppVersion "0.2.3" ; Version with non-OpenGL and OpenGL version, also may late here
+#define MyAppVersion "0.2.3" ; OpenGL version, also may late here
 #define MyAppPublisher "ringwormGO"
 #define MyAppURL "https://github.com/ringwormGO-organization/Termi"
 #define MyAppExeName "Termi-Launcher.exe"
