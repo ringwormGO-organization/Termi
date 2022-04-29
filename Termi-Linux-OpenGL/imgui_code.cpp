@@ -579,10 +579,8 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
             }
             else if (candidates.Size == 1)
             {
-                // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
-                data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
-                data->InsertChars(data->CursorPos, candidates[0]);
-                data->InsertChars(data->CursorPos, " ");
+                ExecCommand(candidates[0]);
+                data->DeleteChars(0, data->BufTextLen);
             }
             else
             {
@@ -650,13 +648,7 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
 /* Code for Renderer class */
 /* PRIVATE INSTANCES OF Renderer class */
 /* Draw new teminal tab */
-void Renderer::DrawNewTab()
-{
-
-}
-
-/* Draw context menu */
-void Renderer::DrawContextMenu()
+void Renderer::DrawMenu()
 {
     if (BeginMenuBar())
     {
@@ -664,7 +656,8 @@ void Renderer::DrawContextMenu()
         {
             if (MenuItem(ChooseLanguage("new tab"), "Ctrl+N"))
             {
-
+                tabs++;
+                DrawNewTab(tabs);
             }
 
             if (MenuItem((ChooseLanguage("new profile")), "Ctrl+Shift+N"))
@@ -770,6 +763,56 @@ void Renderer::DrawContextMenu()
         }
 
         EndMenuBar();
+    }
+}
+
+/* Draw context menu */
+void Renderer::DrawNewTab(int tab)
+{
+    
+    static ImVector<int> active_tabs;
+    static int next_tab_id = 0;
+    if (next_tab_id == 0) // Initialize with some default tabs
+        for (int i = 0; i < 1; i++)
+            active_tabs.push_back(next_tab_id++);
+
+    // TabItemButton() and Leading/Trailing flags are distinct features which we will demo together.
+    // (It is possible to submit regular tabs with Leading/Trailing flags, or TabItemButton tabs without Leading/Trailing flags...
+    // but they tend to make more sense together)
+    static bool show_leading_button = false;
+    static bool show_trailing_button = true;
+
+    // Expose some other flags which are useful to showcase how they interact with Leading/Trailing tabs
+    static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_AutoSelectNewTabs | ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyResizeDown | ImGuiTabBarFlags_NoCloseWithMiddleMouseButton;
+
+    if (BeginTabBar("MyTabBar", tab_bar_flags))
+    {
+        // Demo Trailing Tabs: click the "+" button to add a new tab (in your app you may want to use a font icon instead of the "+")
+        // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
+        if (show_trailing_button)
+            if (TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
+                active_tabs.push_back(next_tab_id++); // Add new tab
+
+        // Submit our regular tabs
+        for (int n = 0; n < active_tabs.Size; )
+        {
+            bool open = true;
+            char name[16] = "Termi";
+            snprintf(name, IM_ARRAYSIZE(name), "%04d", active_tabs[n]);
+            if (BeginTabItem(name, &open, ImGuiTabItemFlags_None))
+            {
+                DrawMenu();
+                console.Draw();
+                EndTabItem();
+            }
+
+            if (!open)
+                active_tabs.erase(active_tabs.Data + n);
+            else
+                n++;
+        }
+
+        EndTabBar();
     }
 }
 
@@ -1147,10 +1190,7 @@ void main_code()
 #endif
 
     /* Draw menu bar */
-    render->DrawContextMenu();
-
-    /* Draw console */
-    console.Draw();
+    render->DrawNewTab(0);
 
     /* Font dialog */
     if (isFont)

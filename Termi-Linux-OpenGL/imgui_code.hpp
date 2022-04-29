@@ -46,7 +46,8 @@ static bool termi_dialog = false;
 static bool imgui_dialog = false;
 static bool settings_dialog = false;
 
-static bool alReadyPrinted;
+static bool alReadyPrinted = false;
+static int tabs;
 
 static bool help_focus = false;
 
@@ -54,7 +55,10 @@ static const char* language;
 
 static char font_name[250];
 
-/* Commands list - command and function */
+/* 
+ * Commands list - command and function
+ * name of command, name of function
+*/
 static std::map<const std::string, const std::function<void(const std::string, const std::string)>> commands = 
 {
     {"cd", cd},
@@ -92,6 +96,7 @@ class Console
         bool                  AutoScroll;
         bool                  ScrollToBottom;
         bool                  Copy;
+        char*                 s;
 
     public:
         Console();
@@ -112,8 +117,6 @@ class Console
         void ExecCommand(std::string command_line, ...);
         void TypeTermi();
 
-        char* s;
-
     protected:
         // In C++11 you'd be better off using lambdas for this sort of forwarding callbacks
         static int TextEditCallbackStub(ImGuiInputTextCallbackData* data)
@@ -129,7 +132,7 @@ class Console
 class Renderer
 {
     public:
-        void DrawContextMenu();
+        void DrawNewTab(int tab);
         void Font(bool* p_open);
 
         const char* ChooseLanguage(const char* word);
@@ -144,7 +147,7 @@ class Renderer
         int CheckFile(const char* name);
 
     private:
-        void DrawNewTab();
+        void DrawMenu();
 };
 
 /* Main code for starting ImGui */
