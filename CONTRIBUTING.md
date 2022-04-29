@@ -12,7 +12,6 @@ Just drop a Pull Request :)
 # Directory organization (OpenGL)
 1. Linux version have own folder while Windows version is in `Termi-Windows` directory.
 2. Code is in "root" while commands will be in `Commands` directory.
-3. If you want add new command, create new `.cpp` file in `Commands` directory, and add it to `std::map` "database". **- THIS CURRENTLY DON'T WORK!**
 
 # Directory organization (old but still current)
 1. `Termi` for Windows directory contains Visual Studio solution. In `x64\Release` is `Programs` directory.

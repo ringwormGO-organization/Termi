@@ -7,6 +7,7 @@ using System.Net;
 using System.Windows;
 using System.Security.Principal;
 using System.Runtime.InteropServices;
+using System.Threading;
 
 namespace Termi_Launcher
 {
@@ -62,9 +63,12 @@ namespace Termi_Launcher
         {
             var identity = WindowsIdentity.GetCurrent();
             var principal = new WindowsPrincipal(identity);
-            if (!principal.IsInRole(WindowsBuiltInRole.Administrator))
+            var current_dir = Directory.GetCurrentDirectory();
+            if (!principal.IsInRole(WindowsBuiltInRole.Administrator) && current_dir.StartsWith(@"C:\Program"))
             {
-                MessageBox.Show("It is recommended that you run the application as an administrator!", "Administrator warning");
+                MessageBox.Show("You need to run application as an administrator!", "Administrator error");
+                Thread.Sleep(5000);
+                Environment.Exit(0);
             }
         }
 
