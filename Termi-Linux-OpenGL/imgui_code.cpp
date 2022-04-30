@@ -117,6 +117,8 @@ void openfile(std::string file, std::string argument)
     my_file.close();
 }
 
+
+
 void list(std::string argument, std::string argument2)
 {
     DIR *dr;
@@ -204,6 +206,15 @@ double calc(string op, double num1, double num2)
     }
 
     return 1;
+}
+
+
+// Time
+void ttime(string argument, string argument2)
+{
+    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
+    console.AddLog("%s", ctime(&givemetime));
+    //console.AddLog(ctime(&givemetime));
 }
 
 void echo(std::string content, std::string argument)

@@ -19,19 +19,23 @@
 #include "Commands/filesys.hpp"
 #include "Commands/calc.hpp"
 #include "Commands/other.hpp"
+#include "Commands/time.hpp"
 
 #include <iostream>
 #include <functional>
 #include <fstream>
 #include <map>
 #include <string>
+#include <ctime>
+#include <chrono>
 
 #include <sys/types.h>
+#include <sys/stat.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <limits.h>
 
-/* All variables which is required */
+/* All variables which are required */
 static float pos_x = 0;
 static float pos_y = 0;
 static float window_width = 650;
@@ -67,6 +71,7 @@ static std::map<const std::string, const std::function<void(const std::string, c
     {"mkdir", new_dir},
     {"neofetch", neofetch},
     {"openfile", openfile},
+    {"time", ttime},
     {"rm", rm},
     {"writefile", writefile},
     {"yes", yes}
