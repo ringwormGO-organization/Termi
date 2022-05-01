@@ -89,13 +89,8 @@ int main()
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	render->Settings(3);
-
-	if (strcmp(font_name, "default"))
-	{
-		
-	}
-
-	else
+	
+	if (!strcmp(font_name, "default"))
 	{
 		if (render->CheckFile(font_name) == 0)
 		{

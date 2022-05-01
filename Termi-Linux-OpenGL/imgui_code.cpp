@@ -20,7 +20,7 @@ Renderer* render;
 
 /* Commands main code */
 /* Neofetch command */
-void neofetch(std::string argument, std::string argument2)
+void neofetch(string argument, string argument2)
 {
      /* Username and computer name */
     gethostname(info.computer, HOST_NAME_MAX);
@@ -96,7 +96,7 @@ void neofetch(std::string argument, std::string argument2)
     console.AddLog("\n");
 }
 
-void openfile(std::string file, std::string argument)
+void openfile(string file, string argument)
 {
     fstream my_file;
     my_file.open(file, ios::in);
@@ -107,7 +107,7 @@ void openfile(std::string file, std::string argument)
 
     else 
     {
-        std::string str; 
+        string str; 
         while (getline(my_file, str))
         {
             console.AddLog("%s\n", str.c_str());
@@ -117,9 +117,7 @@ void openfile(std::string file, std::string argument)
     my_file.close();
 }
 
-
-
-void list(std::string argument, std::string argument2)
+void list(string argument, string argument2)
 {
     DIR *dr;
     struct dirent *en;
@@ -135,7 +133,7 @@ void list(std::string argument, std::string argument2)
     }
 }
 
-void writefile(std::string file, std::string content)
+void writefile(string file, string content)
 {
     auto mode = ios::in;
 
@@ -145,7 +143,7 @@ void writefile(std::string file, std::string content)
     myfile.close();
 }
 
-void new_dir(std::string folder, std::string argument)
+void new_dir(string folder, string argument)
 {
     if (mkdir(folder.c_str(), 0777) == -1)
     {
@@ -158,12 +156,12 @@ void new_dir(std::string folder, std::string argument)
     }
 }
 
-void cd(std::string folder, std::string argument)
+void cd(string folder, string argument)
 {
     chdir(folder.c_str());
 }
 
-void rm(std::string folder, std::string argument)
+void rm(string folder, string argument)
 {
     remove(folder.c_str());
 }
@@ -208,21 +206,18 @@ double calc(string op, double num1, double num2)
     return 1;
 }
 
-
-// Time
 void ttime(string argument, string argument2)
 {
     auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
     console.AddLog("%s", ctime(&givemetime));
-    //console.AddLog(ctime(&givemetime));
 }
 
-void echo(std::string content, std::string argument)
+void echo(string content, string argument)
 {
     console.AddLog("%s", content.c_str());
 }
 
-void yes(std::string argument, std::string argument2)
+void yes(string argument, string argument2)
 {
     /*while (true)
     {
@@ -462,7 +457,7 @@ void Console::ExecCommand(string command_line, ...)
                 _switch = true;
             }
             
-            tmp = std::strtok(NULL, " , ");
+            tmp = strtok(NULL, " , ");
         }
     }
 
@@ -656,28 +651,13 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
     return 0;
 }
 
-/* Code for Renderer class */
-/* PRIVATE INSTANCES OF Renderer class */
-/* Draw new teminal tab */
+/* Draw context menu */
 void Renderer::DrawMenu()
 {
     if (BeginMenuBar())
     {
         if (BeginMenu(ChooseLanguage("terminal")))
         {
-            if (MenuItem(ChooseLanguage("new tab"), "Ctrl+N"))
-            {
-                tabs++;
-                DrawNewTab(tabs);
-            }
-
-            if (MenuItem((ChooseLanguage("new profile")), "Ctrl+Shift+N"))
-            {
-
-            }
-
-            Separator();
-
             if (MenuItem(ChooseLanguage("exit"), "Ctrl+X"))
             {
                 exit(0);
@@ -777,8 +757,8 @@ void Renderer::DrawMenu()
     }
 }
 
-/* Draw context menu */
-void Renderer::DrawNewTab(int tab)
+/* Draw tabs */
+void Renderer::DrawTab()
 {
     
     static ImVector<int> active_tabs;
@@ -823,7 +803,7 @@ void Renderer::DrawNewTab(int tab)
                 n++;
         }
 
-        EndTabBar();
+        ImGui::EndTabBar();
     }
 }
 
@@ -1198,8 +1178,8 @@ void main_code()
     TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
 #endif
 
-    /* Draw menu bar */
-    render->DrawNewTab(0);
+    /* Draw tabs and menu bar */
+    render->DrawTab();
 
     /* Font dialog */
     if (isFont)

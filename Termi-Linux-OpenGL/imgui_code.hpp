@@ -51,7 +51,6 @@ static bool imgui_dialog = false;
 static bool settings_dialog = false;
 
 static bool alReadyPrinted = false;
-static int tabs;
 
 static bool help_focus = false;
 
@@ -137,7 +136,7 @@ class Console
 class Renderer
 {
     public:
-        void DrawNewTab(int tab);
+        void DrawTab();
         void Font(bool* p_open);
 
         const char* ChooseLanguage(const char* word);
