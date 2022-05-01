@@ -27,8 +27,6 @@
 
 struct sigaction sigIntHandler;
 
-int x;
-int y;
 int width;
 int height;
 
@@ -66,14 +64,13 @@ int main()
 		std::cout << "Unable to create OpenGL window!\nExiting...\n";
 		return 1;
 	}
+
 	else
 	{
 		#ifdef PRINT_WHEN_WINDOW_IS_CREATED
 			std::cout << "OpenGL window is created.\n";
 		#endif
 	}
-
-	GLFWvidmode return_struct;
 
 	GLFWimage images[1];
 	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
@@ -112,12 +109,9 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
-		glfwGetWindowPos(window, &x, &y);
 		glfwGetWindowSize(window, &width, &height);
 		window_width = static_cast<float>(width);
 		window_height = static_cast<float>(height);
-		pos_x = static_cast<float>(pos_x);
-		pos_y = static_cast<float>(pos_y);
 
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
     	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
