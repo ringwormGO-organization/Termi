@@ -1040,7 +1040,7 @@ int Renderer::Settings(int id)
             
             break;
 
-        case 2:
+        case 2: /* read width */
             while (getline(file, temp_str))
             {
                 if (strcmp(temp_str.c_str(), "height"))
@@ -1096,7 +1096,7 @@ int Renderer::Settings(int id)
             }
             break;
 
-        case 4:
+        case 4: /* font size */
             while (getline(file, temp_str))
             {
                 if (strcmp(temp_str.c_str(), "font-size"))
@@ -1173,9 +1173,7 @@ int Renderer::CheckFile(const char* name)
 
 void main_code()
 {
-    /* ImGUI window creation */
-    SetNextWindowPos(ImVec2(pos_x, pos_y));
-    SetNextWindowSize(ImVec2(static_cast<float>(render->Settings(1)), static_cast<float>(render->Settings(2))));
+    /* ImGui window creation */
     Begin
     ("Termi",
         NULL,
