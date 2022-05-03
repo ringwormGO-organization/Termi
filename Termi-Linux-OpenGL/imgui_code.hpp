@@ -62,7 +62,7 @@ static char font_name[250];
  * Commands list - command and function
  * name of command, name of function
 */
-static std::map<const std::string, const std::function<void(const std::string, const std::string)>> commands = 
+static std::map<const std::string, const std::function<int(const std::string, const std::string)>> commands = 
 {
     {"cd", cd},
     {"echo", echo},

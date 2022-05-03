@@ -10,4 +10,4 @@
 #include <iostream>
 #include <chrono>
 
-void ttime(std::string argument, std::string argument2);
+int ttime(std::string argument, std::string argument2);

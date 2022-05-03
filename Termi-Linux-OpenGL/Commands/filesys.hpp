@@ -9,9 +9,9 @@
 
 #include <dirent.h>
 
-void openfile(std::string file, std::string argument);
-void list(std::string argument, std::string argument2);
-void writefile(std::string file, std::string content);
-void new_dir(std::string folder, std::string argument);
-void cd(std::string folder, std::string argument);
-void rm(std::string folder, std::string argument);
+int openfile(std::string file, std::string argument);
+int list(std::string argument, std::string argument2);
+int writefile(std::string file, std::string content);
+int new_dir(std::string folder, std::string argument);
+int cd(std::string folder, std::string argument);
+int rm(std::string folder, std::string argument);

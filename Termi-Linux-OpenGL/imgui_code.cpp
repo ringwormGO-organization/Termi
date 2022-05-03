@@ -10,8 +10,17 @@
 
 using namespace std;
 using namespace ImGui;
-
 using namespace Translation;
+
+void ok()
+{
+    console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
+}
+
+void not_ok()
+{
+    console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
+}
 
 #pragma GCC diagnostic ignored "-Wformat-security"
 
@@ -20,9 +29,9 @@ Renderer* render;
 
 /* Commands main code */
 /* Neofetch command */
-void neofetch(string argument, string argument2)
+int neofetch(string argument, string argument2)
 {
-     /* Username and computer name */
+    /* Username and computer name */
     gethostname(info.computer, HOST_NAME_MAX);
     getlogin_r(info.user, LOGIN_NAME_MAX);
 
@@ -94,15 +103,18 @@ void neofetch(string argument, string argument2)
     console.AddLog("\tCPU: %s\t\n", info.cpu.c_str());
     console.AddLog("\tMemory: %s\t\n", info.memory.c_str());
     console.AddLog("\n");
+
+    return 0;
 }
 
-void openfile(string file, string argument)
+int openfile(string file, string argument)
 {
     fstream my_file;
     my_file.open(file, ios::in);
     if (!my_file) 
     {
         console.AddLog("No such file %s!\n", file.c_str());
+        return 1;
     }
 
     else 
@@ -115,9 +127,11 @@ void openfile(string file, string argument)
     }
     console.AddLog("\n");
     my_file.close();
+
+    return 0;
 }
 
-void list(string argument, string argument2)
+int list(string argument, string argument2)
 {
     DIR *dr;
     struct dirent *en;
@@ -131,9 +145,16 @@ void list(string argument, string argument2)
         closedir(dr); //close all directory
         console.AddLog("\n");
     }
+
+    else
+    {
+        return 1;
+    }
+
+    return 0;
 }
 
-void writefile(string file, string content)
+int writefile(string file, string content)
 {
     auto mode = ios::in;
 
@@ -141,29 +162,35 @@ void writefile(string file, string content)
     myfile.open(file, mode);
     myfile << content;
     myfile.close();
+
+    return 0;
 }
 
-void new_dir(string folder, string argument)
+int new_dir(string folder, string argument)
 {
     if (mkdir(folder.c_str(), 0777) == -1)
     {
         console.AddLog("Error while creating directory!\n");
+        return 1;
     }
 
     else
     {
         console.AddLog("Directory %s created!\n", folder.c_str());
+        return 0;
     }
 }
 
-void cd(string folder, string argument)
+int cd(string folder, string argument)
 {
     chdir(folder.c_str());
+    return 0;
 }
 
-void rm(string folder, string argument)
+int rm(string folder, string argument)
 {
     remove(folder.c_str());
+    return 0;
 }
 
 double calc(string op, double num1, double num2)
@@ -206,18 +233,20 @@ double calc(string op, double num1, double num2)
     return 1;
 }
 
-void ttime(string argument, string argument2)
+int ttime(string argument, string argument2)
 {
     auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
     console.AddLog("%s", ctime(&givemetime));
+    return 0;
 }
 
-void echo(string content, string argument)
+int echo(string content, string argument)
 {
     console.AddLog("%s", content.c_str());
+    return 0;
 }
 
-void yes(string argument, string argument2)
+int yes(string argument, string argument2)
 {
     /*while (true)
     {
@@ -228,6 +257,8 @@ void yes(string argument, string argument2)
     {
         console.AddLog("y\n");
     }
+
+    return 0;
 }
 
 /*
@@ -500,12 +531,22 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
-        commands[command_line](arg, arg2);
+        
+        if (commands[command_line](arg, arg2) == 0)
+        {
+            ok();
+        }
+
+        else
+        {
+            not_ok();
+        }
     }
 
     else if (Stricmp(command_line.c_str(), "calc") == 0)
     {
         console.AddLog("Result is: %e.\n", calc(arg, stod(arg2), stod(arg3)));
+        ok();
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -520,6 +561,8 @@ void Console::ExecCommand(string command_line, ...)
         {
             AddLog("- %s", Commands[i]);
         }
+
+        ok();        
     }
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
@@ -529,6 +572,8 @@ void Console::ExecCommand(string command_line, ...)
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > BSD-3-Clause-License");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
+
+        ok();
     }
 
     else if (Stricmp(command_line.c_str(), "exit") == 0)
@@ -540,6 +585,7 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
+        not_ok();
     }
 
     // On command input, we scroll to bottom even if AutoScroll==false
