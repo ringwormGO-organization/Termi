@@ -25,33 +25,36 @@
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
 
+int width;
+int height;
+
 static BOOL WINAPI end(DWORD dwCtrlType)
 {
 	int key;
 
 	switch (dwCtrlType)
 	{
-	case CTRL_C_EVENT: // Ctrl+C
-		std::cout << "\nPress any key to continue...\n";
-		key = std::cin.get();
-		if (key != 10)
-		{
-			/* we need to do something here; input is broken */
-			exit(0);
-		}
-		else
-		{
-			exit(0);
-		}
-		break;
-	case CTRL_BREAK_EVENT: // Ctrl+Break
-		break;
-	case CTRL_CLOSE_EVENT: // Closing the console window
-		break;
-	case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
-		break;
-	case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
-		break;
+		case CTRL_C_EVENT: // Ctrl+C
+			std::cout << "\nPress any key to continue...\n";
+			key = std::cin.get();
+			if (key != 10)
+			{
+				/* we need to do something here; input is broken */
+				exit(0);
+			}
+			else
+			{
+				exit(0);
+			}
+			break;
+		case CTRL_BREAK_EVENT: // Ctrl+Break
+			break;
+		case CTRL_CLOSE_EVENT: // Closing the console window
+			break;
+		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
+			break;
+		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
+			break;
 	}
 
 	// Return TRUE if handled this message, further handler functions won't be called.
@@ -75,6 +78,7 @@ int main()
 		std::cout << "Unable to create OpenGL window!\nExiting...\n";
 		return 1;
 	}
+
 	else
 	{
 		#ifdef PRINT_WHEN_WINDOW_IS_CREATED
@@ -96,13 +100,8 @@ int main()
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	render->Settings(3);
-
-	if (strcmp(font_name, "default"))
-	{
-		
-	}
-
-	else
+	
+	if (!strcmp(font_name, "default"))
 	{
 		if (render->CheckFile(font_name) == 0)
 		{
@@ -124,14 +123,15 @@ int main()
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
 
+		glfwGetWindowSize(window, &width, &height);
+		window_width = static_cast<float>(width);
+		window_height = static_cast<float>(height);
+
+		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
+    	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
+
 		/* main ImGUI code */
 		main_code();
-
-		/*ImGui demo window */
-		if (isDemoWindow == true)
-		{
-			ImGui::ShowDemoWindow();
-		}
 
 		#ifdef PRINT_FPS
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

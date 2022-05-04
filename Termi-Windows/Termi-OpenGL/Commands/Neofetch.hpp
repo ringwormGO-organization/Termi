@@ -25,7 +25,7 @@
 #include <wchar.h>
 #include <intrin.h>
 
-void neofetch(std::string argument, std::string argument2);
+int neofetch(std::string argument, std::string argument2);
 
 static bool isWanted(const std::string& line, std::string field)
 {

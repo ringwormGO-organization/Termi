@@ -173,6 +173,7 @@
     <ClInclude Include="Commands\filesys.hpp" />
     <ClInclude Include="Commands\Neofetch.hpp" />
     <ClInclude Include="Commands\other.hpp" />
+    <ClInclude Include="Commands\time.hpp" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />

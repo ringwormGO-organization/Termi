@@ -113,6 +113,9 @@
     <ClInclude Include="limits.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Commands\time.hpp">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="termi.png">

@@ -8,11 +8,8 @@
 
 #include "imgui_code.hpp"
 
-#include "dirent.h"
-
 using namespace std;
 using namespace ImGui;
-
 using namespace Translation;
 
 #pragma warning(disable : 4996)
@@ -20,10 +17,20 @@ using namespace Translation;
 #pragma comment(lib, "Advapi32.lib")
 #pragma comment(lib, "Kernel32.lib")
 
+void ok()
+{
+    console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
+}
+
+void not_ok()
+{
+    console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
+}
+
 Console console;
 Renderer* render;
 
-/* 
+/*
  * Commands main code
  * Return version of Windows operating system
 */
@@ -35,6 +42,7 @@ static const char* OperatingSystem()
     {
         return 0;
     }
+
     switch (vi.dwPlatformId)
     {
         case VER_PLATFORM_WIN32s:
@@ -67,7 +75,7 @@ uint64_t UptimeH()
 }
 
 /* neofetch main function */
-void neofetch(std::string argument, std::string argument2)
+int neofetch(std::string argument, std::string argument2)
 {
     /* Username and computer name */
     TCHAR username[UNLEN + 1];
@@ -373,20 +381,20 @@ void neofetch(std::string argument, std::string argument2)
         console.AddLog("\tECX Index %d\t\n", i);
         switch (nCacheType)
         {
-        case 0:
-            console.AddLog("\t   Type: Null\t\n");
-            break;
-        case 1:
-            console.AddLog("\t   Type: Data Cache\t\n");
-            break;
-        case 2:
-            console.AddLog("\t   Type: Instruction Cache\t\n");
-            break;
-        case 3:
-            console.AddLog("\t   Type: Unified Cache\t\n");
-            break;
-        default:
-            console.AddLog("\t   Type: Unknown\t\n");
+            case 0:
+                console.AddLog("\t   Type: Null\t\n");
+                break;
+            case 1:
+                console.AddLog("\t   Type: Data Cache\t\n");
+                break;
+            case 2:
+                console.AddLog("\t   Type: Instruction Cache\t\n");
+                break;
+            case 3:
+                console.AddLog("\t   Type: Unified Cache\t\n");
+                break;
+            default:
+                console.AddLog("\t   Type: Unknown\t\n");
         }
 
         console.AddLog("\t   Level = %d\t\n", nCacheLevel + 1);
@@ -422,15 +430,18 @@ void neofetch(std::string argument, std::string argument2)
 
     console.AddLog("\tMemory: %f GB\t\n", (float)statex.ullTotalPhys / (1024 * 1024 * 1024));
     console.AddLog("\n");
+
+    return 0;
 }
 
-void openfile(std::string file, std::string argument)
+int openfile(std::string file, std::string argument)
 {
     fstream my_file;
     my_file.open(file, ios::in);
     if (!my_file)
     {
         console.AddLog("No such file %s!\n", file.c_str());
+        return 1;
     }
 
     else
@@ -443,9 +454,11 @@ void openfile(std::string file, std::string argument)
     }
     console.AddLog("\n");
     my_file.close();
+
+    return 0;
 }
 
-void list(std::string argument, std::string argument2)
+int list(std::string argument, std::string argument2)
 {
     struct dirent* d;
     struct stat dst;
@@ -477,9 +490,11 @@ void list(std::string argument, std::string argument2)
         }
         closedir(dr);
     }
+
+    return 0;
 }
 
-void writefile(std::string file, std::string content)
+int writefile(std::string file, std::string content)
 {
     auto mode = ios::in;
 
@@ -487,6 +502,8 @@ void writefile(std::string file, std::string content)
     myfile.open(file, mode);
     myfile << content;
     myfile.close();
+
+    return 0;
 }
 
 double calc(string op, double num1, double num2)
@@ -529,35 +546,40 @@ double calc(string op, double num1, double num2)
     return 1;
 }
 
-void new_dir(std::string folder, std::string argument)
+int new_dir(std::string folder, std::string argument)
 {
     if (_mkdir(folder.c_str()) == -1)
     {
         console.AddLog("Error while creating directory!\n");
+        return 1;
     }
 
     else
     {
         console.AddLog("Directory %s created!\n", folder.c_str());
+        return 0;
     }
 }
 
-void cd(std::string folder, std::string argument)
+int cd(std::string folder, std::string argument)
 {
     chdir(folder.c_str());
+    return 0;
 }
 
-void rm(std::string folder, std::string argument)
+int rm(std::string folder, std::string argument)
 {
     remove(folder.c_str());
+    return 0;
 }
 
-void echo(std::string content, std::string argument)
+int echo(std::string content, std::string argument)
 {
     console.AddLog("%s", content.c_str());
+    return 0;
 }
 
-void yes(std::string argument, std::string argument2)
+int yes(std::string argument, std::string argument2)
 {
     /*while (true)
     {
@@ -568,6 +590,15 @@ void yes(std::string argument, std::string argument2)
     {
         console.AddLog("y\n");
     }
+
+    return 0;
+}
+
+int ttime(string argument, string argument2)
+{
+    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
+    console.AddLog("%s", ctime(&givemetime));
+    return 0;
 }
 
 /*
@@ -715,7 +746,7 @@ void Console::Draw()
     }
 
     char cwd[PATH_MAX];
-    _getcwd(cwd, PATH_MAX);
+    getcwd(cwd, sizeof(cwd));
 
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
     if (InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
@@ -797,7 +828,7 @@ void Console::ExecCommand(string command_line, ...)
                 _switch = true;
             }
             
-            tmp = std::strtok(NULL, " , ");
+            tmp = strtok(NULL, " , ");
         }
     }
 
@@ -840,12 +871,22 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
-        commands[command_line](arg, arg2);
+        
+        if (commands[command_line](arg, arg2) == 0)
+        {
+            ok();
+        }
+
+        else
+        {
+            not_ok();
+        }
     }
 
     else if (Stricmp(command_line.c_str(), "calc") == 0)
     {
         console.AddLog("Result is: %e.\n", calc(arg, stod(arg2), stod(arg3)));
+        ok();
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -860,6 +901,8 @@ void Console::ExecCommand(string command_line, ...)
         {
             AddLog("- %s", Commands[i]);
         }
+
+        ok();        
     }
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
@@ -869,6 +912,8 @@ void Console::ExecCommand(string command_line, ...)
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > BSD-3-Clause-License");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
+
+        ok();
     }
 
     else if (Stricmp(command_line.c_str(), "exit") == 0)
@@ -880,6 +925,7 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
+        not_ok();
     }
 
     // On command input, we scroll to bottom even if AutoScroll==false
@@ -925,10 +971,8 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
             }
             else if (candidates.Size == 1)
             {
-                // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
-                data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
-                data->InsertChars(data->CursorPos, candidates[0]);
-                data->InsertChars(data->CursorPos, " ");
+                ExecCommand(candidates[0]);
+                data->DeleteChars(0, data->BufTextLen);
             }
             else
             {
@@ -993,33 +1037,13 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
     return 0;
 }
 
-/* Code for Renderer class */
-/* PRIVATE INSTANCES OF Renderer class */
-/* Draw new teminal tab */
-void Renderer::DrawNewTab()
-{
-
-}
-
 /* Draw context menu */
-void Renderer::DrawContextMenu()
+void Renderer::DrawMenu()
 {
     if (BeginMenuBar())
     {
         if (BeginMenu(ChooseLanguage("terminal")))
         {
-            if (MenuItem(ChooseLanguage("new tab"), "Ctrl+N"))
-            {
-
-            }
-
-            if (MenuItem((ChooseLanguage("new profile")), "Ctrl+Shift+N"))
-            {
-
-            }
-
-            Separator();
-
             if (MenuItem(ChooseLanguage("exit"), "Ctrl+X"))
             {
                 exit(0);
@@ -1116,6 +1140,56 @@ void Renderer::DrawContextMenu()
         }
 
         EndMenuBar();
+    }
+}
+
+/* Draw tabs */
+void Renderer::DrawTab()
+{
+    
+    static ImVector<int> active_tabs;
+    static int next_tab_id = 0;
+    if (next_tab_id == 0) // Initialize with some default tabs
+        for (int i = 0; i < 1; i++)
+            active_tabs.push_back(next_tab_id++);
+
+    // TabItemButton() and Leading/Trailing flags are distinct features which we will demo together.
+    // (It is possible to submit regular tabs with Leading/Trailing flags, or TabItemButton tabs without Leading/Trailing flags...
+    // but they tend to make more sense together)
+    static bool show_leading_button = false;
+    static bool show_trailing_button = true;
+
+    // Expose some other flags which are useful to showcase how they interact with Leading/Trailing tabs
+    static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_AutoSelectNewTabs | ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyResizeDown | ImGuiTabBarFlags_NoCloseWithMiddleMouseButton;
+
+    if (BeginTabBar("MyTabBar", tab_bar_flags))
+    {
+        // Demo Trailing Tabs: click the "+" button to add a new tab (in your app you may want to use a font icon instead of the "+")
+        // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
+        if (show_trailing_button)
+            if (TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
+                active_tabs.push_back(next_tab_id++); // Add new tab
+
+        // Submit our regular tabs
+        for (int n = 0; n < active_tabs.Size; )
+        {
+            bool open = true;
+            char name[16] = "Termi";
+            snprintf(name, IM_ARRAYSIZE(name), "%04d", active_tabs[n]);
+            if (BeginTabItem(name, &open, ImGuiTabItemFlags_None))
+            {
+                DrawMenu();
+                console.Draw();
+                EndTabItem();
+            }
+
+            if (!open)
+                active_tabs.erase(active_tabs.Data + n);
+            else
+                n++;
+        }
+
+        ImGui::EndTabBar();
     }
 }
 
@@ -1302,123 +1376,123 @@ int Renderer::Settings(int id)
 
     switch (id)
     {
-    case 1: /* read width */
-        while (getline(file, temp_str))
-        {
-            if (strcmp(temp_str.c_str(), "width"))
+        case 1: /* read width */
+            while (getline(file, temp_str))
             {
-                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                while (tmp != NULL)
+                if (strcmp(temp_str.c_str(), "width"))
                 {
-                    if (_switch)
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                    while (tmp != NULL)
                     {
-                        arg = tmp;
-                        return stof(arg);
+                        if (_switch)
+                        {
+                            arg = tmp;
+                            return stof(arg);
+                        }
+
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
                     }
 
-                    else
-                    {
-                        temp_str = tmp;
-                        _switch = true;
-                    }
-
-                    tmp = strtok(NULL, " , ");
-                }
-
-                break;
+                    break;
+                }               
             }
-        }
+            
+            break;
 
-        break;
-
-    case 2:
-        while (getline(file, temp_str))
-        {
-            if (strcmp(temp_str.c_str(), "height"))
+        case 2: /* read width */
+            while (getline(file, temp_str))
             {
-                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                while (tmp != NULL)
+                if (strcmp(temp_str.c_str(), "height"))
                 {
-                    if (_switch)
-                    {
-                        arg = tmp;
-                        return stof(arg);
-                    }
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
 
-                    else
+                    while (tmp != NULL)
                     {
-                        temp_str = tmp;
-                        _switch = true;
-                    }
+                        if (_switch)
+                        {
+                            arg = tmp;
+                            return stof(arg);
+                        }
 
-                    tmp = strtok(NULL, " , ");
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        break;
+            break;
 
-    case 3: /* font name */
-        while (getline(file, temp_str))
-        {
-            if (strcmp(temp_str.c_str(), "font"))
+        case 3: /* font name */
+            while (getline(file, temp_str))
             {
-                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                while (tmp != NULL)
+                if (strcmp(temp_str.c_str(), "font"))
                 {
-                    if (_switch)
-                    {
-                        strcpy(font_name, const_cast<char*>(tmp));
-                        return 0;
-                    }
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
 
-                    else
+                    while (tmp != NULL)
                     {
-                        temp_str = tmp;
-                        _switch = true;
-                    }
+                        if (_switch)
+                        {
+                            strcpy(font_name, const_cast<char*>(tmp));
+                            return 0;
+                        }
 
-                    tmp = strtok(NULL, " , ");
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        break;
+            break;
 
-    case 4:
-        while (getline(file, temp_str))
-        {
-            if (strcmp(temp_str.c_str(), "font-size"))
+        case 4: /* font size */
+            while (getline(file, temp_str))
             {
-                tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                while (tmp != NULL)
+                if (strcmp(temp_str.c_str(), "font-size"))
                 {
-                    if (_switch)
-                    {
-                        arg = tmp;
-                        return stof(arg);
-                    }
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
 
-                    else
+                    while (tmp != NULL)
                     {
-                        temp_str = tmp;
-                        _switch = true;
-                    }
+                        if (_switch)
+                        {
+                            arg = tmp;
+                            return stof(arg);
+                        }
 
-                    tmp = strtok(NULL, " , ");
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+                    break;
                 }
-                break;
             }
-        }
-        break;
-
-    default:
-        console.AddLog("Invalid id %d!\n", id);
-        break;
+            break;
+            
+        default:
+            console.AddLog("Invalid id %d!\n", id);
+            break;
     }
 
     file.close();
@@ -1465,9 +1539,7 @@ int Renderer::CheckFile(const char* name)
 
 void main_code()
 {
-    /* ImGUI window creation */
-    SetNextWindowPos(ImVec2(pos_x, pos_y));
-    SetNextWindowSize(ImVec2(static_cast<float>(render->Settings(1)), static_cast<float>(render->Settings(2))));
+    /* ImGui window creation */
     Begin
     ("Termi",
         NULL,
@@ -1492,11 +1564,8 @@ void main_code()
     TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
 #endif
 
-    /* Draw menu bar */
-    render->DrawContextMenu();
-
-    /* Draw console */
-    console.Draw();
+    /* Draw tabs and menu bar */
+    render->DrawTab();
 
     /* Font dialog */
     if (isFont)

@@ -9,5 +9,5 @@
 
 #include <iostream>
 
-void echo(std::string content, std::string argument);
-void yes(std::string argument, std::string argument2);
+int echo(std::string content, std::string argument);
+int yes(std::string argument, std::string argument2);
