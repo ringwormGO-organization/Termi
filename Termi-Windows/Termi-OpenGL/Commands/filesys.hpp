@@ -2,7 +2,7 @@
  * @author Andrej Bartulin
  * PROJECT: Termi-Windows version
  * LICENSE: BSD-3-Clause-License
- * DESCRIPTION: Filesystem heder file
+ * DESCRIPTION: Filesystem header file
 */
 
 #pragma once
