@@ -1,6 +1,8 @@
 # Termi
 (Termi currently is just a terminal app but we are developing it to be a fully working terminal not just an app)
 
+(Windows version will be synced each friday in the week)
+
 **From now, non-OpenGL version will not be supported!**
 
 **If you want use non-OpenGL version, manually install files!**
@@ -36,7 +38,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 ### Independence
 - [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) base)
 - [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui))
-- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) real console and changing font)
+- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) real console)
 
 ## Build & Run
 ### Required software:
