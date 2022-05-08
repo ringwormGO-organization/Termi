@@ -79,10 +79,10 @@ static std::map<const std::string, const std::function<int(const std::string, co
 };
 
 /* Check if some string start with some std::string value */
-static int isStarting (std::string const &fullString, std::string const &starting) 
+static bool isStarting (std::string const &fullString, std::string const &starting) 
 {
-    if (fullString.length() <= starting.length()) { return 0; }
-    else { return 1; }
+    if (fullString.length() <= starting.length()) { return true; }
+    else { return false; }
 }
 
 /*

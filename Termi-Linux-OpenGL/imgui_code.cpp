@@ -34,12 +34,30 @@ int cd(string folder, string argument)
 
 int change_setting(string setting, string value)
 {
-    return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+    try
+    {
+        return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+    }
+    catch(const std::exception& e)
+    {
+        console.AddLog("Catched exception. Exception result: %s", e.what());
+        return 1;
+    }
 }
 
 int echo(string content, string argument)
 {
-    console.AddLog("%s", content.c_str());
+    if (isStarting(content, "$"))
+    {
+        console.AddLog("Variables not supported yet!\n");
+        return 1;
+    }
+
+    else
+    {
+        console.AddLog("%s", content.c_str());
+    }
+
     return 0;
 }
 
@@ -205,8 +223,12 @@ int writefile(string file, string content)
 {
     auto mode = ios::in;
 
-    ofstream myfile;
-    myfile.open(file, mode);
+    if (render->CheckFile(file.c_str()) != 0)
+    {
+        fstream new_file(file, mode);
+    }
+
+    fstream myfile(file, mode);
     myfile << content;
     myfile.close();
 
@@ -230,38 +252,49 @@ int yes(string argument, string argument2)
 
 double calc(string op, double num1, double num2)
 {
-    if (!strcmp(op.c_str(), "+"))
+    try
     {
-        return (num1 + num2);
-    }
-
-    else if(!strcmp(op.c_str(), "-"))
-    {
-        return (num1 - num2);
-    }
-
-    else if (!strcmp(op.c_str(), "*"))
-    {
-        return (num1 * num2);
-    }
-
-    if (!strcmp(op.c_str(), "/"))
-    {
-        if (num2 == 0)
+        if (!strcmp(op.c_str(), "+"))
         {
-            console.AddLog("Cannot divide with 0!\n");
-            return 1;
+            return (num1 + num2);
+        }
+
+        else if(!strcmp(op.c_str(), "-"))
+        {
+            return (num1 - num2);
+        }
+
+        else if (!strcmp(op.c_str(), "*"))
+        {
+            return (num1 * num2);
+        }
+
+        if (!strcmp(op.c_str(), "/"))
+        {
+            if (num2 == 0)
+            {
+                console.AddLog("Cannot divide with 0!\n");
+                return 1;
+            }
+
+            else
+            {
+                return (num1 / num2);
+            }
         }
 
         else
         {
-            return (num1 / num2);
+            console.AddLog("Invalid operator %s!\n", op.c_str());
+            return 1;
         }
+
+        return 1;
     }
 
-    else
+    catch(const std::exception& e)
     {
-        console.AddLog("Invalid operator %s!\n", op.c_str());
+        console.AddLog("Catched exception. Exception result: %s", e.what());
         return 1;
     }
 
