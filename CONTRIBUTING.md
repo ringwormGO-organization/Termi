@@ -13,24 +13,6 @@ Just drop a Pull Request :)
 1. Linux version have own folder while Windows version is in `Termi-Windows` directory.
 2. Code is in "root" while commands will be in `Commands` directory.
 
-# Directory organization (old but still current)
-1. `Termi` for Windows directory contains Visual Studio solution. In `x64\Release` is `Programs` directory.
-2. There is code to compile binaries.
-3. To compile Windows installer, change path to your own and installer version update may late.
-4. Package Manager has own folder.
-5. GNU/Linux version have `Commands` and `bin` directory. It is same as in Windows version, just it is not in `Programs` directory.
-6. If you want add new command, create new `.cpp` file in `Commands` directory, add it to shell script or batch file and add it to `std::map` "database".
-
-# Directory organization (before)
-1. `Termi-Windows` and `Termi-Linux` directories which contains files which load binaries.
-2. In `Programs/bin` directory are compiled binaries.
-3. In `Windows` or `Linux` directory are code to compile.
-4. In `Include.h` are all header files.
-5. If you want add new command, create new `.cpp` file in `Programs/Windows` or `Programs/Linux` directory and add it to shell script `compile.sh`.
-6. In `main.cpp` add your command and path to executable :)
-7. Some Windows application (compiled with MSVC using command line) use Linux executable. They are same for both platform.
-8. Package Manager has own folder.
-
 # Add language (not programming language) to Termi
 1. In `Translation.hpp` add new namespace followed by language name.
 2. Copy stuff from above, use same names for variables, just translate.
@@ -39,9 +21,19 @@ Just drop a Pull Request :)
 
 # Add command to Termi
 1. Create new file in `Commands` folder and create main function for command.
-2. Put command and function name in `commands` `std::map`.
+2. Put command and function name in `commands` `std::map`, need to return integer based on is function executed correctly.
 3. Put main command code in `imgui_code.cpp`.
 4. Don't forget for arguments even if it is not needed!
+
+Example:
+```cpp
+int example(std::string argument1, std::string argument2); //command.hpp
+int example(std::string argument1, std::string argument2)
+{
+    cout << "Example\n";
+    return 0;
+} //imgui_code.cpp
+```
 
 # Coding sytle for Pull Requests
 ### Indentation and line width

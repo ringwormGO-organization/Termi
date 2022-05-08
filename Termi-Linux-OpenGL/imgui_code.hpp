@@ -20,6 +20,7 @@
 #include "Commands/calc.hpp"
 #include "Commands/other.hpp"
 #include "Commands/time.hpp"
+#include "Commands/termi.hpp"
 
 #include <iostream>
 #include <functional>
@@ -65,6 +66,7 @@ static char font_name[250];
 static std::map<const std::string, const std::function<int(const std::string, const std::string)>> commands = 
 {
     {"cd", cd},
+    {"change-setting", change_setting},
     {"echo", echo},
     {"list", list},
     {"mkdir", new_dir},
@@ -145,8 +147,7 @@ class Renderer
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
 
-        int Settings(int id);
-        void SettingsDialog(bool* p_open);
+        float Settings(int id, float value);
 
         int CheckFile(const char* name);
 

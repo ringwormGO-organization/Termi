@@ -12,6 +12,8 @@ using namespace std;
 using namespace ImGui;
 using namespace Translation;
 
+#pragma GCC diagnostic ignored "-Wformat-security"
+
 void ok()
 {
     console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
@@ -22,13 +24,63 @@ void not_ok()
     console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
 }
 
-#pragma GCC diagnostic ignored "-Wformat-security"
-
 Console console;
 Renderer* render;
 
-/* Commands main code */
-/* Neofetch command */
+int cd(string folder, string argument)
+{
+    return chdir(folder.c_str());
+}
+
+int change_setting(string setting, string value)
+{
+    return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+}
+
+int echo(string content, string argument)
+{
+    console.AddLog("%s", content.c_str());
+    return 0;
+}
+
+int list(string argument, string argument2)
+{
+    DIR *dr;
+    struct dirent *en;
+    dr = opendir("."); //open all directory
+    if (dr) 
+    {
+        while ((en = readdir(dr)) != NULL) 
+        {
+            console.AddLog("%s\n", en->d_name); //print all directory name
+        }
+        closedir(dr); //close all directory
+        console.AddLog("\n");
+    }
+
+    else
+    {
+        return 1;
+    }
+
+    return 0;
+}
+
+int new_dir(string folder, string argument)
+{
+    if (mkdir(folder.c_str(), 0777) == -1)
+    {
+        console.AddLog("Error while creating directory!\n");
+        return 1;
+    }
+
+    else
+    {
+        console.AddLog("Directory %s created!\n", folder.c_str());
+        return 0;
+    }
+}
+
 int neofetch(string argument, string argument2)
 {
     /* Username and computer name */
@@ -89,6 +141,12 @@ int neofetch(string argument, string argument2)
             static_cast<unsigned long long>(uptime_seconds * 1000.0)
         );
     }
+
+    else
+    {
+        return 1;
+    }
+
     info.uptime = uptime_seconds / 3600;
 
     console.AddLog("\n");
@@ -131,27 +189,16 @@ int openfile(string file, string argument)
     return 0;
 }
 
-int list(string argument, string argument2)
+int ttime(string argument, string argument2)
 {
-    DIR *dr;
-    struct dirent *en;
-    dr = opendir("."); //open all directory
-    if (dr) 
-    {
-        while ((en = readdir(dr)) != NULL) 
-        {
-            console.AddLog("%s\n", en->d_name); //print all directory name
-        }
-        closedir(dr); //close all directory
-        console.AddLog("\n");
-    }
-
-    else
-    {
-        return 1;
-    }
-
+    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
+    console.AddLog("%s", ctime(&givemetime));
     return 0;
+}
+
+int rm(string folder, string argument)
+{
+    return remove(folder.c_str());
 }
 
 int writefile(string file, string content)
@@ -166,30 +213,18 @@ int writefile(string file, string content)
     return 0;
 }
 
-int new_dir(string folder, string argument)
+int yes(string argument, string argument2)
 {
-    if (mkdir(folder.c_str(), 0777) == -1)
+    /*while (true)
     {
-        console.AddLog("Error while creating directory!\n");
-        return 1;
+        console.AddLog("yes\n");
+    }*/
+
+    for (int i = 0; i < 100000; i++)
+    {
+        console.AddLog("y\n");
     }
 
-    else
-    {
-        console.AddLog("Directory %s created!\n", folder.c_str());
-        return 0;
-    }
-}
-
-int cd(string folder, string argument)
-{
-    chdir(folder.c_str());
-    return 0;
-}
-
-int rm(string folder, string argument)
-{
-    remove(folder.c_str());
     return 0;
 }
 
@@ -231,34 +266,6 @@ double calc(string op, double num1, double num2)
     }
 
     return 1;
-}
-
-int ttime(string argument, string argument2)
-{
-    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
-    console.AddLog("%s", ctime(&givemetime));
-    return 0;
-}
-
-int echo(string content, string argument)
-{
-    console.AddLog("%s", content.c_str());
-    return 0;
-}
-
-int yes(string argument, string argument2)
-{
-    /*while (true)
-    {
-        console.AddLog("yes\n");
-    }*/
-
-    for (int i = 0; i < 100000; i++)
-    {
-        console.AddLog("y\n");
-    }
-
-    return 0;
 }
 
 /*
@@ -756,25 +763,6 @@ void Renderer::DrawMenu()
                 }
             }
 
-            Separator();
-
-            if (MenuItem(ChooseLanguage("configure settings"), "Ctrl+S"))
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    Settings(i);
-                }
-            }
-
-            if (MenuItem(ChooseLanguage("settings dialog"), "Ctrl+Shift+S"))
-            {
-                if (!settings_dialog)
-                {
-                    settings_dialog = true;
-                    SettingsDialog(NULL);
-                }
-            }
-
             ImGui::EndMenu();
         }
 
@@ -903,8 +891,6 @@ const char* Renderer::ChooseLanguage(const char* word)
         if (word == "about imgui") return Croatian::about_imgui;
 
         if (word == "settings") return Croatian::settings;
-        if (word == "configure settings") return Croatian::configure_settings;
-        if (word == "settings dialog") return Croatian::settings_dialog;
     }
 
     /* Default language - English */
@@ -926,10 +912,6 @@ const char* Renderer::ChooseLanguage(const char* word)
 
         if (word == "about termi") return English::about_termi;
         if (word == "about imgui") return English::about_imgui;
-
-        if (word == "settings") return English::settings;
-        if (word == "configure settings") return English::configure_settings;
-        if (word == "settings dialog") return English::settings_dialog;
     }
 
     /* nothing matches */
@@ -1012,7 +994,7 @@ void Renderer::ImGuiDialog(bool* p_open)
     End();
 }
 
-int Renderer::Settings(int id)
+float Renderer::Settings(int id, float value)
 {
     int temp_id = id;
 
@@ -1025,11 +1007,16 @@ int Renderer::Settings(int id)
     bool _switch = false;
     bool __switch = false;
 
+    float width;
+    float height;
+    float font_size;
+    fstream file2;
+
     if (CheckFile("settings.txt") != 0)
     {
         fstream new_file("settings.txt", mode);
         new_file << "width: 650\nheight 650\nfont default\nsize 16";
-        Settings(temp_id); /* yes, recursion */
+        Settings(temp_id, 0); /* yes, recursion */
     }
 
     fstream file("settings.txt", mode);
@@ -1149,36 +1136,77 @@ int Renderer::Settings(int id)
                 }
             }
             break;
+
+        case 5: /* write width */
+            Settings(3, 0);
+
+            height = Settings(2, 0);
+            font_size = Settings(4, 0);
+
+            remove("settings.txt");
+
+            file2.open("settings.txt", mode);
+            file2 << "width: " << value << "\nheight: " << height << "\nfont: " << font_name << "\nsize: " << font_size << "\n";
+
+            break;
+
+        case 6: /* write height */
+            Settings(3, 0);
+
+            width = Settings(1, 0);
+            font_size = Settings(4, 0);
+
+            remove("settings.txt");
+
+            file2.open("settings.txt", mode);
+            file2 << "width: " << width << "\nheight: " << value << "\nfont: " << font_name << "\nsize: " << font_size << "\n";
+            break;
+
+        case 7: /* write font name*/
+            width = Settings(1, 0);
+            height = Settings(2, 0);
+            font_size = Settings(4, 0);
+
+            remove("settings.txt");
+
+            file2.open("settings.txt", mode);
+            file2 << "width: " << width << "\nheight: " << height << "\nfont: " << value << "\nsize: " << font_size << "\n";
+
+            break;
+
+        case 8: /* write font size */
+            Settings(3, 0);
+
+            width = Settings(1, 0);
+            height = Settings(2, 0);
+
+            remove("settings.txt");
+
+            file2.open("settings.txt", mode);
+            file2 << "width: " << width << "\nheight: " << height << "\nfont: " << font_name << "\nsize: " << value << "\n";
+
+            break;
             
         default:
             console.AddLog("Invalid id %d!\n", id);
+            console.AddLog(
+            "ID list: \n%s%s%s%s%s%s%s%s%s",
+            "1 - read width\n",
+            "2 - read height\n",
+            "3 - set variable font_name to the font name\n",
+            "4 - read font size\n",
+            "---------------\n",
+            "5 - write width\n",
+            "6 - write height\n",
+            "7 - write font_name\n",
+            "8 - write font size\n"
+            );
+            return 1;
             break;
     }
 
     file.close();
     return 0;
-}
-
-void Renderer::SettingsDialog(bool* p_open)
-{
-    SetWindowPos(ImVec2(200, 200));
-    SetWindowSize(ImVec2(400, 600));
-    if (!Begin(ChooseLanguage("settings dialog"), p_open))
-    {
-        language_dialog = false;
-        End();
-        return;
-    }
-
-    int id = 0;
-
-    if (InputInt("Enter id: ", &id, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
-    {
-        Settings(id);
-    }
-
-    language_dialog = false;
-    End();
 }
 
 /* Check if file exists */
@@ -1249,12 +1277,6 @@ void main_code()
     if (imgui_dialog)
     {
         render->ImGuiDialog(NULL);
-    }
-
-    /* Settings dialog */
-    if (settings_dialog)
-    {
-        render->SettingsDialog(NULL);
     }
 
     /* Get window width and height */

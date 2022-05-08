@@ -56,7 +56,7 @@ int main()
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(static_cast<float>(render->Settings(1)), static_cast<float>(render->Settings(2)), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -85,13 +85,13 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	render->Settings(3);
+	render->Settings(3, 0);
 	
 	if (!strcmp(font_name, "default"))
 	{
 		if (render->CheckFile(font_name) == 0)
 		{
-			io.Fonts->AddFontFromFileTTF(font_name, static_cast<float>(render->Settings(4)));
+			io.Fonts->AddFontFromFileTTF(font_name, render->Settings(4, 0));
 		}
 
 		else

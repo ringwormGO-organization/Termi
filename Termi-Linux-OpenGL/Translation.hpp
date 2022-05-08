@@ -30,8 +30,6 @@ namespace Translation
         static const char* about_imgui = "O ImGui-u";
 
         static const char* settings = "Postavke";
-        static const char* configure_settings = "Konfiguriraj postavke";
-        static const char* settings_dialog = "Dijalog postavki";
     };
 
     /* Default language */
@@ -55,7 +53,5 @@ namespace Translation
         static const char* about_imgui = "About ImGui";
 
         static const char* settings = "Settings";
-        static const char* configure_settings = "Configure settings";
-        static const char* settings_dialog = "Settings dialog";
     };
 };
