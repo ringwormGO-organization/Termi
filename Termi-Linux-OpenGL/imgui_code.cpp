@@ -36,7 +36,15 @@ int change_setting(string setting, string value)
 {
     try
     {
-        return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+        if (stoi(setting) != 5 && stoi(setting) != 8)
+        {
+            return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+        }
+        
+        else
+        {
+            return static_cast<int>(render->Settings(stoi(setting), value));
+        }
     }
     catch(const std::exception& e)
     {
@@ -1027,7 +1035,8 @@ void Renderer::ImGuiDialog(bool* p_open)
     End();
 }
 
-float Renderer::Settings(int id, float value)
+template <typename T>
+float Renderer::Settings(int id, T value)
 {
     int temp_id = id;
 
@@ -1048,7 +1057,7 @@ float Renderer::Settings(int id, float value)
     if (CheckFile("settings.txt") != 0)
     {
         fstream new_file("settings.txt", mode);
-        new_file << "width: 650\nheight 650\nfont default\nsize 16";
+        new_file << "startup none\nwidth 650\nheight 650\nfont default\nsize 16";
         Settings(temp_id, 0); /* yes, recursion */
     }
 
@@ -1056,6 +1065,35 @@ float Renderer::Settings(int id, float value)
 
     switch (id)
     {
+        case 0: /* startup command */
+            while (getline(file, temp_str))
+            {
+                if (strcmp(temp_str.c_str(), "startup"))
+                {
+                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+
+                    while (tmp != NULL)
+                    {
+                        if (_switch)
+                        {
+                            strcpy(startup_command, const_cast<char*>(tmp));
+                            return 0;
+                        }
+
+                        else
+                        {
+                            temp_str = tmp;
+                            _switch = true;
+                        }
+
+                        tmp = strtok(NULL, " , ");
+                    }
+
+                    break;
+                }               
+            }
+            break;
+
         case 1: /* read width */
             while (getline(file, temp_str))
             {
@@ -1083,7 +1121,6 @@ float Renderer::Settings(int id, float value)
                     break;
                 }               
             }
-            
             break;
 
         case 2: /* read width */
@@ -1170,7 +1207,22 @@ float Renderer::Settings(int id, float value)
             }
             break;
 
-        case 5: /* write width */
+        case 5: /* write startup command */
+            Settings(3, 0);
+
+            width = Settings(1, 0);
+            height = Settings(2, 0);
+            font_size = Settings(4, 0);
+
+            remove("settings.txt");
+
+            file2.open("settings.txt", mode);
+            file2 << "width " << width << "\nheight " << height << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << value << "\n";
+
+            break;
+
+        case 6: /* write width */
+            Settings(0, 0);
             Settings(3, 0);
 
             height = Settings(2, 0);
@@ -1179,11 +1231,12 @@ float Renderer::Settings(int id, float value)
             remove("settings.txt");
 
             file2.open("settings.txt", mode);
-            file2 << "width: " << value << "\nheight: " << height << "\nfont: " << font_name << "\nsize: " << font_size << "\n";
+            file2 << "width " << value << "\nheight " << height << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << value << "\n";
 
             break;
 
-        case 6: /* write height */
+        case 7: /* write height */
+            Settings(0, 0);
             Settings(3, 0);
 
             width = Settings(1, 0);
@@ -1192,10 +1245,11 @@ float Renderer::Settings(int id, float value)
             remove("settings.txt");
 
             file2.open("settings.txt", mode);
-            file2 << "width: " << width << "\nheight: " << value << "\nfont: " << font_name << "\nsize: " << font_size << "\n";
+            file2 << "width " << width << "\nheight " << value << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << value << "\n";
+
             break;
 
-        case 7: /* write font name*/
+        case 8: /* write font name*/
             width = Settings(1, 0);
             height = Settings(2, 0);
             font_size = Settings(4, 0);
@@ -1203,11 +1257,12 @@ float Renderer::Settings(int id, float value)
             remove("settings.txt");
 
             file2.open("settings.txt", mode);
-            file2 << "width: " << width << "\nheight: " << height << "\nfont: " << value << "\nsize: " << font_size << "\n";
+            file2 << "width " << width << "\nheight " << height << "\nfont " << value << "\nsize " << font_size << "\nstartup " << value << "\n";
 
             break;
 
-        case 8: /* write font size */
+        case 9: /* write font size */
+            Settings(0, 0);
             Settings(3, 0);
 
             width = Settings(1, 0);
@@ -1216,23 +1271,25 @@ float Renderer::Settings(int id, float value)
             remove("settings.txt");
 
             file2.open("settings.txt", mode);
-            file2 << "width: " << width << "\nheight: " << height << "\nfont: " << font_name << "\nsize: " << value << "\n";
+            file2 << "width " << width << "\nheight " << height << "\nfont " << font_name << "\nsize " << value << "\nstartup " << value << "\n";
 
             break;
             
         default:
             console.AddLog("Invalid id %d!\n", id);
             console.AddLog(
-            "ID list: \n%s%s%s%s%s%s%s%s%s",
+            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+            "0 - read startup command\n"
             "1 - read width\n",
             "2 - read height\n",
             "3 - set variable font_name to the font name\n",
             "4 - read font size\n",
             "---------------\n",
-            "5 - write width\n",
-            "6 - write height\n",
-            "7 - write font_name\n",
-            "8 - write font size\n"
+            "5 - write startup command\n",
+            "6 - write width\n",
+            "7 - write height\n",
+            "8 - write font name\n",
+            "9 - write font size\n"
             );
             return 1;
             break;

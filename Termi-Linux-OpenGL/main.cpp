@@ -45,9 +45,18 @@ void end(int sig)
     }
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	std::cout << "\n\n";
+
+	bool arg = false;
+	bool alreadyarg = false;
+
+	if (argc > 1)
+	{
+		strcpy(startup_command, argv[1]);
+		arg = true;
+	}
 
 	/* Catch CTRL-C */
 	sigIntHandler.sa_handler = end;
@@ -100,6 +109,13 @@ int main()
 		}
 	}
 
+	render->Settings(0, 0);
+
+	if (!strcmp(startup_command, "none"))
+	{
+		arg = true;
+	}
+
 	while(!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -118,6 +134,12 @@ int main()
 
 		/* main ImGUI code */
 		main_code();
+
+		if (arg && !alreadyarg)
+		{
+			console.ExecCommand(startup_command, argv[2], argv[3]);
+			alreadyarg = true;
+		}
 
 		#ifdef PRINT_FPS
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

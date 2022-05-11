@@ -52,12 +52,12 @@ static bool imgui_dialog = false;
 static bool settings_dialog = false;
 
 static bool alReadyPrinted = false;
-
 static bool help_focus = false;
 
 static const char* language;
 
 static char font_name[250];
+static char startup_command[250];
 
 /* 
  * Commands list - command and function
@@ -147,7 +147,8 @@ class Renderer
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
 
-        float Settings(int id, float value);
+        template <typename T>
+        float Settings(int id, T value);
 
         int CheckFile(const char* name);
 
