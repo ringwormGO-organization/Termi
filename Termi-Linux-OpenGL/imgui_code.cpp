@@ -1231,7 +1231,7 @@ float Renderer::Settings(int id, T value)
             remove("settings.txt");
 
             file2.open("settings.txt", mode);
-            file2 << "width " << value << "\nheight " << height << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << value << "\n";
+            file2 << "width " << value << "\nheight " << height << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << startup_command << "\n";
 
             break;
 
