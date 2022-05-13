@@ -1,7 +1,7 @@
 # Termi
 (Termi currently is just a terminal app but we are developing it to be a fully working terminal not just an app)
 
-(Windows version will be synced each friday in the week)
+(Windows version will be synced at least one in each week)
 
 **From now, non-OpenGL version will not be supported!**
 
