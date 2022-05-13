@@ -41,11 +41,19 @@ int change_setting(string setting, string value)
             return static_cast<int>(render->Settings(stoi(setting), stof(value)));
         }
         
-        else
+        else if (stoi(setting) == 5)
         {
-            return static_cast<int>(render->Settings(stoi(setting), value));
+            startup_command = value;
+            render->Settings(5, 0);
+        }
+
+        else if (stoi(setting) == 8)
+        {
+            font_name = value;
+            render->Settings(8, 0);
         }
     }
+    
     catch(const std::exception& e)
     {
         console.AddLog("Catched exception. Exception result: %s", e.what());
@@ -901,7 +909,7 @@ void Renderer::Font(bool* p_open)
         EndPopup();
     }
 
-    if (InputText("Enter name of font file", font_name, IM_ARRAYSIZE(font_name), ImGuiInputTextFlags_EnterReturnsTrue))
+    if (InputText("Enter name of font file", const_cast<char*>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char*>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
     {
         //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
     }
@@ -1035,244 +1043,139 @@ void Renderer::ImGuiDialog(bool* p_open)
     End();
 }
 
-template <typename T>
-float Renderer::Settings(int id, T value)
+float Renderer::Settings(int id, float value)
 {
     int temp_id = id;
 
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
-    char* tmp = new char[200];
-    string arg;
-    string arg2;
-    bool _switch = false;
-    bool __switch = false;
-
-    float width;
-    float height;
-    float font_size;
-    fstream file2;
-
-    if (CheckFile("settings.txt") != 0)
+    if (!CheckFile("startup.txt"))
     {
-        fstream new_file("settings.txt", mode);
-        new_file << "startup none\nwidth 650\nheight 650\nfont default\nsize 16";
-        Settings(temp_id, 0); /* yes, recursion */
+        fstream file("startup.txt", mode);
+        file << "none";
+        file.close();
     }
 
-    fstream file("settings.txt", mode);
+    if (!CheckFile("width.txt"))
+    {
+        fstream file("width.txt", mode);
+        file << 650;
+        file.close();
+    }
+
+    if (!CheckFile("height.txt"))
+    {
+        fstream file("height.txt", mode);
+        file << 650;
+        file.close();
+    }
+
+    if (!CheckFile("font.txt"))
+    {
+        fstream file("font.txt", mode);
+        file << "default";
+        file.close();
+    }
+
+    if (!CheckFile("size.txt"))
+    {
+        fstream file("size.txt", mode);
+        file << 16;
+        file.close();
+    }
+
+    fstream startup("startup.txt", mode);
+    fstream width("width.txt", mode);
+    fstream height("height.txt", mode);
+    fstream font("font.txt", mode);
+    fstream font_size("size.txt", mode);
+
+    fstream temp;
 
     switch (id)
     {
         case 0: /* startup command */
-            while (getline(file, temp_str))
+            while (getline(startup, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "startup"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            strcpy(startup_command, const_cast<char*>(tmp));
-                            return 0;
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-
-                    break;
-                }               
+                startup_command = temp_str;
+                startup.close();            
             }
             break;
 
         case 1: /* read width */
-            while (getline(file, temp_str))
+            while (getline(width, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "width"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-
-                    break;
-                }               
+                float result = stof(temp_str);
+                width.close();
+                return result;
             }
             break;
 
-        case 2: /* read width */
-            while (getline(file, temp_str))
+        case 2: /* read height */
+            while (getline(height, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "height"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-                    break;
-                }
+                float result = stof(temp_str);
+                height.close();
+                return result;
             }
             break;
 
         case 3: /* font name */
-            while (getline(file, temp_str))
+            while (getline(font, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "font"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            strcpy(font_name, const_cast<char*>(tmp));
-                            return 0;
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-                    break;
-                }
+                font_name = temp_str;
+                font.close();
             }
             break;
 
         case 4: /* font size */
-            while (getline(file, temp_str))
+            while (getline(font_size, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "font-size"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-                    break;
-                }
+                float result = stof(temp_str);
+                font_size.close();
+                return result;
             }
             break;
 
         case 5: /* write startup command */
-            Settings(3, 0);
-
-            width = Settings(1, 0);
-            height = Settings(2, 0);
-            font_size = Settings(4, 0);
-
-            remove("settings.txt");
-
-            file2.open("settings.txt", mode);
-            file2 << "width " << width << "\nheight " << height << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << value << "\n";
-
+            temp.open("temp.txt", mode);
+            temp << startup_command;
+            temp.close();
+            remove("startup.txt");
+            rename("temp.txt", "startup.txt");
             break;
 
         case 6: /* write width */
-            Settings(0, 0);
-            Settings(3, 0);
-
-            height = Settings(2, 0);
-            font_size = Settings(4, 0);
-
-            remove("settings.txt");
-
-            file2.open("settings.txt", mode);
-            file2 << "width " << value << "\nheight " << height << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << startup_command << "\n";
-
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("width.txt");
+            rename("temp.txt", "width.txt");
             break;
 
         case 7: /* write height */
-            Settings(0, 0);
-            Settings(3, 0);
-
-            width = Settings(1, 0);
-            font_size = Settings(4, 0);
-
-            remove("settings.txt");
-
-            file2.open("settings.txt", mode);
-            file2 << "width " << width << "\nheight " << value << "\nfont " << font_name << "\nsize " << font_size << "\nstartup " << value << "\n";
-
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("height.txt");
+            rename("temp.txt", "height.txt");
             break;
 
         case 8: /* write font name*/
-            width = Settings(1, 0);
-            height = Settings(2, 0);
-            font_size = Settings(4, 0);
-
-            remove("settings.txt");
-
-            file2.open("settings.txt", mode);
-            file2 << "width " << width << "\nheight " << height << "\nfont " << value << "\nsize " << font_size << "\nstartup " << value << "\n";
-
+            temp.open("temp.txt", mode);
+            temp << font_name;
+            temp.close();
+            remove("font.txt");
+            rename("temp.txt", "font.txt");
             break;
 
         case 9: /* write font size */
-            Settings(0, 0);
-            Settings(3, 0);
-
-            width = Settings(1, 0);
-            height = Settings(2, 0);
-
-            remove("settings.txt");
-
-            file2.open("settings.txt", mode);
-            file2 << "width " << width << "\nheight " << height << "\nfont " << font_name << "\nsize " << value << "\nstartup " << value << "\n";
-
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("size.txt");
+            rename("temp.txt", "size.txt");
             break;
             
         default:
@@ -1295,24 +1198,23 @@ float Renderer::Settings(int id, T value)
             break;
     }
 
-    file.close();
     return 0;
 }
 
 /* Check if file exists */
-int Renderer::CheckFile(const char* name)
+bool Renderer::CheckFile(const char* name)
 {
     fstream file;
     file.open(name);
 
     if (!file)
     {
-        return 1;
+        return false;
     }
 
     file.close();
 
-    return 0;
+    return true;
 }
 
 void main_code()

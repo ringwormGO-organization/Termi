@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
 	if (argc > 1)
 	{
-		strcpy(startup_command, argv[1]);
+		startup_command = argv[2];
 		arg = true;
 	}
 
@@ -96,25 +96,27 @@ int main(int argc, char **argv)
 
 	render->Settings(3, 0);
 	
-	if (!strcmp(font_name, "default"))
+	/*if (font_name != "default")
 	{
-		if (render->CheckFile(font_name) == 0)
+		try
 		{
-			io.Fonts->AddFontFromFileTTF(font_name, render->Settings(4, 0));
+			if (render->CheckFile(font_name.c_str()) == 0)
+			{
+				io.Fonts->AddFontFromFileTTF(font_name.c_str(), render->Settings(4, 0));
+			}
 		}
-
-		else
+		catch(const std::exception& e)
 		{
-			std::cout << "No such file " << font_name << "!\n";
+			std::cerr << "Exception catched! Result: " << e.what() << '\n';
 		}
-	}
+	}*/
 
 	render->Settings(0, 0);
 
-	if (!strcmp(startup_command, "none"))
+	/*if (startup_command != "none")
 	{
 		arg = true;
-	}
+	}*/
 
 	while(!glfwWindowShouldClose(window))
 	{

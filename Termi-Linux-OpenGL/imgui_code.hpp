@@ -56,8 +56,8 @@ static bool help_focus = false;
 
 static const char* language;
 
-static char font_name[250];
-static char startup_command[250];
+static std::string font_name;
+static std::string startup_command;
 
 /* 
  * Commands list - command and function
@@ -87,7 +87,6 @@ static bool isStarting (std::string const &fullString, std::string const &starti
 
 /*
  * Console class - everything for drawing and managing console
- * Setting up functions here
  * Code from imgui_demo.cpp
 */
 class Console
@@ -147,10 +146,9 @@ class Renderer
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
 
-        template <typename T>
-        float Settings(int id, T value);
+        float Settings(int id, float value);
 
-        int CheckFile(const char* name);
+        bool CheckFile(const char* name);
 
     private:
         void DrawMenu();
