@@ -38,7 +38,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 ### Independence
 - [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) base)
 - [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui))
-- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) real console)
+- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) real console and tabs (may not be in first release))
 
 ## Build & Run
 ### Required software:
@@ -83,7 +83,6 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 - [ImGui](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
 - [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` copy for Windows
-- [json](https://github.com/nlohmann/json)
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
@@ -91,7 +90,7 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 - [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
-- Other artcicles on internet
+- Other artcicles on the internet
 ____________________________________
 
 Thank you for choosing Termi.
