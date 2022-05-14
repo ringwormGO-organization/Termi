@@ -74,6 +74,7 @@ static std::map<const std::string, const std::function<int(const std::string, co
     {"openfile", openfile},
     {"time", ttime},
     {"rm", rm},
+    {"whoami", whoami},
     {"writefile", writefile},
     {"yes", yes}
 };

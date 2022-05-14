@@ -10,4 +10,5 @@
 #include <iostream>
 
 int echo(std::string content, std::string argument);
+int whoami(std::string argument, std::string argument2);
 int yes(std::string argument, std::string argument2);

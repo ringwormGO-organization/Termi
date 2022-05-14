@@ -235,6 +235,15 @@ int rm(string folder, string argument)
     return remove(folder.c_str());
 }
 
+int whoami(std::string argument, std::string argument2)
+{
+    char user[HOST_NAME_MAX];
+
+    getlogin_r(user, HOST_NAME_MAX);
+
+    console.AddLog("%s\n", user);
+}
+
 int writefile(string file, string content)
 {
     auto mode = ios::in;
