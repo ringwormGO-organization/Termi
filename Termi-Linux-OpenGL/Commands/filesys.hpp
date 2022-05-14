@@ -1,5 +1,7 @@
 /**
- * @author Andrej Bartulin
+ * @author(S):
+        original: StjepanBM1
+        OpenGL: Andrej Bartulin
  * PROJECT: Termi-Linux version
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Filesystem header file
