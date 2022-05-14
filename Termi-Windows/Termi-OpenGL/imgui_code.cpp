@@ -45,14 +45,14 @@ static const char* OperatingSystem()
 
     switch (vi.dwPlatformId)
     {
-        case VER_PLATFORM_WIN32s:
-            return "Windows 3.x";
-        case VER_PLATFORM_WIN32_WINDOWS:
-            return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-        case VER_PLATFORM_WIN32_NT:
-            return "Windows NT";
-        default:
-            return "Unknown";
+    case VER_PLATFORM_WIN32s:
+        return "Windows 3.x";
+    case VER_PLATFORM_WIN32_WINDOWS:
+        return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+    case VER_PLATFORM_WIN32_NT:
+        return "Windows NT";
+    default:
+        return "Unknown";
     }
 }
 
@@ -74,8 +74,108 @@ uint64_t UptimeH()
     return GetTickCount64() / 3600000;
 }
 
-/* neofetch main function */
-int neofetch(std::string argument, std::string argument2)
+int cd(string folder, string argument)
+{
+    return chdir(folder.c_str());
+}
+
+int change_setting(string setting, string value)
+{
+    try
+    {
+        if (stoi(setting) != 5 && stoi(setting) != 8)
+        {
+            return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+        }
+        
+        else if (stoi(setting) == 5)
+        {
+            startup_command = value;
+            render->Settings(5, 0);
+        }
+
+        else if (stoi(setting) == 8)
+        {
+            font_name = value;
+            render->Settings(8, 0);
+        }
+    }
+    
+    catch(const std::exception& e)
+    {
+        console.AddLog("Catched exception. Exception result: %s", e.what());
+        return 1;
+    }
+}
+
+int echo(string content, string argument)
+{
+    if (isStarting(content, "$"))
+    {
+        console.AddLog("Variables not supported yet!\n");
+        return 1;
+    }
+
+    else
+    {
+        console.AddLog("%s", content.c_str());
+    }
+
+    return 0;
+}
+
+int list(string argument, string argument2)
+{
+    struct dirent* d;
+    struct stat dst;
+
+    DIR* dr;
+
+    string path = ".\\";
+
+    dr = opendir(path.c_str());
+
+    if (dr != NULL)
+    {
+        for (d = readdir(dr); d != NULL; d = readdir(dr))
+        {
+            string type = d->d_name;
+            type = path + type;
+            if (stat(type.c_str(), &dst) == 0)
+            {
+                if (dst.st_mode & S_IFDIR)
+                {
+                    type = "FOLDER";
+                }
+                else if (dst.st_mode & S_IFREG)
+                {
+                    type = "FILE";
+                }
+            }
+            console.AddLog("%s - %s", d->d_name, type.c_str());
+        }
+        closedir(dr);
+    }
+
+    return 0;
+}
+
+int new_dir(string folder, string argument)
+{
+    if (mkdir(folder.c_str()) == -1)
+    {
+        console.AddLog("Error while creating directory!\n");
+        return 1;
+    }
+
+    else
+    {
+        console.AddLog("Directory %s created!\n", folder.c_str());
+        return 0;
+    }
+}
+
+int neofetch(string argument, string argument2)
 {
     /* Username and computer name */
     TCHAR username[UNLEN + 1];
@@ -381,20 +481,20 @@ int neofetch(std::string argument, std::string argument2)
         console.AddLog("\tECX Index %d\t\n", i);
         switch (nCacheType)
         {
-            case 0:
-                console.AddLog("\t   Type: Null\t\n");
-                break;
-            case 1:
-                console.AddLog("\t   Type: Data Cache\t\n");
-                break;
-            case 2:
-                console.AddLog("\t   Type: Instruction Cache\t\n");
-                break;
-            case 3:
-                console.AddLog("\t   Type: Unified Cache\t\n");
-                break;
-            default:
-                console.AddLog("\t   Type: Unknown\t\n");
+        case 0:
+            console.AddLog("\t   Type: Null\t\n");
+            break;
+        case 1:
+            console.AddLog("\t   Type: Data Cache\t\n");
+            break;
+        case 2:
+            console.AddLog("\t   Type: Instruction Cache\t\n");
+            break;
+        case 3:
+            console.AddLog("\t   Type: Unified Cache\t\n");
+            break;
+        default:
+            console.AddLog("\t   Type: Unknown\t\n");
         }
 
         console.AddLog("\t   Level = %d\t\n", nCacheLevel + 1);
@@ -434,19 +534,19 @@ int neofetch(std::string argument, std::string argument2)
     return 0;
 }
 
-int openfile(std::string file, std::string argument)
+int openfile(string file, string argument)
 {
     fstream my_file;
     my_file.open(file, ios::in);
-    if (!my_file)
+    if (!my_file) 
     {
         console.AddLog("No such file %s!\n", file.c_str());
         return 1;
     }
 
-    else
+    else 
     {
-        std::string str;
+        string str; 
         while (getline(my_file, str))
         {
             console.AddLog("%s\n", str.c_str());
@@ -458,128 +558,50 @@ int openfile(std::string file, std::string argument)
     return 0;
 }
 
-int list(std::string argument, std::string argument2)
+int ttime(string argument, string argument2)
 {
-    struct dirent* d;
-    struct stat dst;
+    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
+    console.AddLog("%s", ctime(&givemetime));
+    return 0;
+}
 
-    DIR* dr;
+int rm(string folder, string argument)
+{
+    return remove(folder.c_str());
+}
 
-    string path = ".\\";
+int whoami(std::string argument, std::string argument2)
+{
+    TCHAR username[UNLEN + 1];
+    DWORD username_len = UNLEN + 1;
+    GetUserName((TCHAR*)username, &username_len);;
 
-    dr = opendir(path.c_str());
+    char new_username[UNLEN];
 
-    if (dr != NULL)
-    {
-        for (d = readdir(dr); d != NULL; d = readdir(dr))
-        {
-            string type = d->d_name;
-            type = path + type;
-            if (stat(type.c_str(), &dst) == 0)
-            {
-                if (dst.st_mode & S_IFDIR)
-                {
-                    type = "FOLDER";
-                }
-                else if (dst.st_mode & S_IFREG)
-                {
-                    type = "FILE";
-                }
-            }
-            console.AddLog("%s - %s", d->d_name, type.c_str());
-        }
-        closedir(dr);
-    }
+    wcstombs(new_username, username, wcslen(username) + 1);
+
+    console.AddLog("%s\n", new_username);
 
     return 0;
 }
 
-int writefile(std::string file, std::string content)
+int writefile(string file, string content)
 {
     auto mode = ios::in;
 
-    ofstream myfile;
-    myfile.open(file, mode);
+    if (render->CheckFile(file.c_str()) != 0)
+    {
+        fstream new_file(file, mode);
+    }
+
+    fstream myfile(file, mode);
     myfile << content;
     myfile.close();
 
     return 0;
 }
 
-double calc(string op, double num1, double num2)
-{
-    if (!strcmp(op.c_str(), "+"))
-    {
-        return (num1 + num2);
-    }
-
-    else if (!strcmp(op.c_str(), "-"))
-    {
-        return (num1 - num2);
-    }
-
-    else if (!strcmp(op.c_str(), "*"))
-    {
-        return (num1 * num2);
-    }
-
-    if (!strcmp(op.c_str(), "/"))
-    {
-        if (num2 == 0)
-        {
-            console.AddLog("Cannot divide with 0!\n");
-            return 1;
-        }
-
-        else
-        {
-            return (num1 / num2);
-        }
-    }
-
-    else
-    {
-        console.AddLog("Invalid operator %s!\n", op.c_str());
-        return 1;
-    }
-
-    return 1;
-}
-
-int new_dir(std::string folder, std::string argument)
-{
-    if (_mkdir(folder.c_str()) == -1)
-    {
-        console.AddLog("Error while creating directory!\n");
-        return 1;
-    }
-
-    else
-    {
-        console.AddLog("Directory %s created!\n", folder.c_str());
-        return 0;
-    }
-}
-
-int cd(std::string folder, std::string argument)
-{
-    chdir(folder.c_str());
-    return 0;
-}
-
-int rm(std::string folder, std::string argument)
-{
-    remove(folder.c_str());
-    return 0;
-}
-
-int echo(std::string content, std::string argument)
-{
-    console.AddLog("%s", content.c_str());
-    return 0;
-}
-
-int yes(std::string argument, std::string argument2)
+int yes(string argument, string argument2)
 {
     /*while (true)
     {
@@ -594,11 +616,55 @@ int yes(std::string argument, std::string argument2)
     return 0;
 }
 
-int ttime(string argument, string argument2)
+double calc(string op, double num1, double num2)
 {
-    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
-    console.AddLog("%s", ctime(&givemetime));
-    return 0;
+    try
+    {
+        if (!strcmp(op.c_str(), "+"))
+        {
+            return (num1 + num2);
+        }
+
+        else if(!strcmp(op.c_str(), "-"))
+        {
+            return (num1 - num2);
+        }
+
+        else if (!strcmp(op.c_str(), "*"))
+        {
+            return (num1 * num2);
+        }
+
+        if (!strcmp(op.c_str(), "/"))
+        {
+            if (num2 == 0)
+            {
+                console.AddLog("Cannot divide with 0!\n");
+                return 1;
+            }
+
+            else
+            {
+                return (num1 / num2);
+            }
+        }
+
+        else
+        {
+            console.AddLog("Invalid operator %s!\n", op.c_str());
+            return 1;
+        }
+
+        return 1;
+    }
+
+    catch(const std::exception& e)
+    {
+        console.AddLog("Catched exception. Exception result: %s", e.what());
+        return 1;
+    }
+
+    return 1;
 }
 
 /*
@@ -1096,25 +1162,6 @@ void Renderer::DrawMenu()
                 }
             }
 
-            Separator();
-
-            if (MenuItem(ChooseLanguage("configure settings"), "Ctrl+S"))
-            {
-                for (int i = 0; i < 4; i++)
-                {
-                    Settings(i);
-                }
-            }
-
-            if (MenuItem(ChooseLanguage("settings dialog"), "Ctrl+Shift+S"))
-            {
-                if (!settings_dialog)
-                {
-                    settings_dialog = true;
-                    SettingsDialog(NULL);
-                }
-            }
-
             ImGui::EndMenu();
         }
 
@@ -1212,7 +1259,7 @@ void Renderer::Font(bool* p_open)
         EndPopup();
     }
 
-    if (InputText("Enter name of font file", font_name, IM_ARRAYSIZE(font_name), ImGuiInputTextFlags_EnterReturnsTrue))
+    if (InputText("Enter name of font file", const_cast<char*>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char*>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
     {
         //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
     }
@@ -1243,8 +1290,6 @@ const char* Renderer::ChooseLanguage(const char* word)
         if (word == "about imgui") return Croatian::about_imgui;
 
         if (word == "settings") return Croatian::settings;
-        if (word == "configure settings") return Croatian::configure_settings;
-        if (word == "settings dialog") return Croatian::settings_dialog;
     }
 
     /* Default language - English */
@@ -1266,10 +1311,6 @@ const char* Renderer::ChooseLanguage(const char* word)
 
         if (word == "about termi") return English::about_termi;
         if (word == "about imgui") return English::about_imgui;
-
-        if (word == "settings") return English::settings;
-        if (word == "configure settings") return English::configure_settings;
-        if (word == "settings dialog") return English::settings_dialog;
     }
 
     /* nothing matches */
@@ -1352,189 +1393,178 @@ void Renderer::ImGuiDialog(bool* p_open)
     End();
 }
 
-int Renderer::Settings(int id)
+float Renderer::Settings(int id, float value)
 {
     int temp_id = id;
 
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
-    char* tmp = new char[200];
-    string arg;
-    string arg2;
-    bool _switch = false;
-    bool __switch = false;
-
-    if (CheckFile("settings.txt") != 0)
+    if (!CheckFile("startup.txt"))
     {
-        fstream new_file("settings.txt", mode);
-        new_file << "width: 650\nheight 650\nfont default\nsize 16";
-        Settings(temp_id); /* yes, recursion */
+        fstream file("startup.txt", mode);
+        file << "none";
+        file.close();
     }
 
-    fstream file("settings.txt", mode);
+    if (!CheckFile("width.txt"))
+    {
+        fstream file("width.txt", mode);
+        file << 650;
+        file.close();
+    }
+
+    if (!CheckFile("height.txt"))
+    {
+        fstream file("height.txt", mode);
+        file << 650;
+        file.close();
+    }
+
+    if (!CheckFile("font.txt"))
+    {
+        fstream file("font.txt", mode);
+        file << "default";
+        file.close();
+    }
+
+    if (!CheckFile("size.txt"))
+    {
+        fstream file("size.txt", mode);
+        file << 16;
+        file.close();
+    }
+
+    fstream startup("startup.txt", mode);
+    fstream width("width.txt", mode);
+    fstream height("height.txt", mode);
+    fstream font("font.txt", mode);
+    fstream font_size("size.txt", mode);
+
+    fstream temp;
 
     switch (id)
     {
-        case 1: /* read width */
-            while (getline(file, temp_str))
+        case 0: /* startup command */
+            while (getline(startup, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "width"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-
-                    break;
-                }               
+                startup_command = temp_str;
+                startup.close();            
             }
-            
             break;
 
-        case 2: /* read width */
-            while (getline(file, temp_str))
+        case 1: /* read width */
+            while (getline(width, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "height"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
+                float result = stof(temp_str);
+                width.close();
+                return result;
+            }
+            break;
 
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-                    break;
-                }
+        case 2: /* read height */
+            while (getline(height, temp_str))
+            {
+                float result = stof(temp_str);
+                height.close();
+                return result;
             }
             break;
 
         case 3: /* font name */
-            while (getline(file, temp_str))
+            while (getline(font, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "font"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            strcpy(font_name, const_cast<char*>(tmp));
-                            return 0;
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-                    break;
-                }
+                font_name = temp_str;
+                font.close();
             }
             break;
 
         case 4: /* font size */
-            while (getline(file, temp_str))
+            while (getline(font_size, temp_str))
             {
-                if (strcmp(temp_str.c_str(), "font-size"))
-                {
-                    tmp = strtok(const_cast<char*>(temp_str.c_str()), " ");
-
-                    while (tmp != NULL)
-                    {
-                        if (_switch)
-                        {
-                            arg = tmp;
-                            return stof(arg);
-                        }
-
-                        else
-                        {
-                            temp_str = tmp;
-                            _switch = true;
-                        }
-
-                        tmp = strtok(NULL, " , ");
-                    }
-                    break;
-                }
+                float result = stof(temp_str);
+                font_size.close();
+                return result;
             }
+            break;
+
+        case 5: /* write startup command */
+            temp.open("temp.txt", mode);
+            temp << startup_command;
+            temp.close();
+            remove("startup.txt");
+            rename("temp.txt", "startup.txt");
+            break;
+
+        case 6: /* write width */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("width.txt");
+            rename("temp.txt", "width.txt");
+            break;
+
+        case 7: /* write height */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("height.txt");
+            rename("temp.txt", "height.txt");
+            break;
+
+        case 8: /* write font name*/
+            temp.open("temp.txt", mode);
+            temp << font_name;
+            temp.close();
+            remove("font.txt");
+            rename("temp.txt", "font.txt");
+            break;
+
+        case 9: /* write font size */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("size.txt");
+            rename("temp.txt", "size.txt");
             break;
             
         default:
             console.AddLog("Invalid id %d!\n", id);
+            console.AddLog(
+            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+            "0 - read startup command\n"
+            "1 - read width\n",
+            "2 - read height\n",
+            "3 - set variable font_name to the font name\n",
+            "4 - read font size\n",
+            "---------------\n",
+            "5 - write startup command\n",
+            "6 - write width\n",
+            "7 - write height\n",
+            "8 - write font name\n",
+            "9 - write font size\n"
+            );
+            return 1;
             break;
     }
 
-    file.close();
     return 0;
 }
 
-void Renderer::SettingsDialog(bool* p_open)
-{
-    SetWindowPos(ImVec2(200, 200));
-    SetWindowSize(ImVec2(400, 600));
-    if (!Begin(ChooseLanguage("settings dialog"), p_open))
-    {
-        language_dialog = false;
-        End();
-        return;
-    }
-
-    int id = 0;
-
-    if (InputInt("Enter id: ", &id, 1, 100, ImGuiInputTextFlags_EnterReturnsTrue))
-    {
-        Settings(id);
-    }
-
-    language_dialog = false;
-    End();
-}
-
 /* Check if file exists */
-int Renderer::CheckFile(const char* name)
+bool Renderer::CheckFile(const char* name)
 {
     fstream file;
     file.open(name);
 
     if (!file)
     {
-        return 1;
+        return false;
     }
 
     file.close();
 
-    return 0;
+    return true;
 }
 
 void main_code()
@@ -1589,12 +1619,6 @@ void main_code()
     if (imgui_dialog)
     {
         render->ImGuiDialog(NULL);
-    }
-
-    /* Settings dialog */
-    if (settings_dialog)
-    {
-        render->SettingsDialog(NULL);
     }
 
     /* Get window width and height */

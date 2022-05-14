@@ -1,7 +1,6 @@
 /**
  * @author StjepanBM1
- * @author Andrej Bartulin
- * PROJECT: Termi-Windows version
+ * PROJECT: Termi-Linux version
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: time header file
 */

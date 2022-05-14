@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-OpenGL\Libraries\include;$(IncludePath)</IncludePath>
-    <LibraryPath>D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-OpenGL\Libraries\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\Libraries\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\Libraries\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -173,6 +173,7 @@
     <ClInclude Include="Commands\filesys.hpp" />
     <ClInclude Include="Commands\Neofetch.hpp" />
     <ClInclude Include="Commands\other.hpp" />
+    <ClInclude Include="Commands\termi.hpp" />
     <ClInclude Include="Commands\time.hpp" />
     <ClInclude Include="dirent.h" />
     <ClInclude Include="imgui\imconfig.h" />

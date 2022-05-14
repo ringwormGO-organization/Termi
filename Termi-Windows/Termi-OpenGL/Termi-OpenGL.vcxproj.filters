@@ -116,6 +116,9 @@
     <ClInclude Include="Commands\time.hpp">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Commands\termi.hpp">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="termi.png">

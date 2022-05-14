@@ -62,15 +62,24 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 	return FALSE;
 }
 
-int main()
+int main(int argc, char **argv)
 {
 	std::cout << "\n\n";
+
+	bool arg = false;
+	bool alreadyarg = false;
+
+	if (argc > 1)
+	{
+		startup_command = argv[2];
+		arg = true;
+	}
 
 	/* Catch CTRL-C */
 	SetConsoleCtrlHandler(end, TRUE);
 
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(static_cast<float>(render->Settings(1)), static_cast<float>(render->Settings(2)), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -99,20 +108,29 @@ int main()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	render->Settings(3);
+	render->Settings(3, 0);
 	
-	if (!strcmp(font_name, "default"))
+	/*if (font_name != "default")
 	{
-		if (render->CheckFile(font_name) == 0)
+		try
 		{
-			io.Fonts->AddFontFromFileTTF(font_name, static_cast<float>(render->Settings(4)));
+			if (render->CheckFile(font_name.c_str()) == 0)
+			{
+				io.Fonts->AddFontFromFileTTF(font_name.c_str(), render->Settings(4, 0));
+			}
 		}
+		catch(const std::exception& e)
+		{
+			std::cerr << "Exception catched! Result: " << e.what() << '\n';
+		}
+	}*/
 
-		else
-		{
-			std::cout << "No such file " << font_name << "!\n";
-		}
-	}
+	render->Settings(0, 0);
+
+	/*if (startup_command != "none")
+	{
+		arg = true;
+	}*/
 
 	while(!glfwWindowShouldClose(window))
 	{
@@ -132,6 +150,12 @@ int main()
 
 		/* main ImGUI code */
 		main_code();
+
+		if (arg && !alreadyarg)
+		{
+			console.ExecCommand(startup_command, argv[2], argv[3]);
+			alreadyarg = true;
+		}
 
 		#ifdef PRINT_FPS
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

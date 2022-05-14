@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
  * LICENSE: BSD-3-Clause-License
  * DESCRIPTION: Header file for ImGUI code
- * INFORAMTION: ICompile solution, else check Victor Gordan's video
+ * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #pragma once
@@ -20,6 +20,7 @@
 #include "Commands/calc.hpp"
 #include "Commands/other.hpp"
 #include "Commands/time.hpp"
+#include "Commands/termi.hpp"
 
 #include <iostream>
 #include <functional>
@@ -50,12 +51,12 @@ static bool imgui_dialog = false;
 static bool settings_dialog = false;
 
 static bool alReadyPrinted = false;
-
 static bool help_focus = false;
 
 static const char* language;
 
-static char font_name[250];
+static std::string font_name;
+static std::string startup_command;
 
 /* 
  * Commands list - command and function
@@ -64,6 +65,7 @@ static char font_name[250];
 static std::map<const std::string, const std::function<int(const std::string, const std::string)>> commands = 
 {
     {"cd", cd},
+    {"change-setting", change_setting},
     {"echo", echo},
     {"list", list},
     {"mkdir", new_dir},
@@ -71,20 +73,20 @@ static std::map<const std::string, const std::function<int(const std::string, co
     {"openfile", openfile},
     {"time", ttime},
     {"rm", rm},
+    {"whoami", whoami},
     {"writefile", writefile},
     {"yes", yes}
 };
 
 /* Check if some string start with some std::string value */
-static int isStarting (std::string const &fullString, std::string const &starting) 
+static bool isStarting (std::string const &fullString, std::string const &starting) 
 {
-    if (fullString.length() <= starting.length()) { return 0; }
-    else { return 1; }
+    if (fullString.length() <= starting.length()) { return true; }
+    else { return false; }
 }
 
 /*
  * Console class - everything for drawing and managing console
- * Setting up functions here
  * Code from imgui_demo.cpp
 */
 class Console
@@ -144,10 +146,9 @@ class Renderer
         void TermiDialog(bool* p_open);
         void ImGuiDialog(bool* p_open);
 
-        int Settings(int id);
-        void SettingsDialog(bool* p_open);
+        float Settings(int id, float value);
 
-        int CheckFile(const char* name);
+        bool CheckFile(const char* name);
 
     private:
         void DrawMenu();
