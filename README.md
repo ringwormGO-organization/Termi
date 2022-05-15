@@ -1,5 +1,4 @@
 # Termi
-(Termi currently is just a terminal app but we are developing it to be a fully working terminal not just an app)
 
 (Windows version will be synced at least one in each week)
 
@@ -17,6 +16,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 - ```Independent``` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering system.
 - We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
+- Currently there is only one [stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
 
 ## Checklist
 ### Termi base C++ part
