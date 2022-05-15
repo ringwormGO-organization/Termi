@@ -80,7 +80,7 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
-- [ImGui](https://github.com/ocornut/imgui)
+- [Dear ImGui](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
 - [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` copy for Windows
 
