@@ -1383,7 +1383,7 @@ void Renderer::ImGuiDialog(bool* p_open)
 
     if (BeginPopupContextWindow())
     {
-        if (Button("Close window")) language_dialog = false;
+        if (Button("Close window")) imgui_dialog = false;
         EndPopup();
     }
 

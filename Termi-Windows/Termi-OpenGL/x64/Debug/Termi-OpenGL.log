@@ -1,4 +1,11 @@
-﻿  imgui_code.cpp
+﻿  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  imgui_impl_glfw.cpp
+  imgui_impl_opengl3.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  imgui_code.cpp
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\limits.h(8,1): warning C4005: 'NAME_MAX': macro redefinition
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\dirent.h(165): message : see previous definition of 'NAME_MAX'
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\limits.h(9,1): warning C4005: 'PATH_MAX': macro redefinition
@@ -12,5 +19,19 @@ C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\main.cpp(82,80): warning C424
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\main.cpp(82,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\imgui_code.cpp(109): warning C4715: 'change_setting': not all control paths return a value
+glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(init.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(window.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(input.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(input.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(context.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_window.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
+glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\glfw3.pdb'; linking object as if no debug info
   Termi-OpenGL.vcxproj -> C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\Termi-OpenGL.exe
