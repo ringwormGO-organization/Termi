@@ -175,6 +175,7 @@ void ImGui::TextEx(const char* text, const char* text_end, ImGuiTextFlags flags)
 
         ImRect bb(text_pos, text_pos + text_size);
         ItemSize(text_size, 0.0f);
+        if (!ItemAdd(bb, 0))
             return;
 
         // Render (we don't hide text after ## in this end-user function)
