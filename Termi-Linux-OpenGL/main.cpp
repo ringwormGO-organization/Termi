@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Linux version with OpenGL and Dear ImGUI rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
 	glfwSetWindowIcon(window, 1, images);
 	stbi_image_free(images[0].pixels);
 
-	/* Initialize ImGUI */
+	/* Initialize Dear ImGUI */
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -134,7 +134,7 @@ int main(int argc, char **argv)
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
     	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
-		/* main ImGUI code */
+		/* main Dear ImGUI code */
 		main_code();
 
 		if (arg && !alreadyarg)
@@ -147,7 +147,7 @@ int main(int argc, char **argv)
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		#endif
 
-		/* Renders the ImGUI elements */
+		/* Renders the Dear ImGUI elements */
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

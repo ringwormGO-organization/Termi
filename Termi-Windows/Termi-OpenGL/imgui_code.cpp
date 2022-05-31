@@ -1,8 +1,8 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and Dear ImGUI rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
- * DESCRIPTION: Main file for ImGUI
+ * DESCRIPTION: Main file for Dear ImGUI
  * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 

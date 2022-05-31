@@ -1,8 +1,8 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
+ * PROJECT: Termi-Linux version with OpenGL and Dear ImGUI rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
- * DESCRIPTION: Header file for ImGUI code
+ * DESCRIPTION: Header file for Dear ImGUI code
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
 */
 

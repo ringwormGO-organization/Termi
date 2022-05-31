@@ -87,7 +87,7 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
 - [Stack Overflow](https://stackoverflow.com/) - solution for most of problems
-- [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended ImGUI
+- [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended Dear ImGUI
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
 - Other artcicles on the internet
