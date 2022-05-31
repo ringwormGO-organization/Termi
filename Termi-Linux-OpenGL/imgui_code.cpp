@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for ImGUI
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
 */
@@ -24,32 +24,46 @@ void not_ok()
     console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
 }
 
+void split_str(string const &str, const char delim, vector<string> &out)  
+{  
+    /* create a stream from the string */  
+    stringstream s(str);  
+        
+    string s2;  
+    while (getline (s, s2, delim))  
+    {  
+        out.push_back(s2); /* store the string in s2 */  
+    }
+}
+
 Console console;
 Renderer* render;
 
-int cd(string folder, string argument)
+int cd(std::vector<std::string>& vect)
 {
-    return chdir(folder.c_str());
+    return chdir(vect[1].c_str());
 }
 
-int change_setting(string setting, string value)
+int change_setting(std::vector<std::string>& vect)
 {
+    int setting = stoi(vect[1]);
+
     try
     {
-        if (stoi(setting) != 5 && stoi(setting) != 8)
+        if (setting != 5 && setting != 8)
         {
-            return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+            return static_cast<int>(render->Settings(setting, stof(vect[2])));
         }
         
-        else if (stoi(setting) == 5)
+        else if (setting == 5)
         {
-            startup_command = value;
+            startup_command = vect[2];
             render->Settings(5, 0);
         }
 
-        else if (stoi(setting) == 8)
+        else if (setting == 8)
         {
-            font_name = value;
+            font_name = vect[2];
             render->Settings(8, 0);
         }
     }
@@ -61,9 +75,9 @@ int change_setting(string setting, string value)
     }
 }
 
-int echo(string content, string argument)
+int echo(std::vector<std::string>& vect)
 {
-    if (isStarting(content, "$"))
+    if (isStarting(vect[1], "$"))
     {
         console.AddLog("Variables not supported yet!\n");
         return 1;
@@ -71,38 +85,67 @@ int echo(string content, string argument)
 
     else
     {
-        console.AddLog("%s", content.c_str());
+        for (string x : vect)
+        {
+            console.AddLog("%s", x.c_str());
+        }
     }
 
     return 0;
 }
 
-int list(string argument, string argument2)
+int list(std::vector<std::string>& vect)
 {
-    DIR *dr;
-    struct dirent *en;
-    dr = opendir("."); //open all directory
-    if (dr) 
+    if (vect[1] == "")
     {
-        while ((en = readdir(dr)) != NULL) 
+        DIR *dr;
+        struct dirent *en;
+        dr = opendir("."); //open all directory
+        if (dr) 
         {
-            console.AddLog("%s\n", en->d_name); //print all directory name
+            while ((en = readdir(dr)) != NULL) 
+            {
+                console.AddLog("%s\n", en->d_name); //print all directory name
+            }
+            closedir(dr); //close all directory
+            console.AddLog("\n");
         }
-        closedir(dr); //close all directory
-        console.AddLog("\n");
+
+        else
+        {
+            return 1;
+        }
     }
 
     else
     {
-        return 1;
+        chdir(vect[1].c_str());
+
+        DIR *dr;
+        struct dirent *en;
+        dr = opendir("."); //open all directory
+        if (dr) 
+        {
+            while ((en = readdir(dr)) != NULL) 
+            {
+                console.AddLog("%s\n", en->d_name); //print all directory name
+            }
+            closedir(dr); //close all directory
+            console.AddLog("\n");
+        }
+
+        else
+        {
+            return 1;
+        }
     }
 
     return 0;
 }
 
-int new_dir(string folder, string argument)
+int new_dir(std::vector<std::string>& vect)
 {
-    if (mkdir(folder.c_str(), 0777) == -1)
+    if (mkdir(vect[1].c_str(), 0777) == -1)
     {
         console.AddLog("Error while creating directory!\n");
         return 1;
@@ -110,12 +153,12 @@ int new_dir(string folder, string argument)
 
     else
     {
-        console.AddLog("Directory %s created!\n", folder.c_str());
+        console.AddLog("Directory %s created!\n", vect[1].c_str());
         return 0;
     }
 }
 
-int neofetch(string argument, string argument2)
+int neofetch(std::vector<std::string>& vect)
 {
     /* Username and computer name */
     gethostname(info.computer, HOST_NAME_MAX);
@@ -129,7 +172,7 @@ int neofetch(string argument, string argument2)
     #elif __APPLE__ || __MACH__
         info.OS = "Mac OSX";
     #elif __linux__
-        info.OS = "GNU/Linux";
+        info.OS = "(GNU/)Linux";
     #elif __FreeBSD__
         info.OS = "FreeBSD";
     #elif __unix || __unix__
@@ -199,9 +242,11 @@ int neofetch(string argument, string argument2)
     return 0;
 }
 
-int openfile(string file, string argument)
+int openfile(std::vector<std::string>& vect)
 {
     fstream my_file;
+    string file = vect[1];
+
     my_file.open(file, ios::in);
     if (!my_file) 
     {
@@ -223,19 +268,19 @@ int openfile(string file, string argument)
     return 0;
 }
 
-int ttime(string argument, string argument2)
+int ttime(std::vector<std::string>& vect)
 {
     auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
     console.AddLog("%s", ctime(&givemetime));
     return 0;
 }
 
-int rm(string folder, string argument)
+int rm(std::vector<std::string>& vect)
 {
-    return remove(folder.c_str());
+    return remove(vect[1].c_str());
 }
 
-int whoami(std::string argument, std::string argument2)
+int whoami(std::vector<std::string>& vect)
 {
     char user[HOST_NAME_MAX];
 
@@ -244,9 +289,11 @@ int whoami(std::string argument, std::string argument2)
     console.AddLog("%s\n", user);
 }
 
-int writefile(string file, string content)
+int writefile(std::vector<std::string>& vect)
 {
     auto mode = ios::in;
+
+    string file = vect[1];
 
     if (render->CheckFile(file.c_str()) != 0)
     {
@@ -254,13 +301,13 @@ int writefile(string file, string content)
     }
 
     fstream myfile(file, mode);
-    myfile << content;
+    myfile << vect[2];
     myfile.close();
 
     return 0;
 }
 
-int yes(string argument, string argument2)
+int yes(std::vector<std::string>& vect)
 {
     /*while (true)
     {
@@ -275,8 +322,12 @@ int yes(string argument, string argument2)
     return 0;
 }
 
-double calc(string op, double num1, double num2)
+double calc(std::vector<std::string>& vect)
 {
+    string op = vect[1];
+    float num1 = stof(vect[2]);
+    float num2 = stof(vect[3]);
+
     try
     {
         if (!strcmp(op.c_str(), "+"))
@@ -324,6 +375,19 @@ double calc(string op, double num1, double num2)
     }
 
     return 1;
+}
+
+int test(vector<string>& vect)
+{
+    cout << "Entered 'test' function\n";
+
+    for (auto x : vect)
+    {
+        console.AddLog("%s\n", x.c_str());
+    }
+
+    auto y = vect[0];
+    console.AddLog("0th element of vector is: %s\n", y.c_str());
 }
 
 /*
@@ -516,78 +580,14 @@ void Console::ExecCommand(string command_line, ...)
     bool __switch = false;
     bool ___switch = false;
 
-    if (isStarting(command_line, "calc"))
-    {
-        char* tmp = new char[200];
+    vector<string> arguments = {};
+    
+    const char delim = ' ';
+    split_str(command_line, delim, arguments);
 
-        tmp = strtok(const_cast<char*>(command_line.c_str()), " ");
-
-        while (tmp != NULL)
-        {
-            if (_switch)
-            {
-                if (__switch)
-                {
-                    if (___switch)
-		            {
-			            arg3 = tmp;
-		            }
-
-                    else
-                    {
-                        arg2 = tmp;
-                        ___switch = true;
-                    }
-                }
-
-                else
-                {
-                    arg = tmp;
-                    __switch = true;
-                }
-            }
-
-            else
-            {
-                command_line = tmp;
-                _switch = true;
-            }
-            
-            tmp = strtok(NULL, " , ");
-        }
-    }
-
-    else
-    {
-        const char* tmp2 = new char[200];
-
-        tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
-
-        while (tmp2 != NULL)
-        {
-            if (_switch)
-            {
-                if (__switch)
-                {
-                    arg2 = tmp2;
-                }
-
-                else
-                {
-                    arg = tmp2;
-                    __switch = true;
-                }
-            }
-
-            else
-            {
-                command_line = tmp2;
-                _switch = true;
-            }
-            
-            tmp2 = strtok(NULL, " , ");
-        }
-    }
+    const char* tmp2 = new char[200];
+    tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
+    command_line = tmp2;
 
     AddLog("# %s\n", command_line.c_str());
 
@@ -597,7 +597,7 @@ void Console::ExecCommand(string command_line, ...)
     {
         /* execute execuatable */
         
-        if (commands[command_line](arg, arg2) == 0)
+        if (commands[command_line](arguments) == 0)
         {
             ok();
         }
@@ -610,8 +610,7 @@ void Console::ExecCommand(string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "calc") == 0)
     {
-        console.AddLog("Result is: %e.\n", calc(arg, stod(arg2), stod(arg3)));
-        ok();
+        calc(arguments);
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -632,10 +631,10 @@ void Console::ExecCommand(string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
-        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž, croatian's 'special' letters */
         AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-        AddLog("LICENSE > BSD-3-Clause-License");
+        AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
 
         ok();
@@ -652,6 +651,8 @@ void Console::ExecCommand(string command_line, ...)
         AddLog("Unknown command: '%s'\n", command_line.c_str());
         not_ok();
     }
+
+    arguments.clear();
 
     // On command input, we scroll to bottom even if AutoScroll==false
     ScrollToBottom = true;
@@ -1023,7 +1024,7 @@ void Renderer::TermiDialog(bool* p_open)
     Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
     Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
     Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-    Text("LICENSE > BSD-3-Clause-License");
+    Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
     Text("REPO > https://github.com/ringwormGO-organization/Termi");
 
     End();

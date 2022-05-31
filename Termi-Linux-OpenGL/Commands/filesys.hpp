@@ -3,17 +3,18 @@
         original: StjepanBM1
         OpenGL: Andrej Bartulin
  * PROJECT: Termi-Linux version
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Filesystem header file
 */
 
 #pragma once
 
+#include <vector>
 #include <dirent.h>
 
-int openfile(std::string file, std::string argument);
-int list(std::string argument, std::string argument2);
-int writefile(std::string file, std::string content);
-int new_dir(std::string folder, std::string argument);
-int cd(std::string folder, std::string argument);
-int rm(std::string folder, std::string argument);
+int openfile(std::vector<std::string>& vect);
+int list(std::vector<std::string>& vect);
+int writefile(std::vector<std::string>& vect);
+int new_dir(std::vector<std::string>& vect);
+int cd(std::vector<std::string>& vect);
+int rm(std::vector<std::string>& vect);

@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi-Linux version with OpenGL and ImGUI rendering system
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file for ImGUI code
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
 */
@@ -23,12 +23,13 @@
 #include "Commands/termi.hpp"
 
 #include <iostream>
+#include <chrono>
+#include <ctime>
 #include <functional>
 #include <fstream>
 #include <map>
 #include <string>
-#include <ctime>
-#include <chrono>
+#include <vector>
 
 #include <sys/types.h>
 #include <sys/stat.h>
@@ -63,7 +64,7 @@ static std::string startup_command;
  * Commands list - command and function
  * name of command, name of function
 */
-static std::map<const std::string, const std::function<int(const std::string, const std::string)>> commands = 
+static std::map<const std::string, const std::function<int(std::vector<std::string>& vect)>> commands = 
 {
     {"cd", cd},
     {"change-setting", change_setting},
@@ -85,6 +86,31 @@ static bool isStarting (std::string const &fullString, std::string const &starti
     if (fullString.length() <= starting.length()) { return true; }
     else { return false; }
 }
+
+/* 
+ * Function to calculate whitespaces
+ * Credits: https://www.geeksforgeeks.org/isspace-in-c-and-its-application-to-count-whitespace-characters/ 
+ */
+static int whitespaces(std::string& str)
+{
+    int count = 0;
+    int length = str.length();
+
+    for (int i = 0; i < length; i++) 
+    {
+        int c = str[i];
+        if (isspace(c))
+            count++;
+    }
+
+    return count;
+};
+
+/* 
+ * Function to split the given string using the getline() function
+ * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
+ */
+void split_str(std::string const &str, const char delim, std::vector <std::string> &out);
 
 /*
  * Console class - everything for drawing and managing console

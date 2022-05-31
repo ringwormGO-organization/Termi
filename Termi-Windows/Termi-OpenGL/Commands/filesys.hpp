@@ -3,7 +3,7 @@
         original: StjepanBM1
         OpenGL: Andrej Bartulin
  * PROJECT: Termi-Windows version
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Filesystem header file
 */
 

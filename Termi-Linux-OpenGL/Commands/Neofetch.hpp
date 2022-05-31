@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi-Linux version
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Neofetch heder file
 */
 
@@ -24,7 +24,7 @@
 #include <limits.h>
 #include <sys/unistd.h>
 
-int neofetch(std::string argument, std::string argument2);
+int neofetch(std::vector<std::string>& vect);
 
 enum PackageManager 
 {

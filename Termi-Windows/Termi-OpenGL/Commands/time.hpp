@@ -1,7 +1,7 @@
 /**
  * @author StjepanBM1
  * PROJECT: Termi-Linux version
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: time header file
 */
 

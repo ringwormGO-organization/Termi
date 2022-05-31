@@ -2,7 +2,7 @@
  * @author Andrej Bartulin
  * @author Stjepan Bilić Matišić
  * PROJECT: tlib test
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for tlib test
 */
 

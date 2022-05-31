@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi-Windows version with OpenGL and ImGUI rendering system
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for ImGUI
  * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
@@ -976,7 +976,7 @@ void Console::ExecCommand(string command_line, ...)
         AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
         AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-        AddLog("LICENSE > BSD-3-Clause-License");
+        AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
 
         ok();
@@ -1364,7 +1364,7 @@ void Renderer::TermiDialog(bool* p_open)
     Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
     Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
     Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-    Text("LICENSE > BSD-3-Clause-License");
+    Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
     Text("REPO > https://github.com/ringwormGO-organization/Termi");
 
     End();

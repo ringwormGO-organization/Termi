@@ -1,7 +1,7 @@
 /**
  * @author StjepanBM1
  * PROJECT: Termi-Linux version
- * LICENSE: BSD-3-Clause-License
+ * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: time header file
 */
 
@@ -10,4 +10,4 @@
 #include <iostream>
 #include <chrono>
 
-int ttime(std::string argument, std::string argument2);
+int ttime(std::vector<std::string>& vect);
