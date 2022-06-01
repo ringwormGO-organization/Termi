@@ -377,19 +377,6 @@ double calc(std::vector<std::string>& vect)
     return 1;
 }
 
-int test(vector<string>& vect)
-{
-    cout << "Entered 'test' function\n";
-
-    for (auto x : vect)
-    {
-        console.AddLog("%s\n", x.c_str());
-    }
-
-    auto y = vect[0];
-    console.AddLog("0th element of vector is: %s\n", y.c_str());
-}
-
 /*
  * Console class - everything for drawing and managing console
  * Code for functions here
@@ -573,13 +560,6 @@ void Console::ExecCommand(string command_line, ...)
 
     History.push_back(Strdup(command_line.c_str()));
 
-    string arg;
-    string arg2;
-    string arg3;
-    bool _switch = false;
-    bool __switch = false;
-    bool ___switch = false;
-
     vector<string> arguments = {};
     
     const char delim = ' ';
@@ -697,7 +677,10 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
             }
             else if (candidates.Size == 1)
             {
-                ExecCommand(candidates[0]);
+                // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
+                data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
+                data->InsertChars(data->CursorPos, candidates[0]);
+                data->InsertChars(data->CursorPos, " ");
                 data->DeleteChars(0, data->BufTextLen);
             }
             else
@@ -1284,7 +1267,6 @@ void main_code()
     /* Get window width and height */
     window_width = GetWindowWidth();
     window_height = GetWindowHeight();
-
 
     /* End of window */
     End();
