@@ -10,7 +10,7 @@ Just drop a Pull Request :)
 [LABEL NAME] Name of Pull Request
 ```
 # Directory organization (OpenGL)
-1. Linux version have own folder while Windows version is in `Termi-Windows` directory.
+1. GNU/Linux version have own folder while Windows version is in `Termi-Windows` directory.
 2. Code is in "root" while commands will be in `Commands` directory.
 
 # Add language (not programming language) to Termi
@@ -28,12 +28,18 @@ Just drop a Pull Request :)
 
 Example:
 ```cpp
-int example(std::vector<std::string>& vect); //command.hpp
+int example(std::vector<std::string>& vect); /* command.hpp */
 int example(std::vector<std::string>& vect)
 {
     cout << "Example\n";
     return 0;
-} //imgui_code.cpp
+} /* imgui_code.cpp */
+```
+
+Information about elements in vector:
+```cpp
+vect[0]; /* name of command */
+vect[i]; /* argument while `i` represents order of argument */
 ```
 
 # Coding sytle for Pull Requests

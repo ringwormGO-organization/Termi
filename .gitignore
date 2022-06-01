@@ -1,2 +1,7 @@
 .vscode/**
 .vs/**
+
+Termi-Linux-OpenGL/CMakeFiles
+Termi-Linux-OpenGL/cmake_install.cmake
+Termi-Linux-OpenGL/CMakeCache.txt
+Termi-Linux-OpenGL/Makefile

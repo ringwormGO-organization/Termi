@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and Dear ImGUI rendering system
+ * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file
  * INFORAMTION: Compile solution, else check Victor Gordan's video
@@ -100,7 +100,7 @@ int main(int argc, char **argv)
 	glfwSetWindowIcon(window, 1, images);
 	stbi_image_free(images[0].pixels);
 
-	/* Initialize Dear ImGUI */
+	/* Initialize Dear ImGui */
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
@@ -148,7 +148,7 @@ int main(int argc, char **argv)
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
     	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
-		/* main Dear ImGUI code */
+		/* main Dear ImGui code */
 		main_code();
 
 		if (arg && !alreadyarg)
@@ -161,7 +161,7 @@ int main(int argc, char **argv)
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		#endif
 
-		/* Renders the Dear ImGUI elements */
+		/* Renders the Dear ImGui elements */
 		ImGui::Render();
 		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 

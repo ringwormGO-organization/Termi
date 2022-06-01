@@ -1,8 +1,8 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and Dear ImGUI rendering system
+ * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
- * DESCRIPTION: Main file for Dear ImGUI
+ * DESCRIPTION: Main file for Dear ImGui
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
 */
 
@@ -1244,7 +1244,7 @@ void main_code()
 #ifdef PRINT_WHEN_WINDOW_IS_CREATED
     if (!alReadyPrinted)
     {
-        cout << "ImGui window is created.\n";
+        cout << "Dear ImGui window is created.\n";
         alReadyPrinted = true;
     }
 #endif
