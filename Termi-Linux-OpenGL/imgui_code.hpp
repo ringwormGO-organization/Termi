@@ -22,6 +22,8 @@
 #include "Commands/time.hpp"
 #include "Commands/termi.hpp"
 
+#include "Commands/Geocalc.h"
+
 #include <iostream>
 #include <chrono>
 #include <ctime>
@@ -66,9 +68,11 @@ static std::string startup_command;
 */
 static std::map<const std::string, const std::function<int(std::vector<std::string>& vect)>> commands = 
 {
+    {"calc", calc},
     {"cd", cd},
     {"change-setting", change_setting},
     {"echo", echo},
+    {"geocalc", geocalc},
     {"list", list},
     {"mkdir", new_dir},
     {"neofetch", neofetch},
