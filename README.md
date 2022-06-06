@@ -53,8 +53,6 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
   - Install with ```sudo apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
 - OpenGL - for OpenGL project part
   - Check [this video](https://www.youtube.com/watch?v=643CUhCoyCo) to install it on GNU/Linux machine, Debain based.
-- curl - for Package Manager
-  - Instal with ```sudo apt-get install curl libcurl4-openssl-dev``` if not already installed on GNU/Linux machine, Debain based.
 
 ### Build & Run - Windows
 - Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.
@@ -70,7 +68,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 ## Development picture
 ![image](https://user-images.githubusercontent.com/83548580/159910200-8fa25e94-ba38-4b34-a84c-21d48f381603.png)
 
-Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution
+Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution (pictures may late)
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
