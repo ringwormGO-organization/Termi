@@ -322,7 +322,7 @@ int yes(std::vector<std::string>& vect)
     return 0;
 }
 
-double calc(std::vector<std::string>& vect)
+int calc(std::vector<std::string>& vect)
 {
     string op = vect[1];
     float num1 = stof(vect[2]);
@@ -332,17 +332,20 @@ double calc(std::vector<std::string>& vect)
     {
         if (!strcmp(op.c_str(), "+"))
         {
-            return (num1 + num2);
+            console.AddLog("Result: %f\n", num1 + num2);
+            return 0;
         }
 
         else if(!strcmp(op.c_str(), "-"))
         {
-            return (num1 - num2);
+            console.AddLog("Result: %f\n", num1 - num2);
+            return 0;
         }
 
         else if (!strcmp(op.c_str(), "*"))
         {
-            return (num1 * num2);
+            console.AddLog("Result: %f\n", num1 * num2);
+            return 0;
         }
 
         if (!strcmp(op.c_str(), "/"))
@@ -355,7 +358,8 @@ double calc(std::vector<std::string>& vect)
 
             else
             {
-                return (num1 / num2);
+                console.AddLog("Result: %f\n", num1 / num2);
+                return 0;
             }
         }
 
@@ -365,7 +369,7 @@ double calc(std::vector<std::string>& vect)
             return 1;
         }
 
-        return 1;
+        return 0;
     }
 
     catch(const std::exception& e)
@@ -373,8 +377,106 @@ double calc(std::vector<std::string>& vect)
         console.AddLog("Catched exception. Exception result: %s", e.what());
         return 1;
     }
+}
 
-    return 1;
+/* Credits to StjepanBM1 */ 
+int geocalc(std::vector<std::string>& vect)
+{
+    string EXT = "EXT";
+    string SUR = "SUR";
+    string TRA = "TRA";
+    string REC = "REC";
+    string SQU = "SQU";
+
+    string ext_or_sur = vect[1];
+
+    try
+    {
+        if (ext_or_sur == SUR)
+        {
+            string TRA = "TRA";
+            string REC = "REC";
+            string SQU = "SQU";
+
+            string rec_or_squ = vect[2];
+
+            if (rec_or_squ == REC)
+            {
+                double x = stod(vect[3]);
+                double y = stod(vect[4]);
+
+                console.AddLog("Result: %f\n", povrsDvijustr(x, y));
+            }
+
+            else if (rec_or_squ == SQU)
+            {
+                double x = stod(vect[3]);
+
+                console.AddLog("Result: %f\n", povrsKvdjustr(x));
+            }
+
+            else
+            {
+                console.AddLog("Unknown input '%s'\n", rec_or_squ.c_str());
+                return 1;
+            }
+        }
+
+        else if (ext_or_sur == EXT)
+        {
+            string TRA = "TRA";
+            string REC = "REC";
+            string SQU = "SQU";
+
+            string tra_or_rec_or_squ = vect[1];
+
+            if (tra_or_rec_or_squ == TRA)
+            {
+                double x = stod(vect[3]);
+                double y = stod(vect[4]);
+                double z = stod(vect[5]);
+
+                console.AddLog("Result: %f\n", opsgTrijustr(x, y, z));
+            }
+
+            else if (tra_or_rec_or_squ == REC)
+            {
+                double x = stod(vect[3]);
+                double y = stod(vect[4]);
+
+                console.AddLog("Result: %f\n", opsgDvijustr(x, y));
+            }
+
+            else if (tra_or_rec_or_squ == SQU)
+            {
+                int sqe = 4;
+
+                double x = stod(vect[3]);
+
+                console.AddLog("Result: %f\n", opsgKvdjustr(x, sqe));
+            }
+
+            else
+            {
+                console.AddLog("Unknown input '%s'\n", tra_or_rec_or_squ.c_str());
+                return 1;
+            }
+        }
+
+        else
+        {
+            console.AddLog("Unknown input '%s'\n", ext_or_sur.c_str());
+            return 1;
+        }
+
+        return 0;
+    }
+
+    catch(const std::exception& e)
+    {
+        console.AddLog("Catched exception! Result: '%s'\n", e.what());
+        return 1;
+    }
 }
 
 /*
@@ -394,12 +496,13 @@ Console::Console()
     Commands.push_back("clear");
     Commands.push_back("cls");
     Commands.push_back("exit");
-    Commands.push_back("calc");
 
     for (auto& x : commands)
     {
         Commands.push_back(x.first.c_str());
     }
+
+    sort(Commands.begin(), Commands.end());
 
     AutoScroll = true;
     ScrollToBottom = false;
@@ -586,11 +689,6 @@ void Console::ExecCommand(string command_line, ...)
         {
             not_ok();
         }
-    }
-
-    else if (Stricmp(command_line.c_str(), "calc") == 0)
-    {
-        calc(arguments);
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
