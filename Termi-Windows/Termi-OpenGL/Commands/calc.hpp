@@ -9,4 +9,5 @@
 
 #include <iostream>
 
-double calc(std::string op, double num1, double num2);
+int calc(std::vector<std::string>& vect);
+int geocalc(std::vector<std::string>& vect);

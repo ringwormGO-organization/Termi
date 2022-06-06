@@ -27,6 +27,18 @@ void not_ok()
     console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
 }
 
+void split_str(string const &str, const char delim, vector<string> &out)  
+{  
+    /* create a stream from the string */  
+    stringstream s(str);
+        
+    string s2;  
+    while (getline (s, s2, delim))  
+    {  
+        out.push_back(s2); /* store the string in s2 */  
+    }
+}
+
 Console console;
 Renderer* render;
 
@@ -45,14 +57,14 @@ static const char* OperatingSystem()
 
     switch (vi.dwPlatformId)
     {
-    case VER_PLATFORM_WIN32s:
-        return "Windows 3.x";
-    case VER_PLATFORM_WIN32_WINDOWS:
-        return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-    case VER_PLATFORM_WIN32_NT:
-        return "Windows NT";
-    default:
-        return "Unknown";
+        case VER_PLATFORM_WIN32s:
+            return "Windows 3.x";
+        case VER_PLATFORM_WIN32_WINDOWS:
+            return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+        case VER_PLATFORM_WIN32_NT:
+            return "Windows NT";
+        default:
+            return "Unknown";
     }
 }
 
@@ -74,29 +86,31 @@ uint64_t UptimeH()
     return GetTickCount64() / 3600000;
 }
 
-int cd(string folder, string argument)
+int cd(std::vector<std::string>& vect)
 {
-    return chdir(folder.c_str());
+    return chdir(vect[1].c_str());
 }
 
-int change_setting(string setting, string value)
+int change_setting(std::vector<std::string>& vect)
 {
+    int setting = stoi(vect[1]);
+
     try
     {
-        if (stoi(setting) != 5 && stoi(setting) != 8)
+        if (setting != 5 && setting != 8)
         {
-            return static_cast<int>(render->Settings(stoi(setting), stof(value)));
+            return static_cast<int>(render->Settings(setting, stof(vect[2])));
         }
         
-        else if (stoi(setting) == 5)
+        else if (setting == 5)
         {
-            startup_command = value;
+            startup_command = vect[2];
             render->Settings(5, 0);
         }
 
-        else if (stoi(setting) == 8)
+        else if (setting == 8)
         {
-            font_name = value;
+            font_name = vect[2];
             render->Settings(8, 0);
         }
     }
@@ -108,9 +122,9 @@ int change_setting(string setting, string value)
     }
 }
 
-int echo(string content, string argument)
+int echo(std::vector<std::string>& vect)
 {
-    if (isStarting(content, "$"))
+    if (isStarting(vect[1], "$"))
     {
         console.AddLog("Variables not supported yet!\n");
         return 1;
@@ -118,13 +132,16 @@ int echo(string content, string argument)
 
     else
     {
-        console.AddLog("%s", content.c_str());
+        for (string x : vect)
+        {
+            console.AddLog("%s", x.c_str());
+        }
     }
 
     return 0;
 }
 
-int list(string argument, string argument2)
+int list(std::vector<std::string>& vect)
 {
     struct dirent* d;
     struct stat dst;
@@ -160,9 +177,9 @@ int list(string argument, string argument2)
     return 0;
 }
 
-int new_dir(string folder, string argument)
+int new_dir(std::vector<std::string>& vect)
 {
-    if (mkdir(folder.c_str()) == -1)
+    if (mkdir(vect[1].c_str()) == -1)
     {
         console.AddLog("Error while creating directory!\n");
         return 1;
@@ -170,12 +187,12 @@ int new_dir(string folder, string argument)
 
     else
     {
-        console.AddLog("Directory %s created!\n", folder.c_str());
+        console.AddLog("Directory %s created!\n", vect[1].c_str());
         return 0;
     }
 }
 
-int neofetch(string argument, string argument2)
+int neofetch(std::vector<std::string>& vect)
 {
     /* Username and computer name */
     TCHAR username[UNLEN + 1];
@@ -481,20 +498,20 @@ int neofetch(string argument, string argument2)
         console.AddLog("\tECX Index %d\t\n", i);
         switch (nCacheType)
         {
-        case 0:
-            console.AddLog("\t   Type: Null\t\n");
-            break;
-        case 1:
-            console.AddLog("\t   Type: Data Cache\t\n");
-            break;
-        case 2:
-            console.AddLog("\t   Type: Instruction Cache\t\n");
-            break;
-        case 3:
-            console.AddLog("\t   Type: Unified Cache\t\n");
-            break;
-        default:
-            console.AddLog("\t   Type: Unknown\t\n");
+            case 0:
+                console.AddLog("\t   Type: Null\t\n");
+                break;
+            case 1:
+                console.AddLog("\t   Type: Data Cache\t\n");
+                break;
+            case 2:
+                console.AddLog("\t   Type: Instruction Cache\t\n");
+                break;
+            case 3:
+                console.AddLog("\t   Type: Unified Cache\t\n");
+                break;
+            default:
+                console.AddLog("\t   Type: Unknown\t\n");
         }
 
         console.AddLog("\t   Level = %d\t\n", nCacheLevel + 1);
@@ -534,9 +551,11 @@ int neofetch(string argument, string argument2)
     return 0;
 }
 
-int openfile(string file, string argument)
+int openfile(std::vector<std::string>& vect)
 {
     fstream my_file;
+    string file = vect[1];
+
     my_file.open(file, ios::in);
     if (!my_file) 
     {
@@ -558,19 +577,19 @@ int openfile(string file, string argument)
     return 0;
 }
 
-int ttime(string argument, string argument2)
+int ttime(std::vector<std::string>& vect)
 {
     auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
     console.AddLog("%s", ctime(&givemetime));
     return 0;
 }
 
-int rm(string folder, string argument)
+int rm(std::vector<std::string>& vect)
 {
-    return remove(folder.c_str());
+    return remove(vect[1].c_str());
 }
 
-int whoami(std::string argument, std::string argument2)
+int whoami(std::vector<std::string>& vect)
 {
     TCHAR username[UNLEN + 1];
     DWORD username_len = UNLEN + 1;
@@ -585,9 +604,11 @@ int whoami(std::string argument, std::string argument2)
     return 0;
 }
 
-int writefile(string file, string content)
+int writefile(std::vector<std::string>& vect)
 {
     auto mode = ios::in;
+    string file = vect[1];
+    string content = vect[2];
 
     if (render->CheckFile(file.c_str()) != 0)
     {
@@ -601,7 +622,7 @@ int writefile(string file, string content)
     return 0;
 }
 
-int yes(string argument, string argument2)
+int yes(std::vector<std::string>& vect)
 {
     /*while (true)
     {
@@ -616,23 +637,30 @@ int yes(string argument, string argument2)
     return 0;
 }
 
-double calc(string op, double num1, double num2)
+int calc(std::vector<std::string>& vect)
 {
+    string op = vect[1];
+    float num1 = stof(vect[2]);
+    float num2 = stof(vect[3]);
+
     try
     {
         if (!strcmp(op.c_str(), "+"))
         {
-            return (num1 + num2);
+            console.AddLog("Result: %f\n", num1 + num2);
+            return 0;
         }
 
-        else if(!strcmp(op.c_str(), "-"))
+        else if (!strcmp(op.c_str(), "-"))
         {
-            return (num1 - num2);
+            console.AddLog("Result: %f\n", num1 - num2);
+            return 0;
         }
 
         else if (!strcmp(op.c_str(), "*"))
         {
-            return (num1 * num2);
+            console.AddLog("Result: %f\n", num1 * num2);
+            return 0;
         }
 
         if (!strcmp(op.c_str(), "/"))
@@ -645,7 +673,8 @@ double calc(string op, double num1, double num2)
 
             else
             {
-                return (num1 / num2);
+                console.AddLog("Result: %f\n", num1 / num2);
+                return 0;
             }
         }
 
@@ -655,16 +684,114 @@ double calc(string op, double num1, double num2)
             return 1;
         }
 
-        return 1;
+        return 0;
     }
 
-    catch(const std::exception& e)
+    catch (const std::exception& e)
     {
         console.AddLog("Catched exception. Exception result: %s", e.what());
         return 1;
     }
+}
 
-    return 1;
+/* Credits to StjepanBM1 */
+int geocalc(std::vector<std::string>& vect)
+{
+    string EXT = "EXT";
+    string SUR = "SUR";
+    string TRA = "TRA";
+    string REC = "REC";
+    string SQU = "SQU";
+
+    string ext_or_sur = vect[1];
+
+    try
+    {
+        if (ext_or_sur == SUR)
+        {
+            string TRA = "TRA";
+            string REC = "REC";
+            string SQU = "SQU";
+
+            string rec_or_squ = vect[2];
+
+            if (rec_or_squ == REC)
+            {
+                double x = stod(vect[3]);
+                double y = stod(vect[4]);
+
+                console.AddLog("Result: %f\n", povrsDvijustr(x, y));
+            }
+
+            else if (rec_or_squ == SQU)
+            {
+                double x = stod(vect[3]);
+
+                console.AddLog("Result: %f\n", povrsKvdjustr(x));
+            }
+
+            else
+            {
+                console.AddLog("Unknown input '%s'\n", rec_or_squ.c_str());
+                return 1;
+            }
+        }
+
+        else if (ext_or_sur == EXT)
+        {
+            string TRA = "TRA";
+            string REC = "REC";
+            string SQU = "SQU";
+
+            string tra_or_rec_or_squ = vect[1];
+
+            if (tra_or_rec_or_squ == TRA)
+            {
+                double x = stod(vect[3]);
+                double y = stod(vect[4]);
+                double z = stod(vect[5]);
+
+                console.AddLog("Result: %f\n", opsgTrijustr(x, y, z));
+            }
+
+            else if (tra_or_rec_or_squ == REC)
+            {
+                double x = stod(vect[3]);
+                double y = stod(vect[4]);
+
+                console.AddLog("Result: %f\n", opsgDvijustr(x, y));
+            }
+
+            else if (tra_or_rec_or_squ == SQU)
+            {
+                int sqe = 4;
+
+                double x = stod(vect[3]);
+
+                console.AddLog("Result: %f\n", opsgKvdjustr(x, sqe));
+            }
+
+            else
+            {
+                console.AddLog("Unknown input '%s'\n", tra_or_rec_or_squ.c_str());
+                return 1;
+            }
+        }
+
+        else
+        {
+            console.AddLog("Unknown input '%s'\n", ext_or_sur.c_str());
+            return 1;
+        }
+
+        return 0;
+    }
+
+    catch (const std::exception& e)
+    {
+        console.AddLog("Catched exception! Result: '%s'\n", e.what());
+        return 1;
+    }
 }
 
 /*
@@ -690,6 +817,8 @@ Console::Console()
     {
         Commands.push_back(x.first.c_str());
     }
+
+    sort(Commands.begin(), Commands.end());
 
     AutoScroll = true;
     ScrollToBottom = false;
@@ -850,85 +979,14 @@ void Console::ExecCommand(string command_line, ...)
 
     History.push_back(Strdup(command_line.c_str()));
 
-    string arg;
-    string arg2;
-    string arg3;
-    bool _switch = false;
-    bool __switch = false;
-    bool ___switch = false;
+    vector<string> arguments = {};
+    
+    const char delim = ' ';
+    split_str(command_line, delim, arguments);
 
-    if (isStarting(command_line, "calc"))
-    {
-        char* tmp = new char[200];
-
-        tmp = strtok(const_cast<char*>(command_line.c_str()), " ");
-
-        while (tmp != NULL)
-        {
-            if (_switch)
-            {
-                if (__switch)
-                {
-                    if (___switch)
-		            {
-			            arg3 = tmp;
-		            }
-
-                    else
-                    {
-                        arg2 = tmp;
-                        ___switch = true;
-                    }
-                }
-
-                else
-                {
-                    arg = tmp;
-                    __switch = true;
-                }
-            }
-
-            else
-            {
-                command_line = tmp;
-                _switch = true;
-            }
-            
-            tmp = strtok(NULL, " , ");
-        }
-    }
-
-    else
-    {
-        const char* tmp2 = new char[200];
-
-        tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
-
-        while (tmp2 != NULL)
-        {
-            if (_switch)
-            {
-                if (__switch)
-                {
-                    arg2 = tmp2;
-                }
-
-                else
-                {
-                    arg = tmp2;
-                    __switch = true;
-                }
-            }
-
-            else
-            {
-                command_line = tmp2;
-                _switch = true;
-            }
-            
-            tmp2 = strtok(NULL, " , ");
-        }
-    }
+    const char* tmp2 = new char[200];
+    tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
+    command_line = tmp2;
 
     AddLog("# %s\n", command_line.c_str());
 
@@ -938,7 +996,7 @@ void Console::ExecCommand(string command_line, ...)
     {
         /* execute execuatable */
         
-        if (commands[command_line](arg, arg2) == 0)
+        if (commands[command_line](arguments) == 0)
         {
             ok();
         }
@@ -947,12 +1005,6 @@ void Console::ExecCommand(string command_line, ...)
         {
             not_ok();
         }
-    }
-
-    else if (Stricmp(command_line.c_str(), "calc") == 0)
-    {
-        console.AddLog("Result is: %e.\n", calc(arg, stod(arg2), stod(arg3)));
-        ok();
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -973,7 +1025,7 @@ void Console::ExecCommand(string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
-        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž, croatian's 'special' letters */
         AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
@@ -993,6 +1045,8 @@ void Console::ExecCommand(string command_line, ...)
         AddLog("Unknown command: '%s'\n", command_line.c_str());
         not_ok();
     }
+
+    arguments.clear();
 
     // On command input, we scroll to bottom even if AutoScroll==false
     ScrollToBottom = true;
@@ -1037,7 +1091,10 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
             }
             else if (candidates.Size == 1)
             {
-                ExecCommand(candidates[0]);
+                // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
+                data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
+                data->InsertChars(data->CursorPos, candidates[0]);
+                data->InsertChars(data->CursorPos, " ");
                 data->DeleteChars(0, data->BufTextLen);
             }
             else
@@ -1383,7 +1440,7 @@ void Renderer::ImGuiDialog(bool* p_open)
 
     if (BeginPopupContextWindow())
     {
-        if (Button("Close window")) imgui_dialog = false;
+        if (Button("Close window")) language_dialog = false;
         EndPopup();
     }
 
@@ -1584,7 +1641,7 @@ void main_code()
 #ifdef PRINT_WHEN_WINDOW_IS_CREATED
     if (!alReadyPrinted)
     {
-        cout << "ImGui window is created.\n";
+        cout << "Dear ImGui window is created.\n";
         alReadyPrinted = true;
     }
 #endif
@@ -1624,7 +1681,6 @@ void main_code()
     /* Get window width and height */
     window_width = GetWindowWidth();
     window_height = GetWindowHeight();
-
 
     /* End of window */
     End();

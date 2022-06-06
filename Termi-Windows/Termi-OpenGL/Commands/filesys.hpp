@@ -9,11 +9,11 @@
 
 #pragma once
 
-#include <iostream>
+#include <vector>
 
-int openfile(std::string file, std::string argument);
-int list(std::string argument, std::string argument2);
-int writefile(std::string file, std::string content);
-int new_dir(std::string folder, std::string argument);
-int cd(std::string folder, std::string argument);
-int rm(std::string folder, std::string argument);
+int openfile(std::vector<std::string>& vect);
+int list(std::vector<std::string>& vect);
+int writefile(std::vector<std::string>& vect);
+int new_dir(std::vector<std::string>& vect);
+int cd(std::vector<std::string>& vect);
+int rm(std::vector<std::string>& vect);

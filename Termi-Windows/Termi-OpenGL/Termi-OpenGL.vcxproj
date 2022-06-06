@@ -171,6 +171,7 @@
   <ItemGroup>
     <ClInclude Include="Commands\calc.hpp" />
     <ClInclude Include="Commands\filesys.hpp" />
+    <ClInclude Include="Commands\Geocalc.h" />
     <ClInclude Include="Commands\Neofetch.hpp" />
     <ClInclude Include="Commands\other.hpp" />
     <ClInclude Include="Commands\termi.hpp" />
