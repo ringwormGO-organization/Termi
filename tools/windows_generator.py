@@ -5,14 +5,80 @@ LICENSE:     ringwormGO General License 1.0 | (RGL) 2022
 DESCRIPTION: Main file for generator
 '''
 
-from os import stat
+import os
+from os.path import exists
 import sys
 import shutil
 
+class Utils:
+    def remove(path : str, text : str):
+        with open(path, "r+") as f:
+            d = f.readlines()
+            f.seek(0)
+            for i in d:
+                if i != text:
+                    f.write(i)
+            f.truncate()
+
+    def replace_chunck(read_path : str, write_path : str, starter_text : str, new_text : str):
+        # Read in the file
+        with open(read_path, 'r') as file :
+            filedata = file.read()
+
+        # Replace the target string
+        filedata = filedata.replace(starter_text, new_text)
+
+        # Write the file out again
+        with open(write_path, 'w') as file:
+            file.write(filedata)
+
+    def add(index : int, path : str, text : str):
+        with open(path, "r") as f:
+            contents = f.readlines()
+
+        contents.insert(index, text)
+
+        with open(path, "w") as f:
+            contents = "".join(contents)
+            f.write(contents)
+
 def generate_main(path : str) -> int:
-    print("Copying file...")
-    shutil.copy(path, "wmain.cpp")
-    return 0
+    try:
+        if exists("wmain.cpp"):
+            os.remove("wmain.cpp")
+
+        print("Copying file...")
+        shutil.copy(path, "wmain.cpp")
+
+        print("Changing handlers... \t(1/5)")
+        chunk = open("chunck.txt")
+        chunck1 = open("chunck1.txt")
+        Utils.replace_chunck("main.cpp", "wmain.cpp", chunk.read(), chunck1.read())
+
+        print("Changing description... (2/5)")
+        Utils.remove("wmain.cpp", " * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system\n")
+        Utils.add(3, "wmain.cpp", " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
+
+        print("Changing handlers... \t(3/5)")
+        Utils.remove("wmain.cpp", "#include <signal.h>\n")
+        Utils.add(17, "wmain.cpp", "#include <Windows.h>\n")
+
+        print("Changing handlers... \t(4/5)")
+        Utils.remove("wmain.cpp", "struct sigaction sigIntHandler;\n")
+
+        print("Changing description... (5/5)")
+        Utils.remove("wmain.cpp", " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.add(5, "wmain.cpp", " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
+
+        print("Removing (GNU/)Linux file...")
+        os.remove("main.cpp")
+        os.rename("wmain.cpp", "main.cpp")
+
+        return 0
+    except Exception as error:
+        print("Exception occured!")
+        print(error)
+        print("Returning 1...")
 
 def generate_cpp(path : str) -> int:
     print("Copying file...")

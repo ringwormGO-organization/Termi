@@ -1,0 +1,33 @@
+void end(int sig)
+{
+	std::cout << "\nPress any key to continue...\n";
+    auto key = std::cin.get();
+    if (key != 10)
+    {
+        /* we need to do something here; input is broken */
+        exit(0);
+    }
+    else
+    {
+        exit(sig);
+    }
+}
+
+int main(int argc, char **argv)
+{
+	std::cout << "\n\n";
+
+	bool arg = false;
+	bool alreadyarg = false;
+
+	if (argc > 1)
+	{
+		startup_command = argv[2];
+		arg = true;
+	}
+
+	/* Catch CTRL-C */
+	sigIntHandler.sa_handler = end;
+	sigemptyset(&sigIntHandler.sa_mask);
+	sigIntHandler.sa_flags = 0;
+	sigaction(SIGINT, &sigIntHandler, NULL);
