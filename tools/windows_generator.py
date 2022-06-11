@@ -9,8 +9,6 @@ from os import stat
 import sys
 import shutil
 
-from switchlang import switch
-
 def generate_main(path : str) -> int:
     print("Copying file...")
     shutil.copy(path, "wmain.cpp")
