@@ -3,10 +3,12 @@ AUTHOR:      Andrej Bartulin
 PROJECT:     Termi's Windows version generator
 LICENSE:     ringwormGO General License 1.0 | (RGL) 2022
 DESCRIPTION: Main file for generator
+REQUIRED PACKAGES: os, os.path, requests, sys, shutil
 '''
 
 import os
 from os.path import exists
+import requests
 import sys
 import shutil
 
@@ -182,6 +184,30 @@ if __name__ == "__main__":
     if sys.argv[1] != '-d':
         main(str(sys.argv[1]), int(sys.argv[2]))
     
-    """else:
-        for i in range(5):
-            os.remove(f"chunck{i}.txt")"""
+    else:
+        for i in range(6):
+            os.remove(f"chunck{i}.txt")
+        
+        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck0.txt"
+        response = requests.get(URL)
+        open("chunck0.txt", "wb").write(response.content)
+
+        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck1.txt"
+        response = requests.get(URL)
+        open("chunck1.txt", "wb").write(response.content)
+
+        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck2.txt"
+        response = requests.get(URL)
+        open("chunck2.txt", "wb").write(response.content)
+
+        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck3.txt"
+        response = requests.get(URL)
+        open("chunck3.txt", "wb").write(response.content)
+
+        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck4.txt"
+        response = requests.get(URL)
+        open("chunck4.txt", "wb").write(response.content)
+
+        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck5.txt"
+        response = requests.get(URL)
+        open("chunck5.txt", "wb").write(response.content)
