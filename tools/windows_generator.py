@@ -186,7 +186,8 @@ if __name__ == "__main__":
     
     else:
         for i in range(6):
-            os.remove(f"chunck{i}.txt")
+            if exists(f"chunck{i}.txt"):
+                os.remove(f"chunck{i}.txt")
         
         URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck0.txt"
         response = requests.get(URL)
