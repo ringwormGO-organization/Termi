@@ -51,24 +51,24 @@ def generate_main(path : str) -> int:
         shutil.copy(path, "wmain.cpp")
 
         print("Changing handlers... \t(1/5)")
-        chunk = open("chunck.txt")
+        chunk0 = open("chunck0.txt")
         chunck1 = open("chunck1.txt")
-        Utils.replace_chunck("main.cpp", "wmain.cpp", chunk.read(), chunck1.read())
+        Utils.replace_chunck("main.cpp", "wmain.cpp", chunk0.read(), chunck1.read())
 
         print("Changing description... (2/5)")
-        Utils.remove("wmain.cpp", " * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system\n")
-        Utils.add(3, "wmain.cpp", " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
+        Utils.remove('w' + path, " * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system\n")
+        Utils.add(3, 'w' + path, " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
 
         print("Changing handlers... \t(3/5)")
-        Utils.remove("wmain.cpp", "#include <signal.h>\n")
-        Utils.add(17, "wmain.cpp", "#include <Windows.h>\n")
+        Utils.remove('w' + path, "#include <signal.h>\n")
+        Utils.add(17, 'w' + path, "#include <Windows.h>\n")
 
         print("Changing handlers... \t(4/5)")
-        Utils.remove("wmain.cpp", "struct sigaction sigIntHandler;\n")
+        Utils.remove('w' + path, "struct sigaction sigIntHandler;\n")
 
         print("Changing description... (5/5)")
-        Utils.remove("wmain.cpp", " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
-        Utils.add(5, "wmain.cpp", " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
+        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.add(5, 'w' + path, " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
 
         print("Removing (GNU/)Linux file...")
         os.remove("main.cpp")
@@ -81,14 +81,60 @@ def generate_main(path : str) -> int:
         print("Returning 1...")
 
 def generate_cpp(path : str) -> int:
-    print("Copying file...")
-    shutil.copy(path, "wimgui_code.cpp")
-    return 0
+    try:
+        print("Copying file...")
+        shutil.copy(path, "wimgui_code.cpp")
+
+        print("Changing commands... (1/3)")
+        chunck2 = open("chunck2.txt")
+        chunck3 = open("chunck3.txt")
+        Utils.replace_chunck("imgui_code.cpp", "wimgui_code.cpp", chunck2.read(), chunck3.read())
+
+        print("Changing description... (2/3)")
+        Utils.remove('w' + path, " * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system\n")
+        Utils.add(3, 'w' + path, " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
+
+        print("Changing description... (3/3)")
+        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.add(5, 'w' + path, " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
+
+        print("Removing (GNU/)Linux file...")
+        os.remove("imgui_code.cpp")
+        os.rename("wimgui_code.cpp", "imgui_code.cpp")
+
+        return 0
+    except Exception as error:
+        print("Exception occured!")
+        print(error)
+        print("Returning 1...")
 
 def generate_hpp(path : str) -> int:
-    print("Copying file...")
-    shutil.copy(path, "wimgui_code.hpp")
-    return 0
+    try:
+        print("Copying file...")
+        shutil.copy(path, "wimgui_code.hpp")
+
+        print("Changing commands... (1/3)")
+        chunck4 = open("chunck4.txt")
+        chunck5 = open("chunck5.txt")
+        Utils.replace_chunck("imgui_code.hpp", "wimgui_code.hpp", chunck4.read(), chunck5.read())
+
+        print("Changing description... (2/3)")
+        Utils.remove('w' + path, " * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system\n")
+        Utils.add(3, 'w' + path, " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
+
+        print("Changing description... (3/3)")
+        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.add(5, 'w' + path, " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
+
+        print("Removing (GNU/)Linux file...")
+        os.remove("imgui_code.hpp")
+        os.rename("wimgui_code.hpp", "imgui_code.hpp")
+
+        return 0
+    except Exception as error:
+        print("Exception occured!")
+        print(error)
+        print("Returning 1...")
 
 def generate(path : str, which : int) -> int:
     status = None
@@ -127,11 +173,15 @@ def main(path: str, which : int) -> int:
     
 if __name__ == "__main__":
     print("Windows version generator.\nIt generates code for Windows 7 as minium Windows version.")
-    print("Also create backup of (GNU/)Linux file.\n")
+    print("Also create backup of (GNU/)Linux file.")
+    print("Arguments:")
+    print("\t argv[1] - path of (GNU/Linux) file")
+    print("\t which file to generate [1 - main, 2 - Dear ImGui C++ file, 3 - Dear ImGui header]")
+    print("\t to download chuncks of code, type in first argument `-d`\n")
 
-    if not len(sys.argv) == 3:
-        file = input("Enter path of (GNU/)Linux file: ")
-        which = int(input("Which file to generate? [1 - main, 2 - Dear ImGui C++ file, 3 - Dear ImGui header]: "))
-        main(str(file), int(which))
-
-    main(str(sys.argv[1]), int(sys.argv[2]))
+    if sys.argv[1] != '-d':
+        main(str(sys.argv[1]), int(sys.argv[2]))
+    
+    """else:
+        for i in range(5):
+            os.remove(f"chunck{i}.txt")"""
