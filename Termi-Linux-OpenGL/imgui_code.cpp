@@ -39,6 +39,31 @@ void split_str(string const &str, const char delim, vector<string> &out)
 Console console;
 Renderer* render;
 
+int base64(std::vector<std::string>& vect)
+{
+    if (vect[1] == "-e")
+    {
+        string result = base64_encode(vect[2]);
+        console.AddLog("String '%s' is successfully encoded to Base64.\n", vect[2].c_str());
+        console.AddLog("Result is: '%s'\n", result.c_str());
+        return 0;
+    }
+
+    else if (vect[1] == "-d")
+    {
+        string result = base64_decode(vect[2]);
+        console.AddLog("String '%s' is successfully decoded.\n", vect[2].c_str());
+        console.AddLog("Result is: '%s'\n", result.c_str());
+        return 0;
+    }
+
+    else
+    {
+        console.AddLog("Unknown parametar '%s'! Returning 1...\n", vect[1].c_str());
+        return 1;
+    }
+}
+
 int cd(std::vector<std::string>& vect)
 {
     return chdir(vect[1].c_str());

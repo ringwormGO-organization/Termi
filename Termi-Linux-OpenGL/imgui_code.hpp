@@ -15,6 +15,7 @@
 #include "Settings.hpp"
 #include "Translation.hpp"
 
+#include "Commands/base64.hpp"
 #include "Commands/Neofetch.hpp"
 #include "Commands/filesys.hpp"
 #include "Commands/calc.hpp"
@@ -68,6 +69,7 @@ static std::string startup_command;
 */
 static std::map<const std::string, const std::function<int(std::vector<std::string>& vect)>> commands = 
 {
+    {"base64", base64},
     {"calc", calc},
     {"cd", cd},
     {"change-setting", change_setting},
