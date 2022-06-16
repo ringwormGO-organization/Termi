@@ -53,9 +53,9 @@ def generate_main(path : str) -> int:
         shutil.copy(path, "wmain.cpp")
 
         print("Changing handlers... \t(1/5)")
-        chunk0 = open("chunck0.txt")
+        chunck0 = open("chunck0.txt")
         chunck1 = open("chunck1.txt")
-        Utils.replace_chunck("main.cpp", "wmain.cpp", chunk0.read(), chunck1.read())
+        Utils.replace_chunck("main.cpp", "wmain.cpp", chunck0.read(), chunck1.read())
 
         print("Changing description... (2/5)")
         Utils.remove('w' + path, " * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system\n")
@@ -75,6 +75,9 @@ def generate_main(path : str) -> int:
         print("Removing (GNU/)Linux file...")
         os.remove("main.cpp")
         os.rename("wmain.cpp", "main.cpp")
+
+        chunck0.close()
+        chunck1.close()
 
         return 0
     except Exception as error:
@@ -104,6 +107,9 @@ def generate_cpp(path : str) -> int:
         os.remove("imgui_code.cpp")
         os.rename("wimgui_code.cpp", "imgui_code.cpp")
 
+        chunck2.close()
+        chunck3.close()
+
         return 0
     except Exception as error:
         print("Exception occured!")
@@ -131,6 +137,9 @@ def generate_hpp(path : str) -> int:
         print("Removing (GNU/)Linux file...")
         os.remove("imgui_code.hpp")
         os.rename("wimgui_code.hpp", "imgui_code.hpp")
+
+        chunck4.close()
+        chunck5.close()
 
         return 0
     except Exception as error:
@@ -179,12 +188,10 @@ if __name__ == "__main__":
     print("Arguments:")
     print("\t argv[1] - path of (GNU/Linux) file")
     print("\t which file to generate [1 - main, 2 - Dear ImGui C++ file, 3 - Dear ImGui header]")
-    print("\t to download chuncks of code, type in first argument `-d`\n")
+    print("\t to download chuncks of code, type in first argument `-d`")
+    print("\t to add new command, type in first argument `-a`\n")
 
-    if sys.argv[1] != '-d':
-        main(str(sys.argv[1]), int(sys.argv[2]))
-    
-    else:
+    if sys.argv[1] == '-d':
         for i in range(6):
             if exists(f"chunck{i}.txt"):
                 os.remove(f"chunck{i}.txt")
@@ -212,3 +219,30 @@ if __name__ == "__main__":
         URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck5.txt"
         response = requests.get(URL)
         open("chunck5.txt", "wb").write(response.content)
+
+    elif sys.argv[1] == '-a':
+        print("TODO: Sort by alphabetical order!")
+
+        linux_path = input("Enter path of file which contains GNU/Linux command: ")
+        windows_path = input("Enter path of file which contains Windows command: ")
+
+        linux_text = open(linux_path).read()
+        windows_text = open(windows_path).read()
+
+        chunck2 = open("chunck2.txt").read()
+        chunck3 = open("chunck3.txt").read()
+
+        os.remove("chunck2.txt")
+        os.remove("chunck3.txt")
+
+        new_chunck2 = open("chunck2.txt", "w")
+        new_chunck3 = open("chunck3.txt", "w")
+
+        new_chunck2.write(linux_text + chunck2 + '\n')
+        new_chunck3.write(windows_text + chunck3 + '\n')
+
+        new_chunck2.close()
+        new_chunck3.close()
+    
+    else:
+        main(str(sys.argv[1], int(sys.argv[2])))
