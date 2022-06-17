@@ -238,8 +238,8 @@ if __name__ == "__main__":
         new_chunck2 = open("chunck2.txt", "w")
         new_chunck3 = open("chunck3.txt", "w")
 
-        new_chunck2.write(linux_text + chunck2 + '\n')
-        new_chunck3.write(windows_text + chunck3 + '\n')
+        new_chunck2.write(chunck2 + linux_text + '\n')
+        new_chunck3.write(chunck3 + windows_text + '\n')
 
         new_chunck2.close()
         new_chunck3.close()
