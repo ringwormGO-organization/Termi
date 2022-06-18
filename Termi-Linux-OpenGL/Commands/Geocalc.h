@@ -1,5 +1,7 @@
 /**
- * @author StjepanBM1
+ * @author(S):
+        original: StjepanBM1
+        OpenGL: Andrej Bartulin
  * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Geocalc helper functions
@@ -30,4 +32,9 @@ static double povrsDvijustr(double x, double y)
 static double povrsKvdjustr(double x)
 {
     return(x * x);
+}
+
+static double povrsTrokuta(double x, double Vx)
+{
+    return ((x * Vx) / 2);
 }

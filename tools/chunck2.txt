@@ -401,6 +401,14 @@ int geocalc(std::vector<std::string>& vect)
                 console.AddLog("Result: %f\n", povrsKvdjustr(x));
             }
 
+            else if (rec_or_squ == TRA)
+            {
+                double x = stod(vect[3]);
+                double Vx = stod(vect[4]);
+
+                console.AddLog("Result: %f\n", povrsTrokuta(x, Vx));
+            }
+
             else
             {
                 console.AddLog("Unknown input '%s'\n", rec_or_squ.c_str());
