@@ -29,6 +29,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 - [ ] Support most of major commands
 - [x] Arguments
 - [ ] Loading executables (tlib)
+- [ ] Colors in console
 - [x] Translation (may not be fully finished in first release)
 
 ### Windows - installer and launcher
