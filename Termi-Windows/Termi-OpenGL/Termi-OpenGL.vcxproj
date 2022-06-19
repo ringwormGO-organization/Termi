@@ -169,6 +169,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Commands\base64.hpp" />
     <ClInclude Include="Commands\calc.hpp" />
     <ClInclude Include="Commands\filesys.hpp" />
     <ClInclude Include="Commands\Geocalc.h" />

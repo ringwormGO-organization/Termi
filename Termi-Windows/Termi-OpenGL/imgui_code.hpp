@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
+ * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * DESCRIPTION: Header file for Dear ImGui code
  * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
@@ -15,6 +15,7 @@
 #include "Settings.hpp"
 #include "Translation.hpp"
 
+#include "Commands/base64.hpp"
 #include "Commands/Neofetch.hpp"
 #include "Commands/filesys.hpp"
 #include "Commands/calc.hpp"
@@ -68,11 +69,12 @@ static std::string startup_command;
 */
 static std::map<const std::string, const std::function<int(std::vector<std::string>& vect)>> commands = 
 {
+    {"base64", base64},
     {"calc", calc},
     {"cd", cd},
     {"change-setting", change_setting},
     {"echo", echo},
-    {"geocalcc", geocalc},
+    {"geocalc", geocalc},
     {"list", list},
     {"mkdir", new_dir},
     {"neofetch", neofetch},

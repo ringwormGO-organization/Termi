@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
+ * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * DESCRIPTION: Main file for Dear ImGui
  * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
@@ -84,6 +84,31 @@ uint64_t UptimeM()
 uint64_t UptimeH()
 {
     return GetTickCount64() / 3600000;
+}
+
+int base64(std::vector<std::string>& vect)
+{
+    if (vect[1] == "-e")
+    {
+        string result = base64_encode(vect[2]);
+        console.AddLog("String '%s' is successfully encoded to Base64.\n", vect[2].c_str());
+        console.AddLog("Result is: '%s'\n", result.c_str());
+        return 0;
+    }
+
+    else if (vect[1] == "-d")
+    {
+        string result = base64_decode(vect[2]);
+        console.AddLog("String '%s' is successfully decoded.\n", vect[2].c_str());
+        console.AddLog("Result is: '%s'\n", result.c_str());
+        return 0;
+    }
+
+    else
+    {
+        console.AddLog("Unknown parametar '%s'! Returning 1...\n", vect[1].c_str());
+        return 1;
+    }
 }
 
 int cd(std::vector<std::string>& vect)
@@ -694,7 +719,7 @@ int calc(std::vector<std::string>& vect)
     }
 }
 
-/* Credits to StjepanBM1 */
+/* Credits to StjepanBM1 */ 
 int geocalc(std::vector<std::string>& vect)
 {
     string EXT = "EXT";
@@ -728,6 +753,14 @@ int geocalc(std::vector<std::string>& vect)
                 double x = stod(vect[3]);
 
                 console.AddLog("Result: %f\n", povrsKvdjustr(x));
+            }
+
+            else if (rec_or_squ == TRA)
+            {
+                double x = stod(vect[3]);
+                double Vx = stod(vect[4]);
+
+                console.AddLog("Result: %f\n", povrsTrokuta(x, Vx));
             }
 
             else
@@ -787,7 +820,7 @@ int geocalc(std::vector<std::string>& vect)
         return 0;
     }
 
-    catch (const std::exception& e)
+    catch(const std::exception& e)
     {
         console.AddLog("Catched exception! Result: '%s'\n", e.what());
         return 1;
@@ -811,7 +844,6 @@ Console::Console()
     Commands.push_back("clear");
     Commands.push_back("cls");
     Commands.push_back("exit");
-    Commands.push_back("calc");
 
     for (auto& x : commands)
     {

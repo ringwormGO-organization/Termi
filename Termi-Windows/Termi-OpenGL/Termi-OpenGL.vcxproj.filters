@@ -122,6 +122,9 @@
     <ClInclude Include="Commands\Geocalc.h">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Commands\base64.hpp">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Image Include="termi.png">
