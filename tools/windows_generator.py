@@ -150,6 +150,8 @@ def generate_hpp(path : str) -> int:
 def generate(path : str, which : int) -> int:
     status = None
 
+    which = int(which)
+
     if which == 1:
         status = generate_main(path)
     
@@ -191,7 +193,10 @@ if __name__ == "__main__":
     print("\t to download chuncks of code, type in first argument `-d`")
     print("\t to add new command, type in first argument `-a`\n")
 
-    if sys.argv[1] == '-d':
+    if len(sys.argv) == 1:
+        exit(0)
+
+    elif sys.argv[1] == '-d':
         for i in range(6):
             if exists(f"chunck{i}.txt"):
                 os.remove(f"chunck{i}.txt")
@@ -245,4 +250,4 @@ if __name__ == "__main__":
         new_chunck3.close()
     
     else:
-        main(str(sys.argv[1], int(sys.argv[2])))
+        main(sys.argv[1], sys.argv[2])
