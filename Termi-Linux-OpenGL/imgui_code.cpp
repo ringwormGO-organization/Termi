@@ -24,6 +24,95 @@ void not_ok()
     console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
 }
 
+void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors = {}) 
+{
+    auto p = GetCursorScreenPos();
+    const auto first_px = p.x, first_py = p.y;
+    auto im_colors = ImGui::GetStyle().Colors;
+    const auto default_color = im_colors[ImGuiCol_Text];
+    string temp_str;
+    struct text_t 
+    {
+        ImVec4 color;
+        string text;
+    };
+
+    std::list<text_t> texts;
+    bool color_time = false;
+    ImVec4 last_color = default_color;
+
+    for (const auto& i : text) 
+    {
+        if (color_time) 
+        {
+            const auto& f = std::find_if(colors.begin(), colors.end(), [i](const auto& v) { return v.first == i; });
+            if (f != colors.end())
+                last_color = f->second;
+            else
+                temp_str += i;
+            color_time = false;
+            continue;
+        };
+        switch (i) 
+        {
+            case '$':
+                color_time = true;
+                if (!temp_str.empty()) {
+                    texts.push_back({ last_color, temp_str });
+                    temp_str.clear();
+                };
+                break;
+            default:
+                temp_str += i;
+        };
+    };
+
+    if (!temp_str.empty()) 
+    {
+        texts.push_back({ last_color, temp_str });
+        temp_str.clear();
+    };
+
+    float max_x = p.x;
+    for (const auto& i : texts) {
+        im_colors[ImGuiCol_Text] = i.color;
+        std::list<string> lines;
+        temp_str.clear();
+        for (const auto& lc : i.text) {
+            if (lc == '\n') {
+                lines.push_back(temp_str += lc);
+                temp_str.clear();
+            }
+            else
+                temp_str += lc;
+        };
+        bool last_is_line = false;
+        if (!temp_str.empty())
+            lines.push_back(temp_str);
+        else
+            last_is_line = true;
+        float last_px = 0.f;
+        for (const auto& j : lines) {
+            Text(j.c_str());
+            p.y += 15.f;
+            last_px = p.x;
+            max_x = (max_x < last_px) ? last_px : max_x;
+            p.x = first_px;
+        };
+        const auto& last = lines.back();
+        if (last.back() != '\n')
+            p.x = last_px;
+        else
+            p.x = first_px;
+        if (!last_is_line)
+            p.y -= 15.f;
+        if (i.text.back() != '\n')
+            p.x += CalcTextSize(last.c_str()).x;
+    };
+    im_colors[ImGuiCol_Text] = default_color;
+    Dummy({ max_x - p.x, p.y - first_py });
+};
+
 void split_str(string const &str, const char delim, vector<string> &out)  
 {  
     /* create a stream from the string */  
@@ -119,7 +208,7 @@ int echo(std::vector<std::string>& vect)
     return 0;
 }
 
-int list(std::vector<std::string>& vect)
+int list_dir(std::vector<std::string>& vect)
 {
     if (vect[1] == "")
     {
@@ -624,20 +713,7 @@ void Console::Draw()
     for (int i = 0; i < Items.Size; i++)
     {
         const char* item = Items[i];
-        if (!Filter.PassFilter(item))
-            continue;
-
-        // Normally you would store more information in your item than just a string.
-        // (e.g. make Items[] an array of structure, store color/type etc.)
-        ImVec4 color;
-        bool has_color = false;
-        if (strstr(item, "[error]")) { color = ImVec4(1.0f, 0.4f, 0.4f, 1.0f); has_color = true; }
-        else if (strncmp(item, "# ", 2) == 0) { color = ImVec4(1.0f, 0.8f, 0.6f, 1.0f); has_color = true; }
-        if (has_color)
-            PushStyleColor(ImGuiCol_Text, color);
-        TextUnformatted(item);
-        if (has_color)
-            PopStyleColor();
+        ColorfulText(item, {{'w', white}, {'b', blue}, {'d', grey}, {'l', lgrey}, {'f', green}, {'m', lime}, {'y', yellow}, {'p', purple}, {'r', red}, {'o', orange}});
     }
     if (Copy)
         LogFinish();
@@ -705,7 +781,7 @@ void Console::ExecCommand(string command_line, ...)
     tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
     command_line = tmp2;
 
-    AddLog("# %s\n", command_line.c_str());
+    AddLog("$y#%s\n", command_line.c_str());
 
     auto command = commands.find(command_line);
 
@@ -737,7 +813,7 @@ void Console::ExecCommand(string command_line, ...)
             AddLog("- %s", Commands[i]);
         }
 
-        ok();        
+        ok();
     }
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)

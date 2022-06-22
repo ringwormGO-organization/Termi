@@ -30,6 +30,7 @@
 #include <ctime>
 #include <functional>
 #include <fstream>
+#include <list>
 #include <map>
 #include <string>
 #include <vector>
@@ -75,7 +76,7 @@ static std::map<const std::string, const std::function<int(std::vector<std::stri
     {"change-setting", change_setting},
     {"echo", echo},
     {"geocalc", geocalc},
-    {"list", list},
+    {"list", list_dir},
     {"mkdir", new_dir},
     {"neofetch", neofetch},
     {"openfile", openfile},
@@ -113,9 +114,27 @@ static int whitespaces(std::string& str)
 };
 
 /* 
+ * Function which colors text
+ * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
+*/
+void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors = {});
+
+static const ImVec4&
+white = { 1,1,1,1 },
+blue = { 0.000f, 0.703f, 0.917f,1 },
+red = { 0.976f, 0.117f, 0.265f ,1 },
+grey = { 0.230f, 0.226f, 0.289f,1 },
+lgrey = { 0.630f, 0.626f, 0.689f,1 },
+green = { 0.000f, 0.386f, 0.265f,1 },
+lime = { 0.55f, 0.90f, 0.06f,1 },
+yellow = { 0.91f, 1.00f, 0.21f,1 },
+purple = { 1,0,1,1 },
+orange = { 1.00f, 0.36f, 0.09f,1 };
+
+/* 
  * Function to split the given string using the getline() function
  * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
- */
+*/
 void split_str(std::string const &str, const char delim, std::vector <std::string> &out);
 
 /*
