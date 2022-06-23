@@ -61,9 +61,6 @@ static bool help_focus = false;
 
 static const char* language;
 
-static std::string font_name;
-static std::string startup_command;
-
 /* 
  * Commands list - command and function
  * name of command, name of function
@@ -202,6 +199,9 @@ class Renderer
 
         bool CheckFile(const char* name);
 
+        std::string font_name;
+        std::string startup_command;
+
     private:
         void DrawMenu();
 };
@@ -210,4 +210,4 @@ class Renderer
 void main_code();
 
 extern Console console;
-extern Renderer* render;
+extern Renderer render;

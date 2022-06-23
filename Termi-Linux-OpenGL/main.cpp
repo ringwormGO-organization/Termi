@@ -54,7 +54,7 @@ int main(int argc, char **argv)
 
 	if (argc > 1)
 	{
-		startup_command = argv[2];
+		render.startup_command = argv[1];
 		arg = true;
 	}
 
@@ -65,7 +65,7 @@ int main(int argc, char **argv)
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(render.Settings(1, 0), render.Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -94,29 +94,29 @@ int main(int argc, char **argv)
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	render->Settings(3, 0);
+	render.Settings(3, 0);
 	
-	/*if (font_name != "default")
+	if (render.font_name != "default")
 	{
 		try
 		{
-			if (render->CheckFile(font_name.c_str()) == 0)
+			if (render.CheckFile(render.font_name.c_str()) == 0)
 			{
-				io.Fonts->AddFontFromFileTTF(font_name.c_str(), render->Settings(4, 0));
+				io.Fonts->AddFontFromFileTTF(render.font_name.c_str(), render.Settings(4, 0));
 			}
 		}
 		catch(const std::exception& e)
 		{
 			std::cerr << "Exception catched! Result: " << e.what() << '\n';
 		}
-	}*/
+	}
 
-	render->Settings(0, 0);
+	render.Settings(0, 0);
 
-	/*if (startup_command != "none")
+	if (render.startup_command != "none")
 	{
 		arg = true;
-	}*/
+	}
 
 	while(!glfwWindowShouldClose(window))
 	{
@@ -139,7 +139,7 @@ int main(int argc, char **argv)
 
 		if (arg && !alreadyarg)
 		{
-			console.ExecCommand(startup_command, argv[2], argv[3]);
+			console.ExecCommand(render.startup_command, argv[2]);
 			alreadyarg = true;
 		}
 

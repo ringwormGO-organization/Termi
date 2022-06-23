@@ -126,7 +126,7 @@ void split_str(string const &str, const char delim, vector<string> &out)
 }
 
 Console console;
-Renderer* render;
+Renderer render;
 
 int base64(std::vector<std::string>& vect)
 {
@@ -166,19 +166,19 @@ int change_setting(std::vector<std::string>& vect)
     {
         if (setting != 5 && setting != 8)
         {
-            return static_cast<int>(render->Settings(setting, stof(vect[2])));
+            return static_cast<int>(render.Settings(setting, stof(vect[2])));
         }
         
         else if (setting == 5)
         {
-            startup_command = vect[2];
-            render->Settings(5, 0);
+            render.startup_command = vect[2];
+            render.Settings(5, 0);
         }
 
         else if (setting == 8)
         {
-            font_name = vect[2];
-            render->Settings(8, 0);
+            render.font_name = vect[2];
+            render.Settings(8, 0);
         }
     }
     
@@ -409,7 +409,7 @@ int writefile(std::vector<std::string>& vect)
 
     string file = vect[1];
 
-    if (render->CheckFile(file.c_str()) != 0)
+    if (render.CheckFile(file.c_str()) != 0)
     {
         fstream new_file(file, mode);
     }
@@ -1324,7 +1324,7 @@ float Renderer::Settings(int id, float value)
         case 3: /* font name */
             while (getline(font, temp_str))
             {
-                font_name = temp_str;
+                render.font_name = temp_str;
                 font.close();
             }
             break;
@@ -1445,30 +1445,30 @@ void main_code()
 #endif
 
     /* Draw tabs and menu bar */
-    render->DrawTab();
+    render.DrawTab();
 
     /* Font dialog */
     if (isFont)
     {
-        render->Font(NULL);
+        render.Font(NULL);
     }
 
     /* Language dialog */
     if (language_dialog)
     {
-        render->ChooseLanguageDialog(NULL);
+        render.ChooseLanguageDialog(NULL);
     }
 
     /* About Termi dialog */
     if (termi_dialog)
     {
-        render->TermiDialog(NULL);
+        render.TermiDialog(NULL);
     }
 
     /* About ImGui dialog */
     if (imgui_dialog)
     {
-        render->ImGuiDialog(NULL);
+        render.ImGuiDialog(NULL);
     }
 
     /* Get window width and height */
