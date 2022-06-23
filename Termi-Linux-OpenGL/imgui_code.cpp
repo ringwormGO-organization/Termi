@@ -16,12 +16,12 @@ using namespace Translation;
 
 void ok()
 {
-    console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
+    console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
 }
 
 void not_ok()
 {
-    console.AddLog("\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
+    console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
 }
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors = {}) 
@@ -130,19 +130,43 @@ Renderer render;
 
 int base64(std::vector<std::string>& vect)
 {
+    vector<string> out;
+
     if (vect[1] == "-e")
     {
-        string result = base64_encode(vect[2]);
-        console.AddLog("String '%s' is successfully encoded to Base64.\n", vect[2].c_str());
-        console.AddLog("Result is: '%s'\n", result.c_str());
+        for (auto x : vect)
+        {
+            out.push_back(base64_encode(x));
+        }
+
+        vector<decltype(out)::value_type>(out.begin()+2, out.end()).swap(out);
+        
+        console.AddLog("Result:\n");
+        
+        for (auto y : out)
+        {
+            console.AddLog("%s", y.c_str());
+        }
+
         return 0;
     }
 
     else if (vect[1] == "-d")
     {
-        string result = base64_decode(vect[2]);
-        console.AddLog("String '%s' is successfully decoded.\n", vect[2].c_str());
-        console.AddLog("Result is: '%s'\n", result.c_str());
+        for (auto x : vect)
+        {
+            out.push_back(base64_decode(x));
+        }
+
+        vector<decltype(out)::value_type>(out.begin()+2, out.end()).swap(out);
+        
+        console.AddLog("Result:\n");
+        
+        for (auto y : out)
+        {
+            console.AddLog("%s", y.c_str());
+        }
+
         return 0;
     }
 
@@ -713,7 +737,7 @@ void Console::Draw()
     for (int i = 0; i < Items.Size; i++)
     {
         const char* item = Items[i];
-        ColorfulText(item, {{'w', white}, {'b', blue}, {'d', grey}, {'l', lgrey}, {'f', green}, {'m', lime}, {'y', yellow}, {'p', purple}, {'r', red}, {'o', orange}});
+        ColorfulText(item, {{'w', white}, {'b', blue}, {'d', grey}, {'l', lgrey}, {'g', green}, {'m', lime}, {'y', yellow}, {'p', purple}, {'r', red}, {'o', orange}});
     }
     if (Copy)
         LogFinish();
