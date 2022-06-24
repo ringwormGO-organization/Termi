@@ -12,7 +12,7 @@
 #include <vector>
 
 int openfile(std::vector<std::string>& vect);
-int list(std::vector<std::string>& vect);
+int list_dir(std::vector<std::string>& vect);
 int writefile(std::vector<std::string>& vect);
 int new_dir(std::vector<std::string>& vect);
 int cd(std::vector<std::string>& vect);
