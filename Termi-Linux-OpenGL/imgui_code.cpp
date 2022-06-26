@@ -232,50 +232,112 @@ int echo(std::vector<std::string>& vect)
     return 0;
 }
 
-int list_dir(std::vector<std::string>& vect)
+int find_command(std::vector<std::string>& vect)
 {
-    if (vect[1] == "")
-    {
-        DIR *dr;
-        struct dirent *en;
-        dr = opendir("."); //open all directory
-        if (dr) 
-        {
-            while ((en = readdir(dr)) != NULL) 
-            {
-                console.AddLog("%s\n", en->d_name); //print all directory name
-            }
-            closedir(dr); //close all directory
-            console.AddLog("\n");
-        }
+    vector<string> out;
 
+    if (vect[1] == "-f") /* file */
+    {
+        out.push_back("list");
+        out.push_back("");
+        out.push_back("!");
+
+        list_dir(out);
+
+        if (find(filesys.begin(), filesys.end(), vect[2]) != filesys.end())
+        {
+            console.AddLog("File '%s' found!\n", vect[2].c_str());
+        }
+        
         else
         {
+            console.AddLog("File '%s' not found!\n", vect[2].c_str());
+
+            out.clear();
+            filesys.clear();
+
             return 1;
+        }
+
+        out.clear();
+        filesys.clear();
+
+        return 0;
+    }
+    
+    else if (vect[1] == "-d") /* directory */
+    {
+        out.push_back("list");
+        out.push_back("");
+        out.push_back("!");
+
+        list_dir(out);
+        
+        if (find(filesys.begin(), filesys.end(), vect[2]) != filesys.end())
+        {
+            console.AddLog("Directory '%s' found!\n", vect[2].c_str());
+        }
+        
+        else
+        {
+            console.AddLog("Directory '%s' not found!\n", vect[2].c_str());
+
+            out.clear();
+            filesys.clear();
+
+            return 1;
+        }
+        
+        out.clear();
+        filesys.clear();
+
+        return 0;
+    }
+
+    else
+    {
+        console.AddLog("Unknown parametar '%s'! Returning 1...\n", vect[1].c_str());
+        return 1;
+    }
+}
+
+int list_dir(std::vector<std::string>& vect)
+{
+    if (vect[1] != "")
+    {
+        chdir(vect[1].c_str());
+    }
+
+    DIR *dr;
+    struct dirent *en;
+    dr = opendir("."); /* open all directory */
+
+    if (dr) 
+    {
+        while ((en = readdir(dr)) != NULL) 
+        {
+            filesys.push_back(en->d_name);
+        }
+
+        closedir(dr); /* close all directory */
+        sort(filesys.begin(), filesys.end());
+
+        for (auto x : filesys)
+        {
+            console.AddLog("%s\n", x.c_str());
+        }
+
+        console.AddLog("Total: %d\n", filesys.size());
+
+        if (vect[2] == "")
+        {
+            filesys.clear();
         }
     }
 
     else
     {
-        chdir(vect[1].c_str());
-
-        DIR *dr;
-        struct dirent *en;
-        dr = opendir("."); //open all directory
-        if (dr) 
-        {
-            while ((en = readdir(dr)) != NULL) 
-            {
-                console.AddLog("%s\n", en->d_name); //print all directory name
-            }
-            closedir(dr); //close all directory
-            console.AddLog("\n");
-        }
-
-        else
-        {
-            return 1;
-        }
+        return 1;
     }
 
     return 0;
