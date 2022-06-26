@@ -1,6 +1,6 @@
 # Termi
 
-(Windows version will be synced at least one in each week)
+(Windows version maybe will be synced once in each week)
 
 **From now, non-OpenGL version will not be supported!**
 
@@ -20,8 +20,8 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 
 ## Checklist
 ### Termi base C++ part
-- [x] Windows version (Sometimes / maybe)
-- [x] GNU/Linux version
+- [x] Windows version (syncing may happen once a week)
+- [x] GNU/Linux version (version in focus)
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
 ### Termi C++ part
