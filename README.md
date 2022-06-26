@@ -20,7 +20,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 
 ## Checklist
 ### Termi base C++ part
-- [x] Windows version
+- [x] Windows version (Sometimes / maybe)
 - [x] GNU/Linux version
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
