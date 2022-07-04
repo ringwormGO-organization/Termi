@@ -863,9 +863,7 @@ void Console::ExecCommand(string command_line, ...)
     const char delim = ' ';
     split_str(command_line, delim, arguments);
 
-    const char* tmp2 = new char[200];
-    tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
-    command_line = tmp2;
+    command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
 
     AddLog("$y#%s\n", command_line.c_str());
 
@@ -1129,7 +1127,6 @@ void Renderer::DrawMenu()
 /* Draw tabs */
 void Renderer::DrawTab()
 {
-    
     static ImVector<int> active_tabs;
     static int next_tab_id = 0;
     if (next_tab_id == 0) // Initialize with some default tabs
