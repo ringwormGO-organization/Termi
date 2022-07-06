@@ -14,14 +14,33 @@ using namespace Translation;
 
 #pragma GCC diagnostic ignored "-Wformat-security"
 
+/*
+ * List of error codes:
+ * 0 - no error
+ * 1 - user error
+ * 2 - system error
+*/
 void ok()
 {
     console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
 }
 
-void not_ok()
+void not_ok(int which_error)
 {
-    console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
+    if (which_error == 1)
+    {
+        console.AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+    }
+
+    else if (which_error == 2)
+    {
+        console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, system error!");
+    }
+
+    else
+    {
+        
+    }
 }
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors = {}) 
@@ -188,7 +207,8 @@ int change_setting(std::vector<std::string>& vect)
     {
         if (vect.size() != 3)
         {
-            throw invalid_argument("No setting specified!");
+            console.AddLog("No setting specified!");
+            return 1;
         }
 
         int setting = stoi(vect[1]);
@@ -215,7 +235,7 @@ int change_setting(std::vector<std::string>& vect)
     catch(const std::exception& e)
     {
         console.AddLog("Catched exception. Exception result: '%s'", e.what());
-        return 1;
+        return 2;
     }
 }
 
@@ -224,7 +244,7 @@ int echo(std::vector<std::string>& vect)
     if (isStarting(vect[1], "$"))
     {
         console.AddLog("Variables not supported yet!\n");
-        return 1;
+        return 2;
     }
 
     else
@@ -242,69 +262,31 @@ int find_command(std::vector<std::string>& vect)
 {
     vector<string> out;
 
-    if (vect[1] == "-f") /* file */
+    out.push_back("list");
+    out.push_back(vect[1]);
+    out.push_back("!");
+
+    list_dir(out);
+
+    if (find(filesys.begin(), filesys.end(), vect[2]) != filesys.end())
     {
-        out.push_back("list");
-        out.push_back("");
-        out.push_back("!");
-
-        list_dir(out);
-
-        if (find(filesys.begin(), filesys.end(), vect[2]) != filesys.end())
-        {
-            console.AddLog("File '%s' found!\n", vect[2].c_str());
-        }
-        
-        else
-        {
-            console.AddLog("File '%s' not found!\n", vect[2].c_str());
-
-            out.clear();
-            filesys.clear();
-
-            return 1;
-        }
-
-        out.clear();
-        filesys.clear();
-
-        return 0;
+        console.AddLog("File/Directory '%s' found!\n", vect[2].c_str());
     }
     
-    else if (vect[1] == "-d") /* directory */
+    else
     {
-        out.push_back("list");
-        out.push_back("");
-        out.push_back("!");
+        console.AddLog("File/Directory '%s' not found!\n", vect[2].c_str());
 
-        list_dir(out);
-        
-        if (find(filesys.begin(), filesys.end(), vect[2]) != filesys.end())
-        {
-            console.AddLog("Directory '%s' found!\n", vect[2].c_str());
-        }
-        
-        else
-        {
-            console.AddLog("Directory '%s' not found!\n", vect[2].c_str());
-
-            out.clear();
-            filesys.clear();
-
-            return 1;
-        }
-        
         out.clear();
         filesys.clear();
 
-        return 0;
-    }
-
-    else
-    {
-        console.AddLog("Unknown parametar '%s'! Returning 1...\n", vect[1].c_str());
         return 1;
     }
+
+    out.clear();
+    filesys.clear();
+
+    return 0;
 }
 
 int list_dir(std::vector<std::string>& vect)
@@ -343,7 +325,7 @@ int list_dir(std::vector<std::string>& vect)
 
     else
     {
-        return 1;
+        return 2;
     }
 
     return 0;
@@ -354,7 +336,7 @@ int new_dir(std::vector<std::string>& vect)
     if (mkdir(vect[1].c_str(), 0777) == -1)
     {
         console.AddLog("Error while creating directory!\n");
-        return 1;
+        return 2;
     }
 
     else
@@ -427,7 +409,7 @@ int neofetch(std::vector<std::string>& vect)
 
     else
     {
-        return 1;
+        return 2;
     }
 
     info.uptime = uptime_seconds / 3600;
@@ -581,7 +563,7 @@ int calc(std::vector<std::string>& vect)
     catch(const std::exception& e)
     {
         console.AddLog("Catched exception. Exception result: %s", e.what());
-        return 1;
+        return 2;
     }
 }
 
@@ -689,7 +671,7 @@ int geocalc(std::vector<std::string>& vect)
     catch(const std::exception& e)
     {
         console.AddLog("Catched exception! Result: '%s'\n", e.what());
-        return 1;
+        return 2;
     }
 }
 
@@ -878,15 +860,16 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
+        int error_code = commands[command_line](arguments);
         
-        if (commands[command_line](arguments) == 0)
+        if (error_code == 0)
         {
             ok();
         }
 
         else
         {
-            not_ok();
+            not_ok(error_code);
         }
     }
 
@@ -926,7 +909,7 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
-        not_ok();
+        not_ok(1);
     }
 
     arguments.clear();
