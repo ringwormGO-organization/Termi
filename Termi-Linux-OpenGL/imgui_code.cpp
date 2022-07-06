@@ -184,10 +184,16 @@ int cd(std::vector<std::string>& vect)
 
 int change_setting(std::vector<std::string>& vect)
 {
-    int setting = stoi(vect[1]);
-
     try
     {
+        if (vect.size() != 3)
+        {
+            throw invalid_argument("No setting specified!");
+        }
+
+        int setting = stoi(vect[1]);
+
+
         if (setting != 5 && setting != 8)
         {
             return static_cast<int>(render.Settings(setting, stof(vect[2])));
@@ -208,7 +214,7 @@ int change_setting(std::vector<std::string>& vect)
     
     catch(const std::exception& e)
     {
-        console.AddLog("Catched exception. Exception result: %s", e.what());
+        console.AddLog("Catched exception. Exception result: '%s'", e.what());
         return 1;
     }
 }
