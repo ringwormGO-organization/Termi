@@ -64,6 +64,15 @@ int main(int argc, char **argv)
 	sigIntHandler.sa_flags = 0;
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
+
+    std::cout << "ooooooooooo                              " << std::endl;
+    std::cout << "    888      ooooooooooo                          o88   " << std::endl;
+    std::cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << std::endl;
+    std::cout << "    888      888ooo8     888    888 888 888 888   888 " << std::endl;
+    std::cout << "    888      888    oo   888        888 888 888   888  " << std::endl;
+    std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
+    std::cout << "------------------------------------------------------- " << std::endl;
+
 	glfwInit();
 	GLFWwindow* window = glfwCreateWindow(render.Settings(1, 0), render.Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);

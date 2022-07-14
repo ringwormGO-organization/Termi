@@ -14,14 +14,33 @@ using namespace Translation;
 
 #pragma GCC diagnostic ignored "-Wformat-security"
 
+/*
+ * List of error codes:
+ * 0 - no error
+ * 1 - user error
+ * 2 - system error
+*/
 void ok()
 {
     console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
 }
 
-void not_ok()
+void not_ok(int which_error)
 {
-    console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
+    if (which_error == 1)
+    {
+        console.AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+    }
+
+    else if (which_error == 2)
+    {
+        console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, system error!");
+    }
+
+    else
+    {
+        
+    }
 }
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors = {}) 
@@ -184,10 +203,17 @@ int cd(std::vector<std::string>& vect)
 
 int change_setting(std::vector<std::string>& vect)
 {
-    int setting = stoi(vect[1]);
-
     try
     {
+        if (vect.size() != 3)
+        {
+            console.AddLog("No setting specified!");
+            return 1;
+        }
+
+        int setting = stoi(vect[1]);
+
+
         if (setting != 5 && setting != 8)
         {
             return static_cast<int>(render.Settings(setting, stof(vect[2])));
@@ -208,8 +234,8 @@ int change_setting(std::vector<std::string>& vect)
     
     catch(const std::exception& e)
     {
-        console.AddLog("Catched exception. Exception result: %s", e.what());
-        return 1;
+        console.AddLog("Catched exception. Exception result: '%s'", e.what());
+        return 2;
     }
 }
 
@@ -218,7 +244,7 @@ int echo(std::vector<std::string>& vect)
     if (isStarting(vect[1], "$"))
     {
         console.AddLog("Variables not supported yet!\n");
-        return 1;
+        return 2;
     }
 
     else
@@ -232,50 +258,74 @@ int echo(std::vector<std::string>& vect)
     return 0;
 }
 
+int find_command(std::vector<std::string>& vect)
+{
+    vector<string> out;
+
+    out.push_back("list");
+    out.push_back(vect[1]);
+    out.push_back("!");
+
+    list_dir(out);
+
+    if (find(filesys.begin(), filesys.end(), vect[2]) != filesys.end())
+    {
+        console.AddLog("File/Directory '%s' found!\n", vect[2].c_str());
+    }
+    
+    else
+    {
+        console.AddLog("File/Directory '%s' not found!\n", vect[2].c_str());
+
+        out.clear();
+        filesys.clear();
+
+        return 1;
+    }
+
+    out.clear();
+    filesys.clear();
+
+    return 0;
+}
+
 int list_dir(std::vector<std::string>& vect)
 {
-    if (vect[1] == "")
+    if (vect[1] != "")
     {
-        DIR *dr;
-        struct dirent *en;
-        dr = opendir("."); //open all directory
-        if (dr) 
+        chdir(vect[1].c_str());
+    }
+
+    DIR *dr;
+    struct dirent *en;
+    dr = opendir("."); /* open all directory */
+
+    if (dr) 
+    {
+        while ((en = readdir(dr)) != NULL) 
         {
-            while ((en = readdir(dr)) != NULL) 
-            {
-                console.AddLog("%s\n", en->d_name); //print all directory name
-            }
-            closedir(dr); //close all directory
-            console.AddLog("\n");
+            filesys.push_back(en->d_name);
         }
 
-        else
+        closedir(dr); /* close all directory */
+        sort(filesys.begin(), filesys.end());
+
+        for (auto x : filesys)
         {
-            return 1;
+            console.AddLog("%s\n", x.c_str());
+        }
+
+        console.AddLog("Total: %d\n", filesys.size());
+
+        if (vect[2] == "")
+        {
+            filesys.clear();
         }
     }
 
     else
     {
-        chdir(vect[1].c_str());
-
-        DIR *dr;
-        struct dirent *en;
-        dr = opendir("."); //open all directory
-        if (dr) 
-        {
-            while ((en = readdir(dr)) != NULL) 
-            {
-                console.AddLog("%s\n", en->d_name); //print all directory name
-            }
-            closedir(dr); //close all directory
-            console.AddLog("\n");
-        }
-
-        else
-        {
-            return 1;
-        }
+        return 2;
     }
 
     return 0;
@@ -286,7 +336,7 @@ int new_dir(std::vector<std::string>& vect)
     if (mkdir(vect[1].c_str(), 0777) == -1)
     {
         console.AddLog("Error while creating directory!\n");
-        return 1;
+        return 2;
     }
 
     else
@@ -359,7 +409,7 @@ int neofetch(std::vector<std::string>& vect)
 
     else
     {
-        return 1;
+        return 2;
     }
 
     info.uptime = uptime_seconds / 3600;
@@ -513,7 +563,7 @@ int calc(std::vector<std::string>& vect)
     catch(const std::exception& e)
     {
         console.AddLog("Catched exception. Exception result: %s", e.what());
-        return 1;
+        return 2;
     }
 }
 
@@ -621,7 +671,7 @@ int geocalc(std::vector<std::string>& vect)
     catch(const std::exception& e)
     {
         console.AddLog("Catched exception! Result: '%s'\n", e.what());
-        return 1;
+        return 2;
     }
 }
 
@@ -801,9 +851,7 @@ void Console::ExecCommand(string command_line, ...)
     const char delim = ' ';
     split_str(command_line, delim, arguments);
 
-    const char* tmp2 = new char[200];
-    tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
-    command_line = tmp2;
+    command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
 
     AddLog("$y#%s\n", command_line.c_str());
 
@@ -812,15 +860,16 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
+        int error_code = commands[command_line](arguments);
         
-        if (commands[command_line](arguments) == 0)
+        if (error_code == 0)
         {
             ok();
         }
 
         else
         {
-            not_ok();
+            not_ok(error_code);
         }
     }
 
@@ -860,7 +909,7 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
-        not_ok();
+        not_ok(1);
     }
 
     arguments.clear();
@@ -1067,7 +1116,6 @@ void Renderer::DrawMenu()
 /* Draw tabs */
 void Renderer::DrawTab()
 {
-    
     static ImVector<int> active_tabs;
     static int next_tab_id = 0;
     if (next_tab_id == 0) // Initialize with some default tabs

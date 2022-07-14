@@ -72,6 +72,7 @@ static std::map<const std::string, const std::function<int(std::vector<std::stri
     {"cd", cd},
     {"change-setting", change_setting},
     {"echo", echo},
+    {"find", find_command},
     {"geocalc", geocalc},
     {"list", list_dir},
     {"mkdir", new_dir},
