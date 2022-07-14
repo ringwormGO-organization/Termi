@@ -3,7 +3,7 @@ C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\limits.h(8,1): warning C4005:
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\dirent.h(165): message : see previous definition of 'NAME_MAX'
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\limits.h(9,1): warning C4005: 'PATH_MAX': macro redefinition
 C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\dirent.h(159): message : see previous definition of 'PATH_MAX'
-C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\imgui_code.hpp(101,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\main.cpp(82,78): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\main.cpp(82,55): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\main.cpp(90,78): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\main.cpp(90,55): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Termi-OpenGL.vcxproj -> C:\Users\Bartulin\Termi\Termi-Windows\Termi-OpenGL\x64\Debug\Termi-OpenGL.exe

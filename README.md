@@ -19,12 +19,14 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 - Currently there is only one [stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
 
 ## Checklist
-### Termi base C++ part
-- [x] Windows version
-- [x] GNU/Linux version
-- [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
-### Termi C++ part
+### Termi base part
+- [x] Windows version (old console one and Dear ImGui one)
+- [x] GNU/Linux version (old console one and Dear ImGui one)
+- [x] macOS version (same folder/directory as GNU/Linux version, unsupported, old console one and Dear ImGui one)
+- [ ] Windows generator (rewrite, Python programming language)
+
+### Termi advanced C++ part
 - [x] User settings in text files
 - [ ] Support most of major commands
 - [x] Arguments
@@ -35,11 +37,6 @@ A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [x] Lanucher and updater - C#
-
-### Independence
-- [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) Dear ImGui base)
-- [x] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) Dear ImGui)
-- [ ] Independence (Windows & GNU/Linux [ImGui](https://github.com/ocornut/imgui) real console and tabs (may not be in first release))
 
 ## Build & Run
 ### Required software:

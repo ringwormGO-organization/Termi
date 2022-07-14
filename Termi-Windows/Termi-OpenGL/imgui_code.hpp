@@ -72,6 +72,7 @@ static std::map<const std::string, const std::function<int(std::vector<std::stri
     {"cd", cd},
     {"change-setting", change_setting},
     {"echo", echo},
+    {"find", find_command},
     {"geocalc", geocalc},
     {"list", list_dir},
     {"mkdir", new_dir},
@@ -209,5 +210,5 @@ private:
 /* Main code for starting ImGui */
 void main_code();
 
-static Console console;
-static Renderer render;
+extern Console console;
+extern Renderer render;

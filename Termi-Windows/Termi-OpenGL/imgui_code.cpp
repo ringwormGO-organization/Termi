@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for Dear ImGui
- * INFORAMTION:nal: Compile solution, else check Victor Gordan's video
+ * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #include "imgui_code.hpp"
@@ -17,24 +17,43 @@ using namespace Translation;
 #pragma comment(lib, "Advapi32.lib")
 #pragma comment(lib, "Kernel32.lib")
 
+/*
+ * List of error codes:
+ * 0 - no error
+ * 1 - user error
+ * 2 - system error
+*/
 void ok()
 {
     console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
 }
 
-void not_ok()
+void not_ok(int which_error)
 {
-    console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed!");
+    if (which_error == 1)
+    {
+        console.AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+    }
+
+    else if (which_error == 2)
+    {
+        console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, system error!");
+    }
+
+    else
+    {
+        
+    }
 }
 
-void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors)
+void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors = {}) 
 {
     auto p = GetCursorScreenPos();
     const auto first_px = p.x, first_py = p.y;
     auto im_colors = ImGui::GetStyle().Colors;
     const auto default_color = im_colors[ImGuiCol_Text];
     string temp_str;
-    struct text_t
+    struct text_t 
     {
         ImVec4 color;
         string text;
@@ -44,9 +63,9 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     bool color_time = false;
     ImVec4 last_color = default_color;
 
-    for (const auto& i : text)
+    for (const auto& i : text) 
     {
-        if (color_time)
+        if (color_time) 
         {
             const auto& f = std::find_if(colors.begin(), colors.end(), [i](const auto& v) { return v.first == i; });
             if (f != colors.end())
@@ -56,21 +75,21 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
             color_time = false;
             continue;
         };
-        switch (i)
+        switch (i) 
         {
-        case '$':
-            color_time = true;
-            if (!temp_str.empty()) {
-                texts.push_back({ last_color, temp_str });
-                temp_str.clear();
-            };
-            break;
-        default:
-            temp_str += i;
+            case '$':
+                color_time = true;
+                if (!temp_str.empty()) {
+                    texts.push_back({ last_color, temp_str });
+                    temp_str.clear();
+                };
+                break;
+            default:
+                temp_str += i;
         };
     };
 
-    if (!temp_str.empty())
+    if (!temp_str.empty()) 
     {
         texts.push_back({ last_color, temp_str });
         temp_str.clear();
@@ -116,17 +135,20 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     Dummy({ max_x - p.x, p.y - first_py });
 };
 
-void split_str(string const& str, const char delim, vector<string>& out)
-{
-    /* create a stream from the string */
-    stringstream s(str);
-
-    string s2;
-    while (getline(s, s2, delim))
-    {
-        out.push_back(s2); /* store the string in s2 */
+void split_str(string const &str, const char delim, vector<string> &out)  
+{  
+    /* create a stream from the string */  
+    stringstream s(str);  
+        
+    string s2;  
+    while (getline (s, s2, delim))  
+    {  
+        out.push_back(s2); /* store the string in s2 */  
     }
 }
+
+Console console;
+Renderer render;
 
 /*
  * Commands main code
@@ -143,14 +165,14 @@ static const char* OperatingSystem()
 
     switch (vi.dwPlatformId)
     {
-    case VER_PLATFORM_WIN32s:
-        return "Windows 3.x";
-    case VER_PLATFORM_WIN32_WINDOWS:
-        return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-    case VER_PLATFORM_WIN32_NT:
-        return "Windows NT";
-    default:
-        return "Unknown";
+        case VER_PLATFORM_WIN32s:
+            return "Windows 3.x";
+        case VER_PLATFORM_WIN32_WINDOWS:
+            return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+        case VER_PLATFORM_WIN32_NT:
+            return "Windows NT";
+        default:
+            return "Unknown";
     }
 }
 
@@ -274,6 +296,11 @@ int echo(std::vector<std::string>& vect)
     }
 
     return 0;
+}
+
+int find_command(std::vector<std::string>& vect)
+{
+    return 2;
 }
 
 int list_dir(std::vector<std::string>& vect)
@@ -1017,7 +1044,7 @@ void Console::Draw()
         EndPopup();
     }
 
-    /*
+    /* 
         *  Display every line as a separate entry so we can change their color or add custom widgets.
         *  If you only want raw text you can use TextUnformatted(log.begin(), log.end());
         *  NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
@@ -1049,7 +1076,7 @@ void Console::Draw()
     for (int i = 0; i < Items.Size; i++)
     {
         const char* item = Items[i];
-        ColorfulText(item, { {'w', white}, {'b', blue}, {'d', grey}, {'l', lgrey}, {'g', green}, {'m', lime}, {'y', yellow}, {'p', purple}, {'r', red}, {'o', orange} });
+        ColorfulText(item, {{'w', white}, {'b', blue}, {'d', grey}, {'l', lgrey}, {'g', green}, {'m', lime}, {'y', yellow}, {'p', purple}, {'r', red}, {'o', orange}});
     }
     if (Copy)
         LogFinish();
@@ -1091,7 +1118,7 @@ void Console::Draw()
 
 void Console::ExecCommand(string command_line, ...)
 {
-    /*
+    /* 
         * Insert into history. First find matchand delete it so it can be pushed to the back.
         * This isn't trying to be smart or optimal
     */
@@ -1109,13 +1136,11 @@ void Console::ExecCommand(string command_line, ...)
     History.push_back(Strdup(command_line.c_str()));
 
     vector<string> arguments = {};
-
+    
     const char delim = ' ';
     split_str(command_line, delim, arguments);
 
-    const char* tmp2 = new char[200];
-    tmp2 = strtok(const_cast<char*>(command_line.c_str()), " ");
-    command_line = tmp2;
+    command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
 
     AddLog("$y#%s\n", command_line.c_str());
 
@@ -1124,15 +1149,16 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         /* execute execuatable */
-
-        if (commands[command_line](arguments) == 0)
+        int error_code = commands[command_line](arguments);
+        
+        if (error_code == 0)
         {
             ok();
         }
 
         else
         {
-            not_ok();
+            not_ok(error_code);
         }
     }
 
@@ -1172,7 +1198,7 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
-        not_ok();
+        not_ok(1);
     }
 
     arguments.clear();
@@ -1192,99 +1218,99 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
     //AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
     switch (data->EventFlag)
     {
-    case ImGuiInputTextFlags_CallbackCompletion:
-    {
-        // Example of TEXT COMPLETION
+        case ImGuiInputTextFlags_CallbackCompletion:
+        {
+            // Example of TEXT COMPLETION
 
-        // Locate beginning of current word
-        const char* word_end = data->Buf + data->CursorPos;
-        const char* word_start = word_end;
-        while (word_start > data->Buf)
-        {
-            const char c = word_start[-1];
-            if (c == ' ' || c == '\t' || c == ',' || c == ';')
-                break;
-            word_start--;
-        }
-
-        // Build a list of candidates
-        ImVector<const char*> candidates;
-        for (int i = 0; i < Commands.Size; i++)
-            if (Strnicmp(Commands[i], word_start, (int)(word_end - word_start)) == 0)
-                candidates.push_back(Commands[i]);
-
-        if (candidates.Size == 0)
-        {
-            // No match
-            AddLog("No match for \"%.*s\"!\n", (int)(word_end - word_start), word_start);
-        }
-        else if (candidates.Size == 1)
-        {
-            // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
-            data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
-            data->InsertChars(data->CursorPos, candidates[0]);
-            data->InsertChars(data->CursorPos, " ");
-            data->DeleteChars(0, data->BufTextLen);
-        }
-        else
-        {
-            // Multiple matches. Complete as much as we can..
-            // So inputing "C"+Tab will complete to "CL" then display "CLEAR" and "CLASSIFY" as matches.
-            int match_len = (int)(word_end - word_start);
-            for (;;)
+            // Locate beginning of current word
+            const char* word_end = data->Buf + data->CursorPos;
+            const char* word_start = word_end;
+            while (word_start > data->Buf)
             {
-                int c = 0;
-                bool all_candidates_matches = true;
-                for (int i = 0; i < candidates.Size && all_candidates_matches; i++)
-                    if (i == 0)
-                        c = toupper(candidates[i][match_len]);
-                    else if (c == 0 || c != toupper(candidates[i][match_len]))
-                        all_candidates_matches = false;
-                if (!all_candidates_matches)
+                const char c = word_start[-1];
+                if (c == ' ' || c == '\t' || c == ',' || c == ';')
                     break;
-                match_len++;
+                word_start--;
             }
 
-            if (match_len > 0)
+            // Build a list of candidates
+            ImVector<const char*> candidates;
+            for (int i = 0; i < Commands.Size; i++)
+                if (Strnicmp(Commands[i], word_start, (int)(word_end - word_start)) == 0)
+                    candidates.push_back(Commands[i]);
+
+            if (candidates.Size == 0)
             {
+                // No match
+                AddLog("No match for \"%.*s\"!\n", (int)(word_end - word_start), word_start);
+            }
+            else if (candidates.Size == 1)
+            {
+                // Single match. Delete the beginning of the word and replace it entirely so we've got nice casing.
                 data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
-                data->InsertChars(data->CursorPos, candidates[0], candidates[0] + match_len);
+                data->InsertChars(data->CursorPos, candidates[0]);
+                data->InsertChars(data->CursorPos, " ");
+                data->DeleteChars(0, data->BufTextLen);
+            }
+            else
+            {
+                // Multiple matches. Complete as much as we can..
+                // So inputing "C"+Tab will complete to "CL" then display "CLEAR" and "CLASSIFY" as matches.
+                int match_len = (int)(word_end - word_start);
+                for (;;)
+                {
+                    int c = 0;
+                    bool all_candidates_matches = true;
+                    for (int i = 0; i < candidates.Size && all_candidates_matches; i++)
+                        if (i == 0)
+                            c = toupper(candidates[i][match_len]);
+                        else if (c == 0 || c != toupper(candidates[i][match_len]))
+                            all_candidates_matches = false;
+                    if (!all_candidates_matches)
+                        break;
+                    match_len++;
+                }
+
+                if (match_len > 0)
+                {
+                    data->DeleteChars((int)(word_start - data->Buf), (int)(word_end - word_start));
+                    data->InsertChars(data->CursorPos, candidates[0], candidates[0] + match_len);
+                }
+
+                // List matches
+                AddLog("Possible matches:\n");
+                for (int i = 0; i < candidates.Size; i++)
+                    AddLog("- %s\n", candidates[i]);
             }
 
-            // List matches
-            AddLog("Possible matches:\n");
-            for (int i = 0; i < candidates.Size; i++)
-                AddLog("- %s\n", candidates[i]);
+            break;
         }
+        case ImGuiInputTextFlags_CallbackHistory:
+        {
+            // Example of HISTORY
+            const int prev_history_pos = HistoryPos;
+            if (data->EventKey == ImGuiKey_UpArrow)
+            {
+                if (HistoryPos == -1)
+                    HistoryPos = History.Size - 1;
+                else if (HistoryPos > 0)
+                    HistoryPos--;
+            }
+            else if (data->EventKey == ImGuiKey_DownArrow)
+            {
+                if (HistoryPos != -1)
+                    if (++HistoryPos >= History.Size)
+                        HistoryPos = -1;
+            }
 
-        break;
-    }
-    case ImGuiInputTextFlags_CallbackHistory:
-    {
-        // Example of HISTORY
-        const int prev_history_pos = HistoryPos;
-        if (data->EventKey == ImGuiKey_UpArrow)
-        {
-            if (HistoryPos == -1)
-                HistoryPos = History.Size - 1;
-            else if (HistoryPos > 0)
-                HistoryPos--;
+            // A better implementation would preserve the data on the current input line along with cursor position.
+            if (prev_history_pos != HistoryPos)
+            {
+                const char* history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
+                data->DeleteChars(0, data->BufTextLen);
+                data->InsertChars(0, history_str);
+            }
         }
-        else if (data->EventKey == ImGuiKey_DownArrow)
-        {
-            if (HistoryPos != -1)
-                if (++HistoryPos >= History.Size)
-                    HistoryPos = -1;
-        }
-
-        // A better implementation would preserve the data on the current input line along with cursor position.
-        if (prev_history_pos != HistoryPos)
-        {
-            const char* history_str = (HistoryPos >= 0) ? History[HistoryPos] : "";
-            data->DeleteChars(0, data->BufTextLen);
-            data->InsertChars(0, history_str);
-        }
-    }
     }
     return 0;
 }
@@ -1355,17 +1381,17 @@ void Renderer::DrawMenu()
         {
             if (MenuItem(ChooseLanguage("about termi")))
             {
-                if (termi_dialog == false)
+                if (termi_dialog == false) 
                     termi_dialog = true;
-                else
+                else 
                     termi_dialog = false;
             }
 
             if (MenuItem(ChooseLanguage("about imgui")))
             {
-                if (imgui_dialog == false)
+                if (imgui_dialog == false) 
                     imgui_dialog = true;
-                else
+                else 
                     imgui_dialog = false;
             }
 
@@ -1379,7 +1405,6 @@ void Renderer::DrawMenu()
 /* Draw tabs */
 void Renderer::DrawTab()
 {
-
     static ImVector<int> active_tabs;
     static int next_tab_id = 0;
     if (next_tab_id == 0) // Initialize with some default tabs
@@ -1449,7 +1474,7 @@ void Renderer::Font(bool* p_open)
     {
         //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
     }
-
+    
     End();
 }
 
@@ -1504,7 +1529,7 @@ const char* Renderer::ChooseLanguage(const char* word)
 }
 
 /* Choose a language using dialog */
-void Renderer::ChooseLanguageDialog(bool* p_open)
+void Renderer::ChooseLanguageDialog(bool *p_open)
 {
     SetWindowPos(ImVec2(200, 200));
     SetWindowSize(ImVec2(500, 500));
@@ -1631,92 +1656,92 @@ float Renderer::Settings(int id, float value)
 
     switch (id)
     {
-    case 0: /* startup command */
-        while (getline(startup, temp_str))
-        {
-            startup_command = temp_str;
-            startup.close();
-        }
-        break;
+        case 0: /* startup command */
+            while (getline(startup, temp_str))
+            {
+                startup_command = temp_str;
+                startup.close();            
+            }
+            break;
 
-    case 1: /* read width */
-        while (getline(width, temp_str))
-        {
-            float result = stof(temp_str);
-            width.close();
-            return result;
-        }
-        break;
+        case 1: /* read width */
+            while (getline(width, temp_str))
+            {
+                float result = stof(temp_str);
+                width.close();
+                return result;
+            }
+            break;
 
-    case 2: /* read height */
-        while (getline(height, temp_str))
-        {
-            float result = stof(temp_str);
-            height.close();
-            return result;
-        }
-        break;
+        case 2: /* read height */
+            while (getline(height, temp_str))
+            {
+                float result = stof(temp_str);
+                height.close();
+                return result;
+            }
+            break;
 
-    case 3: /* font name */
-        while (getline(font, temp_str))
-        {
-            render.font_name = temp_str;
-            font.close();
-        }
-        break;
+        case 3: /* font name */
+            while (getline(font, temp_str))
+            {
+                render.font_name = temp_str;
+                font.close();
+            }
+            break;
 
-    case 4: /* font size */
-        while (getline(font_size, temp_str))
-        {
-            float result = stof(temp_str);
-            font_size.close();
-            return result;
-        }
-        break;
+        case 4: /* font size */
+            while (getline(font_size, temp_str))
+            {
+                float result = stof(temp_str);
+                font_size.close();
+                return result;
+            }
+            break;
 
-    case 5: /* write startup command */
-        temp.open("temp.txt", mode);
-        temp << startup_command;
-        temp.close();
-        remove("startup.txt");
-        rename("temp.txt", "startup.txt");
-        break;
+        case 5: /* write startup command */
+            temp.open("temp.txt", mode);
+            temp << startup_command;
+            temp.close();
+            remove("startup.txt");
+            rename("temp.txt", "startup.txt");
+            break;
 
-    case 6: /* write width */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove("width.txt");
-        rename("temp.txt", "width.txt");
-        break;
+        case 6: /* write width */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("width.txt");
+            rename("temp.txt", "width.txt");
+            break;
 
-    case 7: /* write height */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove("height.txt");
-        rename("temp.txt", "height.txt");
-        break;
+        case 7: /* write height */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("height.txt");
+            rename("temp.txt", "height.txt");
+            break;
 
-    case 8: /* write font name*/
-        temp.open("temp.txt", mode);
-        temp << font_name;
-        temp.close();
-        remove("font.txt");
-        rename("temp.txt", "font.txt");
-        break;
+        case 8: /* write font name*/
+            temp.open("temp.txt", mode);
+            temp << font_name;
+            temp.close();
+            remove("font.txt");
+            rename("temp.txt", "font.txt");
+            break;
 
-    case 9: /* write font size */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove("size.txt");
-        rename("temp.txt", "size.txt");
-        break;
-
-    default:
-        console.AddLog("Invalid id %d!\n", id);
-        console.AddLog(
+        case 9: /* write font size */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove("size.txt");
+            rename("temp.txt", "size.txt");
+            break;
+            
+        default:
+            console.AddLog("Invalid id %d!\n", id);
+            console.AddLog(
             "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
             "0 - read startup command\n"
             "1 - read width\n",
@@ -1729,9 +1754,9 @@ float Renderer::Settings(int id, float value)
             "7 - write height\n",
             "8 - write font name\n",
             "9 - write font size\n"
-        );
-        return 1;
-        break;
+            );
+            return 1;
+            break;
     }
 
     return 0;

@@ -78,6 +78,14 @@ int main(int argc, char **argv)
 	/* Catch CTRL-C */
 	SetConsoleCtrlHandler(end, TRUE);
 
+	std::cout << "ooooooooooo                              " << std::endl;
+	std::cout << "    888      ooooooooooo                          o88   " << std::endl;
+	std::cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << std::endl;
+	std::cout << "    888      888ooo8     888    888 888 888 888   888 " << std::endl;
+	std::cout << "    888      888    oo   888        888 888 888   888  " << std::endl;
+	std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
+	std::cout << "------------------------------------------------------- " << std::endl;
+
 	glfwInit();
 	GLFWwindow* window = glfwCreateWindow(render.Settings(1, 0), render.Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
@@ -110,7 +118,7 @@ int main(int argc, char **argv)
 
 	render.Settings(3, 0);
 
-	if (render.font_name == "default") /* idk why != doesn't work */
+	if (render.font_name != "default") /* idk why != now works */
 	{
 		try
 		{
