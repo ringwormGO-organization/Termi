@@ -6,7 +6,7 @@
 
 **If you want use non-OpenGL version, manually install files!**
 
-A Powerful Terminal made in C++ with OpenGL and ImGui which own commands
+A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ## About Termi
 - Termi is a powerful terminal made using C++.
