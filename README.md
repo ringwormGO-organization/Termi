@@ -17,6 +17,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 - We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 - Currently there is only one [stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
+- [Commands list and explanation](ttps://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
 
 ## Checklist
 
