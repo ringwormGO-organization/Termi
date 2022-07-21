@@ -12,3 +12,4 @@
 
 #define PRINT_WHEN_WINDOW_IS_CREATED
 #define PRINT_FPS
+#undef CMBAL

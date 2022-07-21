@@ -7,12 +7,40 @@
 */
 
 #include "imgui_code.hpp"
+#include "cmbal_io.h"
+
+#ifdef CMBAL
+    extern "C" 
+    {
+        #include "Cmbal/include/main.h"
+        int cmbal_execute(const char* path);
+    }
+
+    extern void* CmbalIO_new() 
+    {
+        return new Console();
+    }
+    
+    extern void CmbalIO_delete(void* con) 
+    {
+        Console* c = (Console*)con;
+        delete c;
+    }
+    
+    extern void CmbalIO_AddLog(void* con, const char* fmt, ...) 
+    {
+        Console* c = (Console*)con;
+        return c->AddLog(fmt);
+    }
+#endif
 
 using namespace std;
 using namespace ImGui;
 using namespace Translation;
 
 #pragma GCC diagnostic ignored "-Wformat-security"
+#pragma GCC diagnostic ignored "-Wreturn-type"
+#pragma GCC diagnostic ignored "-Wstringop-overflow="
 
 /*
  * List of error codes:
@@ -698,6 +726,11 @@ Console::Console()
         Commands.push_back(x.first.c_str());
     }
 
+    for (auto& y : cmbal)
+    {
+        Commands.push_back(y.first.c_str());
+    }
+
     sort(Commands.begin(), Commands.end());
 
     AutoScroll = true;
@@ -908,10 +941,23 @@ void Console::ExecCommand(string command_line, ...)
 
     else
     {
+        #ifdef CMBAL
+            auto cmbal_command = cmbal.find(command_line);
+
+            if (cmbal_command != cmbal.end())
+            {
+                int error_code = cmbal_execute(cmbal_command->second.c_str());
+                goto go_two;
+            }
+            
+        #endif
+
+        go_one:
         AddLog("Unknown command: '%s'\n", command_line.c_str());
         not_ok(1);
     }
 
+    go_two:
     arguments.clear();
 
     // On command input, we scroll to bottom even if AutoScroll==false

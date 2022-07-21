@@ -85,6 +85,11 @@ static std::map<const std::string, const std::function<int(std::vector<std::stri
     {"yes", yes}
 };
 
+static std::map<const std::string, const std::string> cmbal = 
+{
+    {"writeln", "Cmbal/examples/writeln.cmbal"}
+};
+
 /* Check if some string start with some std::string value */
 static bool isStarting (std::string const &fullString, std::string const &starting) 
 {
