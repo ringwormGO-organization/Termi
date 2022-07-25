@@ -20,7 +20,6 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 - [Commands list and explanation](ttps://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
 
 ## Checklist
-
 ### Termi base part
 - [x] Windows version (old console one and Dear ImGui one)
 - [x] GNU/Linux version (old console one and Dear ImGui one)
