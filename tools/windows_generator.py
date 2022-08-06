@@ -3,7 +3,7 @@ AUTHOR:      Andrej Bartulin
 PROJECT:     Termi's Windows version generator
 LICENSE:     ringwormGO General License 1.0 | (RGL) 2022
 DESCRIPTION: Main file for generator
-REQUIRED PACKAGES: os, os.path, requests, sys, shutil
+REQUIRED PACKAGES: os, os.path, requests, sys, shutil, string
 '''
 
 import os
@@ -13,7 +13,16 @@ import sys
 import shutil
 
 class Utils:
-    def remove(path : str, text : str):
+    def __init__(self):
+        self.__commands = ["base64", "calc", "cd", "change-setting", "echo", "geocalc", "list", "mkdir",
+                    "neofetch", "openfile", "time", "rm", "whoami", "writefile", "yes"]
+
+    def __command_id(self, line: str) -> int:
+        for i in self.__commands:
+            if line == f"int {i}(std::vector<std::string>& vect)\n":
+                return i
+
+    def remove(self, path : str, text : str):
         with open(path, "r+") as f:
             d = f.readlines()
             f.seek(0)
@@ -43,6 +52,49 @@ class Utils:
         with open(path, "w") as f:
             contents = "".join(contents)
             f.write(contents)
+
+    def write_new_command(self, linux_file_path: str, windows_file_path: str):
+        linux_commands = []
+        windows_commands = []
+        lines_to_remove = []
+
+        with open(linux_file_path) as file_in:
+            for i in file_in:
+                # sys.stdout.write(i)
+                if (i == f"int {self.__command_id(i)}(std::vector<std::string>& vect)\n"):
+                    linux_commands.append(i)
+                else:
+                    lines_to_remove.append(i)
+
+        for i in lines_to_remove:
+            self.remove(linux_file_path, i)
+
+        lines_to_remove.clear()
+
+        with open(windows_file_path) as file_in:
+            for i in file_in:
+                # sys.stdout.write(i)
+                if (i == f"int {self.__command_id(i)}(std::vector<std::string>& vect)\n"):
+                    windows_commands.append(i)
+                else:
+                    lines_to_remove.append(i)
+
+        for i in lines_to_remove:
+            self.remove(windows_file_path, i)
+
+        if len(linux_commands) == len(windows_commands) and len(linux_commands) == sum([1 for i, j in zip(linux_commands, windows_commands) if i == j]):
+            print ("The lists are identical")
+        else:
+            print ("The lists are not identical")
+
+    def return_link(chunck_id : int) -> str:
+        return "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck" + str(chunck_id) + ".txt"
+
+    def commands(self, new_command=None):
+        if new_command != None:
+            self.__commands.append(new_command)
+
+        return sorted(self.__commands)
 
 def generate_main(path : str) -> int:
     try:
@@ -185,6 +237,8 @@ def main(path: str, which : int) -> int:
     return generate(file.name, which)
     
 if __name__ == "__main__":
+    utils = Utils()
+
     print("Windows version generator.\nIt generates code for Windows 7 as minium Windows version.")
     print("Also create backup of (GNU/)Linux file.")
     print("Arguments:")
@@ -200,54 +254,22 @@ if __name__ == "__main__":
         for i in range(6):
             if exists(f"chunck{i}.txt"):
                 os.remove(f"chunck{i}.txt")
-        
-        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck0.txt"
-        response = requests.get(URL)
-        open("chunck0.txt", "wb").write(response.content)
 
-        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck1.txt"
-        response = requests.get(URL)
-        open("chunck1.txt", "wb").write(response.content)
-
-        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck2.txt"
-        response = requests.get(URL)
-        open("chunck2.txt", "wb").write(response.content)
-
-        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck3.txt"
-        response = requests.get(URL)
-        open("chunck3.txt", "wb").write(response.content)
-
-        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck4.txt"
-        response = requests.get(URL)
-        open("chunck4.txt", "wb").write(response.content)
-
-        URL = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck5.txt"
-        response = requests.get(URL)
-        open("chunck5.txt", "wb").write(response.content)
+        for i in range(6):
+            url = utils.return_link(i)
+            response = requests.get(url)
+            open(f"chunck{i}.txt", "wb").write(response.content)
 
     elif sys.argv[1] == '-a':
+        print("WIP, not finished yet!")
         print("TODO: Sort by alphabetical order!")
 
-        linux_path = input("Enter path of file which contains GNU/Linux command: ")
-        windows_path = input("Enter path of file which contains Windows command: ")
+        if (len(sys.argv) != 4):
+            print("There is no enough arguments!")
+            exit(0)
 
-        linux_text = open(linux_path).read()
-        windows_text = open(windows_path).read()
-
-        chunck2 = open("chunck2.txt").read()
-        chunck3 = open("chunck3.txt").read()
-
-        os.remove("chunck2.txt")
-        os.remove("chunck3.txt")
-
-        new_chunck2 = open("chunck2.txt", "w")
-        new_chunck3 = open("chunck3.txt", "w")
-
-        new_chunck2.write(chunck2 + linux_text + '\n')
-        new_chunck3.write(chunck3 + windows_text + '\n')
-
-        new_chunck2.close()
-        new_chunck3.close()
+        # writing new command to file
+        utils.write_new_command(sys.argv[2], sys.argv[3])
     
     else:
         main(sys.argv[1], sys.argv[2])
