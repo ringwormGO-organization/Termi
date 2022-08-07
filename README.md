@@ -24,7 +24,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 - [x] Windows version (old console one and Dear ImGui one)
 - [x] GNU/Linux version (old console one and Dear ImGui one)
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported, old console one and Dear ImGui one)
-- [ ] Windows generator (rewrite, in Python programming language)
+- [x] Windows generator (rewrite, in Python programming language)
 
 ### Termi advanced C++ part
 - [x] User settings in text files
