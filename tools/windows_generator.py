@@ -95,26 +95,12 @@ class Utils:
                 if i.endswith("std::vector<std::string>& vect)\n"):
                     linux_commands.append(i)
 
-        # get windows commands, line to write new command, content before new command and content after new command
-        file = open(windows_file_path, "r")
-        append_before: bool = True
-        append_after: bool = False
-        for line_no, line in enumerate(file):
-            if line == f"int {self.__command_id(line)}(std::vector<std::string>& vect)\n":
-                windows_commands.append(line)
-
-            if line.startswith("Console::Console"):
-                line_to_write_new_command = line_no
-                append_before = False
-                append_after = True
-
-            if append_before:
-                content_before_new_command += line
-
-            if append_after:
-                content_after_new_command += line
-        file.close()
-
+        # get windows commands
+        with open(windows_file_path, "r") as g:
+            for j in g:
+                if j.endswith("std::vector<std::string>& vect)\n"):
+                    windows_commands.append(j)
+        
         # get new command/commands
         new_commands = self.__get_new_command(linux_commands, windows_commands)
 
@@ -122,30 +108,11 @@ class Utils:
             print("There is no new commands!")
         
         else:
-            print("New commands are: ")
-            for i in new_commands:
-                sys.stdout.write(colorama.Fore.WHITE + i[4:i.find("(")] + ", ")
-            sys.stdout.write(colorama.Fore.RESET + "\n")
-            print("Full array: ")
-            print(colorama.Fore.WHITE + str(new_commands) + colorama.Fore.RESET)
+            new_command = input("Enter file which contains Windows command: ")
+            new_command_text = open(new_command).read()
 
-            # get code for new command
-            new_command_path = input("Enter path to file with contains code for new Windows command: ")
-            new_command_text = open(new_command_path, "r").read()
-            new_command_text += "\n\n"
-
-            # set line to write new command (again)
-            line_to_write_new_command = line_to_write_new_command - 5
-
-            # write content before new command and content after in "temp_chunck.txt" file
-            with open("temp_chunck.txt", "w") as f:
-                f.write(content_before_new_command)
-                f.write(content_after_new_command)
-
-            # add new command using replace function, we are replacing content before with new command and content after the new command
-            # and then we are removing "temp_chunck.txt" file
-            self.replace_chunck("temp_chunck.txt", windows_file_path, "", (content_before_new_command + new_command_text + content_after_new_command))
-            os.remove("temp_chunck.txt")
+            windows_file = open(windows_file_path, "a+")
+            windows_file.write("\n" + new_command_text + "\n")
 
     def return_link(self, chunck_id : int) -> str:
         return "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/tools/chunck" + str(chunck_id) + ".txt"
@@ -319,8 +286,7 @@ if __name__ == "__main__":
         print(colorama.Fore.LIGHTGREEN_EX + "Done!" + colorama.Fore.RESET)
 
     elif sys.argv[1] == '-a':
-        print(colorama.Fore.LIGHTBLUE_EX + "WIP, not finished yet!")
-        print("TODO: Sort by alphabetical order!" + colorama.Fore.RESET)
+        print(colorama.Fore.BLUE + "TODO: Sort by alphabetical order!" + colorama.Fore.RESET)
 
         if (len(sys.argv) != 4):
             print(colorama.Fore.LIGHTRED_EX + "There is no enough arguments!" + colorama.Fore.RESET)
