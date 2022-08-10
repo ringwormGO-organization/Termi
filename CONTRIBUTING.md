@@ -22,7 +22,7 @@ Just drop a Pull Request :)
 # Add command to Termi
 1. Create new file in `Commands` folder and create main function for command.
 2. Put command and function name in `commands` `std::map`, need to return integer based on is function executed correctly.
-3. Put main command code in `imgui_code.cpp`.
+3. Put main command code in `imgui_commands.cpp`.
 4. Function argument is: `std::vector<std::string>& vect`
 5. Don't forget for arguments even if it is not needed!
 
@@ -33,7 +33,7 @@ int example(std::vector<std::string>& vect)
 {
     cout << "Example\n";
     return 0;
-} /* imgui_code.cpp */
+} /* imgui_commands.cpp */
 ```
 
 Information about elements in vector:

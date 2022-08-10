@@ -3,7 +3,7 @@
  * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
 */
 
 #include "imgui/imgui.h"
@@ -37,7 +37,7 @@ void end(int sig)
     if (key != 10)
     {
         /* we need to do something here; input is broken */
-        exit(0);
+        exit(sig);
     }
     else
     {
@@ -49,12 +49,14 @@ int main(int argc, char **argv)
 {
 	std::cout << "\n\n";
 
+	Renderer* render = new Renderer();
+
 	bool arg = false;
 	bool alreadyarg = false;
 
 	if (argc > 1)
 	{
-		render.startup_command = argv[1];
+		render->startup_command = argv[1];
 		arg = true;
 	}
 
@@ -74,7 +76,7 @@ int main(int argc, char **argv)
     std::cout << "------------------------------------------------------- " << std::endl;
 
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(render.Settings(1, 0), render.Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -90,10 +92,18 @@ int main(int argc, char **argv)
 		#endif
 	}
 
-	GLFWimage images[1];
-	images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); //rgba channels 
-	glfwSetWindowIcon(window, 1, images);
-	stbi_image_free(images[0].pixels);
+	if (render->CheckFile("termi.png") == false)
+	{
+		std::cout << "Icon wasn't found! Continuing without icon...\n";
+	}
+
+	else
+	{
+		GLFWimage images[1];
+		images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */ 
+		glfwSetWindowIcon(window, 1, images);
+		stbi_image_free(images[0].pixels);
+	}
 
 	/* Initialize Dear ImGui */
 	IMGUI_CHECKVERSION();
@@ -103,26 +113,19 @@ int main(int argc, char **argv)
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	render.Settings(3, 0);
+	render->Settings(3, 0);
 	
-	if (render.font_name != "default")
+	if (render->font_name != "default")
 	{
-		try
+		if (render->CheckFile(render->font_name.c_str()) == 1)
 		{
-			if (render.CheckFile(render.font_name.c_str()) == 0)
-			{
-				io.Fonts->AddFontFromFileTTF(render.font_name.c_str(), render.Settings(4, 0));
-			}
-		}
-		catch(const std::exception& e)
-		{
-			std::cerr << "Exception catched! Result: " << e.what() << '\n';
+			io.Fonts->AddFontFromFileTTF(render->font_name.c_str(), render->Settings(4, 0));
 		}
 	}
 
-	render.Settings(0, 0);
+	render->Settings(0, 0);
 
-	if (render.startup_command != "none")
+	if (render->startup_command != "none")
 	{
 		arg = true;
 	}
@@ -143,12 +146,14 @@ int main(int argc, char **argv)
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
     	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
+		render = new Renderer();
+
 		/* main Dear ImGui code */
-		main_code();
+		main_code(render);
 
 		if (arg && !alreadyarg)
 		{
-			console.ExecCommand(render.startup_command, argv[2]);
+			console.ExecCommand(render->startup_command, argv[2]);
 			alreadyarg = true;
 		}
 
@@ -162,6 +167,8 @@ int main(int argc, char **argv)
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		delete render;
 	}
 
 	glfwTerminate();

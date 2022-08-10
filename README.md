@@ -61,7 +61,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ### Build & Run (OpenGL)
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
-2. For GNU/Linux (macOS, unsupported) type: ```cmake . && make && ./Termi-OpenGL```. If you can't compile project try with: ```cmake && sudo make && ./Termi-OpenGL```. If you still can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video!
+2. For GNU/Linux (macOS, unsupported) type: ```cmake . && make && ./Termi-OpenGL```. If you can't compile project try with: ```cmake && make && ./Termi-OpenGL```. If you still can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video!
 
 ## Development picture
 ![image](https://user-images.githubusercontent.com/83548580/159910200-8fa25e94-ba38-4b34-a84c-21d48f381603.png)

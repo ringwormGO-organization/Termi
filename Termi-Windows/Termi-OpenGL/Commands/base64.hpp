@@ -3,7 +3,7 @@
  * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file encoding/decoding Base64
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
 */
 
 #pragma once

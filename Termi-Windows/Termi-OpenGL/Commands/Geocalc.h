@@ -5,7 +5,7 @@
  * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Geocalc helper functions
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
 */
 
 static double opsgTrijustr(double x, double y, double z)

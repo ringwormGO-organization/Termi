@@ -175,7 +175,7 @@ def generate_main(path : str) -> int:
         Utils.remove('w' + path, "struct sigaction sigIntHandler;\n")
 
         print(colorama.Fore.YELLOW + "Changing description... (5/5)" + colorama.Fore.RESET)
-        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL\n")
         Utils.add(5, 'w' + path, " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
 
         print(colorama.Fore.YELLOW + "Removing (GNU/)Linux file..." + colorama.fore.RESET)
@@ -206,7 +206,7 @@ def generate_cpp(path : str) -> int:
         Utils.add(3, 'w' + path, " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
 
         print(colorama.Fore.YELLOW + "Changing description... (3/3)" + colorama.Fore.RESET)
-        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL\n")
         Utils.add(5, 'w' + path, " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
 
         print(colorama.Fore.YELLOW + "Removing (GNU/)Linux file..." + colorama.Fore.RESET)
@@ -237,7 +237,7 @@ def generate_hpp(path : str) -> int:
         Utils.add(3, 'w' + path, " * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system\n")
 
         print(colorama.Fore.YELLOW + "Changing description... (3/3)" + colorama.Fore.RESET)
-        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL\n")
+        Utils.remove('w' + path, " * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL\n")
         Utils.add(5, 'w' + path, " * INFORAMTION: Compile solution, else check Victor Gordan's video\n")
 
         print(colorama.Fore.YELLOW + "Removing (GNU/)Linux file..." + colorama.Fore.RESET)

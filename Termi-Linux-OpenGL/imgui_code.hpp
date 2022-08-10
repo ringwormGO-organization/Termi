@@ -3,7 +3,7 @@
  * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file for Dear ImGui code
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && sudo make && ./Termi-OpenGL
+ * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
 */
 
 #pragma once
@@ -28,6 +28,7 @@
 #include <iostream>
 #include <chrono>
 #include <ctime>
+#include <filesystem>
 #include <functional>
 #include <fstream>
 #include <list>
@@ -140,11 +141,44 @@ orange = { 1.00f, 0.36f, 0.09f,1 };
 */
 void split_str(std::string const &str, const char delim, std::vector <std::string> &out);
 
+/* Renderer class */
+class Renderer
+{
+    public:
+        void DrawTab();
+        void Font(bool* p_open);
+
+        const char* ChooseLanguage(const char* word);
+        void ChooseLanguageDialog(bool* p_open);
+
+        void TermiDialog(bool* p_open);
+        void ImGuiDialog(bool* p_open);
+
+        float Settings(int id, float value);
+
+        bool CheckFile(const char* name);
+
+        std::string font_name;
+        std::string startup_command;
+
+    private:
+        struct settings_path
+        {
+            std::string startup = "settings/startup.txt";
+            std::string width = "settings/width.txt";
+            std::string height = "settings/height.txt";
+            std::string font = "settings/font.txt";
+            std::string size = "settings/size.txt";
+        };
+
+        void DrawMenu();
+};
+
 /*
  * Console class - everything for drawing and managing console
  * Code from imgui_demo.cpp
 */
-class Console
+class Console : public Renderer
 {
     protected:
         char                  InputBuf[256];
@@ -188,32 +222,7 @@ class Console
         int TextEditCallback(ImGuiInputTextCallbackData* data);
 };
 
-/* Renderer class */
-class Renderer
-{
-    public:
-        void DrawTab();
-        void Font(bool* p_open);
-
-        const char* ChooseLanguage(const char* word);
-        void ChooseLanguageDialog(bool* p_open);
-
-        void TermiDialog(bool* p_open);
-        void ImGuiDialog(bool* p_open);
-
-        float Settings(int id, float value);
-
-        bool CheckFile(const char* name);
-
-        std::string font_name;
-        std::string startup_command;
-
-    private:
-        void DrawMenu();
-};
-
 /* Main code for starting ImGui */
-void main_code();
+void main_code(Renderer* render);
 
 extern Console console;
-extern Renderer render;
