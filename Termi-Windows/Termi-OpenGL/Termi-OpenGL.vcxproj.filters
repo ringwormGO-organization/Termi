@@ -51,7 +51,10 @@
     <ClCompile Include="imgui\imgui_widgets.cpp">
       <Filter>Source Files\imgui</Filter>
     </ClCompile>
-    <ClCompile Include="imgui_code.cpp">
+    <ClCompile Include="imgui_main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_commands.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
