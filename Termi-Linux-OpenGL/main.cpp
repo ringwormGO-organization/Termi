@@ -53,6 +53,7 @@ int main(int argc, char **argv)
 
 	bool arg = false;
 	bool alreadyarg = false;
+	bool iconReady = false;
 
 	if (argc > 1)
 	{
@@ -66,7 +67,6 @@ int main(int argc, char **argv)
 	sigIntHandler.sa_flags = 0;
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
-
     std::cout << "ooooooooooo                              " << std::endl;
     std::cout << "    888      ooooooooooo                          o88   " << std::endl;
     std::cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << std::endl;
@@ -74,6 +74,30 @@ int main(int argc, char **argv)
     std::cout << "    888      888    oo   888        888 888 888   888  " << std::endl;
     std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
     std::cout << "------------------------------------------------------- " << std::endl;
+
+	if (render->CheckFile("termi.png") == false)
+	{
+		std::cout << "Icon wasn't found!\n";
+		std::cout << "Do you want download it [y (requires curl) /n]? : " << std::endl;
+
+		std::string yn;
+		std::cin >> yn;
+
+		if (yn == "y")
+		{
+			system("wget https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/Termi-Linux-OpenGL/termi.png");
+
+			if (render->CheckFile("termi.png"))
+			{
+				iconReady = true;
+			}
+		}
+	}
+
+	else
+	{
+		iconReady = true;
+	}
 
 	glfwInit();
 	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
@@ -92,17 +116,17 @@ int main(int argc, char **argv)
 		#endif
 	}
 
-	if (render->CheckFile("termi.png") == false)
-	{
-		std::cout << "Icon wasn't found! Continuing without icon...\n";
-	}
-
-	else
+	if (iconReady)
 	{
 		GLFWimage images[1];
 		images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */ 
 		glfwSetWindowIcon(window, 1, images);
 		stbi_image_free(images[0].pixels);
+	}
+
+	else
+	{
+		std::cout << "Continuing without an icon!\n";
 	}
 
 	/* Initialize Dear ImGui */
