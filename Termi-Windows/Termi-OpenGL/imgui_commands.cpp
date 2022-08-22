@@ -165,6 +165,26 @@ int echo(std::vector<std::string>& vect)
 
 int find_command(std::vector<std::string>& vect)
 {
+    std::vector<std::string> out;
+
+    string path;
+
+    if (vect.size() < 2)
+    {
+        path = ".\\";
+    }
+
+    else
+    {
+        path = vect[1];
+    }
+
+    out.push_back("list");
+    out.push_back(path);
+    out.push_back("!");
+
+    list_dir(out);
+
     return 2;
 }
 
@@ -174,8 +194,20 @@ int list_dir(std::vector<std::string>& vect)
     struct stat dst;
 
     DIR* dr;
+    string path;
 
-    string path = ".\\";
+    if (vect.size() < 2)
+    {
+        path = ".\\";
+    }
+
+    else
+    {
+        path = vect[1];
+    }
+
+    chdir(path.c_str());
+    path = ".\\";
 
     dr = opendir(path.c_str());
 
@@ -191,13 +223,30 @@ int list_dir(std::vector<std::string>& vect)
                 {
                     type = "FOLDER";
                 }
+
                 else if (dst.st_mode & S_IFREG)
                 {
                     type = "FILE";
                 }
             }
+
+            filename.push_back(string(d->d_name));
+            filetype.push_back(type);
+
             console.AddLog("%s - %s", d->d_name, type.c_str());
         }
+
+        /*for (auto x : filename)
+        {
+            console.AddLog("%s - %s", x);
+        }*/
+
+        //if (vect.size() != 3)
+        //{
+            filename.clear();
+            filetype.clear();
+        //}
+
         closedir(dr);
     }
 

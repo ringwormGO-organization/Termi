@@ -809,6 +809,11 @@ float Renderer::Settings(int id, float value)
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
+    if (!std::filesystem::exists("settings/") && !std::filesystem::is_directory("settings/"))
+    {
+        mkdir("settings");
+    }
+
     if (!CheckFile(path.startup.c_str()))
     {
         fstream file(path.startup, mode);
@@ -854,107 +859,107 @@ float Renderer::Settings(int id, float value)
 
     switch (id)
     {
-    case 0: /* startup command */
-        while (getline(startup, temp_str))
-        {
-            this->startup_command = temp_str;
-            startup.close();
-        }
-        break;
+        case 0: /* startup command */
+            while (getline(startup, temp_str))
+            {
+                this->startup_command = temp_str;
+                startup.close();
+            }
+            break;
 
-    case 1: /* read width */
-        while (getline(width, temp_str))
-        {
-            float result = stof(temp_str);
-            width.close();
-            return result;
-        }
-        break;
+        case 1: /* read width */
+            while (getline(width, temp_str))
+            {
+                float result = stof(temp_str);
+                width.close();
+                return result;
+            }
+            break;
 
-    case 2: /* read height */
-        while (getline(height, temp_str))
-        {
-            float result = stof(temp_str);
-            height.close();
-            return result;
-        }
-        break;
+        case 2: /* read height */
+            while (getline(height, temp_str))
+            {
+                float result = stof(temp_str);
+                height.close();
+                return result;
+            }
+            break;
 
-    case 3: /* font name */
-        while (getline(font, temp_str))
-        {
-            this->font_name = temp_str;
-            font.close();
-        }
-        break;
+        case 3: /* font name */
+            while (getline(font, temp_str))
+            {
+                this->font_name = temp_str;
+                font.close();
+            }
+            break;
 
-    case 4: /* font size */
-        while (getline(font_size, temp_str))
-        {
-            float result = stof(temp_str);
-            font_size.close();
-            return result;
-        }
-        break;
+        case 4: /* font size */
+            while (getline(font_size, temp_str))
+            {
+                float result = stof(temp_str);
+                font_size.close();
+                return result;
+            }
+            break;
 
-    case 5: /* write startup command */
-        temp.open("temp.txt", mode);
-        temp << startup_command;
-        temp.close();
-        remove(path.startup.c_str());
-        rename("temp.txt", path.startup.c_str());
-        break;
+        case 5: /* write startup command */
+            temp.open("temp.txt", mode);
+            temp << startup_command;
+            temp.close();
+            remove(path.startup.c_str());
+            rename("temp.txt", path.startup.c_str());
+            break;
 
-    case 6: /* write width */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove(path.width.c_str());
-        rename("temp.txt", path.width.c_str());
-        break;
+        case 6: /* write width */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove(path.width.c_str());
+            rename("temp.txt", path.width.c_str());
+            break;
 
-    case 7: /* write height */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove(path.height.c_str());
-        rename("temp.txt", path.height.c_str());
-        break;
+        case 7: /* write height */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove(path.height.c_str());
+            rename("temp.txt", path.height.c_str());
+            break;
 
-    case 8: /* write font name*/
-        temp.open("temp.txt", mode);
-        temp << font_name;
-        temp.close();
-        remove(path.font.c_str());
-        rename("temp.txt", path.font.c_str());
-        break;
+        case 8: /* write font name*/
+            temp.open("temp.txt", mode);
+            temp << font_name;
+            temp.close();
+            remove(path.font.c_str());
+            rename("temp.txt", path.font.c_str());
+            break;
 
-    case 9: /* write font size */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove(path.size.c_str());
-        rename("temp.txt", path.size.c_str());
-        break;
+        case 9: /* write font size */
+            temp.open("temp.txt", mode);
+            temp << value;
+            temp.close();
+            remove(path.size.c_str());
+            rename("temp.txt", path.size.c_str());
+            break;
 
-    default:
-        console.AddLog("Invalid id %d!\n", id);
-        console.AddLog(
-            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
-            "0 - read startup command\n"
-            "1 - read width\n",
-            "2 - read height\n",
-            "3 - set variable font_name to the font name\n",
-            "4 - read font size\n",
-            "---------------\n",
-            "5 - write startup command\n",
-            "6 - write width\n",
-            "7 - write height\n",
-            "8 - write font name\n",
-            "9 - write font size\n"
-        );
-        return 1;
-        break;
+        default:
+            console.AddLog("Invalid id %d!\n", id);
+            console.AddLog(
+                "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+                "0 - read startup command\n"
+                "1 - read width\n",
+                "2 - read height\n",
+                "3 - set variable font_name to the font name\n",
+                "4 - read font size\n",
+                "---------------\n",
+                "5 - write startup command\n",
+                "6 - write width\n",
+                "7 - write height\n",
+                "8 - write font name\n",
+                "9 - write font size\n"
+            );
+            return 1;
+            break;
     }
 
     return 0;

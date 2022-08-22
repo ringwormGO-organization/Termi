@@ -10,9 +10,9 @@
 #pragma once
 
 #include <vector>
+#include <map>
 
-static std::vector<std::string> filesys_name;
-static std::vector<std::string> filesys_type;
+static std::vector<std::string> filename, filetype;
 
 int openfile(std::vector<std::string>& vect);
 int list_dir(std::vector<std::string>& vect);
