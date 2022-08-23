@@ -7,32 +7,6 @@
 */
 
 #include "imgui_code.hpp"
-#include "cmbal_io.h"
-
-#ifdef CMBAL
-    extern "C" 
-    {
-        #include "Cmbal/include/main.h"
-        int cmbal_execute(const char* path);
-    }
-
-    extern void* CmbalIO_new() 
-    {
-        return new Console();
-    }
-    
-    extern void CmbalIO_delete(void* con) 
-    {
-        Console* c = (Console*)con;
-        delete c;
-    }
-    
-    extern void CmbalIO_AddLog(void* con, const char* fmt, ...) 
-    {
-        Console* c = (Console*)con;
-        return c->AddLog(fmt);
-    }
-#endif
 
 using namespace std;
 using namespace ImGui;
@@ -196,11 +170,6 @@ Console::Console()
     for (auto& x : commands)
     {
         Commands.push_back(x.first.c_str());
-    }
-
-    for (auto& y : cmbal)
-    {
-        Commands.push_back(y.first.c_str());
     }
 
     sort(Commands.begin(), Commands.end());
@@ -413,23 +382,10 @@ void Console::ExecCommand(string command_line, ...)
 
     else
     {
-        #ifdef CMBAL
-            auto cmbal_command = cmbal.find(command_line);
-
-            if (cmbal_command != cmbal.end())
-            {
-                int error_code = cmbal_execute(cmbal_command->second.c_str());
-                goto go_two;
-            }
-            
-        #endif
-
-        go_one:
         AddLog("Unknown command: '%s'\n", command_line.c_str());
         not_ok(1);
     }
 
-    go_two:
     arguments.clear();
 
     // On command input, we scroll to bottom even if AutoScroll==false
@@ -841,6 +797,11 @@ float Renderer::Settings(int id, float value)
 
     auto mode = ios::app | ios::in;
     string temp_str = "";
+
+    if (!std::filesystem::exists("settings/") && !std::filesystem::is_directory("settings/"))
+    {
+        mkdir("settings", 0777);
+    }
 
     if (!CheckFile(path.startup.c_str()))
     {

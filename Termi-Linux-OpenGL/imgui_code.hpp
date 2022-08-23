@@ -34,6 +34,7 @@
 #include <list>
 #include <map>
 #include <string>
+#include <sstream>
 #include <vector>
 
 #include <sys/types.h>
@@ -84,11 +85,6 @@ static std::map<const std::string, const std::function<int(std::vector<std::stri
     {"whoami", whoami},
     {"writefile", writefile},
     {"yes", yes}
-};
-
-static std::map<const std::string, const std::string> cmbal = 
-{
-    {"writeln", "Cmbal/examples/writeln.cmbal"}
 };
 
 /* Check if some string start with some std::string value */
