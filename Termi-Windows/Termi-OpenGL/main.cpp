@@ -62,24 +62,33 @@ static BOOL WINAPI end(DWORD dwCtrlType)
     return FALSE;
 }
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
-    std::cout << "\n\n";
+	std::cout << "\n\n";
 
-    Renderer* render = new Renderer();
+	/* 
+	 * Creating variables which points to struct(s) or class(es)
+	 * vars gets value once,
+	 * while render is always getting value
+	*/
 
-    bool arg = false;
-    bool alreadyarg = false;
-    bool iconReady = false;
+	Vars* vars = new Vars();
+	vars->language = "english";
 
-    if (argc > 1)
-    {
-        render->startup_command = argv[1];
-        arg = true;
-    }
+	Renderer* render = new Renderer();
 
-    /* Catch CTRL-C */
-    SetConsoleCtrlHandler(end, TRUE);
+	bool arg = false;
+	bool alreadyarg = false;
+	bool iconReady = false;
+
+	if (argc > 1)
+	{
+		render->startup_command = argv[1];
+		arg = true;
+	}
+
+	/* Catch CTRL-C */
+	SetConsoleCtrlHandler(end, TRUE);
 
     std::cout << "ooooooooooo                              " << std::endl;
     std::cout << "    888      ooooooooooo                          o88   " << std::endl;
@@ -89,127 +98,128 @@ int main(int argc, char** argv)
     std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
     std::cout << "------------------------------------------------------- " << std::endl;
 
-    if (render->CheckFile("termi.png") == false)
-    {
-        std::cout << "Icon wasn't found!\n";
-        std::cout << "Do you want download it [y (requires curl) /n]? : " << std::endl;
+	if (render->CheckFile("termi.png") == false)
+	{
+		std::cout << "Icon wasn't found!\n";
+		std::cout << "Do you want download it [y (requires curl) /n]? : " << std::endl;
 
-        std::string yn;
-        std::cin >> yn;
+		std::string yn;
+		std::cin >> yn;
 
-        if (yn == "y")
-        {
-            system("wget https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/Termi-Linux-OpenGL/termi.png");
+		if (yn == "y")
+		{
+			system("wget https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/Termi-Linux-OpenGL/termi.png");
 
-            if (render->CheckFile("termi.png"))
-            {
-                iconReady = true;
-            }
-        }
-    }
+			if (render->CheckFile("termi.png"))
+			{
+				iconReady = true;
+			}
+		}
+	}
 
-    else
-    {
-        iconReady = true;
-    }
+	else
+	{
+		iconReady = true;
+	}
 
-    glfwInit();
-    GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
-    glfwMakeContextCurrent(window);
-    gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
-    if (window == NULL)
-    {
-        std::cout << "Unable to create OpenGL window!\nExiting...\n";
-        return 1;
-    }
+	glfwInit();
+	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
+	glfwMakeContextCurrent(window);
+	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+	if (window == NULL)
+	{
+		std::cout << "Unable to create OpenGL window!\nExiting...\n";
+		return 1;
+	}
 
-    else
-    {
-        #ifdef PRINT_WHEN_WINDOW_IS_CREATED
-                std::cout << "OpenGL window is created.\n";
-        #endif
-    }
+	else
+	{
+		#ifdef PRINT_WHEN_WINDOW_IS_CREATED
+			std::cout << "OpenGL window is created.\n";
+		#endif
+	}
 
-    if (iconReady)
-    {
-        GLFWimage images[1];
-        images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */
-        glfwSetWindowIcon(window, 1, images);
-        stbi_image_free(images[0].pixels);
-    }
+	if (iconReady)
+	{
+		GLFWimage images[1];
+		images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */ 
+		glfwSetWindowIcon(window, 1, images);
+		stbi_image_free(images[0].pixels);
+	}
 
-    else
-    {
-        std::cout << "Continuing without an icon!\n";
-    }
+	else
+	{
+		std::cout << "Continuing without an icon!\n";
+	}
 
-    /* Initialize Dear ImGui */
-    IMGUI_CHECKVERSION();
-    ImGui::CreateContext();
-    ImGuiIO& io = ImGui::GetIO(); (void)io;
-    ImGui::StyleColorsDark();
-    ImGui_ImplGlfw_InitForOpenGL(window, true);
-    ImGui_ImplOpenGL3_Init("#version 330");
+	/* Initialize Dear ImGui */
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
-    render->Settings(3, 0);
+	render->Settings(3, 0);
+	
+	if (render->font_name != "default")
+	{
+		if (render->CheckFile(render->font_name.c_str()) == 1)
+		{
+			io.Fonts->AddFontFromFileTTF(render->font_name.c_str(), render->Settings(4, 0));
+		}
+	}
 
-    if (render->font_name != "default")
-    {
-        if (render->CheckFile(render->font_name.c_str()) == 1)
-        {
-            io.Fonts->AddFontFromFileTTF(render->font_name.c_str(), render->Settings(4, 0));
-        }
-    }
+	render->Settings(0, 0);
 
-    render->Settings(0, 0);
+	if (render->startup_command != "none")
+	{
+		arg = true;
+	}
 
-    if (render->startup_command != "none")
-    {
-        arg = true;
-    }
+	while(!glfwWindowShouldClose(window))
+	{
+		glClear(GL_COLOR_BUFFER_BIT);
 
-    while (!glfwWindowShouldClose(window))
-    {
-        glClear(GL_COLOR_BUFFER_BIT);
+		/* Tell OpenGL a new frame is about to begin */
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
-        /* Tell OpenGL a new frame is about to begin */
-        ImGui_ImplOpenGL3_NewFrame();
-        ImGui_ImplGlfw_NewFrame();
-        ImGui::NewFrame();
+		glfwGetWindowSize(window, &width, &height);
+		window_width = static_cast<float>(width);
+		window_height = static_cast<float>(height);
 
-        glfwGetWindowSize(window, &width, &height);
-        window_width = static_cast<float>(width);
-        window_height = static_cast<float>(height);
+		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
+    	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
-        ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
-        ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
+		render = new Renderer();
 
-        render = new Renderer();
+		/* main Dear ImGui code */
+		main_code(vars, render);
 
-        /* main Dear ImGui code */
-        main_code(render);
+		if (arg && !alreadyarg)
+		{
+			console.ExecCommand(render->startup_command, argv[2]);
+			alreadyarg = true;
+		}
 
-        if (arg && !alreadyarg)
-        {
-            console.ExecCommand(render->startup_command, argv[2]);
-            alreadyarg = true;
-        }
+		#ifdef PRINT_FPS
+			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		#endif
 
-        #ifdef PRINT_FPS
-                printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-        #endif
+		/* Renders the Dear ImGui elements */
+		ImGui::Render();
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
-        /* Renders the Dear ImGui elements */
-        ImGui::Render();
-        ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+		glfwSwapBuffers(window);
+		glfwPollEvents();
 
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+		delete render;
+	}
 
-        delete render;
-    }
+	glfwTerminate();
 
-    glfwTerminate();
-
-    return 0;
+	delete vars;
+	return 0;
 }

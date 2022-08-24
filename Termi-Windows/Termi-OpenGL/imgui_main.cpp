@@ -9,8 +9,6 @@
 #include "imgui_code.hpp"
 
 using namespace std;
-using namespace ImGui;
-using namespace Translation;
 
 #pragma warning(disable : 4996)
 
@@ -20,6 +18,7 @@ using namespace Translation;
  * 1 - user error
  * 2 - system error
 */
+
 void ok()
 {
     console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
@@ -45,7 +44,7 @@ void not_ok(int which_error)
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors)
 {
-    auto p = GetCursorScreenPos();
+    auto p = ImGui::GetCursorScreenPos();
     const auto first_px = p.x, first_py = p.y;
     auto im_colors = ImGui::GetStyle().Colors;
     const auto default_color = im_colors[ImGuiCol_Text];
@@ -112,7 +111,7 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
             last_is_line = true;
         float last_px = 0.f;
         for (const auto& j : lines) {
-            Text(j.c_str());
+            ImGui::Text(j.c_str());
             p.y += 15.f;
             last_px = p.x;
             max_x = (max_x < last_px) ? last_px : max_x;
@@ -126,10 +125,10 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
         if (!last_is_line)
             p.y -= 15.f;
         if (i.text.back() != '\n')
-            p.x += CalcTextSize(last.c_str()).x;
+            p.x += ImGui::CalcTextSize(last.c_str()).x;
     };
     im_colors[ImGuiCol_Text] = default_color;
-    Dummy({ max_x - p.x, p.y - first_py });
+    ImGui::Dummy({ max_x - p.x, p.y - first_py });
 };
 
 void split_str(string const& str, const char delim, vector<string>& out)
@@ -218,13 +217,13 @@ void Console::Draw()
     // TODO: display items starting from the bottom
 
     // Reserve enough left-over height for 1 separator + 1 input text
-    const float footer_height_to_reserve = GetStyle().ItemSpacing.y + GetFrameHeightWithSpacing();
-    BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
-    if (BeginPopupContextWindow())
+    const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
+    ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
+    if (ImGui::BeginPopupContextWindow())
     {
-        if (Selectable("Clear")) ClearLog();
-        if (Selectable("Copy")) Copy = true;
-        EndPopup();
+        if (ImGui::Selectable("Clear")) ClearLog();
+        if (ImGui::Selectable("Copy")) Copy = true;
+        ImGui::EndPopup();
     }
 
     /*
@@ -253,24 +252,24 @@ void Console::Draw()
         * - Split them into same height items would be simpler and facilitate random-seeking into your list.
         * - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
     */
-    PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
+    ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
     if (Copy)
-        LogToClipboard();
+        ImGui::LogToClipboard();
     for (int i = 0; i < Items.Size; i++)
     {
         const char* item = Items[i];
         ColorfulText(item, { {'w', white}, {'b', blue}, {'d', grey}, {'l', lgrey}, {'g', green}, {'m', lime}, {'y', yellow}, {'p', purple}, {'r', red}, {'o', orange} });
     }
     if (Copy)
-        LogFinish();
+        ImGui::LogFinish();
 
-    if (ScrollToBottom || (AutoScroll && GetScrollY() >= GetScrollMaxY()))
-        SetScrollHereY(1.0f);
+    if (ScrollToBottom || (AutoScroll && ImGui::GetScrollY() >= ImGui::GetScrollMaxY()))
+        ImGui::SetScrollHereY(1.0f);
     ScrollToBottom = false;
 
-    PopStyleVar();
-    EndChild();
-    Separator();
+    ImGui::PopStyleVar();
+    ImGui::EndChild();
+    ImGui::Separator();
 
     bool reclaim_focus = false;
     if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !help_focus)
@@ -283,7 +282,7 @@ void Console::Draw()
     getcwd(cwd, sizeof(cwd));
 
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-    if (InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
+    if (ImGui::InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
     {
         s = InputBuf;
         Strtrim(s);
@@ -294,9 +293,9 @@ void Console::Draw()
     }
 
     // Auto-focus on window apparition
-    SetItemDefaultFocus();
+    ImGui::SetItemDefaultFocus();
     if (reclaim_focus)
-        SetKeyboardFocusHere(-1); // Auto focus previous widget
+        ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 }
 
 void Console::ExecCommand(string command_line, ...)
@@ -380,23 +379,10 @@ void Console::ExecCommand(string command_line, ...)
 
     else
     {
-#ifdef CMBAL
-        auto cmbal_command = cmbal.find(command_line);
-
-        if (cmbal_command != cmbal.end())
-        {
-            int error_code = cmbal_execute(cmbal_command->second.c_str());
-            goto go_two;
-        }
-
-#endif
-
-    go_one:
         AddLog("Unknown command: '%s'\n", command_line.c_str());
         not_ok(1);
     }
 
-go_two:
     arguments.clear();
 
     // On command input, we scroll to bottom even if AutoScroll==false
@@ -512,13 +498,13 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
 }
 
 /* Draw context menu */
-void Renderer::DrawMenu()
+void Renderer::DrawMenu(Vars* vars)
 {
-    if (BeginMenuBar())
+    if (ImGui::BeginMenuBar())
     {
-        if (BeginMenu(ChooseLanguage("terminal")))
+        if (ImGui::BeginMenu(ChooseLanguage(vars, 1)))
         {
-            if (MenuItem(ChooseLanguage("exit"), "Ctrl+X"))
+            if (ImGui::MenuItem(ChooseLanguage(vars, 6), "Ctrl+X"))
             {
                 exit(0);
             }
@@ -526,9 +512,9 @@ void Renderer::DrawMenu()
             ImGui::EndMenu();
         }
 
-        if (BeginMenu(ChooseLanguage("edit")))
+        if (ImGui::BeginMenu(ChooseLanguage(vars, 2)))
         {
-            if (MenuItem(ChooseLanguage("font picker"), "Ctrl+F"))
+            if (ImGui::MenuItem(ChooseLanguage(vars, 7), "Ctrl+F"))
             {
                 if (isFont == false)
                 {
@@ -542,40 +528,40 @@ void Renderer::DrawMenu()
                 }
             }
 
-            Separator();
+            ImGui::Separator();
 
-            if (MenuItem(ChooseLanguage("change theme"), "Ctrl+T"))
+            if (ImGui::MenuItem(ChooseLanguage(vars, 8), "Ctrl+T"))
             {
                 if (!isDarkTheme)
                 {
-                    StyleColorsLight();
+                    ImGui::StyleColorsLight();
                     isDarkTheme = true;
                 }
 
                 else
                 {
-                    StyleColorsDark();
+                    ImGui::StyleColorsDark();
                     isDarkTheme = false;
                 }
             }
 
-            Separator();
+            ImGui::Separator();
 
-            if (MenuItem(ChooseLanguage("change language"), "Ctrl+L"))
+            if (ImGui::MenuItem(ChooseLanguage(vars, 9), "Ctrl+L"))
             {
                 if (!language_dialog)
                 {
                     language_dialog = true;
-                    ChooseLanguageDialog(NULL);
+                    ChooseLanguageDialog(vars, NULL);
                 }
             }
 
             ImGui::EndMenu();
         }
 
-        if (BeginMenu(ChooseLanguage("about")))
+        if (ImGui::BeginMenu(ChooseLanguage(vars, 3)))
         {
-            if (MenuItem(ChooseLanguage("about termi")))
+            if (ImGui::MenuItem(ChooseLanguage(vars, 10)))
             {
                 if (termi_dialog == false)
                     termi_dialog = true;
@@ -583,7 +569,7 @@ void Renderer::DrawMenu()
                     termi_dialog = false;
             }
 
-            if (MenuItem(ChooseLanguage("about imgui")))
+            if (ImGui::MenuItem(ChooseLanguage(vars, 11)))
             {
                 if (imgui_dialog == false)
                     imgui_dialog = true;
@@ -594,12 +580,12 @@ void Renderer::DrawMenu()
             ImGui::EndMenu();
         }
 
-        EndMenuBar();
+        ImGui::EndMenuBar();
     }
 }
 
 /* Draw tabs */
-void Renderer::DrawTab()
+void Renderer::DrawTab(Vars* vars)
 {
     static ImVector<int> active_tabs;
     static int next_tab_id = 0;
@@ -616,12 +602,12 @@ void Renderer::DrawTab()
     // Expose some other flags which are useful to showcase how they interact with Leading/Trailing tabs
     static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_AutoSelectNewTabs | ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyResizeDown | ImGuiTabBarFlags_NoCloseWithMiddleMouseButton;
 
-    if (BeginTabBar("MyTabBar", tab_bar_flags))
+    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
     {
         // Demo Trailing Tabs: click the "+" button to add a new tab (in your app you may want to use a font icon instead of the "+")
         // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
         if (show_trailing_button)
-            if (TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
+            if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
                 active_tabs.push_back(next_tab_id++); // Add new tab
 
         // Submit our regular tabs
@@ -630,11 +616,11 @@ void Renderer::DrawTab()
             bool open = true;
             char name[16] = "Termi";
             snprintf(name, IM_ARRAYSIZE(name), "%04d", active_tabs[n]);
-            if (BeginTabItem(name, &open, ImGuiTabItemFlags_None))
+            if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None))
             {
-                DrawMenu();
+                DrawMenu(vars);
                 console.Draw();
-                EndTabItem();
+                ImGui::EndTabItem();
             }
 
             if (!open)
@@ -650,74 +636,41 @@ void Renderer::DrawTab()
 /* Font dialog */
 void Renderer::Font(bool* p_open)
 {
-    ImGuiIO& io1 = GetIO();
+    ImGuiIO& io1 = ImGui::GetIO();
 
-    SetWindowPos(ImVec2(200, 200));
-    SetWindowSize(ImVec2(200, 200));
-    if (!Begin("Font dialog", p_open))
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(200, 200));
+    if (!ImGui::Begin("Font dialog", p_open))
     {
-        End();
+        ImGui::End();
         return;
     }
 
-    if (BeginPopupContextWindow())
+    if (ImGui::BeginPopupContextWindow())
     {
-        if (Button("Close window")) isFont = false;
-        EndPopup();
+        if (ImGui::Button("Close window")) isFont = false;
+        ImGui::EndPopup();
     }
 
-    if (InputText("Enter name of font file", const_cast<char*>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char*>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
+    if (ImGui::InputText("Enter name of font file", const_cast<char*>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char*>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
     {
         //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
     }
 
-    End();
+    ImGui::End();
 }
 
 /* Choose language function - return word on specified language */
-const char* Renderer::ChooseLanguage(const char* word)
+const char* Renderer::ChooseLanguage(Vars* vars, int id)
 {
-    if (language == "croatian")
+    if (vars->language == "english")
     {
-        if (word == "input") return Croatian::input;
-
-        if (word == "terminal") return Croatian::terminal;
-        if (word == "edit") return Croatian::edit;
-        if (word == "about") return Croatian::about;
-
-        if (word == "new tab") return Croatian::new_tab;
-        if (word == "new profile") return Croatian::new_profile;
-        if (word == "exit") return Croatian::exit_string;
-
-        if (word == "font picker") return Croatian::font_picker;
-        if (word == "change theme") return Croatian::change_theme;
-        if (word == "change language") return Croatian::change_language;
-
-        if (word == "about termi") return Croatian::about_termi;
-        if (word == "about imgui") return Croatian::about_imgui;
-
-        if (word == "settings") return Croatian::settings;
+        return Translation::English.at(id).c_str();
     }
 
-    /* Default language - English */
-    else
+    else if (vars->language == "croatian")
     {
-        if (word == "input") return English::input;
-
-        if (word == "terminal") return English::terminal;
-        if (word == "edit") return English::edit;
-        if (word == "about") return English::about;
-
-        if (word == "new tab") return English::new_tab;
-        if (word == "new profile") return English::new_profile;
-        if (word == "exit") return English::exit_string;
-
-        if (word == "font picker") return English::font_picker;
-        if (word == "change theme") return English::change_theme;
-        if (word == "change language") return English::change_language;
-
-        if (word == "about termi") return English::about_termi;
-        if (word == "about imgui") return English::about_imgui;
+        return Translation::Croatian.at(id).c_str();
     }
 
     /* nothing matches */
@@ -725,79 +678,79 @@ const char* Renderer::ChooseLanguage(const char* word)
 }
 
 /* Choose a language using dialog */
-void Renderer::ChooseLanguageDialog(bool* p_open)
+void Renderer::ChooseLanguageDialog(Vars* vars, bool* p_open)
 {
-    SetWindowPos(ImVec2(200, 200));
-    SetWindowSize(ImVec2(500, 500));
-    if (!Begin("Language dialog", p_open))
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(500, 500));
+    if (!ImGui::Begin("Language dialog", p_open))
     {
-        End();
+        ImGui::End();
         return;
     }
 
-    if (BeginPopupContextWindow())
+    if (ImGui::BeginPopupContextWindow())
     {
-        if (Button("Close window")) language_dialog = false;
-        EndPopup();
+        if (ImGui::Button("Close window")) language_dialog = false;
+        ImGui::EndPopup();
     }
 
-    Text("Choose language / Odaberi jezik");
-    Text(" "); /* empty space */
+    ImGui::Text("Choose language / Odaberi jezik");
+    ImGui::Text(" "); /* empty space */
 
-    if (Button("English (default)")) language = "english";
-    if (Button("Croatian / Hrvatski")) language = "croatian";
-    if (Button("Close window / Zatvori prozor")) language_dialog = false;
+    if (ImGui::Button("English (default)")) vars->language = "english";
+    if (ImGui::Button("Croatian / Hrvatski")) vars->language = "croatian";
+    if (ImGui::Button("X")) language_dialog = false;
 
-    End();
+    ImGui::End();
 }
 
 /* Dialog about Termi */
-void Renderer::TermiDialog(bool* p_open)
+void Renderer::TermiDialog(Vars* vars, bool* p_open)
 {
-    SetWindowPos(ImVec2(200, 200));
-    SetWindowSize(ImVec2(400, 600));
-    if (!Begin(ChooseLanguage("about termi"), p_open))
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(400, 600));
+    if (!ImGui::Begin(ChooseLanguage(vars, 10), p_open))
     {
-        End();
+        ImGui::End();
         return;
     }
 
-    if (BeginPopupContextWindow())
+    if (ImGui::BeginPopupContextWindow())
     {
-        if (Button("Close window")) language_dialog = false;
-        EndPopup();
+        if (ImGui::Button("Close window")) language_dialog = false;
+        ImGui::EndPopup();
     }
 
-    Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
-    Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
-    Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-    Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
-    Text("REPO > https://github.com/ringwormGO-organization/Termi");
+    ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+    ImGui::Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
+    ImGui::Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
+    ImGui::Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
+    ImGui::Text("REPO > https://github.com/ringwormGO-organization/Termi");
 
-    End();
+    ImGui::End();
 }
 
 /* Dialog about ImGui */
-void Renderer::ImGuiDialog(bool* p_open)
+void Renderer::ImGuiDialog(Vars* vars, bool* p_open)
 {
-    SetWindowPos(ImVec2(200, 200));
-    SetWindowSize(ImVec2(400, 200));
-    if (!Begin(ChooseLanguage("about imgui"), p_open))
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(400, 200));
+    if (!ImGui::Begin(ChooseLanguage(vars, 11), p_open))
     {
-        End();
+        ImGui::End();
         return;
     }
 
-    if (BeginPopupContextWindow())
+    if (ImGui::BeginPopupContextWindow())
     {
-        if (Button("Close window")) language_dialog = false;
-        EndPopup();
+        if (ImGui::Button("Close window")) language_dialog = false;
+        ImGui::EndPopup();
     }
 
-    Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
-    Text("REPO > https://github.com/ocornut/imgui");
+    ImGui::Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
+    ImGui::Text("REPO > https://github.com/ocornut/imgui");
 
-    End();
+    ImGui::End();
 }
 
 float Renderer::Settings(int id, float value)
@@ -859,107 +812,107 @@ float Renderer::Settings(int id, float value)
 
     switch (id)
     {
-        case 0: /* startup command */
-            while (getline(startup, temp_str))
-            {
-                this->startup_command = temp_str;
-                startup.close();
-            }
-            break;
+    case 0: /* startup command */
+        while (getline(startup, temp_str))
+        {
+            this->startup_command = temp_str;
+            startup.close();
+        }
+        break;
 
-        case 1: /* read width */
-            while (getline(width, temp_str))
-            {
-                float result = stof(temp_str);
-                width.close();
-                return result;
-            }
-            break;
+    case 1: /* read width */
+        while (getline(width, temp_str))
+        {
+            float result = stof(temp_str);
+            width.close();
+            return result;
+        }
+        break;
 
-        case 2: /* read height */
-            while (getline(height, temp_str))
-            {
-                float result = stof(temp_str);
-                height.close();
-                return result;
-            }
-            break;
+    case 2: /* read height */
+        while (getline(height, temp_str))
+        {
+            float result = stof(temp_str);
+            height.close();
+            return result;
+        }
+        break;
 
-        case 3: /* font name */
-            while (getline(font, temp_str))
-            {
-                this->font_name = temp_str;
-                font.close();
-            }
-            break;
+    case 3: /* font name */
+        while (getline(font, temp_str))
+        {
+            this->font_name = temp_str;
+            font.close();
+        }
+        break;
 
-        case 4: /* font size */
-            while (getline(font_size, temp_str))
-            {
-                float result = stof(temp_str);
-                font_size.close();
-                return result;
-            }
-            break;
+    case 4: /* font size */
+        while (getline(font_size, temp_str))
+        {
+            float result = stof(temp_str);
+            font_size.close();
+            return result;
+        }
+        break;
 
-        case 5: /* write startup command */
-            temp.open("temp.txt", mode);
-            temp << startup_command;
-            temp.close();
-            remove(path.startup.c_str());
-            rename("temp.txt", path.startup.c_str());
-            break;
+    case 5: /* write startup command */
+        temp.open("temp.txt", mode);
+        temp << startup_command;
+        temp.close();
+        remove(path.startup.c_str());
+        rename("temp.txt", path.startup.c_str());
+        break;
 
-        case 6: /* write width */
-            temp.open("temp.txt", mode);
-            temp << value;
-            temp.close();
-            remove(path.width.c_str());
-            rename("temp.txt", path.width.c_str());
-            break;
+    case 6: /* write width */
+        temp.open("temp.txt", mode);
+        temp << value;
+        temp.close();
+        remove(path.width.c_str());
+        rename("temp.txt", path.width.c_str());
+        break;
 
-        case 7: /* write height */
-            temp.open("temp.txt", mode);
-            temp << value;
-            temp.close();
-            remove(path.height.c_str());
-            rename("temp.txt", path.height.c_str());
-            break;
+    case 7: /* write height */
+        temp.open("temp.txt", mode);
+        temp << value;
+        temp.close();
+        remove(path.height.c_str());
+        rename("temp.txt", path.height.c_str());
+        break;
 
-        case 8: /* write font name*/
-            temp.open("temp.txt", mode);
-            temp << font_name;
-            temp.close();
-            remove(path.font.c_str());
-            rename("temp.txt", path.font.c_str());
-            break;
+    case 8: /* write font name*/
+        temp.open("temp.txt", mode);
+        temp << font_name;
+        temp.close();
+        remove(path.font.c_str());
+        rename("temp.txt", path.font.c_str());
+        break;
 
-        case 9: /* write font size */
-            temp.open("temp.txt", mode);
-            temp << value;
-            temp.close();
-            remove(path.size.c_str());
-            rename("temp.txt", path.size.c_str());
-            break;
+    case 9: /* write font size */
+        temp.open("temp.txt", mode);
+        temp << value;
+        temp.close();
+        remove(path.size.c_str());
+        rename("temp.txt", path.size.c_str());
+        break;
 
-        default:
-            console.AddLog("Invalid id %d!\n", id);
-            console.AddLog(
-                "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
-                "0 - read startup command\n"
-                "1 - read width\n",
-                "2 - read height\n",
-                "3 - set variable font_name to the font name\n",
-                "4 - read font size\n",
-                "---------------\n",
-                "5 - write startup command\n",
-                "6 - write width\n",
-                "7 - write height\n",
-                "8 - write font name\n",
-                "9 - write font size\n"
-            );
-            return 1;
-            break;
+    default:
+        console.AddLog("Invalid id %d!\n", id);
+        console.AddLog(
+            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+            "0 - read startup command\n"
+            "1 - read width\n",
+            "2 - read height\n",
+            "3 - set variable font_name to the font name\n",
+            "4 - read font size\n",
+            "---------------\n",
+            "5 - write startup command\n",
+            "6 - write width\n",
+            "7 - write height\n",
+            "8 - write font name\n",
+            "9 - write font size\n"
+        );
+        return 1;
+        break;
     }
 
     return 0;
@@ -981,10 +934,10 @@ bool Renderer::CheckFile(const char* name)
     return true;
 }
 
-void main_code(Renderer* render)
+void main_code(Vars* vars, Renderer* render)
 {
     /* ImGui window creation */
-    Begin
+    ImGui::Begin
     ("Termi",
         NULL,
         ImGuiWindowFlags_NoMove |
@@ -1004,12 +957,12 @@ void main_code(Renderer* render)
 #endif
 
 #ifdef PRINT_FPS
-    SetCursorPosX(window_width + window_width / 200 - 100);
-    TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
+    ImGui::SetCursorPosX(window_width + window_width / 200 - 100);
+    ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", ImGui::GetIO().Framerate);
 #endif
 
     /* Draw tabs and menu bar */
-    render->DrawTab();
+    render->DrawTab(vars);
 
     /* Font dialog */
     if (isFont)
@@ -1020,25 +973,25 @@ void main_code(Renderer* render)
     /* Language dialog */
     if (language_dialog)
     {
-        render->ChooseLanguageDialog(NULL);
+        render->ChooseLanguageDialog(vars, NULL);
     }
 
     /* About Termi dialog */
     if (termi_dialog)
     {
-        render->TermiDialog(NULL);
+        render->TermiDialog(vars, NULL);
     }
 
     /* About ImGui dialog */
     if (imgui_dialog)
     {
-        render->ImGuiDialog(NULL);
+        render->ImGuiDialog(vars, NULL);
     }
 
     /* Get window width and height */
-    window_width = GetWindowWidth();
-    window_height = GetWindowHeight();
+    window_width = ImGui::GetWindowWidth();
+    window_height = ImGui::GetWindowHeight();
 
     /* End of window */
-    End();
+    ImGui::End();
 }
