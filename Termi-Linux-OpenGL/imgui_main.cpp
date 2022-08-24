@@ -959,8 +959,8 @@ void main_code(Vars* vars, Renderer* render)
 #endif
 
 #ifdef PRINT_FPS
-    SetCursorPosX(window_width + window_width / 200 - 100);
-    TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", GetIO().Framerate);
+    ImGui::SetCursorPosX(window_width + window_width / 200 - 100);
+    ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", ImGui::GetIO().Framerate);
 #endif
 
     /* Draw tabs and menu bar */

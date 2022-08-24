@@ -10,4 +10,4 @@
 #pragma once
 
 #define PRINT_WHEN_WINDOW_IS_CREATED
-#undef PRINT_FPS
+#define PRINT_FPS
