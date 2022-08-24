@@ -72,7 +72,7 @@ Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution (pictures may late
 - [OpenGL](https://www.opengl.org/)
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
-- [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` copy for Windows
+- [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` for Windows
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
