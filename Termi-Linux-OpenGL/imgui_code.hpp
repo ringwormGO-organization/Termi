@@ -61,8 +61,6 @@ static bool settings_dialog = false;
 static bool alReadyPrinted = false;
 static bool help_focus = false;
 
-static const char* language;
-
 /* 
  * Commands list - command and function
  * name of command, name of function
@@ -137,18 +135,25 @@ orange = { 1.00f, 0.36f, 0.09f,1 };
 */
 void split_str(std::string const &str, const char delim, std::vector <std::string> &out);
 
+/* Variables */
+struct Vars
+{
+    std::string language;
+};
+
 /* Renderer class */
 class Renderer
 {
     public:
-        void DrawTab();
+        void DrawMenu(Vars* vars);
+        void DrawTab(Vars* vars);
         void Font(bool* p_open);
 
-        const char* ChooseLanguage(const char* word);
-        void ChooseLanguageDialog(bool* p_open);
+        const char* ChooseLanguage(Vars* vars, int id);
+        void ChooseLanguageDialog(Vars* vars, bool* p_open);
 
-        void TermiDialog(bool* p_open);
-        void ImGuiDialog(bool* p_open);
+        void TermiDialog(Vars* vars, bool* p_open);
+        void ImGuiDialog(Vars* vars, bool* p_open);
 
         float Settings(int id, float value);
 
@@ -166,8 +171,6 @@ class Renderer
             std::string font = "settings/font.txt";
             std::string size = "settings/size.txt";
         };
-
-        void DrawMenu();
 };
 
 /*
@@ -219,6 +222,6 @@ class Console : public Renderer
 };
 
 /* Main code for starting ImGui */
-void main_code(Renderer* render);
+void main_code(Vars* vars, Renderer* render);
 
 extern Console console;

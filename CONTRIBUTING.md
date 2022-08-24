@@ -11,13 +11,78 @@ Just drop a Pull Request :)
 ```
 # Directory organization (OpenGL)
 1. GNU/Linux version have own folder while Windows version is in `Termi-Windows` directory.
-2. Code is in "root" while commands will be in `Commands` directory.
+2. Code is in "root" while header files for commands will be in `Commands` directory.
+3. `imgui_main.cpp` contains code about rendering windows and console.
+4. `imgui_commands.cpp` contains code for commands`.
+5. `imgui_code.hpp` is header file for `imgui_main.cpp` and `imgui_commands.cpp`.
 
 # Add language (not programming language) to Termi
-1. In `Translation.hpp` add new namespace followed by language name.
-2. Copy stuff from above, use same names for variables, just translate.
-3. In `imgui_code.cpp` in `ChooseLanguage` function copy stuff above and change namespace name.
-4. Last thing to do is to add button to `ChooseLanguageDialog` function and give to variable proper value.
+1. Add new `std::vector` to `Translation.hpp` in `Translation` namespace.
+2. Follow strings' IDs.
+3. Add new language in `ChooseLanguageDialog` function.
+4. Add new language in `ChooseLanguage` function.
+
+Example:
+```cpp
+    /* Translation.hpp */
+    static std::vector<std::string> Spanish = {"spanish words"};
+
+    /**
+     * Naming convention for IDs fot strings
+     * 0: Input
+     * 1: Terminal
+     * 2: Edit
+     * 3: About
+     * 4: New Tab
+     * 5: New profile
+     * 6: Exit
+     * 7: Font picker
+     * 8: Change theme
+     * 9: Change language
+     * 10: About Termi
+     * 11: About Dear ImGui
+    */
+```
+```cpp
+/* imgui_main.cpp */
+const char* Renderer::ChooseLanguage(Vars* vars, int id)
+{
+    /* be careful which word you put `ChooseLanguageDialog` funtion */
+    if (vars->language == "spanish")
+    {
+        return Translation::English.at(id).c_str();
+    }
+
+    /* nothing matches */
+    return "Unknown word";
+}
+
+/* Choose a language using dialog */
+void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
+{
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(500, 500));
+    if (!ImGui::Begin("Language dialog", p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginPopupContextWindow())
+    {
+        if (ImGui::Button("Close window")) language_dialog = false;
+        ImGui::EndPopup();
+    }
+
+    ImGui::Text("Choose language / Odaberi jezik");
+    ImGui::Text(" "); /* empty space */
+
+    if (ImGui::Button("spanish")) vars->language = "spanish";
+    if (ImGui::Button("X")) language_dialog = false;
+
+    ImGui::End();
+}
+```
 
 # Add command to Termi
 1. Create new file in `Commands` folder and create main function for command.

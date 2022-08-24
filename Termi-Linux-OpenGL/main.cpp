@@ -49,6 +49,15 @@ int main(int argc, char **argv)
 {
 	std::cout << "\n\n";
 
+	/* 
+	 * Creating variables which points to struct(s) or class(es)
+	 * vars gets value once,
+	 * while render is always getting value
+	*/
+
+	Vars* vars = new Vars();
+	vars->language = "english";
+
 	Renderer* render = new Renderer();
 
 	bool arg = false;
@@ -173,7 +182,7 @@ int main(int argc, char **argv)
 		render = new Renderer();
 
 		/* main Dear ImGui code */
-		main_code(render);
+		main_code(vars, render);
 
 		if (arg && !alreadyarg)
 		{
@@ -197,5 +206,6 @@ int main(int argc, char **argv)
 
 	glfwTerminate();
 
+	delete vars;
 	return 0;
 }
