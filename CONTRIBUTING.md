@@ -3,8 +3,9 @@ Just drop a Pull Request :)
 
 # Pull Request style
 1. Use LF. Set up your Git settings with this: `git config --global core.autocrlf false` and check if it is OK by `git config --global core.autocrlf`. It need to return `false` or nothing.
-2. You can use LF too, we don't care for now.
+2. Use CRLF for Windows code, LF for (GNU/)Linux code
 3. Use following style **WITH LOGIC**, check labels:
+4. Use spaces, size 4
 
 ```
 [LABEL NAME] Name of Pull Request
