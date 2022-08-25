@@ -675,6 +675,11 @@ const char* Renderer::ChooseLanguage(Vars* vars, int id)
         return Translation::Croatian.at(id).c_str();
     }
 
+    else if (vars->language == "vietnamese") 
+    {
+        return Translation::Vietnamese.at(id).c_str();
+    }
+
     /* nothing matches */
     return "Unknown word";
 }
@@ -701,6 +706,8 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
 
     if (ImGui::Button("English (default)")) vars->language = "english";
     if (ImGui::Button("Croatian / Hrvatski")) vars->language = "croatian";
+    if (ImGui::Button("Vietnamese / Tiếng Việt")) vars->language = "vietnamese";
+    /* if (ImGui::Button("Vietnamese / Tieng Viet")) vars->language = "vietnamese"; */
     if (ImGui::Button("X")) language_dialog = false;
 
     ImGui::End();
