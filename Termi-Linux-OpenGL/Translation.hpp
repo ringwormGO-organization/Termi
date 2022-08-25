@@ -15,9 +15,9 @@ namespace Translation
 {
     static std::vector<std::string> English = {"Input", "Terminal", "Edit", "About", "New Tab", "New profile", "Exit", "Font picker", "Change theme", "Change language", "About Termi", "About Dear ImGui"};
     static std::vector<std::string> Croatian = {"Unos", "Ljuska", "Uredi", "O Termiju", "Nova kartica", "Novi profil", "Izađi", "Odaberi font", "Promijeni temu", "Promijeni jezik", "O Termiju", "O Dear ImGui-u"};
-	static std::vector<std::string> Vietnamese = {"Nhập vào", "Giao diện dòng lệnh", "Chỉnh sửa", "Về ... (Termi)", "Thẻ mới", "Hồ sơ mới", "Thoát", "Chọn phông", "Đổi chủ đề cho giao diện", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui"};
-	// static std::vector<std::string> Vietnamese = {"Nhap vao", "Giao dien dong lenh", "Chinh sua", "Ve ... (Termi)" "The moi", "Ho so moi", "Thoat", "Chon phong", "Doi chu de cho giao dien", "Doi ngon ngu", "Ve Termi", "Ve Dear ImGui"};
-	// Without native Vietnamese character
+    static std::vector<std::string> Vietnamese = {"Nhập vào", "Giao diện dòng lệnh", "Chỉnh sửa", "Về ... (Termi)", "Thẻ mới", "Hồ sơ mới", "Thoát", "Chọn phông", "Đổi chủ đề cho giao diện", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui"};
+    // static std::vector<std::string> Vietnamese = {"Nhap vao", "Giao dien dong lenh", "Chinh sua", "Ve ... (Termi)" "The moi", "Ho so moi", "Thoat", "Chon phong", "Doi chu de cho giao dien", "Doi ngon ngu", "Ve Termi", "Ve Dear ImGui"};
+    // Without native Vietnamese character
     /**
      * Naming convention for IDs fot strings
      * 0: Input
