@@ -51,6 +51,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
   - Install with ```sudo apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
 - OpenGL - for OpenGL project part
   - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on GNU/Linux machine
+  - For BSD based operating systems, process should be similar, just when you are done with compiling GLFW, copy header files to `/usr/include/GLFW`
 
 ### Build & Run - Windows
 - Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.

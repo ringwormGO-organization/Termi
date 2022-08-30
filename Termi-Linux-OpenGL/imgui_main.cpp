@@ -44,7 +44,7 @@ void not_ok(int which_error)
     }
 }
 
-void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors = {}) 
+void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors) 
 {
     auto p = ImGui::GetCursorScreenPos();
     const auto first_px = p.x, first_py = p.y;
