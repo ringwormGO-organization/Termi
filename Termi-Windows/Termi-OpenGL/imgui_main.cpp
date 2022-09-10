@@ -209,6 +209,12 @@ void Console::AddLog(const char* fmt, ...)
     vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
     buf[IM_ARRAYSIZE(buf) - 1] = 0;
     va_end(args);
+
+    if (Items.size() + 1 == 4000)
+    {
+        Items.erase(Items.begin());
+    }
+
     Items.push_back(Strdup(buf));
 }
 
@@ -313,6 +319,11 @@ void Console::ExecCommand(string command_line, ...)
             History.erase(History.begin() + i);
             break;
         }
+    }
+
+    if (History.size() + 1 == 4000)
+    {
+        History.erase(History.begin());
     }
 
     History.push_back(Strdup(command_line.c_str()));
@@ -964,8 +975,8 @@ void main_code(Vars* vars, Renderer* render)
 #endif
 
 #ifdef PRINT_FPS
-    ImGui::SetCursorPosX(window_width + window_width / 200 - 100);
-    ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.1f FPS)", ImGui::GetIO().Framerate);
+    ImGui::SetCursorPosX(window_width + window_width / 200 - 200);
+    ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.3f ms/frame, %.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 #endif
 
     /* Draw tabs and menu bar */
