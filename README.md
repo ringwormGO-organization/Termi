@@ -1,6 +1,6 @@
 # Termi
 
-(Windows version maybe will be synced once in each week)
+(Windows version might will be synced once in each week)
 
 **From now, non-OpenGL version will not be supported!**
 
