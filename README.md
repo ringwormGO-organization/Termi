@@ -51,6 +51,8 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
   - Install with ```sudo apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
 - OpenGL - for OpenGL project part
   - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on GNU/Linux machine
+  - For BSD based operating systems, process should be similar, just when you are done with compiling GLFW, copy header files to `/usr/include/GLFW`
+  and copy `libglfw.so` and `libGL.so` to `/usr/lib/`
 
 ### Build & Run - Windows
 - Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.
@@ -61,7 +63,11 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ### Build & Run (OpenGL)
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
-2. For GNU/Linux (macOS, unsupported) type: ```cmake . && make && ./Termi-OpenGL```. If you can't compile project try with: ```cmake && make && ./Termi-OpenGL```. If you still can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video!
+2. For GNU/Linux (macOS, BSD, unsupported) type: ```cmake . && make && ./Termi-OpenGL```. If you can't compile project try with: ```cmake && make && ./Termi-OpenGL```. If you still can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video!
+
+## Known issues
+- OpenGL might now open when reading from .txt file, remove `render->Settings(1, 0)` and `render->Settings(2, 0)` to size which you want
+- Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**
 
 ## Development picture
 ![image](https://user-images.githubusercontent.com/83548580/159910200-8fa25e94-ba38-4b34-a84c-21d48f381603.png)

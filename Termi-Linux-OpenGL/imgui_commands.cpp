@@ -211,8 +211,8 @@ int new_dir(std::vector<std::string>& vect)
 int neofetch(std::vector<std::string>& vect)
 {
     /* Username and computer name */
-    gethostname(info.computer, HOST_NAME_MAX);
-    getlogin_r(info.user, LOGIN_NAME_MAX);
+    gethostname(info.computer, 64);
+    getlogin_r(info.user, 256);
 
     /* OS */
     #ifdef _WIN32
@@ -332,11 +332,12 @@ int rm(std::vector<std::string>& vect)
 
 int whoami(std::vector<std::string>& vect)
 {
-    char user[HOST_NAME_MAX];
-
-    getlogin_r(user, HOST_NAME_MAX);
+    char user[64];
+    getlogin_r(user, 64);
 
     console.AddLog("%s\n", user);
+
+    return 0;
 }
 
 int writefile(std::vector<std::string>& vect)

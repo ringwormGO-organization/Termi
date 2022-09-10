@@ -1,3 +1,5 @@
+# Archived currently
+
 '''
 AUTHOR:      Andrej Bartulin
 PROJECT:     Termi's Windows version generator
@@ -284,6 +286,7 @@ if __name__ == "__main__":
     print(colorama.Fore.LIGHTRED_EX + "Termi's Windows code generator.".center(100))
     print("It generates code for Windows 7 as minium Windows version.".center(100) + colorama.Fore.RESET)
     print(colorama.Fore.LIGHTYELLOW_EX + "Internet connection required!".center(100) + colorama.Fore.RESET)
+    print(colorama.Fore.LIGHTGREEN_EX + "Archived currently!".center(100) + colorama.Fore.RESET)
     print(" ")
 
     if len(sys.argv) >= 1 and len(sys.argv) != 2 and len(sys.argv) != 4:

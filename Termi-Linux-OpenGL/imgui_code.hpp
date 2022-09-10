@@ -115,7 +115,7 @@ static int whitespaces(std::string& str)
  * Function which colors text
  * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
 */
-void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors = {});
+void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors);
 
 static const ImVec4&
 white = { 1,1,1,1 },
