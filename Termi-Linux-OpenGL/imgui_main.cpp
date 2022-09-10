@@ -211,6 +211,12 @@ void Console::AddLog(const char* fmt, ...)
     vsnprintf(buf, IM_ARRAYSIZE(buf), fmt, args);
     buf[IM_ARRAYSIZE(buf) - 1] = 0;
     va_end(args);
+
+    if (Items.size() + 1 == 4000)
+    {
+        Items.erase(Items.begin());
+    }
+
     Items.push_back(Strdup(buf));
 }
 
@@ -315,6 +321,11 @@ void Console::ExecCommand(string command_line, ...)
             History.erase(History.begin() + i);
             break;
         }
+    }
+
+    if (History.size() + 1 == 4000)
+    {
+        History.erase(History.begin());
     }
 
     History.push_back(Strdup(command_line.c_str()));
