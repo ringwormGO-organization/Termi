@@ -1,9 +1,9 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(tlib-test)
+project(tlib)
 
-set(CMAKE_CXX_FLAGS "-Wcpp")
+set(CMAKE_CXX_FLAGS)
 
-file(GLOB SRC CONFIGURE_DEPENDS "*.h" "*.cpp")
+file(GLOB SRC CONFIGURE_DEPENDS "*.hpp" "*.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC})
