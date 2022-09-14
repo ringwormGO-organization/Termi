@@ -30,9 +30,10 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 - [x] User settings in text files
 - [ ] Support most of major commands
 - [x] Arguments
-- [ ] Loading executables (tlib)
+- [ ] Language for commands (tlib) **(planned for v2.0.0)**
+- [ ] Loading executables (tlib) **(planned for v3.0.0, removes language feature)**
 - [x] Colors in console
-- [x] Translation (may not be fully finished in first release)
+- [x] Translation (may not be fully finished in stable release)
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
@@ -92,4 +93,4 @@ ____________________________________
 
 Thank you for choosing Termi.
 
-© 2022 ringwormGO
+© 2021 - present ringwormGO
