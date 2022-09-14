@@ -4,6 +4,6 @@ project(tlib)
 
 set(CMAKE_CXX_FLAGS)
 
-file(GLOB SRC CONFIGURE_DEPENDS "*.hpp" "*.cpp")
+file(GLOB SRC CONFIGURE_DEPENDS "src/*.hpp" "src/*.cpp")
 
 add_executable(${PROJECT_NAME} ${SRC})
