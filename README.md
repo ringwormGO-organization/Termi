@@ -90,11 +90,10 @@ Termi-OpenGL running on GNU/Linux, Arch Linux (pictures may late)
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
 - [Stack Overflow](https://stackoverflow.com/) - solution for most of problems
-- [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommended Dear ImGui
-- [Linenoise](https://github.com/yhirose/cpp-linenoise) - for Termi-Shell
+- [Cherno](https://www.youtube.com/c/TheChernoProject) - he recommended Dear ImGui to us
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
-- Other artcicles on the internet
+- Other artcicles about programming (web format, books, etc.)
 ____________________________________
 
 Thank you for choosing Termi.
