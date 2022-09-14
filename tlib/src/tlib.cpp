@@ -400,7 +400,7 @@ void run(std::string path)
     keywords *k = new keywords;
     errors *error = new errors;
 
-    if (path.substr(path.size() - 7) != ".lesper")
+    if (path.substr(path.size() - 5) != ".tlib")
     {
         std::cout << error->wrong_file_extension << std::endl;
         exit(0);
