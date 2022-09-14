@@ -70,9 +70,9 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 - Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**
 
 ## Development picture
-![image](https://user-images.githubusercontent.com/83548580/159910200-8fa25e94-ba38-4b34-a84c-21d48f381603.png)
+![image](https://user-images.githubusercontent.com/83548580/190228798-b568230d-fe73-4021-8130-96b921741303.png)
 
-Termi-OpenGL running on GNU/Linux, Lubuntu 21.10 distribution (pictures may late)
+Termi-OpenGL running on GNU/Linux, Arch Linux (pictures may late)
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
