@@ -43,17 +43,23 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 ### Required software:
 - Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++``` and ```.NET 5.0 Runtime``` components (if you use Visual Studio 2022, add support for Visual Studio 2019) - Windows.
 - g++ complier - GNU/Linux
-  - Install with ```sudo apt-get install g++``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
 - build-essential (base-devel for Arch based distors) - GNU/Linux
-  - Install with ```sudo apt-get install build-essential``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S base-devel``` if not already installed on GNU/Linux machine, Arch based.
 - CMake
-  - Install with ```sudo apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
 - Git
-  - Install with ```sudo apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
 - OpenGL - for OpenGL project part
   - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on GNU/Linux machine
   - For BSD based operating systems, process should be similar, just when you are done with compiling GLFW, copy header files to `/usr/include/GLFW`
   and copy `libglfw.so` and `libGL.so` to `/usr/lib/`
+  
+**Commands which requires package installation have to be runned with root access!**
 
 ### Build & Run - Windows
 - Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.
