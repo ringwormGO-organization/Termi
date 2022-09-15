@@ -7,6 +7,7 @@
 
 #include "tlib.hpp"
 #include "util.hpp"
+#include "port.hpp"
 
 std::string open_file(std::string filename)
 {
@@ -15,7 +16,7 @@ std::string open_file(std::string filename)
     FILE *file = fopen(filename.c_str(), "r");
     if (file == NULL)
     {
-        std::cout << "Error opening file" << std::endl;
+        PRINT("Error opening file");
         return "";
     }
 
@@ -268,7 +269,7 @@ void print(std::string str)
         return;
     }
 
-    std::cout << str << std::endl;
+    PRINT(str);
 }
 
 void assign(std::string varname, std::string varvalue)
@@ -306,8 +307,9 @@ std::string get_variable(std::string varname, struct errors *error)
 void input(std::string str, std::string varname)
 {
     std::string i, j = "STRING:", finale;
+    str += " ";
 
-    std::cout << str << " ";
+    PRINT(str);
     getline(std::cin, i);
     i += " ";
     finale += j + i;
@@ -402,7 +404,7 @@ void run(std::string path)
 
     if (path.substr(path.size() - 5) != ".tlib")
     {
-        std::cout << error->wrong_file_extension << std::endl;
+        PRINT(error->wrong_file_extension);
         exit(0);
     }
 
