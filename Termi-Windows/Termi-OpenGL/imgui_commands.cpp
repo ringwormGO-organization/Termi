@@ -268,7 +268,7 @@ int new_dir(std::vector<std::string>& vect)
     }
 }
 
-int neofetch(std::vector<std::string>& vect)
+int sysfetch(std::vector<std::string>& vect)
 {
     /* Username and computer name */
     TCHAR username[UNLEN + 1];
@@ -653,16 +653,21 @@ int openfile(std::vector<std::string>& vect)
     return 0;
 }
 
-int ttime(std::vector<std::string>& vect)
+int ping(std::vector<std::string>& vect)
 {
-    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
-    console.AddLog("%s", ctime(&givemetime));
-    return 0;
+    return 2;
 }
 
 int rm(std::vector<std::string>& vect)
 {
     return remove(vect[1].c_str());
+}
+
+int ttime(std::vector<std::string>& vect)
+{
+    auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
+    console.AddLog("%s", ctime(&givemetime));
+    return 0;
 }
 
 int whoami(std::vector<std::string>& vect)

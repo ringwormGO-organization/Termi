@@ -98,7 +98,7 @@
     <ClInclude Include="Translation.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\Neofetch.hpp">
+    <ClInclude Include="Commands\sysfetch.hpp">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="Commands\filesys.hpp">
@@ -126,6 +126,9 @@
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
     <ClInclude Include="Commands\base64.hpp">
+      <Filter>Header Files\Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="Commands\ping.hpp">
       <Filter>Header Files\Commands</Filter>
     </ClInclude>
   </ItemGroup>
