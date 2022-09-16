@@ -16,9 +16,10 @@
 #include "Translation.hpp"
 
 #include "Commands/base64.hpp"
-#include "Commands/Neofetch.hpp"
+#include "Commands/sysfetch.hpp"
 #include "Commands/filesys.hpp"
 #include "Commands/calc.hpp"
+#include "Commands/ping.hpp"
 #include "Commands/other.hpp"
 #include "Commands/time.hpp"
 #include "Commands/termi.hpp"
@@ -76,10 +77,11 @@ static std::map<const std::string, const std::function<int(std::vector<std::stri
     {"geocalc", geocalc},
     {"list", list_dir},
     {"mkdir", new_dir},
-    {"neofetch", neofetch},
+    {"sysfetch", sysfetch},
     {"openfile", openfile},
-    {"time", ttime},
+    {"ping", ping},
     {"rm", rm},
+    {"time", ttime},
     {"whoami", whoami},
     {"writefile", writefile},
     {"yes", yes}

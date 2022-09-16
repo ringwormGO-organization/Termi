@@ -190,7 +190,7 @@ int main(int argc, char **argv)
 			alreadyarg = true;
 		}
 
-		#ifdef PRINT_FPS
+		#ifdef PRINT_FPS_CONSOLE
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		#endif
 
