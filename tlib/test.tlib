@@ -1,5 +1,0 @@
-if 1 == 1 then
-	print "Hello"
-endif
-
-print "apple"

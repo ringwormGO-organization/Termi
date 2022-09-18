@@ -30,8 +30,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 - [x] User settings in text files
 - [ ] Support most of major commands
 - [x] Arguments
-- [ ] Language for commands (tlib) **(planned for v2.0.0)**
-- [ ] Loading executables (tlib) **(planned for v3.0.0, removes language feature)**
+- [ ] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Colors in console
 - [x] Translation (may not be fully finished in stable release)
 
@@ -41,7 +40,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ## Build & Run
 ### Required software:
-- Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++``` and ```.NET 5.0 Runtime``` components (if you use Visual Studio 2022, add support for Visual Studio 2019) - Windows.
+- Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components (if you use Visual Studio 2022, add support for Visual Studio 2019) - Windows.
 - g++ complier - GNU/Linux
   - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
@@ -62,11 +61,8 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 **Commands which requires package installation have to be runned with root access!**
 
 ### Build & Run - Windows
-- Open ```Developer Command Prompt for VS 2019``` or ```Developer Command Prompt for VS 2022``` and run ```compile.bat``` in `Termi-Windows\Termi\x64\Release` directory.
-- Open Termi Visual Studio Solution and compile it.
-- If you running application from Visual Studio, loading executables won't work because running from ```Release``` folder/directory isn't same as running from Visual Studio!
-- Also you can build launcher and installer for Windows version too :)
-- If you want run Termi as standard user, check latest release and download executable or simply clone repo and update it with ```git pull```. You can also use [installer](https://github.com/ringwormGO-organization/Termi/blob/main/Termi-Windows/Installer/Termi.exe) but you need still need to download ```MSVC C++ runtime enviroment```b and ```.NET 5.0 Runtime```. It is recommended that you run the application as an administrator, especially if launcher downloading new update because writing to ```C:\Programs Files``` or similiar directory require administartor priviliges.
+1. Build `Termi-GUI` project and copy `Termi-GUI.dll` to place where is `Termi-Main.exe`
+2. Build `Termi-Main` project and run executable outside Visual Studio
 
 ### Build & Run (OpenGL)
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
