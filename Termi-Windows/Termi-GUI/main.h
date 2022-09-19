@@ -3,11 +3,4 @@
 // MathLibrary.h - Contains declarations of math functions
 #pragma once
 
-#if API_EXPORT
-#define _API __declspec(dllexport)
-#else
-#define _API __declspec(dllimport)
-#endif
 
-
-extern "C" _API int tmain();

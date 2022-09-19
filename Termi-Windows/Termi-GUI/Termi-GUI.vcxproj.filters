@@ -108,6 +108,9 @@
     <ClInclude Include="Commands\time.hpp">
       <Filter>Header Files\source\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Termi-Commands\Test.h">
+      <Filter>Header Files\source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp">

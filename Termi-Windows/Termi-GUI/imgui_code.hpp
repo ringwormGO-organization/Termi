@@ -7,6 +7,14 @@
 
 #pragma once
 
+#if API_EXPORT
+#define _API __declspec(dllexport)
+#else
+#define _API __declspec(dllimport)
+#endif
+
+extern "C" _API int tmain();
+
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
