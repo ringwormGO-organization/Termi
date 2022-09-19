@@ -51,9 +51,6 @@
     <ClInclude Include="imgui_code.hpp">
       <Filter>Header Files\source</Filter>
     </ClInclude>
-    <ClInclude Include="limits.h">
-      <Filter>Header Files\source</Filter>
-    </ClInclude>
     <ClInclude Include="Settings.hpp">
       <Filter>Header Files\source</Filter>
     </ClInclude>

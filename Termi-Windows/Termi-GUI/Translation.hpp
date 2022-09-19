@@ -3,7 +3,6 @@
  * PROJECT: Termi-Windowss version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Translation file
- * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #pragma once

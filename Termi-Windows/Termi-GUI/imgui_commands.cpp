@@ -3,7 +3,6 @@
  * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for implementing commands code
- * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier

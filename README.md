@@ -4,13 +4,13 @@
 
 **From now, non-OpenGL version will not be supported!**
 
-**If you want use non-OpenGL version, manually install files!**
+**If you want use non-OpenGL version, manually install files from commits history!**
 
 A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ## About Termi
 - Termi is a powerful terminal made using C++.
-- It can run on Windows, macOS and GNU/Linux.
+- It can run on Windows, macOS and GNU/Linux, BSD and all other platforms which support C++ standard library well as other platforms and GLFW
 - Have own commands.
 - The goal of Termi is create independent terminal.
 - ```Independent``` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering system.
@@ -21,18 +21,20 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ## Checklist
 ### Termi base part
-- [x] Windows version (old console one and Dear ImGui one)
-- [x] GNU/Linux version (old console one and Dear ImGui one)
-- [x] macOS version (same folder/directory as GNU/Linux version, unsupported, old console one and Dear ImGui one)
-- [x] Windows generator (rewrite, in Python programming language)
+- [x] Windows version
+- [x] GNU/Linux version
+- [x] BSD version (same folder/directory as GNU/Linux version, moderately supported)
+- [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
+- [ ] Windows generator (rewrite, in Python programming language)
 
 ### Termi advanced C++ part
 - [x] User settings in text files
-- [ ] Support most of major commands
+- [ ] User settings in JSON
+- [x] Support most of major commands
 - [x] Arguments
 - [ ] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Colors in console
-- [x] Translation (may not be fully finished in stable release)
+- [x] Translation (may not be fully finished in v2.0.0)
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
@@ -40,25 +42,34 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 
 ## Build & Run
 ### Required software:
+### Windows
 - Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components (if you use Visual Studio 2022, add support for Visual Studio 2019) - Windows.
-- g++ complier - GNU/Linux
+
+### Other
+- g++ complier
   - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
-- build-essential (base-devel for Arch based distors) - GNU/Linux
+- build-essential
   - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S base-devel``` if not already installed on GNU/Linux machine, Arch based.
 - CMake
   - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
-- Git
-  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
-  - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
 - OpenGL - for OpenGL project part
   - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on GNU/Linux machine
   - For BSD based operating systems, process should be similar, just when you are done with compiling GLFW, copy header files to `/usr/include/GLFW`
   and copy `libglfw.so` and `libGL.so` to `/usr/lib/`
+
+### Both
+- Git - for cloning repo
+  - Check Git website for Windows instructions or do `winget install git`
+  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
+- Python3 - required for tools
+  - Install with ```apt-get install python3``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S python3``` if not already installed on GNU/Linux machine, Arch based.
   
-**Commands which requires package installation have to be runned with root access!**
+**Commands which requires package installation have to be runned with administartor/root access!**
 
 ### Build & Run - Windows
 1. Build `Termi-GUI` project and copy `Termi-GUI.dll` to place where is `Termi-Main.exe`

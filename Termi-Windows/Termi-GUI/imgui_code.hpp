@@ -3,7 +3,6 @@
  * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file for Dear ImGui code
- * INFORAMTION: Compile solution, else check Victor Gordan's video
 */
 
 #pragma once
@@ -40,8 +39,8 @@
 
 #include <Windows.h>
 #include <direct.h>
+#include <limits.h>
 #include "dirent.h"
-#include "limits.h"
 
 /* All variables which are required */
 static float pos_x = 0;

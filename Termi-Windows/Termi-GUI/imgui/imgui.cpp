@@ -1,3 +1,5 @@
+#include "../pch.h" // use stdafx.h in Visual Studio 2017 and earlier
+
 // dear imgui, v1.88
 // (main code and documentation)
 
@@ -818,8 +820,6 @@ CODE
 //-------------------------------------------------------------------------
 // [SECTION] INCLUDES
 //-------------------------------------------------------------------------
-
-#include "../pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 
 #if defined(_MSC_VER) && !defined(_CRT_SECURE_NO_WARNINGS)
 #define _CRT_SECURE_NO_WARNINGS

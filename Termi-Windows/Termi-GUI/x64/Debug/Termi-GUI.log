@@ -8,29 +8,17 @@
   imgui_tables.cpp
   imgui_widgets.cpp
   imgui_commands.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\limits.h(8,1): warning C4005: 'NAME_MAX': macro redefinition
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\dirent.h(165): message : see previous definition of 'NAME_MAX'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\limits.h(9,1): warning C4005: 'PATH_MAX': macro redefinition
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\dirent.h(159): message : see previous definition of 'PATH_MAX'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(103,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   imgui_main.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\limits.h(8,1): warning C4005: 'NAME_MAX': macro redefinition
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\dirent.h(165): message : see previous definition of 'NAME_MAX'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\limits.h(9,1): warning C4005: 'PATH_MAX': macro redefinition
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\dirent.h(159): message : see previous definition of 'PATH_MAX'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(103,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   main.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\limits.h(8,1): warning C4005: 'NAME_MAX': macro redefinition
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\dirent.h(165): message : see previous definition of 'NAME_MAX'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\limits.h(9,1): warning C4005: 'PATH_MAX': macro redefinition
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\dirent.h(159): message : see previous definition of 'PATH_MAX'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(103,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(63,5): warning C4273: 'tmain': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(69,5): warning C4273: 'tmain': inconsistent dll linkage
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.h(13,21): message : see previous definition of 'tmain'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(118,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(118,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(124,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(124,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_commands.cpp(147): warning C4715: 'change_setting': not all control paths return a value
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_commands.cpp(146): warning C4715: 'change_setting': not all control paths return a value
   glad.c
 glfw3.lib(init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(init.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(monitor.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
