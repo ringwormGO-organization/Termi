@@ -1,12 +1,8 @@
 #include "pch.h"
-#include "pch.h"
 #include "Test.h"
 #include <stdio.h>
 
-#include "Export.h"
-
-void termi_main()
+void test_command()
 {
-	printf("Termi-Commands.dll");
-	tmain();
+	printf("This is a test command!\n");
 }

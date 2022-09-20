@@ -66,6 +66,41 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 	return FALSE;
 }
 
+typedef int(__cdecl* MYPROC)(LPCWSTR);
+static void dll_runtime_test()
+{
+	HINSTANCE hinstLib;
+	MYPROC ProcAdd;
+	BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+	// Get a handle to the DLL module.
+
+	hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
+
+	// If the handle is valid, try to get the function address.
+
+	if (hinstLib != NULL)
+	{
+		ProcAdd = (MYPROC)GetProcAddress(hinstLib, "test_command");
+
+		// If the function address is valid, call the function.
+
+		if (NULL != ProcAdd)
+		{
+			fRunTimeLinkSuccess = TRUE;
+			(ProcAdd)(L"Message sent to the DLL function\n");
+		}
+		// Free the DLL module.
+
+		fFreeResult = FreeLibrary(hinstLib);
+	}
+
+	// If unable to call the DLL function, use an alternative.
+	if (!fRunTimeLinkSuccess)
+		printf("Message printed from executable\n");
+
+}
+
 int tmain()
 {
 	std::cout << "\n\n";
@@ -84,6 +119,8 @@ int tmain()
 	bool arg = false;
 	bool alreadyarg = false;
 	bool iconReady = false;
+
+	dll_runtime_test();
 
 	/* Catch CTRL-C */
 	SetConsoleCtrlHandler(end, TRUE);
