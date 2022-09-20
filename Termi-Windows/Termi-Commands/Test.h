@@ -6,4 +6,4 @@
 #define _API __declspec(dllimport)
 #endif
 
-extern "C" _API void command_test_10();
+extern "C" _API void termi_main();

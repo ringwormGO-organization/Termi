@@ -72,8 +72,9 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 **Commands which requires package installation have to be runned with administartor/root access!**
 
 ### Build & Run - Windows
-1. Build `Termi-GUI` project and copy `Termi-GUI.dll` to place where is `Termi-Main.exe`
-2. Build `Termi-Main` project and run executable outside Visual Studio
+1. Build `Termi-GUI` project and copy from `Termi-GUI/x64/Debug` `Termi-GUI.dll` and `Termi-GUI.lib` files into `Termi-Commands/x64/Debug`.
+2. Then copy from `Termi-Commands/x64/Debug` copy `Termi-GUI.dll`, `Termi-GUI.lib`, `Termi-Commands.dll` and `Termi-Commands.lib` files into `Termi-Main/bin/debug/net6.0` folder/directory.
+3. Build `Termi-Main` project and run executable
 
 ### Build & Run (OpenGL)
 1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.

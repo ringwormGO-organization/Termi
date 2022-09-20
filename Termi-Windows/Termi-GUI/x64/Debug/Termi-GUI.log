@@ -8,15 +8,15 @@
   imgui_tables.cpp
   imgui_widgets.cpp
   imgui_commands.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(110,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   imgui_main.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(110,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   main.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(110,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(70,5): warning C4273: 'tmain': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(16,21): message : see previous definition of 'tmain'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(127,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(127,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(102,30): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(69,5): warning C4273: 'tmain': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\Export.h(9,21): message : see previous definition of 'tmain'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(124,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(124,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_commands.cpp(146): warning C4715: 'change_setting': not all control paths return a value
   glad.c
@@ -29,11 +29,11 @@ glfw3.lib(win32_window.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found wit
 glfw3.lib(vulkan.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(vulkan.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(win32_init.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_init.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(win32_monitor.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_monitor.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
+     Creating library D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\Termi-GUI.lib and object D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\Termi-GUI.exp
 glfw3.lib(win32_time.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_time.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(win32_thread.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_thread.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(win32_joystick.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(win32_joystick.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(wgl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(wgl_context.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(egl_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(egl_context.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
 glfw3.lib(osmesa_context.obj) : warning LNK4099: PDB 'glfw3.pdb' was not found with 'glfw3.lib(osmesa_context.obj)' or at 'D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\glfw3.pdb'; linking object as if no debug info
-     Creating library D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\Termi-GUI.lib and object D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\Termi-GUI.exp
   Termi-GUI.vcxproj -> D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\Termi-GUI.dll

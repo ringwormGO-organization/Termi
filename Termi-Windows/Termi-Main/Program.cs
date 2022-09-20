@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-[DllImport("Termi-GUI.dll", EntryPoint = "tmain", CallingConvention = CallingConvention.Cdecl)]
-static extern void tmain();
+[DllImport("Termi-Commands", EntryPoint = "termi_main", CallingConvention = CallingConvention.Cdecl)]
+static extern void termi_main();
 
-tmain();
+termi_main();

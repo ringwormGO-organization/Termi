@@ -1,8 +1,8 @@
 ﻿  pch.cpp
   dllmain.cpp
   Test.cpp
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\Test.cpp(6,6): warning C4273: 'command_test_10': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\Test.h(9,22): message : see previous definition of 'command_test_10'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\Test.cpp(8,6): warning C4273: 'termi_main': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\Test.h(9,22): message : see previous definition of 'termi_main'
   Generating Code...
      Creating library D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\x64\Debug\Termi-Commands.lib and object D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\x64\Debug\Termi-Commands.exp
   Termi-Commands.vcxproj -> D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-Commands\x64\Debug\Termi-Commands.dll

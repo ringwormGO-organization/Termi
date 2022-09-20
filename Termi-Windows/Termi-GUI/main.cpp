@@ -8,6 +8,7 @@
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 #include <utility>
 #include <limits.h>
+#include "Export.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -27,8 +28,6 @@
 
 #include <glad/glad.h>
 #include <GLFW/glfw3.h>
-
-#include "Termi-Commands/Test.h"
 
 int width;
 int height;
@@ -76,8 +75,6 @@ int tmain()
 	 * vars gets value once,
 	 * while render is always getting value
 	*/
-
-	command_test_10();
 
 	Vars* vars = new Vars();
 	vars->language = "english";

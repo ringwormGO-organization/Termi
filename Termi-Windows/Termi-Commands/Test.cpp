@@ -3,7 +3,10 @@
 #include "Test.h"
 #include <stdio.h>
 
-void command_test_10()
+#include "Export.h"
+
+void termi_main()
 {
-	printf("Called from Termi-Commands.dll");
+	printf("Termi-Commands.dll");
+	tmain();
 }
