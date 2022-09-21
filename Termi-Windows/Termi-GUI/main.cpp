@@ -2,13 +2,12 @@
  * @author Andrej Bartulin
  * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
- * DESCRIPTION: Main file,e ntry point for dll
+ * DESCRIPTION: Main file, entry point for dll
 */
 
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 #include <utility>
 #include <limits.h>
-#include "Export.h"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -66,39 +65,10 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 	return FALSE;
 }
 
-typedef int(__cdecl* MYPROC)(LPCWSTR);
-static void dll_runtime_test()
+int fn()
 {
-	HINSTANCE hinstLib;
-	MYPROC ProcAdd;
-	BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-	// Get a handle to the DLL module.
-
-	hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
-
-	// If the handle is valid, try to get the function address.
-
-	if (hinstLib != NULL)
-	{
-		ProcAdd = (MYPROC)GetProcAddress(hinstLib, "test_command");
-
-		// If the function address is valid, call the function.
-
-		if (NULL != ProcAdd)
-		{
-			fRunTimeLinkSuccess = TRUE;
-			(ProcAdd)(L"Message sent to the DLL function\n");
-		}
-		// Free the DLL module.
-
-		fFreeResult = FreeLibrary(hinstLib);
-	}
-
-	// If unable to call the DLL function, use an alternative.
-	if (!fRunTimeLinkSuccess)
-		printf("Message printed from executable\n");
-
+	std::cout << "fn\n";
+	return 0;
 }
 
 int tmain()
@@ -119,8 +89,6 @@ int tmain()
 	bool arg = false;
 	bool alreadyarg = false;
 	bool iconReady = false;
-
-	dll_runtime_test();
 
 	/* Catch CTRL-C */
 	SetConsoleCtrlHandler(end, TRUE);
@@ -228,8 +196,6 @@ int tmain()
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
 		ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
-		render = new Renderer();
-
 		/* main Dear ImGui code */
 		main_code(vars, render);
 
@@ -243,12 +209,12 @@ int tmain()
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-		delete render;
 	}
 
 	glfwTerminate();
 
+	delete render;
 	delete vars;
+
 	return 0;
 }

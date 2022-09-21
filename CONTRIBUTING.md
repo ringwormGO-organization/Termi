@@ -11,6 +11,12 @@ Just drop a Pull Request :)
 [LABEL NAME] Name of Pull Request
 ```
 # Directory organization (OpenGL)
+## Windows version
+1. `Termi-Main` folder/directory is just C# projects which calls GUI code from `Termi-GUI.dll`.
+2. `Termi-GUI` is Visual Studio project for GUI code (calls `Termi-Commands.dll` at runtime).
+3. `Termi-Commands` is Visual Studio project for core commands (calls `Termi-GUI.dll` at runtime).
+
+## Other versions
 1. GNU/Linux version have own folder while Windows version is in `Termi-Windows` directory.
 2. Code is in "root" while header files for commands will be in `Commands` directory.
 3. `imgui_main.cpp` contains code about rendering windows and console.
@@ -86,6 +92,33 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
 ```
 
 # Add command to Termi
+## Windows version
+### Core commands
+1. Add function name in `Export.h` in `Termi-Commands` Visual Studio project.
+2. Add C++ code in `Commands.cpp` in `Termi-Commands` Visual Studio project.
+3. `AddLog` will work best with one argument so put everything in one `std::string` and pass it to `AddLog`.
+4. See example:
+```cpp
+extern "C"
+{
+	__declspec(dllexport) void __cdecl example(const std::vector<std::string>& vect);
+}; /* Export.h */
+
+void __cdecl example(const std::vector<std::string>& vect)
+{
+    int number = 30;
+    std::string str = "Number is: " + std::to_string(number) + "\n";
+    AddLog(str);
+}
+```
+
+### Port application
+1. Create new Visual Studio DLL project.
+2. Copy all stuff to load DLL stuff (`AddLog` function mostly).
+3. Copy all `_declspec(dllexport)` stuff (see example for core commands).
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
+
+## Other versions
 1. Create new file in `Commands` folder and create main function for command.
 2. Put command and function name in `commands` `std::map`, need to return integer based on is function executed correctly.
 3. Put main command code in `imgui_commands.cpp`.

@@ -25,9 +25,6 @@
     <Filter Include="Source Files\source\imgui">
       <UniqueIdentifier>{e1d56c2e-1e0d-4a64-bbb0-d1e8b1794286}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\source\Commands">
-      <UniqueIdentifier>{e4b998f7-ecab-42c0-b147-5c820e257d4d}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="framework.h">
@@ -43,9 +40,6 @@
       <Filter>Header Files\source</Filter>
     </ClInclude>
     <ClInclude Include="Translation.hpp">
-      <Filter>Header Files\source</Filter>
-    </ClInclude>
-    <ClInclude Include="dirent.h">
       <Filter>Header Files\source</Filter>
     </ClInclude>
     <ClInclude Include="imgui_code.hpp">
@@ -81,37 +75,7 @@
     <ClInclude Include="imgui\imgui_impl_opengl3_loader.h">
       <Filter>Header Files\source\imgui</Filter>
     </ClInclude>
-    <ClInclude Include="Commands\base64.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\calc.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\filesys.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\Geocalc.h">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\other.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\ping.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\sysfetch.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\termi.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
-    <ClInclude Include="Commands\time.hpp">
-      <Filter>Header Files\source\Commands</Filter>
-    </ClInclude>
     <ClInclude Include="Termi-Commands\Test.h">
-      <Filter>Header Files\source</Filter>
-    </ClInclude>
-    <ClInclude Include="Export.h">
       <Filter>Header Files\source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -123,9 +87,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
-      <Filter>Source Files\source</Filter>
-    </ClCompile>
-    <ClCompile Include="imgui_commands.cpp">
       <Filter>Source Files\source</Filter>
     </ClCompile>
     <ClCompile Include="imgui_main.cpp">

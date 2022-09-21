@@ -6,42 +6,12 @@
 */
 
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
-
 #include "imgui_code.hpp"
 
 using namespace std;
 
 #pragma warning(disable : 4996)
-
-/*
- * List of error codes:
- * 0 - no error
- * 1 - user error
- * 2 - system error
-*/
-
-void ok()
-{
-    console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
-}
-
-void not_ok(int which_error)
-{
-    if (which_error == 1)
-    {
-        console.AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-    }
-
-    else if (which_error == 2)
-    {
-        console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, system error!");
-    }
-
-    else
-    {
-
-    }
-}
+typedef int(__cdecl* MYPROC)(const std::vector<std::string>&);
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors)
 {
@@ -185,6 +155,38 @@ Console::~Console()
         free(History[i]);
 }
 
+void Console::LoadDLLFunction(std::vector<std::string>& vect, std::string function)
+{
+    HINSTANCE hinstLib;
+    MYPROC ProcAdd;
+    BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+    // Get a handle to the DLL module.
+    hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
+
+    // If the handle is valid, try to get the function address.
+    if (hinstLib != NULL)
+    {
+        ProcAdd = (MYPROC)GetProcAddress(hinstLib, function.c_str());
+
+        // If the function address is valid, call the function.
+        if (NULL != ProcAdd)
+        {
+            fRunTimeLinkSuccess = TRUE;
+            (ProcAdd) (vect);
+        }
+
+        // Free the DLL module.
+        fFreeResult = FreeLibrary(hinstLib);
+    }
+
+    // If unable to call the DLL function, use an alternative.
+    if (!fRunTimeLinkSuccess)
+    {
+        printf("Failed to run function from executable!\n");
+    }
+}
+
 void Console::ClearLog()
 {
     for (int i = 0; i < Items.Size; i++)
@@ -285,7 +287,7 @@ void Console::Draw()
         help_focus = true;
     }
 
-    char cwd[PATH_MAX];
+    char cwd[255];
     getcwd(cwd, sizeof(cwd));
 
     ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
@@ -330,30 +332,17 @@ void Console::ExecCommand(string command_line, ...)
     History.push_back(Strdup(command_line.c_str()));
 
     vector<string> arguments = {};
-
     const char delim = ' ';
     split_str(command_line, delim, arguments);
-
     command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
 
     AddLog("$y#%s\n", command_line.c_str());
-
     auto command = commands.find(command_line);
 
     if (command != commands.end())
     {
-        /* execute execuatable */
-        int error_code = commands[command_line](arguments);
-
-        if (error_code == 0)
-        {
-            ok();
-        }
-
-        else
-        {
-            not_ok(error_code);
-        }
+        auto result = commands.find(command_line);
+        LoadDLLFunction(arguments, result->second.c_str());
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -369,7 +358,7 @@ void Console::ExecCommand(string command_line, ...)
             AddLog("- %s", Commands[i]);
         }
 
-        ok();
+        AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
     }
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
@@ -380,7 +369,7 @@ void Console::ExecCommand(string command_line, ...)
         AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
 
-        ok();
+        AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
     }
 
     else if (Stricmp(command_line.c_str(), "exit") == 0)
@@ -392,7 +381,9 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
-        not_ok(1);
+
+        /* Blue - user error | Red - system error */
+        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
     }
 
     arguments.clear();
@@ -834,7 +825,7 @@ float Renderer::Settings(int id, float value)
     case 0: /* startup command */
         while (getline(startup, temp_str))
         {
-            this->startup_command = temp_str;
+            startup_command = temp_str;
             startup.close();
         }
         break;
@@ -860,7 +851,7 @@ float Renderer::Settings(int id, float value)
     case 3: /* font name */
         while (getline(font, temp_str))
         {
-            this->font_name = temp_str;
+            font_name = temp_str;
             font.close();
         }
         break;
@@ -1013,4 +1004,26 @@ void main_code(Vars* vars, Renderer* render)
 
     /* End of window */
     ImGui::End();
+}
+
+void AddLog(const char* fmt, ...)
+{
+    //std::cout << "hello\n";
+
+    console.AddLog(fmt);
+}
+
+void Settings(int id, float value)
+{
+    console.Settings(id, value);
+}
+
+void SetFontName(const char* name)
+{
+    console.font_name = name;
+}
+
+void SetStartupCommand(const char* command_name)
+{
+    console.startup_command = command_name;
 }

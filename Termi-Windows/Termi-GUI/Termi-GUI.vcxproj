@@ -154,17 +154,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="Commands\base64.hpp" />
-    <ClInclude Include="Commands\calc.hpp" />
-    <ClInclude Include="Commands\filesys.hpp" />
-    <ClInclude Include="Commands\Geocalc.h" />
-    <ClInclude Include="Commands\other.hpp" />
-    <ClInclude Include="Commands\ping.hpp" />
-    <ClInclude Include="Commands\sysfetch.hpp" />
-    <ClInclude Include="Commands\termi.hpp" />
-    <ClInclude Include="Commands\time.hpp" />
-    <ClInclude Include="dirent.h" />
-    <ClInclude Include="Export.h" />
     <ClInclude Include="framework.h" />
     <ClInclude Include="imgui\imconfig.h" />
     <ClInclude Include="imgui\imgui.h" />
@@ -193,7 +182,6 @@
     <ClCompile Include="imgui\imgui_impl_opengl3.cpp" />
     <ClCompile Include="imgui\imgui_tables.cpp" />
     <ClCompile Include="imgui\imgui_widgets.cpp" />
-    <ClCompile Include="imgui_commands.cpp" />
     <ClCompile Include="imgui_main.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
