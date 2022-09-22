@@ -2,7 +2,7 @@
  * @author Andrej Bartulin
  * PROJECT: Termi-Linux version
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
- * DESCRIPTION: Neofetch heder file
+ * DESCRIPTION: sysfetch heder file
 */
 
 #pragma once
@@ -23,8 +23,6 @@
 #include <unistd.h>
 #include <limits.h>
 #include <sys/unistd.h>
-
-int sysfetch(std::vector<std::string>& vect);
 
 enum PackageManager 
 {

@@ -153,6 +153,14 @@ yes()
 */
 ```
 
+```c
+yes()
+/* 
+    Checks server connection (sorry that this is not placed in alphabetical order) and also
+    all passed arguments will be ignored.
+*/
+```
+
 Thank you for choosing Termi.
 
 © 2022 ringwormGO

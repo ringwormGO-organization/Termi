@@ -3,7 +3,6 @@
  * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for Dear ImGui
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
 */
 
 #include "imgui_code.hpp"
@@ -13,36 +12,6 @@ using namespace std;
 #pragma GCC diagnostic ignored "-Wformat-security"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 #pragma GCC diagnostic ignored "-Wstringop-overflow="
-
-/*
- * List of error codes:
- * 0 - no error
- * 1 - user error
- * 2 - system error
-*/
-
-void ok()
-{
-    console.AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
-}
-
-void not_ok(int which_error)
-{
-    if (which_error == 1)
-    {
-        console.AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-    }
-
-    else if (which_error == 2)
-    {
-        console.AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, system error!");
-    }
-
-    else
-    {
-        
-    }
-}
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors) 
 {
@@ -184,6 +153,29 @@ Console::~Console()
     FullClearLog();
     for (int i = 0; i < History.Size; i++)
         free(History[i]);
+}
+
+void Console::LoadSO(std::vector<std::string>& vect, std::string function)
+{
+    void *handle;
+    void (*func)(const std::vector<std::string>&);
+    char *error;
+
+    handle = dlopen ("libTermi-Commands.so", RTLD_LAZY);
+    if (!handle) {
+        fputs (dlerror(), stderr);
+        puts(" ");
+        exit(1);
+    }
+
+    func = dlsym(handle, function.c_str());
+    if ((error = dlerror()) != NULL)  {
+        fputs(error, stderr);
+        exit(1);
+    }
+
+    (*func)(vect); /* ignore this argument */
+    dlclose(handle);
 }
 
 void Console::ClearLog()
@@ -331,30 +323,17 @@ void Console::ExecCommand(string command_line, ...)
     History.push_back(Strdup(command_line.c_str()));
 
     vector<string> arguments = {};
-    
     const char delim = ' ';
     split_str(command_line, delim, arguments);
-
     command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
 
     AddLog("$y#%s\n", command_line.c_str());
-
     auto command = commands.find(command_line);
 
     if (command != commands.end())
     {
-        /* execute execuatable */
-        int error_code = commands[command_line](arguments);
-        
-        if (error_code == 0)
-        {
-            ok();
-        }
-
-        else
-        {
-            not_ok(error_code);
-        }
+        auto result = commands.find(command_line);
+        LoadSO(arguments, result->second.c_str());
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -370,18 +349,18 @@ void Console::ExecCommand(string command_line, ...)
             AddLog("- %s", Commands[i]);
         }
 
-        ok();
+        AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
     }
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
         AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž, croatian's 'special' letters */
-        AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
+        AddLog("ABOUT > A powerful independent terminal made in C++ which use OpenGL and Dear ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
 
-        ok();
+        AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
     }
 
     else if (Stricmp(command_line.c_str(), "exit") == 0)
@@ -393,7 +372,9 @@ void Console::ExecCommand(string command_line, ...)
     else
     {
         AddLog("Unknown command: '%s'\n", command_line.c_str());
-        not_ok(1);
+
+        /* Blue - user error | Red - system error */
+        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
     }
 
     arguments.clear();
@@ -1014,4 +995,24 @@ void main_code(Vars* vars, Renderer* render)
 
     /* End of window */
     ImGui::End();
+}
+
+void AddLog(const char* fmt, ...)
+{
+    console.AddLog(fmt);
+}
+
+void Settings(int id, float value)
+{
+    console.Settings(id, value);
+}
+
+void SetFontName(const char* name)
+{
+    console.font_name = name;
+}
+
+void SetStartupCommand(const char* command_name)
+{
+    console.startup_command = command_name;
 }

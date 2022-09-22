@@ -6,7 +6,7 @@
 
 **If you want use non-OpenGL version, manually install files from commits history!**
 
-A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
+A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## About Termi
 - Termi is a powerful terminal made using C++.
@@ -22,7 +22,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 ## Checklist
 ### Termi base part
 - [x] Windows version
-- [x] GNU/Linux version
+- [x] GNU/Linux version (in `Termi-Other` folder/directory)
 - [x] BSD version (same folder/directory as GNU/Linux version, moderately supported)
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 - [ ] Windows generator (rewrite, in Python programming language)
@@ -44,7 +44,7 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 ## Build & Run
 ### Required software:
 ### Windows
-- Visual Studio 2019 or Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components (if you use Visual Studio 2022, add support for Visual Studio 2019) - Windows.
+- Visual Studio Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components - Windows.
 
 ### Other
 - g++ complier
@@ -77,13 +77,16 @@ A Powerful Terminal made in C++ with OpenGL and ImGui with own commands
 2. Then copy from `Termi-Commands/x64/Debug` copy `Termi-Commands.dll` file into `Termi-Main/bin/debug/net6.0` folder/directory.
 3. Build `Termi-Main` project and run executable
 
-### Build & Run (OpenGL)
-1. For Windows open Visual Studio solution and compile it. If you compile can't compile project check Victor's video on installing OpenGL (first public video on channel) and video about OpenGL and GLFW.
-2. For GNU/Linux (macOS, BSD, unsupported) type: ```cmake . && make && ./Termi-OpenGL```. If you can't compile project try with: ```cmake && make && ./Termi-OpenGL```. If you still can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video!
+### Build & Run - Other platforms
+1. Compile `Termi-Commands` project by running `cmake . && make`
+2. Compile `Termi-GUI` project by running `cmake . && make`
+3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` project.
+4. Compile `Termi-Main` project by running ```cmake . && make && ./Termi-OpenGL```. If you can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video just in case there is something important!
 
 ## Known issues
-- OpenGL might now open when reading from .txt file, remove `render->Settings(1, 0)` and `render->Settings(2, 0)` to size which you want
-- Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**
+- OpenGL might now open when reading from .txt file, remove `render->Settings(1, 0)` and `render->Settings(2, 0)` to size which you want.
+- Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**.
+- Running `Termi-Main` executable from zsh may result error in loading .so files, just run `Termi-Main` from bash.
 
 ## Development picture
 ![image](https://user-images.githubusercontent.com/83548580/190228798-b568230d-fe73-4021-8130-96b921741303.png)
@@ -102,6 +105,7 @@ Termi-OpenGL running on GNU/Linux, Arch Linux (pictures may late)
 - [Cherno](https://www.youtube.com/c/TheChernoProject) - he recommended Dear ImGui to us
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
+- [dl-libraries.html](https://tldp.org/HOWTO/Program-Library-HOWTO/dl-libraries.html) - for loading functions from .so files at runtime
 - Other artcicles about programming (web format, books, etc.)
 ____________________________________
 

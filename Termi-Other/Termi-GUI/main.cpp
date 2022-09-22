@@ -45,7 +45,7 @@ void end(int sig)
     }
 }
 
-int main(int argc, char **argv)
+void tmain()
 {
 	std::cout << "\n\n";
 
@@ -59,16 +59,7 @@ int main(int argc, char **argv)
 	vars->language = "english";
 
 	Renderer* render = new Renderer();
-
-	bool arg = false;
-	bool alreadyarg = false;
 	bool iconReady = false;
-
-	if (argc > 1)
-	{
-		render->startup_command = argv[1];
-		arg = true;
-	}
 
 	/* Catch CTRL-C */
 	sigIntHandler.sa_handler = end;
@@ -115,7 +106,7 @@ int main(int argc, char **argv)
 	if (window == NULL)
 	{
 		std::cout << "Unable to create OpenGL window!\nExiting...\n";
-		return 1;
+		return;
 	}
 
 	else
@@ -158,11 +149,6 @@ int main(int argc, char **argv)
 
 	render->Settings(0, 0);
 
-	if (render->startup_command != "none")
-	{
-		arg = true;
-	}
-
 	while(!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -184,12 +170,6 @@ int main(int argc, char **argv)
 		/* main Dear ImGui code */
 		main_code(vars, render);
 
-		if (arg && !alreadyarg)
-		{
-			console.ExecCommand(render->startup_command, argv[2]);
-			alreadyarg = true;
-		}
-
 		#ifdef PRINT_FPS_CONSOLE
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 		#endif
@@ -207,5 +187,4 @@ int main(int argc, char **argv)
 	glfwTerminate();
 
 	delete vars;
-	return 0;
 }

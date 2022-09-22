@@ -10,8 +10,6 @@
 #include <iostream>
 #include <vector>
 
-int base64(std::vector<std::string>& vect);
-
 static std::string base64_encode(const std::string &in) 
 {
     std::string out;

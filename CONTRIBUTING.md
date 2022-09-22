@@ -109,7 +109,7 @@ void __cdecl example(const std::vector<std::string>& vect)
     int number = 30;
     std::string str = "Number is: " + std::to_string(number) + "\n";
     AddLog(str);
-}
+} /* Commands.cpp */
 ```
 
 ### Port application
@@ -119,23 +119,32 @@ void __cdecl example(const std::vector<std::string>& vect)
 4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
 
 ## Other versions
-1. Create new file in `Commands` folder and create main function for command.
-2. Put command and function name in `commands` `std::map`, need to return integer based on is function executed correctly.
-3. Put main command code in `imgui_commands.cpp`.
-4. Function argument is: `std::vector<std::string>& vect`
-5. Don't forget for arguments even if it is not needed!
-
-Example:
+### Core commands
+1. Add function name in `Export.h` in `Termi-Commands` project.
+2. Add C++ code in `Commands.cpp` in `Termi-Commands` project.
+3. `AddLog` will work best with one argument so put everything in one `std::string` and pass it to `AddLog`.
+4. See example:
 ```cpp
-int example(std::vector<std::string>& vect); /* command.hpp */
-int example(std::vector<std::string>& vect)
+extern "C"
 {
-    cout << "Example\n";
-    return 0;
-} /* imgui_commands.cpp */
+	void example(const std::vector<std::string>& vect);
+}; /* Export.h */
+
+void example(const std::vector<std::string>& vect)
+{
+    int number = 30;
+    std::string str = "Number is: " + std::to_string(number) + "\n";
+    AddLog(str);
+} /* Commands.cpp */
 ```
 
-Information about elements in vector:
+### Port application
+1. Create new project with `CMakeLists.txt` file similar from `Termi-GUI` and `Termi-Commands` project
+2. Copy all stuff to load .so stuff (`AddLog` function mostly).
+3. Copy all `extern "C"` stuff (see example for core commands).
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
+
+## Informations about elements in vector:
 ```cpp
 vect[0]; /* name of command */
 vect[i]; /* argument while `i` represents order of argument */
