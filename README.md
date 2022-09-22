@@ -89,9 +89,9 @@ A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Running `Termi-Main` executable from zsh may result error in loading .so files, just run `Termi-Main` from bash.
 
 ## Development picture
-![image](https://user-images.githubusercontent.com/83548580/190228798-b568230d-fe73-4021-8130-96b921741303.png)
+![image](https://user-images.githubusercontent.com/83548580/191842065-6c5fdfec-cd70-49f5-8268-4f7b255796dc.png)
 
-Termi-OpenGL running on GNU/Linux, Arch Linux (pictures may late)
+Termi running on GNU/Linux, Arch Linux (pictures may late)
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
