@@ -88,10 +88,12 @@ A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**.
 - Running `Termi-Main` executable from zsh may result error in loading .so files, just run `Termi-Main` from bash.
 
-## Development picture
+## Development pictures (pictures may be late)
 ![image](https://user-images.githubusercontent.com/83548580/191842065-6c5fdfec-cd70-49f5-8268-4f7b255796dc.png)
+Termi running `sysfetch` command on GNU/Linux, Arch Linux
 
-Termi running on GNU/Linux, Arch Linux (pictures may late)
+![image](https://user-images.githubusercontent.com/83548580/191947406-51764cf6-e1c9-420b-8cf5-f5069b975327.png)
+Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 
 ## External dependencies
 - [OpenGL](https://www.opengl.org/)
