@@ -1,10 +1,7 @@
 # Termi
-
-(Windows version might will be synced once in each week)
-
-**From now, non-OpenGL version will not be supported!**
-
 **If you want use non-OpenGL version, manually install files from commits history!**
+
+**[Latest release](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)**
 
 A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
 
@@ -16,7 +13,8 @@ A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
 - ```Independent``` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering system.
 - We accept contibutors, create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
-- Currently there is only one [stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
+- [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
+- [Latest release (v2.0.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)
 - [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
 
 ## Checklist
