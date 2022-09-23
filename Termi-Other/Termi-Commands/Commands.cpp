@@ -10,6 +10,7 @@
 #include "Commands/base64.hpp"
 #include "Commands/sysfetch.hpp"
 #include "Commands/filesys.hpp"
+#include "Commands/ping.hpp"
 #include "Commands/Geocalc.h"
 
 #include <iostream>
@@ -637,8 +638,33 @@ void openfile(std::vector<std::string>& vect)
 
 void ping(const std::vector<std::string>& vect)
 {
-    Status(2);
-    return;
+    try
+    {
+        if (vect.size() < 2)
+        {
+            AddLog("Not enough arguments!");
+            Status(1);
+            return;
+        }
+
+        if (_ping(vect[1].c_str()))
+        {
+            AddLog("$gPing is OK!");
+        }
+
+        else
+        {
+            AddLog("$rPing is NOT OK!");
+        }
+
+        Status(0);
+    }
+
+    catch(...)
+    {
+        Status(2);
+        return;
+    }
 }
 
 void rm(const std::vector<std::string>& vect)
