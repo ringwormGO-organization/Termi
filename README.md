@@ -7,7 +7,7 @@ A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## About Termi
 - Termi is a powerful terminal made using C++.
-- It can run on Windows, macOS and GNU/Linux, BSD and all other platforms which support C++ standard library well as other platforms and GLFW
+- It can run on Windows, macOS and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
 - Have own commands.
 - The goal of Termi is create independent terminal.
 - ```Independent``` mean to be independent from terminal in operating system i.e. a separate kind of terminal use "own" GUI renedering system.
