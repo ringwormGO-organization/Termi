@@ -65,12 +65,6 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 	return FALSE;
 }
 
-int fn()
-{
-	std::cout << "fn\n";
-	return 0;
-}
-
 int tmain()
 {
 	std::cout << "\n\n";
