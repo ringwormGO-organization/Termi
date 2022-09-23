@@ -117,6 +117,8 @@ void __cdecl example(const std::vector<std::string>& vect)
 2. Copy all stuff to load DLL stuff (`AddLog` function mostly).
 3. Copy all `_declspec(dllexport)` stuff (see example for core commands).
 4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
+5. Create new core command
+6. In commands code create just call function from that new .dll file.
 
 ## Other versions
 ### Core commands
@@ -143,6 +145,8 @@ void example(const std::vector<std::string>& vect)
 2. Copy all stuff to load .so stuff (`AddLog` function mostly).
 3. Copy all `extern "C"` stuff (see example for core commands).
 4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
+5. Create new core command
+6. In commands code create just call function from that new .so file.
 
 ## Informations about elements in vector:
 ```cpp
