@@ -1,7 +1,7 @@
 # Termi
 **If you want use non-OpenGL version, manually install files from commits history!**
 
-**[Latest release](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)**
+**[Latest stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)**
 
 A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
