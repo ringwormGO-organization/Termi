@@ -23,7 +23,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] GNU/Linux version (in `Termi-Other` folder/directory)
 - [x] BSD version (same folder/directory as GNU/Linux version, moderately supported)
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
-- [ ] Windows generator (rewrite, in Python programming language)
+- [ ] Windows generator (rewrite, in Rust programming language)
 
 ### Termi advanced C++ part
 - [x] User settings in text files
@@ -68,6 +68,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
   - Install with ```apt-get install python3``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S python3``` if not already installed on GNU/Linux machine, Arch based.
   
+- Rust - required for building Rust commands (optional)
+  - Check Rust's website for download instructions
+  
 **Commands which requires package installation have to be runned with administartor/root access!**
 
 ### Build & Run - Windows
@@ -80,6 +83,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 2. Compile `Termi-GUI` project by running `cmake . && make`
 3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` project.
 4. Compile `Termi-Main` project by running ```cmake . && make && ./Termi-OpenGL```. If you can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video just in case there is something important!
+
+### For those who want more
+1. You can compile `rtest` Rust project by `cargo build` (and then copy .dll or .so file to folder/directory where are other .dll or .so files) if you want to have `yes` command mainly written in Rust 
 
 ## Known issues
 - OpenGL might now open when reading from .txt file, remove `render->Settings(1, 0)` and `render->Settings(2, 0)` to size which you want.
