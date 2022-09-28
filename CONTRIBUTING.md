@@ -165,23 +165,21 @@ edition = "2021"
 crate-type = ["cdylib"]
 
 [dependencies]
-libc = "0.2.0"
 libloading = "0.7"
 ```
 
-6. Change `lib.rs` content to:
+6. Change `lib.rs` content to (change path to .dll or .so file):
 ```rs
 #![allow(non_snake_case)]
 
-use libc::size_t;
 use libloading::{Library, Symbol};
 
-use std::ffi::{CString, CStr};
+use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
 fn AddLog(fmt: &CStr) {
     unsafe {
-        let lib = Library::new("Termi-GUI.dll").unwrap();
+        let lib = Library::new("path do .dll or .so file").unwrap();
         let foo = lib
             .get::<Symbol<extern "C" fn(*const c_char)>>(b"AddLog")
             .unwrap();
@@ -199,14 +197,14 @@ fn GetArgument(arg: *const c_char) -> CString {
 }
 
 #[no_mangle]
-pub extern "C" fn rust_function(_test: size_t) { /* ignore _test parameter, it is here to make things easy to load dll in C++ */
+pub extern "C" fn rust_function(arg: *const c_char) {
     /* your code */
 
     let text = CString::new("Example how to print text to Termi's console from Rust").expect("CString::new failed!");
     AddLog(&text);
 }
-```
 
+```
 7. At time being, you can only currently pass arguments which are type `const char*`!
 
 ### Informations about elements in vector:

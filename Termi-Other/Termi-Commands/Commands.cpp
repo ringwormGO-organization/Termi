@@ -77,6 +77,31 @@ void LoadSO(int id, float value)
     dlclose(handle);
 }
 
+int LoadRust(const char* path, const char* function, const char* value)
+{
+    void *handle;
+    void (*func)(const char*);
+    char *error;
+
+    handle = dlopen (path, RTLD_LAZY);
+    if (!handle) {
+        fputs (dlerror(), stderr);
+        puts(" ");
+        exit(1);
+    }
+
+    func = dlsym(handle, function);
+    if ((error = dlerror()) != NULL)  {
+        printf("%s\n", error);
+        return 1;
+    }
+
+    (*func)(value);
+    dlclose(handle);
+
+    return 0;
+}
+
 void AddLog(std::string fmt, ...)
 {
     LoadSO("AddLog", fmt.c_str());
@@ -727,9 +752,18 @@ void yes(const std::vector<std::string>& vect)
         AddLog("yes\n");
     }*/
 
-    for (int i = 0; i < 100000; i++)
+    AddLog("This function is test function which test connection between stuff written in Rust and C++ core!");
+    AddLog("Trying to load function from Rust (rtest.dll)...\n");
+
+    if (LoadRust("librtest.so", "rust_function", "Test argument") == 1)
     {
-        AddLog("y\n");
+        AddLog("Couldn't load function from Rust!");
+        AddLog("Switching to C++ code...\n");
+
+        for (int i = 0; i < 3000; i++)
+        {
+            AddLog("y");
+        }
     }
 
     Status(0);
