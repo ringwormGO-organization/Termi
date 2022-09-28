@@ -3,7 +3,7 @@
 
 **[Latest release](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)**
 
-A Powerful Terminal made in C++ with OpenGL and Dear ImGui with own commands
+A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## About Termi
 - Termi is a powerful terminal made using C++.
@@ -107,6 +107,8 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
 - [dl-libraries.html](https://tldp.org/HOWTO/Program-Library-HOWTO/dl-libraries.html) - for loading functions from .so files at runtime
 - Other artcicles about programming (web format, books, etc.)
+
+*Word `terminal` might not be the best word to describe this project*
 ____________________________________
 
 Thank you for choosing Termi.
