@@ -38,6 +38,7 @@ using namespace std;
 
 typedef int(__cdecl* MYPROC)(const char*);
 typedef int(__cdecl* MYPROC2)(int, float);
+typedef void(__cdecl* RUST)(const char*);
 
 static void LoadDLL(const char* function, const char* text, ...)
 {
@@ -69,7 +70,7 @@ static void LoadDLL(const char* function, const char* text, ...)
 
 	// If unable to call the DLL function, use an alternative.
 	if (!fRunTimeLinkSuccess)
-		printf("Message printed from executable 2\n");
+		printf("Error!\n");
 
 }
 
@@ -103,7 +104,42 @@ static void LoadDLL(int id, float value)
 
     // If unable to call the DLL function, use an alternative.
     if (!fRunTimeLinkSuccess)
-        printf("Message printed from executable 2\n");
+        printf("Error!\n");
+}
+
+static int LoadRust(const char* function, const char* value)
+{
+    HINSTANCE hinstLib;
+    RUST ProcAdd;
+    BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+    // Get a handle to the DLL module.
+
+    hinstLib = LoadLibrary(TEXT("rtest.dll"));
+
+    // If the handle is valid, try to get the function address.
+
+    if (hinstLib != NULL)
+    {
+        ProcAdd = (RUST)GetProcAddress(hinstLib, function);
+
+        // If the function address is valid, call the function.
+
+        if (NULL != ProcAdd)
+        {
+            fRunTimeLinkSuccess = TRUE;
+            (ProcAdd)(value); /* ignore this number */
+        }
+        // Free the DLL module.
+
+        fFreeResult = FreeLibrary(hinstLib);
+    }
+
+    // If unable to call the DLL function, use an alternative.
+    if (!fRunTimeLinkSuccess)
+        return 1;
+
+    return 0;
 }
 
 void AddLog(std::string fmt, ...)
@@ -1056,9 +1092,18 @@ void __cdecl yes(const std::vector<std::string>& vect)
         AddLog("yes\n");
     }*/
 
-    for (int i = 0; i < 100000; i++)
+    AddLog("This function is test function which test connection between stuff written in Rust and C++ core!");
+    AddLog("Trying to load function from Rust (rtest.dll)...\n");
+
+    if (LoadRust("rust_function", "Test argument") == 1)
     {
-        AddLog("y\n");
+        AddLog("Couldn't load function from Rust!");
+        AddLog("Switching to C++ code...\n");
+
+        for (int i = 0; i < 3000; i++)
+        {
+            AddLog("y");
+        }
     }
 
     Status(0);

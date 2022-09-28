@@ -91,7 +91,7 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
 }
 ```
 
-# Add command to Termi
+# Add command / port application to Termi
 ## Windows version
 ### Core commands
 1. Add function name in `Export.h` in `Termi-Commands` Visual Studio project.
@@ -148,7 +148,68 @@ void example(const std::vector<std::string>& vect)
 5. Create new core command
 6. In commands code create just call function from that new .so file.
 
-## Informations about elements in vector:
+## For those who want more
+### Port application written in Rust
+1. Follow "C++ steps" to create new core command.
+2. Create new `LoadRust` function (just copy previous one, change name and path of .dll file).
+3. Replace command code (in `Termi-Commands`) by your `LoadRust` function.
+4. Create new Rust library by using cargo - `cargo new --lib name`.
+5. Change `Cargo.toml` content to (change `name` and `version`):
+```c
+[package]
+name = "your package name"
+version = "version"
+edition = "2021"
+
+[lib]
+crate-type = ["cdylib"]
+
+[dependencies]
+libc = "0.2.0"
+libloading = "0.7"
+```
+
+6. Change `lib.rs` content to:
+```rs
+#![allow(non_snake_case)]
+
+use libc::size_t;
+use libloading::{Library, Symbol};
+
+use std::ffi::{CString, CStr};
+use std::os::raw::c_char;
+
+fn AddLog(fmt: &CStr) {
+    unsafe {
+        let lib = Library::new("Termi-GUI.dll").unwrap();
+        let foo = lib
+            .get::<Symbol<extern "C" fn(*const c_char)>>(b"AddLog")
+            .unwrap();
+
+        foo(fmt.as_ptr());
+    }
+}
+
+fn GetArgument(arg: *const c_char) -> CString {
+    let arg_buf = unsafe { CStr::from_ptr(arg) };
+    let arg_str = arg_buf.to_str().unwrap();
+    let argument = CString::new(arg_str).expect("CString::new failed!");
+
+    return argument;
+}
+
+#[no_mangle]
+pub extern "C" fn rust_function(_test: size_t) { /* ignore _test parameter, it is here to make things easy to load dll in C++ */
+    /* your code */
+
+    let text = CString::new("Example how to print text to Termi's console from Rust").expect("CString::new failed!");
+    AddLog(&text);
+}
+```
+
+7. At time being, you can only currently pass arguments which are type `const char*`!
+
+### Informations about elements in vector:
 ```cpp
 vect[0]; /* name of command */
 vect[i]; /* argument while `i` represents order of argument */
