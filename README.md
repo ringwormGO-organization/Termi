@@ -68,7 +68,6 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Python3 - required for tools
   - Install with ```apt-get install python3``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S python3``` if not already installed on GNU/Linux machine, Arch based.
-  
 - Rust - required for building Rust commands (optional)
   - Check Rust's website for download instructions
   
