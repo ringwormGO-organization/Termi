@@ -12,6 +12,7 @@ using namespace std;
 
 #pragma warning(disable : 4996)
 typedef int(__cdecl* MYPROC)(const std::vector<std::string>&);
+typedef void(__cdecl* THIRD_PARTY)(const char*);
 
 void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors)
 {
@@ -185,6 +186,40 @@ void Console::LoadDLLFunction(std::vector<std::string>& vect, std::string functi
     {
         printf("Failed to run function from executable!\n");
     }
+}
+
+int Console::LoadThirdParty(const char* path, const char* function, const char* value)
+{
+    HINSTANCE hinstLib;
+    THIRD_PARTY ProcAdd;
+    BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+    // Get a handle to the DLL module.
+    hinstLib = LoadLibrary((LPCWSTR)path);
+
+    // If the handle is valid, try to get the function address.
+    if (hinstLib != NULL)
+    {
+        ProcAdd = (THIRD_PARTY)GetProcAddress(hinstLib, function);
+
+        // If the function address is valid, call the function.
+        if (NULL != ProcAdd)
+        {
+            fRunTimeLinkSuccess = TRUE;
+            (ProcAdd)(value);
+        }
+
+        // Free the DLL module.
+        fFreeResult = FreeLibrary(hinstLib);
+    }
+
+    // If unable to call the DLL function, use an alternative.
+    if (!fRunTimeLinkSuccess)
+    {
+        printf("Failed to run function from executable!\n\n");
+    }
+
+    return 0;
 }
 
 void Console::ClearLog()
@@ -380,10 +415,33 @@ void Console::ExecCommand(string command_line, ...)
 
     else
     {
-        AddLog("Unknown command: '%s'\n", command_line.c_str());
+        std::string choice, path, funciton, params;
 
-        /* Blue - user error | Red - system error */
-        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+        std::cout << "Do you want to load command or application from third party .dll file [y/n]: ";
+        std::cin >> choice;
+
+        if (choice == "y")
+        {
+            std::cout << "Enter a path of .dll file: ";
+            std::cin >> path;
+
+            std::cout << "Enter a name of function: ";
+            std::cin >> funciton;
+
+            std::cout << "Enter arguments (one string at the time because of Rust compatability): ";
+            std::cin >> params;
+
+            LoadThirdParty(path.c_str(), funciton.c_str(), params.c_str());
+        }
+
+        else
+        {
+            std::cout << "\n";
+            AddLog("Unknown command: '%s'\n", command_line.c_str());
+
+            /* Blue - user error | Red - system error */
+            AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+        }
     }
 
     arguments.clear();

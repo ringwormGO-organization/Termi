@@ -1,4 +1,5 @@
-﻿  pch.cpp
+﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppClean.targets(77,5): warning : The process cannot access the file 'd:\andrejbackup\andrej\privatno-duboko\ostali\ringwormgo\ringwormgo\github\termi\termi-windows\termi-gui\x64\debug\termi-gui.pch' because it is being used by another process.
+  pch.cpp
   dllmain.cpp
   imgui.cpp
   imgui_demo.cpp
@@ -9,18 +10,18 @@
   imgui_widgets.cpp
   imgui_main.cpp
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(94,34): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1009,6): warning C4273: 'AddLog': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(228,15): message : see previous definition of 'AddLog'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1016,6): warning C4273: 'Settings': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(231,15): message : see previous definition of 'Settings'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1021,6): warning C4273: 'SetFontName': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(233,15): message : see previous definition of 'SetFontName'
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1026,6): warning C4273: 'SetStartupCommand': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(234,15): message : see previous definition of 'SetStartupCommand'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1067,6): warning C4273: 'AddLog': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(229,15): message : see previous definition of 'AddLog'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1074,6): warning C4273: 'Settings': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(232,15): message : see previous definition of 'Settings'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1079,6): warning C4273: 'SetFontName': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(234,15): message : see previous definition of 'SetFontName'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_main.cpp(1084,6): warning C4273: 'SetStartupCommand': inconsistent dll linkage
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(235,15): message : see previous definition of 'SetStartupCommand'
   main.cpp
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(94,34): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(68,5): warning C4273: 'tmain': inconsistent dll linkage
-D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(225,14): message : see previous definition of 'tmain'
+D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(226,14): message : see previous definition of 'tmain'
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(123,80): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
 D:\AndrejBackup\Andrej\PRIVATNO-duboko\Ostali\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(123,56): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
   Generating Code...
