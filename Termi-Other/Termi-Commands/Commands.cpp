@@ -85,14 +85,15 @@ int LoadRust(const char* path, const char* function, const char* value)
 
     handle = dlopen (path, RTLD_LAZY);
     if (!handle) {
-        fputs (dlerror(), stderr);
-        puts(" ");
-        exit(1);
+        printf("%s\n", dlerror());
+        printf("-------------\n");
+        return 1;
     }
 
     func = dlsym(handle, function);
     if ((error = dlerror()) != NULL)  {
         printf("%s\n", error);
+        printf("-------------\n");
         return 1;
     }
 

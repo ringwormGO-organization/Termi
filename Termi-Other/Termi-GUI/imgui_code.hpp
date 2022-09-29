@@ -195,6 +195,7 @@ extern "C" {
 
         public:
             void LoadSO(std::vector<std::string>& vect, std::string function);
+            int LoadThirdParty(const char* path, const char* function, const char* value);
 
         public:
             void ClearLog();

@@ -178,6 +178,33 @@ void Console::LoadSO(std::vector<std::string>& vect, std::string function)
     dlclose(handle);
 }
 
+
+int Console::LoadThirdParty(const char* path, const char* function, const char* value)
+{
+    void *handle;
+    void (*func)(const char*);
+    char *error;
+
+    handle = dlopen (path, RTLD_LAZY);
+    if (!handle) {
+        printf("%s\n", dlerror());
+        printf("-------------\n");
+        return 1;
+    }
+
+    func = dlsym(handle, function);
+    if ((error = dlerror()) != NULL)  {
+        printf("%s\n", error);
+        printf("-------------\n");
+        return 1;
+    }
+
+    (*func)(value);
+    dlclose(handle);
+
+    return 0;
+}
+
 void Console::ClearLog()
 {
     for (int i = 0; i < Items.Size; i++)
@@ -371,10 +398,33 @@ void Console::ExecCommand(string command_line, ...)
 
     else
     {
-        AddLog("Unknown command: '%s'\n", command_line.c_str());
+        std::string choice, path, funciton, params;
 
-        /* Blue - user error | Red - system error */
-        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+        std::cout << "Do you want to load command or application from third party .so file [y/n]: ";
+        std::cin >> choice;
+
+        if (choice == "y")
+        {
+            std::cout << "Enter a path of .so file: ";
+            std::cin >> path;
+
+            std::cout << "Enter a name of function: ";
+            std::cin >> funciton;
+
+            std::cout << "Enter arguments (one string at the time because of Rust compatability): ";
+            std::cin >> params;
+
+            LoadThirdParty(path.c_str(), funciton.c_str(), params.c_str());
+        }
+
+        else
+        {
+            std::cout << "\n";
+            AddLog("Unknown command: '%s'\n", command_line.c_str());
+
+            /* Blue - user error | Red - system error */
+            AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+        }
     }
 
     arguments.clear();
