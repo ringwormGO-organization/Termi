@@ -23,7 +23,6 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] GNU/Linux version (in `Termi-Other` folder/directory)
 - [x] BSD version (same folder/directory as GNU/Linux version, moderately supported)
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
-- [ ] Windows generator (rewrite, in Rust programming language)
 
 ### Termi advanced C++ part
 - [x] Arguments
