@@ -140,7 +140,7 @@ Console::Console()
         Commands.push_back(x.first.c_str());
     }
 
-    sort(Commands.begin(), Commands.end());
+    std::sort(Commands.begin(), Commands.end());
 
     AutoScroll = true;
     ScrollToBottom = false;
@@ -174,10 +174,9 @@ void Console::LoadSO(std::vector<std::string>& vect, std::string function)
         exit(1);
     }
 
-    (*func)(vect); /* ignore this argument */
+    (*func)(vect);
     dlclose(handle);
 }
-
 
 int Console::LoadThirdParty(const char* path, const char* function, const char* value)
 {
@@ -804,146 +803,112 @@ void Renderer::ImGuiDialog(Vars* vars, bool* p_open)
     ImGui::End();
 }
 
-float Renderer::Settings(int id, float value)
+int Renderer::Settings(int id, float value)
 {
-    settings_path path;
+    char user[64];
+    getlogin_r(user, 64);
 
-    int temp_id = id;
+    string folder_path = "/home/" + string(user) + "/.config/termi/";
+    string file_path = folder_path + "settings.json";
+    string default_json = "{\n\"startup_command\": \"none\",\n\"width\": 650,\n\"height\": 650,\n\"font_name\": \"none\",\n\"font_size\": 16\n}\n";
 
     auto mode = ios::app | ios::in;
     string temp_str = "";
 
-    if (!std::filesystem::exists("settings/") && !std::filesystem::is_directory("settings/"))
+    if (!std::filesystem::exists(folder_path) && !std::filesystem::is_directory(folder_path))
     {
-        mkdir("settings", 0777);
+        mkdir(folder_path.c_str(), 0777);
     }
 
-    if (!CheckFile(path.startup.c_str()))
+    if (!CheckFile(file_path.c_str()))
     {
-        fstream file(path.startup, mode);
-        file << "none";
+        fstream file(file_path, mode);
+        file << default_json;
         file.close();
     }
 
-    if (!CheckFile(path.width.c_str()))
+    FILE* file = fopen(file_path.c_str(), "r");
+    if (file == NULL)
     {
-        fstream file(path.width, mode);
-        file << 650;
-        file.close();
+        std::cout << "File '" << file_path << "' not found, returning default settings!\n";
+
+        switch (id)
+        {
+            case 0: /* startup command */
+                startup_command = "none";
+                break;
+
+            case 1: /* read width */
+                return 650;
+                break;
+
+            case 2: /* read height */
+                return 650;
+                break;
+
+            case 3: /* font name */
+                font_name = "none";
+                break;
+
+            case 4: /* font size */
+                return 16;
+                break;
+                
+            default:
+                console.AddLog("Invalid id %d!\n", id);
+                console.AddLog(
+                "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+                "0 - read startup command\n"
+                "1 - read width\n",
+                "2 - read height\n",
+                "3 - set variable font_name to the font name\n",
+                "4 - read font size\n"
+                );
+                return 1;
+                break;
+        }
+        return 1;
     }
 
-    if (!CheckFile(path.height.c_str()))
-    {
-        fstream file(path.height, mode);
-        file << 650;
-        file.close();
-    }
+    char buffer[1024];
 
-    if (!CheckFile(path.font.c_str()))
-    {
-        fstream file(path.font, mode);
-        file << "default";
-        file.close();
-    }
+    fread(buffer, 1024, 1, file);
+    fclose(file);
+    
+    struct json_object* parsed_json;
+    struct json_object* j_startup_command;
+    struct json_object* j_width;
+    struct json_object* j_height;
+    struct json_object* j_font_name;
+    struct json_object* j_font_size;
 
-    if (!CheckFile(path.size.c_str()))
-    {
-        fstream file(path.size, mode);
-        file << 16;
-        file.close();
-    }
-
-    fstream startup(path.startup, mode);
-    fstream width(path.width, mode);
-    fstream height(path.height, mode);
-    fstream font(path.font, mode);
-    fstream font_size(path.size, mode);
-
-    fstream temp;
+    parsed_json = json_tokener_parse(buffer);
+    json_object_object_get_ex(parsed_json, "startup_command", &j_startup_command);
+    json_object_object_get_ex(parsed_json, "width", &j_width);
+    json_object_object_get_ex(parsed_json, "height", &j_height);
+    json_object_object_get_ex(parsed_json, "font_name", &j_font_name);
+    json_object_object_get_ex(parsed_json, "font_size", &j_font_size);
 
     switch (id)
     {
         case 0: /* startup command */
-            while (getline(startup, temp_str))
-            {
-                this->startup_command = temp_str;
-                startup.close();            
-            }
+            startup_command = string(json_object_get_string(j_startup_command));
             break;
 
         case 1: /* read width */
-            while (getline(width, temp_str))
-            {
-                float result = stof(temp_str);
-                width.close();
-                return result;
-            }
+            return json_object_get_int(j_width);
             break;
 
         case 2: /* read height */
-            while (getline(height, temp_str))
-            {
-                float result = stof(temp_str);
-                height.close();
-                return result;
-            }
+            return json_object_get_int(j_height);
             break;
 
         case 3: /* font name */
-            while (getline(font, temp_str))
-            {
-                this->font_name = temp_str;
-                font.close();
-            }
+            font_name = string(json_object_get_string(j_font_name));
             break;
 
         case 4: /* font size */
-            while (getline(font_size, temp_str))
-            {
-                float result = stof(temp_str);
-                font_size.close();
-                return result;
-            }
-            break;
-
-        case 5: /* write startup command */
-            temp.open("temp.txt", mode);
-            temp << startup_command;
-            temp.close();
-            remove(path.startup.c_str());
-            rename("temp.txt", path.startup.c_str());
-            break;
-
-        case 6: /* write width */
-            temp.open("temp.txt", mode);
-            temp << value;
-            temp.close();
-            remove(path.width.c_str());
-            rename("temp.txt", path.width.c_str());
-            break;
-
-        case 7: /* write height */
-            temp.open("temp.txt", mode);
-            temp << value;
-            temp.close();
-            remove(path.height.c_str());
-            rename("temp.txt", path.height.c_str());
-            break;
-
-        case 8: /* write font name*/
-            temp.open("temp.txt", mode);
-            temp << font_name;
-            temp.close();
-            remove(path.font.c_str());
-            rename("temp.txt", path.font.c_str());
-            break;
-
-        case 9: /* write font size */
-            temp.open("temp.txt", mode);
-            temp << value;
-            temp.close();
-            remove(path.size.c_str());
-            rename("temp.txt", path.size.c_str());
+            return json_object_get_int(j_font_size);
             break;
             
         default:
@@ -954,13 +919,7 @@ float Renderer::Settings(int id, float value)
             "1 - read width\n",
             "2 - read height\n",
             "3 - set variable font_name to the font name\n",
-            "4 - read font size\n",
-            "---------------\n",
-            "5 - write startup command\n",
-            "6 - write width\n",
-            "7 - write height\n",
-            "8 - write font name\n",
-            "9 - write font size\n"
+            "4 - read font size\n"
             );
             return 1;
             break;
@@ -981,7 +940,6 @@ bool Renderer::CheckFile(const char* name)
     }
 
     file.close();
-
     return true;
 }
 
@@ -1050,19 +1008,4 @@ void main_code(Vars* vars, Renderer* render)
 void AddLog(const char* fmt, ...)
 {
     console.AddLog(fmt);
-}
-
-void Settings(int id, float value)
-{
-    console.Settings(id, value);
-}
-
-void SetFontName(const char* name)
-{
-    console.font_name = name;
-}
-
-void SetStartupCommand(const char* command_name)
-{
-    console.startup_command = command_name;
 }

@@ -14,24 +14,24 @@
 #include "Settings.hpp"
 #include "Translation.hpp"
 
-#include <iostream>
+#include <algorithm>
 #include <chrono>
 #include <ctime>
 #include <filesystem>
-#include <functional>
 #include <fstream>
+#include <iostream>
 #include <list>
 #include <map>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
-#include <sys/types.h>
-#include <sys/stat.h>
 #include <sys/stat.h>
 #include <unistd.h>
 #include <limits.h>
 #include <dlfcn.h>
+
+#include <json-c/json.h>
 
 extern "C" {
     /* All variables which are required */
@@ -60,7 +60,6 @@ extern "C" {
         {"base64", "base64"},
         {"calc", "calc"},
         {"cd", "cd"},
-        {"change-setting", "change_setting"},
         {"echo", "echo"},
         {"find", "find_command"},
         {"geocalc", "geocalc"},
@@ -146,22 +145,11 @@ extern "C" {
             void TermiDialog(Vars* vars, bool* p_open);
             void ImGuiDialog(Vars* vars, bool* p_open);
 
-            float Settings(int id, float value);
-
+            int Settings(int id, float value);
             bool CheckFile(const char* name);
 
             std::string font_name;
             std::string startup_command;
-
-        private:
-            struct settings_path
-            {
-                std::string startup = "settings/startup.txt";
-                std::string width = "settings/width.txt";
-                std::string height = "settings/height.txt";
-                std::string font = "settings/font.txt";
-                std::string size = "settings/size.txt";
-            };
     };
 
     /*
@@ -225,10 +213,4 @@ extern "C" {
 
     /* AddLog but outside of struct */
     void AddLog(const char* fmt, ...);
-
-    /* Settings outside of struct */
-    void Settings(int id, float value);
-
-    void SetFontName(const char* name);
-    void SetStartupCommand(const char* command_name);
 };

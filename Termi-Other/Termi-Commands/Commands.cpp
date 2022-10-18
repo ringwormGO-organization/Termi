@@ -260,43 +260,6 @@ void cd(const std::vector<std::string>& vect)
     Status(chdir(vect[1].c_str()));
 }
 
-void change_setting(const std::vector<std::string>& vect)
-{
-    if (vect.size() < 3)
-    {
-        AddLog("Not enough arguments!");
-        Status(1);
-        return;
-    }
-
-    int setting = stoi(vect[1]);
-
-    try
-    {
-        if (setting != 5 && setting != 8)
-        {
-            LoadSO(setting, stof(vect[2]));
-        }
-
-        else if (setting == 5)
-        {
-            LoadSO("SetFontName", vect[2].c_str());
-            LoadSO(5, 0);
-        }
-
-        else if (setting == 8)
-        {
-            LoadSO("SetStartupCommand", vect[2].c_str());
-            LoadSO(8, 0);
-        }
-    }
-
-    catch (...)
-    {
-        Status(2);
-    }
-}
-
 void echo(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
