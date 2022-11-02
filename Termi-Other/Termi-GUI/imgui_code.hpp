@@ -15,8 +15,6 @@
 #include "Translation.hpp"
 
 #include <algorithm>
-#include <chrono>
-#include <ctime>
 #include <filesystem>
 #include <fstream>
 #include <iostream>
@@ -136,7 +134,6 @@ extern "C" {
     {
         public:
             void DrawMenu(Vars* vars);
-            void DrawTab(Vars* vars);
             void Font(bool* p_open);
 
             const char* ChooseLanguage(Vars* vars, int id);
@@ -204,8 +201,11 @@ extern "C" {
             int TextEditCallback(ImGuiInputTextCallbackData* data);
     };
 
+    /* Function which draws tabs */
+    void DrawTab(Vars* vars);
+
     /* Main code for starting ImGui */
-    void main_code(Vars* vars, Renderer* render);
+    void main_code(Vars* vars);
 
     extern Console console;
 

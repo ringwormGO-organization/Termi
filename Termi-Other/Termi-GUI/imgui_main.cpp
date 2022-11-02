@@ -7,23 +7,21 @@
 
 #include "imgui_code.hpp"
 
-using namespace std;
-
 #pragma GCC diagnostic ignored "-Wformat-security"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 #pragma GCC diagnostic ignored "-Wstringop-overflow="
 
-void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors) 
+void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors) 
 {
     auto p = ImGui::GetCursorScreenPos();
     const auto first_px = p.x, first_py = p.y;
     auto im_colors = ImGui::GetStyle().Colors;
     const auto default_color = im_colors[ImGuiCol_Text];
-    string temp_str;
+    std::string temp_str;
     struct text_t 
     {
         ImVec4 color;
-        string text;
+        std::string text;
     };
 
     std::list<text_t> texts;
@@ -65,7 +63,7 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     float max_x = p.x;
     for (const auto& i : texts) {
         im_colors[ImGuiCol_Text] = i.color;
-        std::list<string> lines;
+        std::list<std::string> lines;
         temp_str.clear();
         for (const auto& lc : i.text) {
             if (lc == '\n') {
@@ -102,20 +100,20 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     ImGui::Dummy({ max_x - p.x, p.y - first_py });
 };
 
-void split_str(string const &str, const char delim, vector<string> &out)  
+void split_str(std::string const &str, const char delim, std::vector<std::string> &out)  
 {  
     /* create a stream from the string */  
-    stringstream s(str);  
+    std::stringstream s(str);  
         
-    string s2;  
+    std::string s2;  
     while (getline (s, s2, delim))  
     {  
         out.push_back(s2); /* store the string in s2 */  
     }
 }
 
-Console console;
-Renderer render;
+std::vector<std::pair<Renderer*, Console*>> vprender;
+int console_id;
 
 /*
  * Console class - everything for drawing and managing console
@@ -324,7 +322,7 @@ void Console::Draw()
         ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 }
 
-void Console::ExecCommand(string command_line, ...)
+void Console::ExecCommand(std::string command_line, ...)
 {
     /* 
         * Insert into history. First find matchand delete it so it can be pushed to the back.
@@ -348,7 +346,7 @@ void Console::ExecCommand(string command_line, ...)
 
     History.push_back(Strdup(command_line.c_str()));
 
-    vector<string> arguments = {};
+    std::vector<std::string> arguments = {};
     const char delim = ' ';
     split_str(command_line, delim, arguments);
     command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
@@ -627,55 +625,6 @@ void Renderer::DrawMenu(Vars* vars)
     }
 }
 
-/* Draw tabs */
-void Renderer::DrawTab(Vars* vars)
-{
-    static ImVector<int> active_tabs;
-    static int next_tab_id = 0;
-    if (next_tab_id == 0) // Initialize with some default tabs
-        for (int i = 0; i < 1; i++)
-            active_tabs.push_back(next_tab_id++);
-
-    // TabItemButton() and Leading/Trailing flags are distinct features which we will demo together.
-    // (It is possible to submit regular tabs with Leading/Trailing flags, or TabItemButton tabs without Leading/Trailing flags...
-    // but they tend to make more sense together)
-    static bool show_leading_button = false;
-    static bool show_trailing_button = true;
-
-    // Expose some other flags which are useful to showcase how they interact with Leading/Trailing tabs
-    static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_AutoSelectNewTabs | ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyResizeDown | ImGuiTabBarFlags_NoCloseWithMiddleMouseButton;
-
-    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
-    {
-        // Demo Trailing Tabs: click the "+" button to add a new tab (in your app you may want to use a font icon instead of the "+")
-        // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
-        if (show_trailing_button)
-            if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
-                active_tabs.push_back(next_tab_id++); // Add new tab
-
-        // Submit our regular tabs
-        for (int n = 0; n < active_tabs.Size; )
-        {
-            bool open = true;
-            char name[16] = "Termi";
-            snprintf(name, IM_ARRAYSIZE(name), "%04d", active_tabs[n]);
-            if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None))
-            {
-                DrawMenu(vars);
-                console.Draw();
-                ImGui::EndTabItem();
-            }
-
-            if (!open)
-                active_tabs.erase(active_tabs.Data + n);
-            else
-                n++;
-        }
-
-        ImGui::EndTabBar();
-    }
-}
-
 /* Font dialog */
 void Renderer::Font(bool* p_open)
 {
@@ -808,12 +757,12 @@ int Renderer::Settings(int id, float value)
     char user[64];
     getlogin_r(user, 64);
 
-    string folder_path = "/home/" + string(user) + "/.config/termi/";
-    string file_path = folder_path + "settings.json";
-    string default_json = "{\n\"startup_command\": \"none\",\n\"width\": 650,\n\"height\": 650,\n\"font_name\": \"none\",\n\"font_size\": 16\n}\n";
+    std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+    std::string file_path = folder_path + "settings.json";
+    std::string default_json = "{\n\"startup_command\": \"none\",\n\"width\": 650,\n\"height\": 650,\n\"font_name\": \"none\",\n\"font_size\": 16\n}\n";
 
-    auto mode = ios::app | ios::in;
-    string temp_str = "";
+    auto mode = std::ios::app | std::ios::in;
+    std::string temp_str = "";
 
     if (!std::filesystem::exists(folder_path) && !std::filesystem::is_directory(folder_path))
     {
@@ -822,7 +771,7 @@ int Renderer::Settings(int id, float value)
 
     if (!CheckFile(file_path.c_str()))
     {
-        fstream file(file_path, mode);
+        std::fstream file(file_path, mode);
         file << default_json;
         file.close();
     }
@@ -855,8 +804,8 @@ int Renderer::Settings(int id, float value)
                 break;
                 
             default:
-                console.AddLog("Invalid id %d!\n", id);
-                console.AddLog(
+                vprender[console_id].second->AddLog("Invalid id %d!\n", id);
+                vprender[console_id].second->AddLog(
                 "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
                 "0 - read startup command\n"
                 "1 - read width\n",
@@ -892,7 +841,7 @@ int Renderer::Settings(int id, float value)
     switch (id)
     {
         case 0: /* startup command */
-            startup_command = string(json_object_get_string(j_startup_command));
+            startup_command = std::string(json_object_get_string(j_startup_command));
             break;
 
         case 1: /* read width */
@@ -904,7 +853,7 @@ int Renderer::Settings(int id, float value)
             break;
 
         case 3: /* font name */
-            font_name = string(json_object_get_string(j_font_name));
+            font_name = std::string(json_object_get_string(j_font_name));
             break;
 
         case 4: /* font size */
@@ -912,8 +861,8 @@ int Renderer::Settings(int id, float value)
             break;
             
         default:
-            console.AddLog("Invalid id %d!\n", id);
-            console.AddLog(
+            vprender[console_id].second->AddLog("Invalid id %d!\n", id);
+            vprender[console_id].second->AddLog(
             "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
             "0 - read startup command\n"
             "1 - read width\n",
@@ -931,7 +880,7 @@ int Renderer::Settings(int id, float value)
 /* Check if file exists */
 bool Renderer::CheckFile(const char* name)
 {
-    fstream file;
+    std::fstream file;
     file.open(name);
 
     if (!file)
@@ -943,7 +892,67 @@ bool Renderer::CheckFile(const char* name)
     return true;
 }
 
-void main_code(Vars* vars, Renderer* render)
+/* Function which draws tabs */
+void DrawTab(Vars* vars)
+{
+    static ImVector<int> active_tabs;
+    static int next_tab_id = 0;
+    if (next_tab_id == 0) // Initialize with some default tabs
+        for (int i = 0; i < 1; i++)
+            active_tabs.push_back(next_tab_id++);
+
+    // TabItemButton() and Leading/Trailing flags are distinct features which we will demo together.
+    // (It is possible to submit regular tabs with Leading/Trailing flags, or TabItemButton tabs without Leading/Trailing flags...
+    // but they tend to make more sense together)
+    static bool show_leading_button = false;
+    static bool show_trailing_button = true;
+
+    // Expose some other flags which are useful to showcase how they interact with Leading/Trailing tabs
+    static ImGuiTabBarFlags tab_bar_flags = ImGuiTabBarFlags_AutoSelectNewTabs | ImGuiTabBarFlags_Reorderable | ImGuiTabBarFlags_FittingPolicyResizeDown | ImGuiTabBarFlags_NoCloseWithMiddleMouseButton;
+
+    if (ImGui::BeginTabBar("MyTabBar", tab_bar_flags))
+    {
+        // Demo Trailing Tabs: click the "+" button to add a new tab (in your app you may want to use a font icon instead of the "+")
+        // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
+        if (show_trailing_button)
+            if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
+                active_tabs.push_back(next_tab_id++); // Add new tab
+
+        // Submit our regular tabs
+        for (int n = 0; n < active_tabs.Size; )
+        {
+            bool open = true;
+            char name[16] = "Termi";
+            snprintf(name, IM_ARRAYSIZE(name), "%04d", active_tabs[n]);
+            if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None))
+            {
+                if (strcmp(name, "0000") == 0)
+                {
+                    console_id = 0;
+                    vprender[0].first->DrawMenu(vars);
+                    vprender[0].second->Draw();
+                    ImGui::EndTabItem();
+                }
+
+                else
+                {
+                    console_id = atoi(name);
+                    vprender[console_id].first->DrawMenu(vars);
+                    vprender[console_id].second->Draw();
+                }
+            }
+
+            if (!open)
+                active_tabs.erase(active_tabs.Data + n);
+            else
+                n++;
+        }
+
+        ImGui::EndTabBar();
+    }
+}
+
+void main_code(Vars* vars)
 {
     /* ImGui window creation */
     ImGui::Begin
@@ -960,7 +969,7 @@ void main_code(Vars* vars, Renderer* render)
 #ifdef PRINT_WHEN_WINDOW_IS_CREATED
     if (!alReadyPrinted)
     {
-        cout << "Dear ImGui window is created.\n";
+        std::cout << "Dear ImGui window is created.\n";
         alReadyPrinted = true;
     }
 #endif
@@ -970,31 +979,33 @@ void main_code(Vars* vars, Renderer* render)
     ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.3f ms/frame, %.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 #endif
 
+    vprender.push_back(std::make_pair(new Renderer(), new Console()));
+
     /* Draw tabs and menu bar */
-    render->DrawTab(vars);
+    DrawTab(vars);
 
     /* Font dialog */
     if (isFont)
     {
-        render->Font(NULL);
+        vprender[0].first->Font(NULL);
     }
 
     /* Language dialog */
     if (language_dialog)
     {
-        render->ChooseLanguageDialog(vars, NULL);
+        vprender[0].first->ChooseLanguageDialog(vars, NULL);
     }
 
     /* About Termi dialog */
     if (termi_dialog)
     {
-        render->TermiDialog(vars, NULL);
+        vprender[0].first->TermiDialog(vars, NULL);
     }
 
     /* About ImGui dialog */
     if (imgui_dialog)
     {
-        render->ImGuiDialog(vars, NULL);
+        vprender[0].first->ImGuiDialog(vars, NULL);
     }
 
     /* Get window width and height */
@@ -1003,9 +1014,15 @@ void main_code(Vars* vars, Renderer* render)
 
     /* End of window */
     ImGui::End();
+
+    /*for (auto x : vprender)
+    {
+        delete x.first;
+        delete x.second;
+    }*/
 }
 
 void AddLog(const char* fmt, ...)
 {
-    console.AddLog(fmt);
+    vprender[console_id].second->AddLog(fmt);
 }

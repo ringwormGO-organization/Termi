@@ -148,7 +148,7 @@ void tmain()
 	}
 
 	render->Settings(0, 0);
-
+	
 	while(!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
@@ -168,7 +168,7 @@ void tmain()
 		render = new Renderer();
 
 		/* main Dear ImGui code */
-		main_code(vars, render);
+		main_code(vars);
 
 		#ifdef PRINT_FPS_CONSOLE
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
