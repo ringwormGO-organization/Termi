@@ -32,6 +32,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Colors in console
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
+- [ ] Networking (SSH, `ping` core command, etc.) (planned for v3.0.0)
 - [x] Translation
 - [x] User settings in text files
 - [x] User settings in JSON

@@ -31,27 +31,18 @@
 
 #include <json-c/json.h>
 
-extern "C" {
-    /* All variables which are required */
+extern "C" 
+{
+    /* All global variables which we need */
     static float pos_x = 0;
     static float pos_y = 0;
     static float window_width = 650;
     static float window_height = 650;
 
-    static bool isDarkTheme = false;
-    static bool isFont = false;
-    static bool font_change = false;
-    static bool language_dialog = false;
-    static bool isDemoWindow = false;
-    static bool termi_dialog = false;
-    static bool imgui_dialog = false;
-    static bool settings_dialog = false;
-
     static bool alReadyPrinted = false;
-    static bool help_focus = false;
 
     /*
-     * Commands vector - name of command | name of function
+     * Commands map - name of command | name of function
     */
     static std::map<const std::string, const std::string> commands =
     {
@@ -73,16 +64,21 @@ extern "C" {
         {"yes", "yes"}
     };
 
-    /* Check if some string start with some std::string value */
+    /**
+     * Check if some string start with some std::string value 
+     * @param fullString - entire string
+     * @param starting - string with which we check if fullString starts with this string
+    */
     static bool isStarting (std::string const &fullString, std::string const &starting) 
     {
         if (fullString.length() <= starting.length()) { return true; }
         else { return false; }
     }
 
-    /* 
-    * Function to calculate whitespaces
-    * Credits: https://www.geeksforgeeks.org/isspace-in-c-and-its-application-to-count-whitespace-characters/ 
+    /**
+     * Function to calculate whitespaces
+     * Credits: https://www.geeksforgeeks.org/isspace-in-c-and-its-application-to-count-whitespace-characters/
+     * @param str - string
     */
     static int whitespaces(std::string& str)
     {
@@ -99,9 +95,11 @@ extern "C" {
         return count;
     };
 
-    /* 
-    * Function which colors text
-    * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
+    /** 
+     * Function which colors text
+     * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
+     * @param text - string to colorize
+     * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
     */
     void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors);
 
@@ -117,30 +115,43 @@ extern "C" {
     purple = { 1,0,1,1 },
     orange = { 1.00f, 0.36f, 0.09f,1 };
 
-    /* 
-    * Function to split the given string using the getline() function
-    * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
+    /** 
+     * Function to split the given string using the getline() function
+     * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
+     * @param str - string
+     * @param delim - char with which we separate strings
+     * @param out - vector which has seperated strings
     */
     void split_str(std::string const &str, const char delim, std::vector <std::string> &out);
 
     /* Variables */
     struct Vars
     {
-        std::string language;
+        std::string language = "english";
+
+        bool isDarkTheme = false;
+        bool isFont = false;
+        bool font_change = false;
+        bool language_dialog = false;
+        bool isDemoWindow = false;
+        bool termi_dialog = false;
+        bool imgui_dialog = false;
+        bool settings_dialog = false;
+        bool alReadyFocusOnInputBar = false;
     };
 
     /* Renderer class */
     class Renderer
     {
         public:
-            void DrawMenu(Vars* vars);
+            void DrawMenu();
             void Font(bool* p_open);
 
-            const char* ChooseLanguage(Vars* vars, int id);
-            void ChooseLanguageDialog(Vars* vars, bool* p_open);
+            const char* ChooseLanguage(int id);
+            void ChooseLanguageDialog(bool* p_open);
 
-            void TermiDialog(Vars* vars, bool* p_open);
-            void ImGuiDialog(Vars* vars, bool* p_open);
+            void TermiDialog(bool* p_open);
+            void ImGuiDialog(bool* p_open);
 
             int Settings(int id, float value);
             bool CheckFile(const char* name);
@@ -202,15 +213,18 @@ extern "C" {
     };
 
     /* Function which draws tabs */
-    void DrawTab(Vars* vars);
+    void DrawTab();
 
     /* Main code for starting ImGui */
-    void main_code(Vars* vars);
+    void main_code();
 
     extern Console console;
 
     void tmain();
 
-    /* AddLog but outside of struct */
+    /**
+     * AddLog but outside of struct so it is visible from outside this shared library
+     * @param fmt - string
+    */
     void AddLog(const char* fmt, ...);
 };

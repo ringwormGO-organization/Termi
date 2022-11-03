@@ -50,9 +50,9 @@ void tmain()
 	std::cout << "\n\n";
 
 	/* 
-	 * Creating variables which points to struct(s) or class(es)
-	 * vars gets value once,
-	 * while render is always getting value
+		* Creating variables which points to struct(s) or class(es)
+		* vars gets value once,
+		* while render is always getting value
 	*/
 
 	Vars* vars = new Vars();
@@ -148,6 +148,8 @@ void tmain()
 	}
 
 	render->Settings(0, 0);
+
+	delete render;
 	
 	while(!glfwWindowShouldClose(window))
 	{
@@ -165,10 +167,8 @@ void tmain()
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
     	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
-		render = new Renderer();
-
 		/* main Dear ImGui code */
-		main_code(vars);
+		main_code();
 
 		#ifdef PRINT_FPS_CONSOLE
 			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -180,11 +180,7 @@ void tmain()
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
-
-		delete render;
 	}
 
 	glfwTerminate();
-
-	delete vars;
 }
