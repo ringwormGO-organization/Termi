@@ -1,6 +1,8 @@
 # Termi
 **If you want use non-OpenGL version, manually install files from commits history!**
 
+**Syncing Windows version may not be regular!**
+
 **[Latest stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)**
 
 A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
@@ -27,14 +29,14 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ### Termi advanced C++ part
 - [x] Arguments
-- [ ] Better arguments for Rust commands/applications (planned for v3.0.0)
+- [x] Better arguments for Rust commands/applications (planned for v3.0.0)
 - [ ] Better input system (planned for v3.0.0)
 - [x] Colors in console
+- [ ] GUI models
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
 - [ ] Networking (SSH) (planned for v3.0.0)
 - [x] Translation
-- [x] User settings in text files
 - [x] User settings in JSON
 
 ### Windows - installer and launcher

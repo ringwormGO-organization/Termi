@@ -428,23 +428,17 @@ void Console::ExecCommand(std::string command_line, ...)
 
     else
     {
-        std::string choice, path, funciton, params;
+        std::string choice;
 
-        std::cout << "Do you want to load command or application from third party .so file [y/n]: ";
-        std::cin >> choice;
+        std::cout << "Do you want to load command or application from third party .so file [y - (path | function name | arguments)/n]: ";
+        getline(std::cin, choice);
 
-        if (choice == "y")
+        if (choice != "y")
         {
-            std::cout << "Enter a path of .so file: ";
-            std::cin >> path;
+            std::vector<std::string> out;
+            split_str(choice, ' ', out);
 
-            std::cout << "Enter a name of function: ";
-            std::cin >> funciton;
-
-            std::cout << "Enter arguments (one string at the time because of Rust compatability): ";
-            std::cin >> params;
-
-            LoadThirdParty(path.c_str(), funciton.c_str(), params.c_str());
+            LoadThirdParty(out[0].c_str(), out[1].c_str(), out[2].c_str());
         }
 
         else

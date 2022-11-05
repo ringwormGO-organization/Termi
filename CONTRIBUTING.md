@@ -203,7 +203,7 @@ pub extern "C" fn rust_function(arg: *const c_char) {
 }
 
 ```
-7. At time being, you can only currently pass arguments which are type `const char*`!
+7. At time being, best way to pass arguments is to put all arguments in one variable which you pass and then do parsing in Rust! This also valids for any other third party command/application.
 
 ### Informations about elements in vector:
 ```cpp
@@ -212,6 +212,8 @@ vect[i]; /* argument while `i` represents order of argument */
 ```
 
 # Coding sytle for Pull Requests
+**Coding sytle shown below only applies to C and C++. If you use Rust, please use Rust's coding style!**
+
 ### Indentation and line width
 1. Line width much be at most **100** characters.
 2. Use spaces, spaces size **MUST BE** 4!
