@@ -22,20 +22,19 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## Checklist
 ### Termi base part
-- [x] Windows version
+- [x] Windows version (moderately supported)
 - [x] GNU/Linux version (in `Termi-Other` folder/directory)
 - [x] BSD version (same folder/directory as GNU/Linux version, moderately supported)
 - [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
 
 ### Termi advanced C++ part
 - [x] Arguments
-- [x] Better arguments for Rust commands/applications (planned for v3.0.0)
-- [ ] Better input system (planned for v3.0.0)
+- [x] Better arguments for Rust commands/applications
 - [x] Colors in console
-- [ ] GUI models
+- [ ] GUI models (for better input system) (planned for v3.0.0)
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
-- [ ] Networking (SSH) (planned for v3.0.0)
+- [ ] Networking (package manager, SSH) (planned for v3.0.0)
 - [x] Translation
 - [x] User settings in JSON
 
