@@ -35,7 +35,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
 - [ ] Networking (package manager, SSH) (planned for v3.0.0)
-- [x] Translation
+- [x] Translations
 - [x] User settings in JSON
 
 ### Windows - installer and launcher
@@ -62,8 +62,16 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Debain based.
 - OpenGL - for OpenGL project part
   - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on GNU/Linux machine
-  - For BSD based operating systems, process should be similar, just when you are done with compiling GLFW, copy header files to `/usr/include/GLFW`
-  and copy `libglfw.so` and `libGL.so` to `/usr/lib/`
+
+  - For BSD based operating systems, follow instructions down below:
+    - process should be similar, just compile GLFW,
+    - copy header files to `/usr/include/GLFW`,
+    - copy `libglfw.so` and `libGL.so` to `/usr/lib/`.
+
+  - Or you can **try** to use header files included with Termi, see instructions down below:
+    - check are they in `Termi-Other/Termi-GUI/includes`,
+    - install GLFW package through your package manager,
+    - enable such option in `Settings.hpp`.
 
 ### Both versions
 - Git - for cloning repo

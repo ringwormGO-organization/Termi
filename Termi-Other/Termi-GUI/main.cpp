@@ -22,7 +22,13 @@
 
 #include "Settings.hpp"
 
-#include <glad/glad.h>
+#ifdef USE_PREINSTALLED_HEADERS
+	#include "includes/glad.h"
+
+#else
+	#include <glad/glad.h>
+#endif
+
 #include <GLFW/glfw3.h>
 
 struct sigaction sigIntHandler;

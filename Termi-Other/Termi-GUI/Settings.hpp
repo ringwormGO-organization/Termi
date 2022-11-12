@@ -8,6 +8,8 @@
 
 #pragma once
 
+#undef USE_PREINSTALLED_HEADERS
+
 #define PRINT_WHEN_WINDOW_IS_CREATED
 #undef PRINT_FPS_CONSOLE
 #define PRINT_FPS
