@@ -102,7 +102,7 @@ static int _ping(std::string webadress)
 
         int len = sizeof(r_addr);
 
-        if (recvfrom(sd, &pckt, sizeof(pckt), 0, (struct sockaddr *)&r_addr, &len) > 0)
+        if (recvfrom(sd, &pckt, sizeof(pckt), 0, (struct sockaddr *)&r_addr, (socklen_t *)&len) > 0)
         {
             return 0;
         }

@@ -4,7 +4,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 project(Termi-Commands)
 
-set(CMAKE_CXX_FLAGS "-std=c++20 -fpermissive -Wpointer-arith -Wformat-security")
+set(CMAKE_CXX_FLAGS "-std=c++20")
 
 file(GLOB SRC CONFIGURE_DEPENDS "*.h" "*.cpp")
 

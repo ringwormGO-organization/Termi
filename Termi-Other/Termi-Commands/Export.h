@@ -29,5 +29,5 @@ extern "C"
 	void ttime(const std::vector<std::string>& vect);
 	void whoami(const std::vector<std::string>& vect);
 	void writefile(const std::vector<std::string>& vect);
-	void yes(const std::vector<std::string>& vect);
+	auto yes(const std::vector<std::string>& vect) -> void;
 };

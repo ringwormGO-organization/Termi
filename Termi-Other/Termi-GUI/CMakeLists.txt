@@ -4,7 +4,7 @@ set(CMAKE_BUILD_TYPE Release)
 
 project(Termi-GUI)
 
-set(CMAKE_CXX_FLAGS "-std=c++20 -fpermissive -Wpointer-arith -Wformat")
+set(CMAKE_CXX_FLAGS "-std=c++20")
 
 file(GLOB SRC CONFIGURE_DEPENDS "*.hpp" "*.cpp" "imgui/*.h" "imgui/*.cpp")
 

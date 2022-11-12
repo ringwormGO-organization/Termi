@@ -14,7 +14,7 @@ void LoadSO(const char* path, const char* function)
         exit(1);
     }
 
-    func = dlsym(handle, function);
+    func = reinterpret_cast<void (*)(int)>(dlsym(handle, function));
     if ((error = dlerror()) != NULL)  {
         fputs(error, stderr);
         exit(1);

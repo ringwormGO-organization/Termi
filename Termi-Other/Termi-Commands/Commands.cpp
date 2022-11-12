@@ -44,7 +44,7 @@ void LoadSO(const char* function, T value)
         exit(1);
     }
 
-    func = dlsym(handle, function);
+    func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
     if ((error = dlerror()) != NULL)  {
         fputs(error, stderr);
         exit(1);
@@ -67,7 +67,7 @@ void LoadSO(int id, float value)
         exit(1);
     }
 
-    func = dlsym(handle, "tmain");
+    func = reinterpret_cast<void (*)(int, float)>(dlsym(handle, "tmain"));
     if ((error = dlerror()) != NULL)  {
         fputs(error, stderr);
         exit(1);
@@ -90,7 +90,7 @@ int LoadRust(const char* path, const char* function, const char* value)
         return 1;
     }
 
-    func = dlsym(handle, function);
+    func = reinterpret_cast<void (*)(const char*)>(dlsym(handle, function));
     if ((error = dlerror()) != NULL)  {
         printf("%s\n", error);
         printf("-------------\n");
@@ -510,8 +510,8 @@ void new_dir(const std::vector<std::string>& vect)
 void sysfetch(const std::vector<std::string>& vect)
 {
     /* Username and computer name */
-    gethostname(info.computer, 64);
-    getlogin_r(info.user, 256);
+    gethostname(info.computer, 256);
+    getlogin_r(info.user, 64);
 
     /* OS */
     #ifdef _WIN32
@@ -709,7 +709,8 @@ void writefile(const std::vector<std::string>& vect)
     Status(0);
 }
 
-void yes(const std::vector<std::string>& vect)
+/* Since we use this function for doing tests, I decided to put here some "modern C++ syntax" */
+auto yes(const std::vector<std::string>& vect) -> void
 {
     /*while (true)
     {

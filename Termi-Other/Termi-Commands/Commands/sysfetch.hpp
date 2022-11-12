@@ -99,8 +99,8 @@ static inline void native_cpuid(unsigned int *eax, unsigned int *ebx, unsigned i
 
 static struct Inforamtion
 {
-    char user[64];
     char computer[256];
+    char user[64];
 
     std::string OS;
     int uptime;

@@ -1,10 +1,10 @@
 cmake_minimum_required(VERSION 3.16)
 
-set(CMAKE_BUILD_TYPE Debug)
+set(CMAKE_BUILD_TYPE Release)
 
 project(Termi-Main)
 
-set(CMAKE_CXX_FLAGS "-std=c++20 -fpermissive")
+set(CMAKE_CXX_FLAGS "-std=c++20")
 
 file(GLOB SRC CONFIGURE_DEPENDS "*.cpp")
 
