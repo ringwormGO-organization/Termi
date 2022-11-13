@@ -37,6 +37,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [ ] Networking (package manager, SSH) (planned for v3.0.0)
 - [x] Translations
 - [x] User settings in JSON
+- [ ] UTF-8 support
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
@@ -60,24 +61,35 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - json-c library
   - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Debain based.
-- OpenGL - for OpenGL project part
-  - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on GNU/Linux machine
-
-  - For BSD based operating systems, follow instructions down below:
-    - process should be similar, just compile GLFW,
-    - copy header files to `/usr/include/GLFW`,
-    - copy `libglfw.so` and `libGL.so` to `/usr/lib/`.
-
-  - Or you can **try** to use header files included with Termi, see instructions down below:
-    - check are they in `Termi-Other/Termi-GUI/includes`,
-    - install GLFW package through your package manager,
-    - enable such option in `Settings.hpp`.
 
 ### Both versions
 - Git - for cloning repo
   - Check Git website for Windows instructions or do `winget install git`
   - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
+
+- OpenGL - for OpenGL project part
+  - ### Windows
+    - Visual Studio 2022 solution should work without any additional configuration.
+    - If it doesn't work, see following instructions down below:
+      - open properties of `Termi-GUI` project,
+      - goto `VC++ Directories`,
+      - set your path (they are bundled with Termi (they are in `Libraries` folder/directory), but Visual Studio knows to set entire path (user directory, etc. so you need to change them)) of `Include Directories` and `Library Directories`
+  - ### Other platforms (macOS, (GNU/)Linux, BSD)
+    - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on (GNU/)Linux machine
+
+    - For BSD based operating systems, follow instructions down below (it is pretty much same):
+      - download glad header files (see video for more details),
+      - place them in `/usr/include` (see video for more details),
+      - compile GLFW,
+      - copy GLFW header files to `/usr/include/GLFW`,
+      - copy `libglfw.so` and `libGL.so` to `/usr/lib/`.
+
+    - Or you can **try** to use header files included with Termi, see instructions down below:
+      - check are they in `Termi-Other/Termi-GUI/includes`,
+      - install or compile GLFW package through your package manager,
+      - enable such option in `Settings.hpp`.
+
 - Rust - required for building Rust commands (optional)
   - Check Rust's website for download instructions
   
