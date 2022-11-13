@@ -1,30 +1,31 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for Dear ImGui
-*/
+ */
 
-#include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 #include "imgui_code.hpp"
 
-using namespace std;
-
 #pragma warning(disable : 4996)
-typedef int(__cdecl* MYPROC)(const std::vector<std::string>&);
-typedef void(__cdecl* THIRD_PARTY)(const char*);
 
-void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& colors)
+ /**
+  * Function which colors text
+  * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
+  * @param text - string to colorize
+  * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
+  */
+void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors)
 {
     auto p = ImGui::GetCursorScreenPos();
     const auto first_px = p.x, first_py = p.y;
     auto im_colors = ImGui::GetStyle().Colors;
     const auto default_color = im_colors[ImGuiCol_Text];
-    string temp_str;
+    std::string temp_str;
     struct text_t
     {
         ImVec4 color;
-        string text;
+        std::string text;
     };
 
     std::list<text_t> texts;
@@ -35,7 +36,8 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     {
         if (color_time)
         {
-            const auto& f = std::find_if(colors.begin(), colors.end(), [i](const auto& v) { return v.first == i; });
+            const auto& f = std::find_if(colors.begin(), colors.end(), [i](const auto& v)
+                { return v.first == i; });
             if (f != colors.end())
                 last_color = f->second;
             else
@@ -47,7 +49,8 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
         {
         case '$':
             color_time = true;
-            if (!temp_str.empty()) {
+            if (!temp_str.empty())
+            {
                 texts.push_back({ last_color, temp_str });
                 temp_str.clear();
             };
@@ -64,12 +67,15 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     };
 
     float max_x = p.x;
-    for (const auto& i : texts) {
+    for (const auto& i : texts)
+    {
         im_colors[ImGuiCol_Text] = i.color;
-        std::list<string> lines;
+        std::list<std::string> lines;
         temp_str.clear();
-        for (const auto& lc : i.text) {
-            if (lc == '\n') {
+        for (const auto& lc : i.text)
+        {
+            if (lc == '\n')
+            {
                 lines.push_back(temp_str += lc);
                 temp_str.clear();
             }
@@ -82,7 +88,8 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
         else
             last_is_line = true;
         float last_px = 0.f;
-        for (const auto& j : lines) {
+        for (const auto& j : lines)
+        {
             ImGui::Text(j.c_str());
             p.y += 15.f;
             last_px = p.x;
@@ -103,26 +110,41 @@ void ColorfulText(const string& text, const std::list<pair<char, ImVec4>>& color
     ImGui::Dummy({ max_x - p.x, p.y - first_py });
 };
 
-void split_str(string const& str, const char delim, vector<string>& out)
+/**
+ * Function to split the given string using the getline() function
+ * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
+ * @param str - string
+ * @param delim - char with which we separate strings
+ * @param out - vector which has seperated strings
+ */
+void split_str(std::string const& str, const char delim, std::vector<std::string>& out)
 {
     /* create a stream from the string */
-    stringstream s(str);
+    std::stringstream s(str);
 
-    string s2;
+    std::string s2;
     while (getline(s, s2, delim))
     {
         out.push_back(s2); /* store the string in s2 */
     }
 }
 
-Console console;
-Renderer render;
+/** Vector which represents one std::pair representing two std::pairs (see down below for more details)
+ * @param _T1 - pair of Renderer and Console
+ * @param _T2 - pair of Vars and nullptr, I had to put that nullptr so I can compile code but otherwise you should not use it
+ */
+std::vector<std::pair<std::pair<Renderer*, Console*>, std::pair<Vars*, std::nullptr_t>>> vpprender;
+
+/**
+ * Current vpprender element in use
+ */
+int vpprender_id;
 
 /*
  * Console class - everything for drawing and managing console
  * Code for functions here
  * Code from imgui_demo.cpp
-*/
+ */
 Console::Console()
 {
     FullClearLog();
@@ -141,7 +163,7 @@ Console::Console()
         Commands.push_back(x.first.c_str());
     }
 
-    sort(Commands.begin(), Commands.end());
+    std::sort(Commands.begin(), Commands.end());
 
     AutoScroll = true;
     ScrollToBottom = false;
@@ -156,10 +178,12 @@ Console::~Console()
         free(History[i]);
 }
 
-void Console::LoadDLLFunction(std::vector<std::string>& vect, std::string function)
+void Console::LoadDLL(std::vector<std::string>& vect, std::string function)
 {
+    typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
+
     HINSTANCE hinstLib;
-    MYPROC ProcAdd;
+    FUNC ProcAdd;
     BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
     // Get a handle to the DLL module.
@@ -168,13 +192,13 @@ void Console::LoadDLLFunction(std::vector<std::string>& vect, std::string functi
     // If the handle is valid, try to get the function address.
     if (hinstLib != NULL)
     {
-        ProcAdd = (MYPROC)GetProcAddress(hinstLib, function.c_str());
+        ProcAdd = (FUNC)GetProcAddress(hinstLib, function.c_str());
 
         // If the function address is valid, call the function.
         if (NULL != ProcAdd)
         {
             fRunTimeLinkSuccess = TRUE;
-            (ProcAdd) (vect);
+            (ProcAdd)(vect);
         }
 
         // Free the DLL module.
@@ -190,6 +214,8 @@ void Console::LoadDLLFunction(std::vector<std::string>& vect, std::string functi
 
 int Console::LoadThirdParty(const char* path, const char* function, const char* value)
 {
+    typedef void(__cdecl* THIRD_PARTY)(const char*);
+
     HINSTANCE hinstLib;
     THIRD_PARTY ProcAdd;
     BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
@@ -265,37 +291,39 @@ void Console::Draw()
     ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
     if (ImGui::BeginPopupContextWindow())
     {
-        if (ImGui::Selectable("Clear")) ClearLog();
-        if (ImGui::Selectable("Copy")) Copy = true;
+        if (ImGui::Selectable("Clear"))
+            ClearLog();
+        if (ImGui::Selectable("Copy"))
+            Copy = true;
         ImGui::EndPopup();
     }
 
     /*
-        *  Display every line as a separate entry so we can change their color or add custom widgets.
-        *  If you only want raw text you can use TextUnformatted(log.begin(), log.end());
-        *  NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
-        *  to only process visible items. The clipper will automatically measure the height of your first item and then
-        *  "seek" to display only items in the visible area.
-        *  To use the clipper we can replace your standard loop:
-        *      for (int i = 0; i < Items.Size; i++)
-        *  With:
-        *      ImGuiListClipper clipper;
-        *      clipper.Begin(Items.Size);
-        *      while (clipper.Step())
-        *          for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
-        *  - That your items are evenly spaced (same height)
-        *  That you have cheap random access to your elements (you can access them given their index,
-        *  without processing all the ones before)
-        *   You cannot this code as-is if a filter is active because it breaks the 'cheap random-access' property.
-        *  We would need random-access on the post-filtered list.
-        * A typical application wanting coarse clipping and filtering may want to pre-compute an array of indices
-        * or offsets of items that passed the filtering test, recomputing this array when user changes the filter,
-        * and appending newly elements as they are inserted. This is left as a task to the user until we can manage
-        * to improve this example code!
-        * If your items are of variable height:
-        * - Split them into same height items would be simpler and facilitate random-seeking into your list.
-        * - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
-    */
+     *  Display every line as a separate entry so we can change their color or add custom widgets.
+     *  If you only want raw text you can use TextUnformatted(log.begin(), log.end());
+     *  NB- if you have thousands of entries this approach may be too inefficient and may require user-side clipping
+     *  to only process visible items. The clipper will automatically measure the height of your first item and then
+     *  "seek" to display only items in the visible area.
+     *  To use the clipper we can replace your standard loop:
+     *      for (int i = 0; i < Items.Size; i++)
+     *  With:
+     *      ImGuiListClipper clipper;
+     *      clipper.Begin(Items.Size);
+     *      while (clipper.Step())
+     *          for (int i = clipper.DisplayStart; i < clipper.DisplayEnd; i++)
+     *  - That your items are evenly spaced (same height)
+     *  That you have cheap random access to your elements (you can access them given their index,
+     *  without processing all the ones before)
+     *   You cannot this code as-is if a filter is active because it breaks the 'cheap random-access' property.
+     *  We would need random-access on the post-filtered list.
+     * A typical application wanting coarse clipping and filtering may want to pre-compute an array of indices
+     * or offsets of items that passed the filtering test, recomputing this array when user changes the filter,
+     * and appending newly elements as they are inserted. This is left as a task to the user until we can manage
+     * to improve this example code!
+     * If your items are of variable height:
+     * - Split them into same height items would be simpler and facilitate random-seeking into your list.
+     * - Consider using manual call to IsRectVisible() and skipping extraneous decoration from your items.
+     */
     ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, ImVec2(4, 1)); // Tighten spacing
     if (Copy)
         ImGui::LogToClipboard();
@@ -316,10 +344,10 @@ void Console::Draw()
     ImGui::Separator();
 
     bool reclaim_focus = false;
-    if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !help_focus)
+    if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !vpprender[vpprender_id].second.first->alReadyFocusOnInputBar)
     {
         ImGui::SetKeyboardFocusHere(0);
-        help_focus = true;
+        vpprender[vpprender_id].second.first->alReadyFocusOnInputBar = true;
     }
 
     char cwd[255];
@@ -342,12 +370,12 @@ void Console::Draw()
         ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 }
 
-void Console::ExecCommand(string command_line, ...)
+void Console::ExecCommand(std::string command_line, ...)
 {
     /*
-        * Insert into history. First find matchand delete it so it can be pushed to the back.
-        * This isn't trying to be smart or optimal
-    */
+     * Insert into history. First find matchand delete it so it can be pushed to the back.
+     * This isn't trying to be smart or optimal
+     */
     HistoryPos = -1;
     for (int i = History.Size - 1; i >= 0; i--)
     {
@@ -366,7 +394,7 @@ void Console::ExecCommand(string command_line, ...)
 
     History.push_back(Strdup(command_line.c_str()));
 
-    vector<string> arguments = {};
+    std::vector<std::string> arguments = {};
     const char delim = ' ';
     split_str(command_line, delim, arguments);
     command_line = const_cast<char*>(strtok(const_cast<char*>(command_line.c_str()), " "));
@@ -377,7 +405,7 @@ void Console::ExecCommand(string command_line, ...)
     if (command != commands.end())
     {
         auto result = commands.find(command_line);
-        LoadDLLFunction(arguments, result->second.c_str());
+        LoadDLL(arguments, result->second.c_str());
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -399,7 +427,7 @@ void Console::ExecCommand(string command_line, ...)
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
         AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž, croatian's 'special' letters */
-        AddLog("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui. If you have issue check our GitHub repo and report issue.");
+        AddLog("ABOUT > A powerful independent terminal made in C++ which use OpenGL and Dear ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
         AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
@@ -415,33 +443,32 @@ void Console::ExecCommand(string command_line, ...)
 
     else
     {
-        std::string choice, path, funciton, params;
+        /*std::string choice;
 
-        std::cout << "Do you want to load command or application from third party .dll file [y/n]: ";
-        std::cin >> choice;
+        std::cout << "Do you want to load command or application from third party .so file [y - (path | function name | arguments)/n]: ";
+        getline(std::cin, choice);
 
-        if (choice == "y")
+        if (choice != "y")
         {
-            std::cout << "Enter a path of .dll file: ";
-            std::cin >> path;
+            std::vector<std::string> out;
+            split_str(choice, ' ', out);
 
-            std::cout << "Enter a name of function: ";
-            std::cin >> funciton;
-
-            std::cout << "Enter arguments (one string at the time because of Rust compatability): ";
-            std::cin >> params;
-
-            LoadThirdParty(path.c_str(), funciton.c_str(), params.c_str());
+            LoadThirdParty(out[0].c_str(), out[1].c_str(), out[2].c_str());
         }
 
         else
         {
             std::cout << "\n";
-            AddLog("Unknown command: '%s'\n", command_line.c_str());
+            AddLog("Unknown command: '%s'\n", command_line.c_str());*/
 
             /* Blue - user error | Red - system error */
-            AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-        }
+            /* AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+        }*/
+
+        AddLog("Unknown command: '%s'\n", command_line.c_str());
+
+        /* Blue - user error | Red - system error */
+        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
     }
 
     arguments.clear();
@@ -458,7 +485,7 @@ void Console::TypeTermi()
 
 int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
 {
-    //AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
+    // AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
     switch (data->EventFlag)
     {
     case ImGuiInputTextFlags_CallbackCompletion:
@@ -559,13 +586,13 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData* data)
 }
 
 /* Draw context menu */
-void Renderer::DrawMenu(Vars* vars)
+void Renderer::DrawMenu()
 {
     if (ImGui::BeginMenuBar())
     {
-        if (ImGui::BeginMenu(ChooseLanguage(vars, 1)))
+        if (ImGui::BeginMenu(ChooseLanguage(1)))
         {
-            if (ImGui::MenuItem(ChooseLanguage(vars, 6), "Ctrl+X"))
+            if (ImGui::MenuItem(ChooseLanguage(6), "Ctrl+X"))
             {
                 exit(0);
             }
@@ -573,69 +600,69 @@ void Renderer::DrawMenu(Vars* vars)
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu(ChooseLanguage(vars, 2)))
+        if (ImGui::BeginMenu(ChooseLanguage(2)))
         {
-            if (ImGui::MenuItem(ChooseLanguage(vars, 7), "Ctrl+F"))
+            if (ImGui::MenuItem(ChooseLanguage(7), "Ctrl+F"))
             {
-                if (isFont == false)
+                if (vpprender[vpprender_id].second.first->isFont == false)
                 {
                     Font(NULL);
-                    isFont = true;
+                    vpprender[vpprender_id].second.first->isFont = true;
                 }
 
                 else
                 {
-                    isFont = false;
+                    vpprender[vpprender_id].second.first->isFont = false;
                 }
             }
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem(ChooseLanguage(vars, 8), "Ctrl+T"))
+            if (ImGui::MenuItem(ChooseLanguage(8), "Ctrl+T"))
             {
-                if (!isDarkTheme)
+                if (!vpprender[vpprender_id].second.first->isDarkTheme)
                 {
                     ImGui::StyleColorsLight();
-                    isDarkTheme = true;
+                    vpprender[vpprender_id].second.first->isDarkTheme = true;
                 }
 
                 else
                 {
                     ImGui::StyleColorsDark();
-                    isDarkTheme = false;
+                    vpprender[vpprender_id].second.first->isDarkTheme = false;
                 }
             }
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem(ChooseLanguage(vars, 9), "Ctrl+L"))
+            if (ImGui::MenuItem(ChooseLanguage(9), "Ctrl+L"))
             {
-                if (!language_dialog)
+                if (!vpprender[vpprender_id].second.first->language_dialog)
                 {
-                    language_dialog = true;
-                    ChooseLanguageDialog(vars, NULL);
+                    vpprender[vpprender_id].second.first->language_dialog = true;
+                    ChooseLanguageDialog(NULL);
                 }
             }
 
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu(ChooseLanguage(vars, 3)))
+        if (ImGui::BeginMenu(ChooseLanguage(3)))
         {
-            if (ImGui::MenuItem(ChooseLanguage(vars, 10)))
+            if (ImGui::MenuItem(ChooseLanguage(10)))
             {
-                if (termi_dialog == false)
-                    termi_dialog = true;
+                if (vpprender[vpprender_id].second.first->termi_dialog == false)
+                    vpprender[vpprender_id].second.first->termi_dialog = true;
                 else
-                    termi_dialog = false;
+                    vpprender[vpprender_id].second.first->termi_dialog = false;
             }
 
-            if (ImGui::MenuItem(ChooseLanguage(vars, 11)))
+            if (ImGui::MenuItem(ChooseLanguage(11)))
             {
-                if (imgui_dialog == false)
-                    imgui_dialog = true;
+                if (vpprender[vpprender_id].second.first->imgui_dialog == false)
+                    vpprender[vpprender_id].second.first->imgui_dialog = true;
                 else
-                    imgui_dialog = false;
+                    vpprender[vpprender_id].second.first->imgui_dialog = false;
             }
 
             ImGui::EndMenu();
@@ -645,8 +672,198 @@ void Renderer::DrawMenu(Vars* vars)
     }
 }
 
-/* Draw tabs */
-void Renderer::DrawTab(Vars* vars)
+/* Font dialog */
+void Renderer::Font(bool* p_open)
+{
+    ImGuiIO& io1 = ImGui::GetIO();
+
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(200, 200));
+    if (!ImGui::Begin("Font dialog", p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginPopupContextWindow())
+    {
+        if (ImGui::Button("Close window"))
+            vpprender[vpprender_id].second.first->isFont = false;
+        ImGui::EndPopup();
+    }
+
+    if (ImGui::InputText("Enter name of font file", const_cast<char*>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char*>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
+    {
+        // io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
+    }
+
+    ImGui::End();
+}
+
+/* Choose language function - return word on specified language */
+const char* Renderer::ChooseLanguage(int id)
+{
+    if (vpprender[vpprender_id].second.first->language == "english")
+    {
+        return Translation::English.at(id).c_str();
+    }
+
+    else if (vpprender[vpprender_id].second.first->language == "croatian")
+    {
+        return Translation::Croatian.at(id).c_str();
+    }
+
+    else if (vpprender[vpprender_id].second.first->language == "vietnamese")
+    {
+        return Translation::Vietnamese.at(id).c_str();
+    }
+
+    /* nothing matches */
+    return "Unknown word";
+}
+
+/* Choose a language using dialog */
+void Renderer::ChooseLanguageDialog(bool* p_open)
+{
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(500, 500));
+    if (!ImGui::Begin("Language dialog", p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginPopupContextWindow())
+    {
+        if (ImGui::Button("Close window"))
+            vpprender[vpprender_id].second.first->language_dialog = false;
+        ImGui::EndPopup();
+    }
+
+    ImGui::Text("Choose language / Odaberi jezik");
+    ImGui::Text(" "); /* empty space */
+
+    if (ImGui::Button("English (default)"))
+        vpprender[vpprender_id].second.first->language = "english";
+    if (ImGui::Button("Croatian / Hrvatski"))
+        vpprender[vpprender_id].second.first->language = "croatian";
+    if (ImGui::Button("Vietnamese / Tiếng Việt"))
+        vpprender[vpprender_id].second.first->language = "vietnamese";
+    /* if (ImGui::Button("Vietnamese / Tieng Viet")) vpprender[vpprender_id].second.first->language = "vietnamese"; */
+    if (ImGui::Button("X"))
+        vpprender[vpprender_id].second.first->language_dialog = false;
+
+    ImGui::End();
+}
+
+/* Dialog about Termi */
+void Renderer::TermiDialog(bool* p_open)
+{
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(400, 600));
+    if (!ImGui::Begin(ChooseLanguage(10), p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginPopupContextWindow())
+    {
+        if (ImGui::Button("Close window"))
+            vpprender[vpprender_id].second.first->imgui_dialog = false;
+        ImGui::EndPopup();
+    }
+
+    ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+    ImGui::Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
+    ImGui::Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
+    ImGui::Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
+    ImGui::Text("REPO > https://github.com/ringwormGO-organization/Termi");
+
+    ImGui::End();
+}
+
+/* Dialog about ImGui */
+void Renderer::ImGuiDialog(bool* p_open)
+{
+    ImGui::SetWindowPos(ImVec2(200, 200));
+    ImGui::SetWindowSize(ImVec2(400, 200));
+    if (!ImGui::Begin(ChooseLanguage(11), p_open))
+    {
+        ImGui::End();
+        return;
+    }
+
+    if (ImGui::BeginPopupContextWindow())
+    {
+        if (ImGui::Button("Close window"))
+            vpprender[vpprender_id].second.first->imgui_dialog = false;
+        ImGui::EndPopup();
+    }
+
+    ImGui::Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
+    ImGui::Text("REPO > https://github.com/ocornut/imgui");
+
+    ImGui::End();
+}
+
+int Renderer::Settings(int id, float value)
+{
+    switch (id)
+    {
+        case 0: /* startup command */
+            startup_command = "none";
+            break;
+
+        case 1: /* read width */
+            return 650;
+            break;
+
+        case 2: /* read height */
+            return 650;
+            break;
+
+        case 3: /* font name */
+            font_name = "default";
+            break;
+
+        case 4: /* font size */
+            return 16;
+            break;
+
+        default:
+            vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
+            vpprender[vpprender_id].first.second->AddLog(
+                "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+                "0 - read startup command\n"
+                "1 - read width\n",
+                "2 - read height\n",
+                "3 - set variable font_name to the font name\n",
+                "4 - read font size\n");
+            return 1;
+            break;
+    }
+
+    return 0;
+}
+
+/* Check if file exists */
+bool Renderer::CheckFile(const char* name)
+{
+    std::fstream file;
+    file.open(name);
+
+    if (!file)
+    {
+        return false;
+    }
+
+    file.close();
+    return true;
+}
+
+/* Function which draws tabs */
+void DrawTab()
 {
     static ImVector<int> active_tabs;
     static int next_tab_id = 0;
@@ -672,15 +889,16 @@ void Renderer::DrawTab(Vars* vars)
                 active_tabs.push_back(next_tab_id++); // Add new tab
 
         // Submit our regular tabs
-        for (int n = 0; n < active_tabs.Size; )
+        for (int n = 0; n < active_tabs.Size;)
         {
             bool open = true;
             char name[16] = "Termi";
-            snprintf(name, IM_ARRAYSIZE(name), "%04d", active_tabs[n]);
+            snprintf(name, IM_ARRAYSIZE(name), "%04d", n);
             if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None))
             {
-                DrawMenu(vars);
-                console.Draw();
+                vpprender_id = n;
+                vpprender[vpprender_id].first.first->DrawMenu();
+                vpprender[n].first.second->Draw();
                 ImGui::EndTabItem();
             }
 
@@ -694,332 +912,23 @@ void Renderer::DrawTab(Vars* vars)
     }
 }
 
-/* Font dialog */
-void Renderer::Font(bool* p_open)
-{
-    ImGuiIO& io1 = ImGui::GetIO();
-
-    ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(200, 200));
-    if (!ImGui::Begin("Font dialog", p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Button("Close window")) isFont = false;
-        ImGui::EndPopup();
-    }
-
-    if (ImGui::InputText("Enter name of font file", const_cast<char*>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char*>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
-    {
-        //io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
-    }
-
-    ImGui::End();
-}
-
-/* Choose language function - return word on specified language */
-const char* Renderer::ChooseLanguage(Vars* vars, int id)
-{
-    if (vars->language == "english")
-    {
-        return Translation::English.at(id).c_str();
-    }
-
-    else if (vars->language == "croatian")
-    {
-        return Translation::Croatian.at(id).c_str();
-    }
-
-    else if (vars->language == "vietnamese")
-    {
-        return Translation::Vietnamese.at(id).c_str();
-    }
-
-    /* nothing matches */
-    return "Unknown word";
-}
-
-/* Choose a language using dialog */
-void Renderer::ChooseLanguageDialog(Vars* vars, bool* p_open)
-{
-    ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(500, 500));
-    if (!ImGui::Begin("Language dialog", p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Button("Close window")) language_dialog = false;
-        ImGui::EndPopup();
-    }
-
-    ImGui::Text("Choose language / Odaberi jezik");
-    ImGui::Text(" "); /* empty space */
-
-    if (ImGui::Button("English (default)")) vars->language = "english";
-    if (ImGui::Button("Croatian / Hrvatski")) vars->language = "croatian";
-    if (ImGui::Button("Vietnamese / Tiếng Việt")) vars->language = "vietnamese";
-    /* if (ImGui::Button("Vietnamese / Tieng Viet")) vars->language = "vietnamese"; */
-    if (ImGui::Button("X")) language_dialog = false;
-
-    ImGui::End();
-}
-
-/* Dialog about Termi */
-void Renderer::TermiDialog(Vars* vars, bool* p_open)
-{
-    ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(400, 600));
-    if (!ImGui::Begin(ChooseLanguage(vars, 10), p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Button("Close window")) language_dialog = false;
-        ImGui::EndPopup();
-    }
-
-    ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
-    ImGui::Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
-    ImGui::Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-    ImGui::Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
-    ImGui::Text("REPO > https://github.com/ringwormGO-organization/Termi");
-
-    ImGui::End();
-}
-
-/* Dialog about ImGui */
-void Renderer::ImGuiDialog(Vars* vars, bool* p_open)
-{
-    ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(400, 200));
-    if (!ImGui::Begin(ChooseLanguage(vars, 11), p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Button("Close window")) language_dialog = false;
-        ImGui::EndPopup();
-    }
-
-    ImGui::Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
-    ImGui::Text("REPO > https://github.com/ocornut/imgui");
-
-    ImGui::End();
-}
-
-float Renderer::Settings(int id, float value)
-{
-    settings_path path;
-
-    int temp_id = id;
-
-    auto mode = ios::app | ios::in;
-    string temp_str = "";
-
-    if (!std::filesystem::exists("settings/") && !std::filesystem::is_directory("settings/"))
-    {
-        mkdir("settings");
-    }
-
-    if (!CheckFile(path.startup.c_str()))
-    {
-        fstream file(path.startup, mode);
-        file << "none";
-        file.close();
-    }
-
-    if (!CheckFile(path.width.c_str()))
-    {
-        fstream file(path.width, mode);
-        file << 650;
-        file.close();
-    }
-
-    if (!CheckFile(path.height.c_str()))
-    {
-        fstream file(path.height, mode);
-        file << 650;
-        file.close();
-    }
-
-    if (!CheckFile(path.font.c_str()))
-    {
-        fstream file(path.font, mode);
-        file << "default";
-        file.close();
-    }
-
-    if (!CheckFile(path.size.c_str()))
-    {
-        fstream file(path.size, mode);
-        file << 16;
-        file.close();
-    }
-
-    fstream startup(path.startup, mode);
-    fstream width(path.width, mode);
-    fstream height(path.height, mode);
-    fstream font(path.font, mode);
-    fstream font_size(path.size, mode);
-
-    fstream temp;
-
-    switch (id)
-    {
-    case 0: /* startup command */
-        while (getline(startup, temp_str))
-        {
-            startup_command = temp_str;
-            startup.close();
-        }
-        break;
-
-    case 1: /* read width */
-        while (getline(width, temp_str))
-        {
-            float result = stof(temp_str);
-            width.close();
-            return result;
-        }
-        break;
-
-    case 2: /* read height */
-        while (getline(height, temp_str))
-        {
-            float result = stof(temp_str);
-            height.close();
-            return result;
-        }
-        break;
-
-    case 3: /* font name */
-        while (getline(font, temp_str))
-        {
-            font_name = temp_str;
-            font.close();
-        }
-        break;
-
-    case 4: /* font size */
-        while (getline(font_size, temp_str))
-        {
-            float result = stof(temp_str);
-            font_size.close();
-            return result;
-        }
-        break;
-
-    case 5: /* write startup command */
-        temp.open("temp.txt", mode);
-        temp << startup_command;
-        temp.close();
-        remove(path.startup.c_str());
-        rename("temp.txt", path.startup.c_str());
-        break;
-
-    case 6: /* write width */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove(path.width.c_str());
-        rename("temp.txt", path.width.c_str());
-        break;
-
-    case 7: /* write height */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove(path.height.c_str());
-        rename("temp.txt", path.height.c_str());
-        break;
-
-    case 8: /* write font name*/
-        temp.open("temp.txt", mode);
-        temp << font_name;
-        temp.close();
-        remove(path.font.c_str());
-        rename("temp.txt", path.font.c_str());
-        break;
-
-    case 9: /* write font size */
-        temp.open("temp.txt", mode);
-        temp << value;
-        temp.close();
-        remove(path.size.c_str());
-        rename("temp.txt", path.size.c_str());
-        break;
-
-    default:
-        console.AddLog("Invalid id %d!\n", id);
-        console.AddLog(
-            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
-            "0 - read startup command\n"
-            "1 - read width\n",
-            "2 - read height\n",
-            "3 - set variable font_name to the font name\n",
-            "4 - read font size\n",
-            "---------------\n",
-            "5 - write startup command\n",
-            "6 - write width\n",
-            "7 - write height\n",
-            "8 - write font name\n",
-            "9 - write font size\n"
-        );
-        return 1;
-        break;
-    }
-
-    return 0;
-}
-
-/* Check if file exists */
-bool Renderer::CheckFile(const char* name)
-{
-    fstream file;
-    file.open(name);
-
-    if (!file)
-    {
-        return false;
-    }
-
-    file.close();
-
-    return true;
-}
-
-void main_code(Vars* vars, Renderer* render)
+/* Main code for starting ImGui */
+void main_code()
 {
     /* ImGui window creation */
-    ImGui::Begin
-    ("Termi",
+    ImGui::Begin("Termi",
         NULL,
         ImGuiWindowFlags_NoMove |
         ImGuiWindowFlags_NoCollapse |
         ImGuiWindowFlags_AlwaysAutoResize |
         ImGuiWindowFlags_NoTitleBar |
         ImGuiWindowFlags_MenuBar |
-        ImGuiInputTextFlags_AllowTabInput
-    );
+        ImGuiInputTextFlags_AllowTabInput);
 
 #ifdef PRINT_WHEN_WINDOW_IS_CREATED
     if (!alReadyPrinted)
     {
-        cout << "Dear ImGui window is created.\n";
+        std::cout << "Dear ImGui window is created.\n";
         alReadyPrinted = true;
     }
 #endif
@@ -1029,31 +938,37 @@ void main_code(Vars* vars, Renderer* render)
     ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.3f ms/frame, %.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 #endif
 
+    /* Staring values */
+    vpprender.push_back(
+        std::make_pair(
+            std::make_pair(new Renderer(), new Console()),
+            std::make_pair(new Vars(), nullptr)));
+
     /* Draw tabs and menu bar */
-    render->DrawTab(vars);
+    DrawTab();
 
     /* Font dialog */
-    if (isFont)
+    if (vpprender[vpprender_id].second.first->font_change)
     {
-        render->Font(NULL);
+        vpprender[vpprender_id].first.first->Font(NULL);
     }
 
     /* Language dialog */
-    if (language_dialog)
+    if (vpprender[vpprender_id].second.first->language_dialog)
     {
-        render->ChooseLanguageDialog(vars, NULL);
+        vpprender[vpprender_id].first.first->ChooseLanguageDialog(NULL);
     }
 
     /* About Termi dialog */
-    if (termi_dialog)
+    if (vpprender[vpprender_id].second.first->termi_dialog)
     {
-        render->TermiDialog(vars, NULL);
+        vpprender[vpprender_id].first.first->TermiDialog(NULL);
     }
 
     /* About ImGui dialog */
-    if (imgui_dialog)
+    if (vpprender[vpprender_id].second.first->imgui_dialog)
     {
-        render->ImGuiDialog(vars, NULL);
+        vpprender[vpprender_id].first.first->ImGuiDialog(NULL);
     }
 
     /* Get window width and height */
@@ -1062,26 +977,19 @@ void main_code(Vars* vars, Renderer* render)
 
     /* End of window */
     ImGui::End();
+
+    /*for (auto x : vprender)
+    {
+        delete x.first;
+        delete x.second;
+    }*/
 }
 
+/**
+ * AddLog but outside of struct so it is visible from outside this shared library
+ * @param fmt - string
+ */
 void AddLog(const char* fmt, ...)
 {
-    //std::cout << "hello\n";
-
-    console.AddLog(fmt);
-}
-
-void Settings(int id, float value)
-{
-    console.Settings(id, value);
-}
-
-void SetFontName(const char* name)
-{
-    console.font_name = name;
-}
-
-void SetStartupCommand(const char* command_name)
-{
-    console.startup_command = command_name;
+    vpprender[vpprender_id].first.second->AddLog(fmt);
 }

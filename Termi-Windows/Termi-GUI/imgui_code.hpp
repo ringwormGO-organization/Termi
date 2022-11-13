@@ -2,15 +2,15 @@
  * @author Andrej Bartulin
  * PROJECT: Termi-Windows version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
- * DESCRIPTION: Main header file
+ * DESCRIPTION: Header file for Dear ImGui code
 */
 
 #pragma once
 
 #if API_EXPORT
-#define _API __declspec(dllexport)
+    #define _API __declspec(dllexport)
 #else
-#define _API __declspec(dllimport)
+    #define _API __declspec(dllimport)
 #endif
 
 #include "imgui/imgui.h"
@@ -20,48 +20,37 @@
 #include "Settings.hpp"
 #include "Translation.hpp"
 
-#include <iostream>
+#include <algorithm>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <list>
 #include <map>
-#include <string>
 #include <sstream>
+#include <string>
 #include <vector>
 
 #include <Windows.h>
 #include <direct.h>
-#include <limits.h>
 
 extern "C"
 {
-    /* All variables which are required */
+    /* All global variables which we need */
     static float pos_x = 0;
     static float pos_y = 0;
     static float window_width = 650;
     static float window_height = 650;
 
-    static bool isDarkTheme = false;
-    static bool isFont = false;
-    static bool font_change = false;
-    static bool language_dialog = false;
-    static bool isDemoWindow = false;
-    static bool termi_dialog = false;
-    static bool imgui_dialog = false;
-    static bool settings_dialog = false;
-
     static bool alReadyPrinted = false;
-    static bool help_focus = false;
 
     /*
-     * Commands vector - name of command | name of function
+     * Commands map - name of command | name of function
     */
     static std::map<const std::string, const std::string> commands =
     {
         {"base64", "base64"},
         {"calc", "calc"},
         {"cd", "cd"},
-        {"change-setting", "change_setting"},
         {"echo", "echo"},
         {"find", "find_command"},
         {"geocalc", "geocalc"},
@@ -77,21 +66,26 @@ extern "C"
         {"yes", "yes"}
     };
 
-    /* Check if some string start with some std::string value */
+    /**
+     * Check if some string start with some std::string value
+     * @param fullString - entire string
+     * @param starting - string with which we check if fullString starts with this string
+    */
     static bool isStarting(std::string const& fullString, std::string const& starting)
     {
         if (fullString.length() <= starting.length()) { return true; }
         else { return false; }
     }
 
-    /*
+    /**
      * Function to calculate whitespaces
      * Credits: https://www.geeksforgeeks.org/isspace-in-c-and-its-application-to-count-whitespace-characters/
-     */
+     * @param str - string
+    */
     static int whitespaces(std::string& str)
     {
         int count = 0;
-        int length = str.length();
+        size_t length = str.length();
 
         for (int i = 0; i < length; i++)
         {
@@ -103,9 +97,11 @@ extern "C"
         return count;
     };
 
-    /*
+    /**
      * Function which colors text
      * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
+     * @param text - string to colorize
+     * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
     */
     void ColorfulText(const std::string& text, const std::list<std::pair<char, ImVec4>>& colors);
 
@@ -121,53 +117,54 @@ extern "C"
         purple = { 1,0,1,1 },
         orange = { 1.00f, 0.36f, 0.09f,1 };
 
-    /*
+    /**
      * Function to split the given string using the getline() function
      * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
+     * @param str - string
+     * @param delim - char with which we separate strings
+     * @param out - vector which has seperated strings
     */
     void split_str(std::string const& str, const char delim, std::vector <std::string>& out);
 
     /* Variables */
     struct Vars
     {
-        std::string language;
+        std::string language = "english";
+
+        bool isDarkTheme = false;
+        bool isFont = false;
+        bool font_change = false;
+        bool language_dialog = false;
+        bool isDemoWindow = false;
+        bool termi_dialog = false;
+        bool imgui_dialog = false;
+        bool settings_dialog = false;
+        bool alReadyFocusOnInputBar = false;
     };
 
     /* Renderer class */
     class Renderer
     {
     public:
-        void DrawMenu(Vars* vars);
-        void DrawTab(Vars* vars);
+        void DrawMenu();
         void Font(bool* p_open);
 
-        const char* ChooseLanguage(Vars* vars, int id);
-        void ChooseLanguageDialog(Vars* vars, bool* p_open);
+        const char* ChooseLanguage(int id);
+        void ChooseLanguageDialog(bool* p_open);
 
-        void TermiDialog(Vars* vars, bool* p_open);
-        void ImGuiDialog(Vars* vars, bool* p_open);
+        void TermiDialog(bool* p_open);
+        void ImGuiDialog(bool* p_open);
 
-        float Settings(int id, float value);
-
+        int Settings(int id, float value);
         bool CheckFile(const char* name);
 
         std::string font_name;
         std::string startup_command;
-
-    private:
-        struct settings_path
-        {
-            std::string startup = "settings/startup.txt";
-            std::string width = "settings/width.txt";
-            std::string height = "settings/height.txt";
-            std::string font = "settings/font.txt";
-            std::string size = "settings/size.txt";
-        };
     };
 
     /*
-     * Console struct - everything for drawing and managing console
-     * Code from imgui_demo.cpp
+    * Console class - everything for drawing and managing console
+    * Code from imgui_demo.cpp
     */
     struct Console : public Renderer
     {
@@ -195,7 +192,7 @@ extern "C"
         static void  Strtrim(char* s) { char* str_end = s + strlen(s); while (str_end > s && str_end[-1] == ' ') str_end--; *str_end = 0; };
 
     public:
-        void LoadDLLFunction(std::vector<std::string>& vect, std::string function);
+        void LoadDLL(std::vector<std::string>& vect, std::string function);
         int LoadThirdParty(const char* path, const char* function, const char* value);
 
     public:
@@ -217,20 +214,19 @@ extern "C"
         int TextEditCallback(ImGuiInputTextCallbackData* data);
     };
 
+    /* Function which draws tabs */
+    void DrawTab();
+
     /* Main code for starting ImGui */
-    void main_code(Vars* vars, Renderer* render);
+    void main_code();
 
     extern Console console;
 
-    /* Entry point to make OpenGL window and call main Dear ImGui code */
-    _API int tmain();
+    _API void tmain();
 
-    /* AddLog but outside of struct */
+    /**
+     * AddLog but outside of struct so it is visible from outside this shared library
+     * @param fmt - string
+    */
     _API void AddLog(const char* fmt, ...);
-
-    /* Settings outside of struct */
-    _API void Settings(int id, float value);
-
-    _API void SetFontName(const char* name);
-    _API void SetStartupCommand(const char* command_name);
 };

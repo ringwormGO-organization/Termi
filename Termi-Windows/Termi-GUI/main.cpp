@@ -65,23 +65,20 @@ static BOOL WINAPI end(DWORD dwCtrlType)
 	return FALSE;
 }
 
-int tmain()
+void tmain()
 {
 	std::cout << "\n\n";
 
 	/*
-	 * Creating variables which points to struct(s) or class(es)
-	 * vars gets value once,
-	 * while render is always getting value
+		* Creating variables which points to struct(s) or class(es)
+		* vars gets value once,
+		* while render is always getting value
 	*/
 
 	Vars* vars = new Vars();
 	vars->language = "english";
 
 	Renderer* render = new Renderer();
-
-	bool arg = false;
-	bool alreadyarg = false;
 	bool iconReady = false;
 
 	/* Catch CTRL-C */
@@ -126,7 +123,7 @@ int tmain()
 	if (window == NULL)
 	{
 		std::cout << "Unable to create OpenGL window!\nExiting...\n";
-		return 1;
+		return;
 	}
 
 	else
@@ -163,16 +160,13 @@ int tmain()
 	{
 		if (render->CheckFile(render->font_name.c_str()) == 1)
 		{
-			io.Fonts->AddFontFromFileTTF(render->font_name.c_str(), render->Settings(4, 0));
+			io.Fonts->AddFontFromFileTTF(render->font_name.c_str(), static_cast<float>(render->Settings(4, 0)));
 		}
 	}
 
 	render->Settings(0, 0);
 
-	if (render->startup_command != "none")
-	{
-		arg = true;
-	}
+	delete render;
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -191,7 +185,7 @@ int tmain()
 		ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
 		/* main Dear ImGui code */
-		main_code(vars, render);
+		main_code();
 
 #ifdef PRINT_FPS_CONSOLE
 		printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
@@ -203,12 +197,10 @@ int tmain()
 
 		glfwSwapBuffers(window);
 		glfwPollEvents();
+
+		/* Limiting FPS because on (GNU/)Linux is limited to 60 FPS and we want to take atleast some care for older PCs */
+		Sleep(10);
 	}
 
 	glfwTerminate();
-
-	delete render;
-	delete vars;
-
-	return 0;
 }
