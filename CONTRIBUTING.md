@@ -96,8 +96,7 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
 ### Core commands
 1. Add function name in `Export.h` in `Termi-Commands` Visual Studio project.
 2. Add C++ code in `Commands.cpp` in `Termi-Commands` Visual Studio project.
-3. `AddLog` will work best with one argument so put everything in one `std::string` and pass it to `AddLog`.
-4. See example:
+3. See example:
 ```cpp
 extern "C"
 {
@@ -109,6 +108,9 @@ void __cdecl example(const std::vector<std::string>& vect)
     int number = 30;
     std::string str = "Number is: " + std::to_string(number) + "\n";
     AddLog(str);
+
+    /* or */
+    AddLog("Number is: %d\n", number);
 } /* Commands.cpp */
 ```
 
@@ -123,8 +125,7 @@ void __cdecl example(const std::vector<std::string>& vect)
 ### Core commands
 1. Add function name in `Export.h` in `Termi-Commands` project.
 2. Add C++ code in `Commands.cpp` in `Termi-Commands` project.
-3. `AddLog` will work best with one argument so put everything in one `std::string` and pass it to `AddLog`.
-4. See example:
+3. See example:
 ```cpp
 extern "C"
 {
@@ -136,6 +137,9 @@ void example(const std::vector<std::string>& vect)
     int number = 30;
     std::string str = "Number is: " + std::to_string(number) + "\n";
     AddLog(str);
+
+    /* or */
+    AddLog("Number is: %d\n", number);
 } /* Commands.cpp */
 ```
 
@@ -203,7 +207,10 @@ pub extern "C" fn rust_function(arg: *const c_char) {
 }
 
 ```
-7. At time being, best way to pass arguments is to put all arguments in one variable which you pass and then do parsing in Rust! This also valids for any other third party command/application.
+
+### Notes
+1. Rust program or any other third party application/command does take as startup argument **only one string**, do parsing in that application/command!
+2. Also, `AddLog` function in `Termi-GUI` does take **only one string** as argument, do all `va_args` equivalent parsing stuff in application/command! If you use C or C++ just copy `AddLog` function from `Termi-Commands`, it will do parsing automatically!
 
 ### Informations about elements in vector:
 ```cpp

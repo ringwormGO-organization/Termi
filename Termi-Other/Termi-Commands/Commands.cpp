@@ -20,6 +20,8 @@
 #include <string>
 #include <vector>
 
+#include <stdarg.h>
+
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/stat.h>
@@ -105,7 +107,15 @@ int LoadRust(const char* path, const char* function, const char* value)
 
 void AddLog(std::string fmt, ...)
 {
-    LoadSO("AddLog", fmt.c_str());
+    // FIXME-OPT
+    char buf[1024];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+    buf[sizeof(buf) - 1] = 0;
+    va_end(args);
+
+    LoadSO("AddLog", buf);
 }
 
 void Status(int error_code)
@@ -709,7 +719,7 @@ void writefile(const std::vector<std::string>& vect)
     Status(0);
 }
 
-/* Since we use this function for doing tests, I decided to put here some "modern C++ syntax" */
+/* Since we use this function for doing tests, I decided to put here some "modern C++ syntax" and this tests are not for Windows version */
 auto yes(const std::vector<std::string>& vect) -> void
 {
     /*while (true)
