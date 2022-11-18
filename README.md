@@ -31,10 +31,12 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Arguments
 - [x] Better arguments for Rust commands/applications
 - [x] Colors in console
-- [ ] GUI models (for better input system) (planned for v3.0.0)
+- [ ] GUI models
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
-- [ ] Networking (package manager, SSH) (planned for v3.0.0)
+- [ ] Networking
+  - [ ] Package manager
+  - [ ] SSH connection
 - [x] Translations
 - [x] User settings in JSON
 - [ ] UTF-8 support
