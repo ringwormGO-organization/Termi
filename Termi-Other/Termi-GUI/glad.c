@@ -22,7 +22,13 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <glad/glad.h>
+
+#ifdef USE_PREINSTALLED_HEADERS
+   	#include "includes/glad.h"
+
+#else
+	#include <glad/glad.h>
+#endif
 
 static void* get_proc(const char *namez);
 
