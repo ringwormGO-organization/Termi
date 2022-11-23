@@ -7,10 +7,6 @@
 
 #include "imgui_code.hpp"
 
-#pragma GCC diagnostic ignored "-Wformat-security"
-#pragma GCC diagnostic ignored "-Wreturn-type"
-#pragma GCC diagnostic ignored "-Wstringop-overflow="
-
 /**
  * Function which colors text
  * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
@@ -428,27 +424,34 @@ void Console::ExecCommand(std::string command_line, ...)
 
     else
     {
-        std::string choice;
+        #ifdef LOAD_THIRD_PARTY
+            std::string choice;
 
-        std::cout << "Do you want to load command or application from third party .so file [y - (path | function name | arguments)/n]: ";
-        getline(std::cin, choice);
+            std::cout << "Do you want to load command or application from third party .so file [y - (path | function name | arguments)/n]: ";
+            getline(std::cin, choice);
 
-        if (choice != "y")
-        {
-            std::vector<std::string> out;
-            split_str(choice, ' ', out);
+            if (choice != "y")
+            {
+                std::vector<std::string> out;
+                split_str(choice, ' ', out);
 
-            LoadThirdParty(out[0].c_str(), out[1].c_str(), out[2].c_str());
-        }
+                LoadThirdParty(out[0].c_str(), out[1].c_str(), out[2].c_str());
+            }
 
-        else
-        {
-            std::cout << "\n";
-            AddLog("Unknown command: '%s'\n", command_line.c_str());
+            else
+            {
+                std::cout << "\n";
+                AddLog("Unknown command: '%s'\n", command_line.c_str());
 
-            /* Blue - user error | Red - system error */
-            AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-        }
+                /* Blue - user error | Red - system error */
+                AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+            }
+        #else
+                AddLog("Unknown command: '%s'\n", command_line.c_str());
+
+                /* Blue - user error | Red - system error */
+                AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+        #endif
     }
 
     arguments.clear();
