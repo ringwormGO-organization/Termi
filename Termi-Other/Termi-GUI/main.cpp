@@ -142,16 +142,7 @@ void tmain()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	render->Settings(3, 0);
-	
-	if (render->font_name != "default")
-	{
-		if (render->CheckFile(render->font_name.c_str()) == 1)
-		{
-			io.Fonts->AddFontFromFileTTF(render->font_name.c_str(), render->Settings(4, 0));
-		}
-	}
-
+	render->SetFont(io);
 	render->Settings(0, 0);
 
 	delete render;

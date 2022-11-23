@@ -39,7 +39,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
   - [ ] SSH connection
 - [x] Translations
 - [x] User settings in JSON
-- [ ] UTF-8 support
+- [x] [UTF-8 support](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#glyph-range-utf-8-support)
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
@@ -128,6 +128,7 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - [OpenGL](https://www.opengl.org/)
 - [Dear ImGui](https://github.com/ocornut/imgui)
 - [stb](https://github.com/nothings/stb)
+- [Sweet16Font](https://github.com/kmar/Sweet16Font)
 - [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` for Windows
 
 ## Credits

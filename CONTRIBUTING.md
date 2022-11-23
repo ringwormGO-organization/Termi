@@ -218,6 +218,17 @@ vect[0]; /* name of command */
 vect[i]; /* argument while `i` represents order of argument */
 ```
 
+# Glyph range (UTF-8 support)
+- `default` - Basic Latin + Latin Supplement
+- `korean`
+- `chinese_full`
+- `chinese_simplified_common`
+- `japanese`
+- `cyrillic`
+- `thai`
+- `vietnamese`
+- `latin-ex-a`- Basic Latin + Latin supplement + Latin extended A; only usable with `Sweet16.tff` located in `font` folder/directory accessible to `Termi-Main` executable
+
 # Coding sytle for Pull Requests
 **Coding sytle shown below only applies to C and C++. If you use Rust, please use Rust's coding style!**
 

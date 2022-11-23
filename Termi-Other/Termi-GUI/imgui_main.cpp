@@ -794,7 +794,7 @@ int Renderer::Settings(int id, float value)
 
     std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
     std::string file_path = folder_path + "settings.json";
-    std::string default_json = "{\n\"startup_command\": \"none\",\n\"width\": 650,\n\"height\": 650,\n\"font_name\": \"none\",\n\"font_size\": 16\n}\n";
+    std::string default_json = "{\"startup_command\":\"none\",\"width\":650,\"height\":650,\"font_name\":\"none\",\"font_size\":16,\"glyph-range\":\"default\"}";
 
     auto mode = std::ios::app | std::ios::in;
     std::string temp_str = "";
@@ -909,6 +909,107 @@ int Renderer::Settings(int id, float value)
     }
 
     return 0;
+}
+
+void Renderer::SetFont(ImGuiIO& io)
+{
+    char user[64];
+    getlogin_r(user, 64);
+
+    std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+    std::string file_path = folder_path + "settings.json";
+
+    FILE *file = fopen(file_path.c_str(), "r");
+    char buffer[1024];
+
+    fread(buffer, 1024, 1, file);
+    fclose(file);
+
+    struct json_object *parsed_json;
+    struct json_object *j_glyph_range;
+
+    parsed_json = json_tokener_parse(buffer);
+    json_object_object_get_ex(parsed_json, "glyph-range", &j_glyph_range);
+
+    std::string glyph_range_str = json_object_get_string(j_glyph_range);
+    
+    Settings(3, 0);
+	if (font_name != "default")
+	{
+		if (CheckFile(font_name.c_str()) == false)
+		{
+			printf("Cannot find font, loading default font...!\n");
+            return;
+		}
+	}
+
+    if (glyph_range_str == "korean") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesKorean());
+    }
+
+    else if (glyph_range_str == "chinese_full") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesChineseFull());
+    }
+
+    else if (glyph_range_str == "chinese_simplified_common") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+    }
+
+    else if (glyph_range_str == "japanese") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesJapanese());
+    }
+
+    else if (glyph_range_str == "cyrillic") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesCyrillic());
+    }
+
+    else if (glyph_range_str == "thai") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesThai());
+    }
+
+    else if (glyph_range_str == "vietnamese") 
+    {
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesVietnamese());
+    }
+
+    else if (glyph_range_str == "latin-ex-a") 
+    {
+        /* Source of code: https://github.com/kmar/Sweet16Font/blob/master/Sweet16_ImGui.inl */
+        static const ImWchar Sweet16_ranges[] =
+        {
+            0x0020, 0x017F, // Basic Latin + Latin supplement + Latin extended A
+            0,
+        };
+
+        ImFontConfig config;
+        config.OversampleH = 1;
+        config.OversampleV = 1;
+        config.PixelSnapH = true;
+        config.SizePixels = 16;
+        // the proportional variant probably looks better with 1px extra horizontal spacing (just uncomment the following line)
+        //config.GlyphExtraSpacing.x = 1;
+
+        // copy font name manually to avoid warnings
+        const char *name = "font/Sweet16.ttf, 16px";
+        char *dst = config.Name;
+
+        while (*name)
+            *dst++ = *name++;
+        *dst = '\0';
+
+        io.Fonts->AddFontFromMemoryCompressedBase85TTF(Sweet16_compressed_data_base85, config.SizePixels, &config, Sweet16_ranges);
+    }
+
+    else
+    {
+        /* ignore */
+    }
 }
 
 /* Check if file exists */

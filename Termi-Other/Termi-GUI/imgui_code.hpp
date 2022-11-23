@@ -10,6 +10,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "font.inl"
 
 #include "Settings.hpp"
 #include "Translation.hpp"
@@ -154,6 +155,7 @@ extern "C"
             void ImGuiDialog(bool* p_open);
 
             int Settings(int id, float value);
+            void SetFont(ImGuiIO& io);
             bool CheckFile(const char* name);
 
             std::string font_name;
