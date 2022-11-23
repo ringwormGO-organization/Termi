@@ -24,7 +24,6 @@
 
 #ifdef USE_PREINSTALLED_HEADERS
 	#include "includes/glad.h"
-
 #else
 	#include <glad/glad.h>
 #endif
