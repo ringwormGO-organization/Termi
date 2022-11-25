@@ -35,8 +35,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
 - [ ] Networking
-  - [ ] Package manager
+  - [ ] Package manager ([@StjepanBM1](https://github.com/StjepanBM1))
   - [ ] SSH connection
+- [ ] Serial port
 - [x] Translations
 - [x] User settings in JSON
 - [x] [UTF-8 support](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#glyph-range-utf-8-support)
@@ -45,7 +46,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [x] Lanucher and updater - C#
 
-## Build & Run
+## Build & Runs
 ### Required software:
 ### Windows
 - Visual Studio Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components - Windows.
