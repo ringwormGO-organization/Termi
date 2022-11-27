@@ -12,7 +12,7 @@ string encode = "-e";
 string decode = "-d";
 base64((do_encode == 1) ? encode : decode, text);
 /* 
-    Encoding plain text or decoding base64 text and printing result to 
+    Encodes plain text or decoding base64 text and printing result to 
     console
 */
 ```
@@ -45,14 +45,14 @@ dencalc(mass, volume, density);
 ```c
 echo(text, text2);
 /*
-    Printing to console all passed arguments
+    Prints to console all passed arguments
 */
 ```
 
 ```c
 find(path, file);
 /*
-    Searching file or directory in folder/directory.
+    Searches file or directory in folder/directory.
 */
 ```
 
@@ -105,16 +105,26 @@ list(folder)
 ```
 
 ```c
+loadtp(path, function_name, value)
+/* 
+    Calls third party command or application.
+    path - path of .dll or .so file
+    function_name - name of function to be called
+    value - argument, more arguments can be passed but they will be combined in one string
+*/
+```
+
+```c
 mkdir(name)
 /* 
-    Create new folder/directory which given name.
+    Creates new folder/directory which given name.
 */
 ```
 
 ```c
 openfile(file)
 /* 
-    Display all content from file line by line.
+    Displays all content from file line by line.
 */
 ```
 
@@ -136,7 +146,7 @@ rm(file)
 ```c
 sysfetch()
 /* 
-    Display computer informations, all passed arguments will be ignored.
+    Displays computer informations, all passed arguments will be ignored.
 */
 ```
 
@@ -144,7 +154,7 @@ sysfetch()
 ```c
 time()
 /* 
-    Display time, all passed arguments will be ignored.
+    Displays time, all passed arguments will be ignored.
 */
 ```
 
@@ -152,7 +162,7 @@ time()
 ```c
 whoami()
 /* 
-    Display current logged user, all passed arguments will be ignored.
+    Displays current logged user, all passed arguments will be ignored.
 */
 ```
 
@@ -166,7 +176,7 @@ writefile(file, content)
 ```c
 yes()
 /* 
-    Display word `yes` 100000, all passed arguments will be ignored.
+    Displays word `yes` 100000, all passed arguments will be ignored.
     This function can slow down Termi
 */
 ```

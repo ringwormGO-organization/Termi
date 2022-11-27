@@ -3,9 +3,9 @@ Just drop a Pull Request :)
 
 # Pull Request style
 1. Use LF. Set up your Git settings with this: `git config --global core.autocrlf false` and check if it is OK by `git config --global core.autocrlf`. It need to return `false` or nothing.
-2. Use CRLF for Windows code, LF for (GNU/)Linux code
+2. Use CRLF for Windows code, LF for (GNU/)Linux code.
 3. Use following style **WITH LOGIC**, check labels:
-4. Use spaces, size 4
+4. Use spaces, size 4.
 
 ```
 [LABEL NAME] Name of Pull Request
@@ -208,9 +208,8 @@ pub extern "C" fn rust_function(arg: *const c_char) {
 
 ```
 
-### Notes
-1. Rust program or any other third party application/command does take as startup argument **only one string**, do parsing in that application/command!
-2. Also, `AddLog` function in `Termi-GUI` does take **only one string** as argument, do all `va_args` equivalent parsing stuff in application/command! If you use C or C++ just copy `AddLog` function from `Termi-Commands`, it will do parsing automatically!
+### Note/Notes
+1. Passed argument to third party commands/applications is one string combined with arguments entered by user plus space between each argument, do parsing inside your command/application.
 
 ### Informations about elements in vector:
 ```cpp

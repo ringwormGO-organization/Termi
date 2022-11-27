@@ -416,6 +416,26 @@ void Console::ExecCommand(std::string command_line, ...)
         AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
     }
 
+    else if (Stricmp(command_line.c_str(), "loadtp") == 0)
+    {
+        std::string argument;
+        for (size_t i = 0; i < arguments.size(); i++)
+        {
+            if (i < 3)
+            {
+                continue;
+            }
+
+            else
+            {
+                argument += arguments[i];
+                argument += " ";
+            }
+        }
+        
+        LoadThirdParty(arguments[1].c_str(), arguments[2].c_str(), argument.c_str());
+    }
+
     else if (Stricmp(command_line.c_str(), "exit") == 0)
     {
         AddLog("Exiting...");
@@ -424,34 +444,10 @@ void Console::ExecCommand(std::string command_line, ...)
 
     else
     {
-        #ifdef LOAD_THIRD_PARTY
-            std::string choice;
+        AddLog("Unknown command: '%s'\n", command_line.c_str());
 
-            std::cout << "Do you want to load command or application from third party .so file [y - (path | function name | arguments)/n]: ";
-            getline(std::cin, choice);
-
-            if (choice != "y")
-            {
-                std::vector<std::string> out;
-                split_str(choice, ' ', out);
-
-                LoadThirdParty(out[0].c_str(), out[1].c_str(), out[2].c_str());
-            }
-
-            else
-            {
-                std::cout << "\n";
-                AddLog("Unknown command: '%s'\n", command_line.c_str());
-
-                /* Blue - user error | Red - system error */
-                AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-            }
-        #else
-                AddLog("Unknown command: '%s'\n", command_line.c_str());
-
-                /* Blue - user error | Red - system error */
-                AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-        #endif
+        /* Blue - user error | Red - system error */
+        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
     }
 
     arguments.clear();
