@@ -32,7 +32,7 @@
 
 #include <json-c/json.h>
 
-extern "C" 
+extern "C"
 {
     /* All global variables which we need */
     static float pos_x = 0;
@@ -50,6 +50,7 @@ extern "C"
         {"base64", "base64"},
         {"calc", "calc"},
         {"cd", "cd"},
+        {"dencalc", "dencalc"},
         {"echo", "echo"},
         {"find", "find_command"},
         {"geocalc", "geocalc"},

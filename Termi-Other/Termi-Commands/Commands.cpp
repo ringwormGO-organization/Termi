@@ -252,8 +252,12 @@ void calc(const std::vector<std::string>& vect)
         AddLog("Result is: " + result + "!\n");
         Status(0);
     }
-    catch (...)
+    
+    catch(const std::exception& e)
     {
+        AddLog("Exception occured: ");
+        AddLog(e.what());
+
         Status(2);
     }
 }
@@ -268,6 +272,54 @@ void cd(const std::vector<std::string>& vect)
     }
 
     Status(chdir(vect[1].c_str()));
+}
+
+void dencalc(const std::vector<std::string>& vect)
+{
+    if (vect.size() < 4)
+    {
+        AddLog("Not enough arguments!");
+        Status(1);
+        return;
+    }
+
+    try
+    {
+        if (vect[1] != "x" && vect[2] != "x" && vect[3] == "x")
+        {
+            double result = stod(vect[1]) / stod(vect[2]);
+            AddLog("Density of desired object is: %lf g/cm3", result);
+            Status(0);
+        }
+
+        else if (vect[1] == "x" && vect[2] != "x" && vect[3] != "x")
+        {
+            double result = stod(vect[2]) * stod(vect[3]);
+            AddLog("Mass of desired object is: %lf g", result);
+            Status(0);
+        }
+
+        else if (vect[1] != "x" && vect[2] == "x" && vect[3] != "x")
+        {
+            double result = stod(vect[3]) * stod(vect[1]);
+            AddLog("Volume of desired object is: %lf cm3", result);
+            Status(0);
+        }
+
+        else
+        {
+            AddLog("Wrong arguments!\n");
+            Status(1);
+        }
+    }
+
+    catch(const std::exception& e)
+    {
+        AddLog("Exception occured: ");
+        AddLog(e.what());
+
+        Status(2);
+    }
 }
 
 void echo(const std::vector<std::string>& vect)
@@ -446,8 +498,11 @@ void geocalc(const std::vector<std::string>& vect)
         Status(0);
     }
 
-    catch (...)
+    catch(const std::exception& e)
     {
+        AddLog("Exception occured: ");
+        AddLog(e.what());
+
         Status(2);
     }
 }
@@ -659,10 +714,12 @@ void ping(const std::vector<std::string>& vect)
         Status(0);
     }
 
-    catch(...)
+    catch(const std::exception& e)
     {
+        AddLog("Exception occured: ");
+        AddLog(e.what());
+
         Status(2);
-        return;
     }
 }
 

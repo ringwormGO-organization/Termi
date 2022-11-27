@@ -17,6 +17,7 @@ extern "C"
 	void calc(const std::vector<std::string>& vect);
 	void cd(const std::vector<std::string>& vect);
 	void change_setting(const std::vector<std::string>& vect);
+	void dencalc(const std::vector<std::string>& vect);
 	void echo(const std::vector<std::string>& vect);
 	void find_command(const std::vector<std::string>& vect);
 	void geocalc(const std::vector<std::string>& vect);

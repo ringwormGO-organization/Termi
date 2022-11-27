@@ -1,11 +1,11 @@
 # List of Termi's commands and their explanation and arguments sorted in alphabetical order
 
-All arguments are `std::string` type, Termi will convert it later;
+All arguments are `std::string` type, Termi will convert it later if needed;
 
 List of arguments in "C++ style":
  - `vect[i]` = argument, `i` represents order
 
-**When typing command, don't use brackets and commas!**
+**When typing arguments, don't use brackets and commas!**
 
 ```c
 string encode = "-e";
@@ -25,12 +25,20 @@ calc(operator, num1, num2);
 ```
 
 ```c
-change_setting(setting_id, value); /* it is change-setting */
-/* 
-    Termi will change settings based on 
-    setting_id and value. You will see 
-    effect after program restart. 
-    Settings are stored in text file.
+cd(directory)
+/*
+    Enters directory by passed argument
+*/
+```
+
+```c
+dencalc(mass, volume, density);
+/*
+    mass - grams
+    volume - cm3
+    density - g/cm3
+
+    Use x if that value requires calculation
 */
 ```
 
@@ -104,13 +112,6 @@ mkdir(name)
 ```
 
 ```c
-neofetch()
-/* 
-    Display computer informations, all passed arguments will be ignored.
-*/
-```
-
-```c
 openfile(file)
 /* 
     Display all content from file line by line.
@@ -118,9 +119,10 @@ openfile(file)
 ```
 
 ```c
-time()
+ping()
 /* 
-    Display time, all passed arguments will be ignored.
+    Checks server connection (sorry that this is not placed in alphabetical order) and also
+    all passed arguments will be ignored.
 */
 ```
 
@@ -130,6 +132,22 @@ rm(file)
     Removes file which given name.
 */
 ```
+
+```c
+sysfetch()
+/* 
+    Display computer informations, all passed arguments will be ignored.
+*/
+```
+
+
+```c
+time()
+/* 
+    Display time, all passed arguments will be ignored.
+*/
+```
+
 
 ```c
 whoami()
@@ -150,14 +168,6 @@ yes()
 /* 
     Display word `yes` 100000, all passed arguments will be ignored.
     This function can slow down Termi
-*/
-```
-
-```c
-yes()
-/* 
-    Checks server connection (sorry that this is not placed in alphabetical order) and also
-    all passed arguments will be ignored.
 */
 ```
 
