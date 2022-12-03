@@ -43,18 +43,20 @@ Example:
      * 4: New Tab
      * 5: New profile
      * 6: Exit
-     * 7: Font picker
-     * 8: Change theme
-     * 9: Change language
-     * 10: About Termi
-     * 11: About Dear ImGui
-    */
+     * 7: Change theme
+     * 8: Change language
+     * 9: About Termi
+     * 10: About Dear ImGui
+     * 11: SSH
+     * 12: Enable SSH
+     * 13: Disable SSH
+     */
 ```
 ```cpp
 /* imgui_main.cpp */
 const char* Renderer::ChooseLanguage(Vars* vars, int id)
 {
-    /* be careful which word you put `ChooseLanguageDialog` funtion */
+    /* be careful which word you put in `ChooseLanguageDialog` funtion */
     if (vars->language == "spanish")
     {
         return Translation::English.at(id).c_str();
@@ -84,8 +86,15 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
     ImGui::Text("Choose language / Odaberi jezik");
     ImGui::Text(" "); /* empty space */
 
-    if (ImGui::Button("spanish")) vars->language = "spanish";
-    if (ImGui::Button("X")) language_dialog = false;
+    if (ImGui::Button("Spanish / Español") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vpprender[vpprender_id].second.first->language = "spanish";
+    }
+
+    if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vpprender[vpprender_id].second.first->language_dialog = false;
+    }
 
     ImGui::End();
 }

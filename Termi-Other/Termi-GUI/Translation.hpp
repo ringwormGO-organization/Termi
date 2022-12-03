@@ -3,7 +3,7 @@
  * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Translation file
-*/
+ */
 
 #pragma once
 
@@ -12,10 +12,10 @@
 
 namespace Translation
 {
-    static std::vector<std::string> English = {"Input", "Terminal", "Edit", "About", "New Tab", "New profile", "Exit", "Font picker", "Change theme", "Change language", "About Termi", "About Dear ImGui"};
-    static std::vector<std::string> Croatian = {"Unos", "Ljuska", "Uredi", "O Termiju", "Nova kartica", "Novi profil", "Izađi", "Odaberi font", "Promijeni temu", "Promijeni jezik", "O Termiju", "O Dear ImGui-u"};
-    static std::vector<std::string> Vietnamese = {"Nhập vào", "Giao diện dòng lệnh", "Chỉnh sửa", "Về ... (Termi)", "Thẻ mới", "Hồ sơ mới", "Thoát", "Chọn phông", "Đổi chủ đề cho giao diện", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui"};
-    // static std::vector<std::string> Vietnamese = {"Nhap vao", "Giao dien dong lenh", "Chinh sua", "Ve ... (Termi)" "The moi", "Ho so moi", "Thoat", "Chon phong", "Doi chu de cho giao dien", "Doi ngon ngu", "Ve Termi", "Ve Dear ImGui"};
+    static std::vector<std::string> English = {"Input", "Terminal", "Edit", "About", "New Tab", "New profile", "Exit", "Change theme", "Change language", "About Termi", "About Dear ImGui", "SSH", "Enable SSH", "Disable SSH"};
+    static std::vector<std::string> Croatian = {"Unos", "Terminal", "Uredi", "O Termiju", "Nova kartica", "Novi profil", "Izađi", "Promijeni temu", "Promijeni jezik", "O Termiju", "O Dear ImGui-u", "SSH", "Uključi SSH", "Isključi SSH"};
+    static std::vector<std::string> Vietnamese = {"Nhập vào", "Giao diện dòng lệnh", "Chỉnh sửa", "Về ... (Termi)", "Thẻ mới", "Hồ sơ mới", "Thoát", "Đổi chủ đề cho giao diện", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui", "SSH", "Kích hoạt SSH", "Tắt SSH"};
+    // static std::vector<std::string> Vietnamese = {"Nhap vao", "Giao dien dong lenh", "Chinh sua", "Ve ... (Termi)" "The moi", "Ho so moi", "Thoat", "Doi chu de cho giao dien", "Doi ngon ngu", "Ve Termi", "Ve Dear ImGui"};
     // Without native Vietnamese character
     /**
      * Naming convention for IDs fot strings
@@ -26,10 +26,12 @@ namespace Translation
      * 4: New Tab
      * 5: New profile
      * 6: Exit
-     * 7: Font picker
-     * 8: Change theme
-     * 9: Change language
-     * 10: About Termi
-     * 11: About Dear ImGui
-    */
+     * 7: Change theme
+     * 8: Change language
+     * 9: About Termi
+     * 10: About Dear ImGui
+     * 11: SSH
+     * 12: Enable SSH
+     * 13: Disable SSH
+     */
 };

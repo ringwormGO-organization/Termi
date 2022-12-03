@@ -23,9 +23,10 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "Settings.hpp"
+
 #ifdef USE_PREINSTALLED_HEADERS
    	#include "includes/glad.h"
-
 #else
 	#include <glad/glad.h>
 #endif

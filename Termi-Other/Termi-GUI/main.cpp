@@ -4,30 +4,35 @@
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
-*/
+ */
 
+/* Dear ImGui includes */
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "imgui_code.hpp"
-
+/* Standard library includes */
 #include <iostream>
 #include <string>
 #include <fstream>
 #include <signal.h>
 
+/* stb_image include */
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-#include "Settings.hpp"
-
+/* Glad include */
 #ifdef USE_PREINSTALLED_HEADERS
-	#include "includes/glad.h"
+#include "includes/glad.h"
 #else
-	#include <glad/glad.h>
+#include <glad/glad.h>
 #endif
 
+/* Termi's includes */
+#include "imgui_code.hpp"
+#include "Settings.hpp"
+
+/* GLFW 3 include */
 #include <GLFW/glfw3.h>
 
 struct sigaction sigIntHandler;
@@ -38,32 +43,33 @@ int height;
 void end(int sig)
 {
 	std::cout << "\nPress any key to continue...\n";
-    auto key = std::cin.get();
-    if (key != 10)
-    {
-        /* we need to do something here; input is broken */
-        exit(sig);
-    }
-    else
-    {
-        exit(sig);
-    }
+	auto key = std::cin.get();
+	if (key != 10)
+	{
+		/* we need to do something here; input is broken */
+		exit(sig);
+	}
+
+	else
+	{
+		exit(sig);
+	}
 }
 
 void tmain()
 {
 	std::cout << "\n\n";
 
-	/* 
-		* Creating variables which points to struct(s) or class(es)
-		* vars gets value once,
-		* while render is always getting value
-	*/
+	/*
+	 * Creating variables which points to struct(s) or class(es)
+	 * vars gets value once,
+	 * while render is always getting value
+	 */
 
-	Vars* vars = new Vars();
+	Vars *vars = new Vars();
 	vars->language = "english";
 
-	Renderer* render = new Renderer();
+	Renderer *render = new Renderer();
 	bool iconReady = false;
 
 	/* Catch CTRL-C */
@@ -72,13 +78,13 @@ void tmain()
 	sigIntHandler.sa_flags = 0;
 	sigaction(SIGINT, &sigIntHandler, NULL);
 
-    std::cout << "ooooooooooo                              " << std::endl;
-    std::cout << "    888      ooooooooooo                          o88   " << std::endl;
-    std::cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << std::endl;
-    std::cout << "    888      888ooo8     888    888 888 888 888   888 " << std::endl;
-    std::cout << "    888      888    oo   888        888 888 888   888  " << std::endl;
-    std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
-    std::cout << "------------------------------------------------------- " << std::endl;
+	std::cout << "ooooooooooo                              " << std::endl;
+	std::cout << "    888      ooooooooooo                          o88   " << std::endl;
+	std::cout << "    888      888    88  oo oooooo  oo ooo oooo   oooo  " << std::endl;
+	std::cout << "    888      888ooo8     888    888 888 888 888   888 " << std::endl;
+	std::cout << "    888      888    oo   888        888 888 888   888  " << std::endl;
+	std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
+	std::cout << "------------------------------------------------------- " << std::endl;
 
 	if (render->CheckFile("termi.png") == false)
 	{
@@ -105,7 +111,7 @@ void tmain()
 	}
 
 	glfwInit();
-	GLFWwindow* window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -116,15 +122,15 @@ void tmain()
 
 	else
 	{
-		#ifdef PRINT_WHEN_WINDOW_IS_CREATED
-			std::cout << "OpenGL window is created.\n";
-		#endif
+#ifdef PRINT_WHEN_WINDOW_IS_CREATED
+		std::cout << "OpenGL window is created.\n";
+#endif
 	}
 
 	if (iconReady)
 	{
 		GLFWimage images[1];
-		images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */ 
+		images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */
 		glfwSetWindowIcon(window, 1, images);
 		stbi_image_free(images[0].pixels);
 	}
@@ -137,7 +143,9 @@ void tmain()
 	/* Initialize Dear ImGui */
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO &io = ImGui::GetIO();
+	(void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
@@ -146,8 +154,8 @@ void tmain()
 	render->Settings(0, 0);
 
 	delete render;
-	
-	while(!glfwWindowShouldClose(window))
+
+	while (!glfwWindowShouldClose(window))
 	{
 		glClear(GL_COLOR_BUFFER_BIT);
 
@@ -161,14 +169,14 @@ void tmain()
 		window_height = static_cast<float>(height);
 
 		ImGui::SetNextWindowPos(ImVec2(pos_x, pos_y));
-    	ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
+		ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
 		/* main Dear ImGui code */
 		main_code();
 
-		#ifdef PRINT_FPS_CONSOLE
-			printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		#endif
+#ifdef PRINT_FPS_CONSOLE
+		printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+#endif
 
 		/* Renders the Dear ImGui elements */
 		ImGui::Render();

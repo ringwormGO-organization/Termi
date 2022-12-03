@@ -407,7 +407,7 @@ void Console::ExecCommand(std::string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "credits") == 0)
     {
-        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž, croatian's 'special' letters */
+        AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic");
         AddLog("ABOUT > A powerful independent terminal made in C++ which use OpenGL and Dear ImGui. If you have issue check our GitHub repo and report issue.");
         AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
         AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
@@ -432,7 +432,7 @@ void Console::ExecCommand(std::string command_line, ...)
                 argument += " ";
             }
         }
-        
+
         LoadThirdParty(arguments[1].c_str(), arguments[2].c_str(), argument.c_str());
     }
 
@@ -571,7 +571,24 @@ void Renderer::DrawMenu()
     {
         if (ImGui::BeginMenu(ChooseLanguage(1)))
         {
-            if (ImGui::MenuItem(ChooseLanguage(6), "Ctrl+X"))
+            if (ImGui::BeginMenu(ChooseLanguage(11)))
+            {
+                if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+                {
+                    /* enable ssh */
+                }
+
+                if (ImGui::MenuItem(ChooseLanguage(13)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+                {
+                    /* disable ssh */
+                }
+
+                ImGui::EndMenu();
+            }
+
+            ImGui::Separator();
+
+            if (ImGui::MenuItem(ChooseLanguage(6)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 exit(0);
             }
@@ -581,23 +598,7 @@ void Renderer::DrawMenu()
 
         if (ImGui::BeginMenu(ChooseLanguage(2)))
         {
-            if (ImGui::MenuItem(ChooseLanguage(7), "Ctrl+F"))
-            {
-                if (vpprender[vpprender_id].second.first->isFont == false)
-                {
-                    Font(NULL);
-                    vpprender[vpprender_id].second.first->isFont = true;
-                }
-
-                else
-                {
-                    vpprender[vpprender_id].second.first->isFont = false;
-                }
-            }
-
-            ImGui::Separator();
-
-            if (ImGui::MenuItem(ChooseLanguage(8), "Ctrl+T"))
+            if (ImGui::MenuItem(ChooseLanguage(7)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 if (!vpprender[vpprender_id].second.first->isDarkTheme)
                 {
@@ -614,7 +615,7 @@ void Renderer::DrawMenu()
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem(ChooseLanguage(9), "Ctrl+L"))
+            if (ImGui::MenuItem(ChooseLanguage(8)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 if (!vpprender[vpprender_id].second.first->language_dialog)
                 {
@@ -628,7 +629,7 @@ void Renderer::DrawMenu()
 
         if (ImGui::BeginMenu(ChooseLanguage(3)))
         {
-            if (ImGui::MenuItem(ChooseLanguage(10)))
+            if (ImGui::MenuItem(ChooseLanguage(9)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 if (vpprender[vpprender_id].second.first->termi_dialog == false)
                     vpprender[vpprender_id].second.first->termi_dialog = true;
@@ -636,7 +637,7 @@ void Renderer::DrawMenu()
                     vpprender[vpprender_id].second.first->termi_dialog = false;
             }
 
-            if (ImGui::MenuItem(ChooseLanguage(11)))
+            if (ImGui::MenuItem(ChooseLanguage(10)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 if (vpprender[vpprender_id].second.first->imgui_dialog == false)
                     vpprender[vpprender_id].second.first->imgui_dialog = true;
@@ -649,34 +650,6 @@ void Renderer::DrawMenu()
 
         ImGui::EndMenuBar();
     }
-}
-
-/* Font dialog */
-void Renderer::Font(bool *p_open)
-{
-    ImGuiIO &io1 = ImGui::GetIO();
-
-    ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(200, 200));
-    if (!ImGui::Begin("Font dialog", p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Button("Close window"))
-            vpprender[vpprender_id].second.first->isFont = false;
-        ImGui::EndPopup();
-    }
-
-    if (ImGui::InputText("Enter name of font file", const_cast<char *>(font_name.c_str()), IM_ARRAYSIZE(const_cast<char *>(font_name.c_str())), ImGuiInputTextFlags_EnterReturnsTrue))
-    {
-        // io1.Fonts->AddFontFromFileTTF(font.font_filename, font.size_pixels); todo
-    }
-
-    ImGui::End();
 }
 
 /* Choose language function - return word on specified language */
@@ -715,22 +688,37 @@ void Renderer::ChooseLanguageDialog(bool *p_open)
     if (ImGui::BeginPopupContextWindow())
     {
         if (ImGui::Button("Close window"))
+        {
             vpprender[vpprender_id].second.first->language_dialog = false;
+        }
+
         ImGui::EndPopup();
     }
 
     ImGui::Text("Choose language / Odaberi jezik");
     ImGui::Text(" "); /* empty space */
 
-    if (ImGui::Button("English (default)"))
+    if (ImGui::Button("English (default)") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
         vpprender[vpprender_id].second.first->language = "english";
-    if (ImGui::Button("Croatian / Hrvatski"))
+    }
+
+    if (ImGui::Button("Croatian / Hrvatski") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
         vpprender[vpprender_id].second.first->language = "croatian";
-    if (ImGui::Button("Vietnamese / Tiếng Việt"))
+    }
+
+    if (ImGui::Button("Vietnamese / Tiếng Việt") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
         vpprender[vpprender_id].second.first->language = "vietnamese";
+    }
+
     /* if (ImGui::Button("Vietnamese / Tieng Viet")) vpprender[vpprender_id].second.first->language = "vietnamese"; */
-    if (ImGui::Button("X"))
+
+    if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
         vpprender[vpprender_id].second.first->language_dialog = false;
+    }
 
     ImGui::End();
 }
@@ -739,8 +727,8 @@ void Renderer::ChooseLanguageDialog(bool *p_open)
 void Renderer::TermiDialog(bool *p_open)
 {
     ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(400, 600));
-    if (!ImGui::Begin(ChooseLanguage(10), p_open))
+    ImGui::SetWindowSize(ImVec2(500, 700));
+    if (!ImGui::Begin(ChooseLanguage(9), p_open))
     {
         ImGui::End();
         return;
@@ -749,11 +737,19 @@ void Renderer::TermiDialog(bool *p_open)
     if (ImGui::BeginPopupContextWindow())
     {
         if (ImGui::Button("Close window"))
-            vpprender[vpprender_id].second.first->imgui_dialog = false;
+        {
+            vpprender[vpprender_id].second.first->termi_dialog = false;
+        }
+
         ImGui::EndPopup();
     }
 
-    ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic"); /* todo: font which support č, ć, š, đ and ž */
+    if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vpprender[vpprender_id].second.first->termi_dialog = false;
+    }
+
+    ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic");
     ImGui::Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
     ImGui::Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
     ImGui::Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
@@ -766,8 +762,8 @@ void Renderer::TermiDialog(bool *p_open)
 void Renderer::ImGuiDialog(bool *p_open)
 {
     ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(400, 200));
-    if (!ImGui::Begin(ChooseLanguage(11), p_open))
+    ImGui::SetWindowSize(ImVec2(500, 300));
+    if (!ImGui::Begin(ChooseLanguage(10), p_open))
     {
         ImGui::End();
         return;
@@ -776,8 +772,16 @@ void Renderer::ImGuiDialog(bool *p_open)
     if (ImGui::BeginPopupContextWindow())
     {
         if (ImGui::Button("Close window"))
+        {
             vpprender[vpprender_id].second.first->imgui_dialog = false;
+        }
+
         ImGui::EndPopup();
+    }
+
+    if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vpprender[vpprender_id].second.first->imgui_dialog = false;
     }
 
     ImGui::Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
@@ -817,37 +821,37 @@ int Renderer::Settings(int id, float value)
 
         switch (id)
         {
-            case 0: /* startup command */
-                startup_command = "none";
-                break;
+        case 0: /* startup command */
+            startup_command = "none";
+            break;
 
-            case 1: /* read width */
-                return 650;
-                break;
+        case 1: /* read width */
+            return 650;
+            break;
 
-            case 2: /* read height */
-                return 650;
-                break;
+        case 2: /* read height */
+            return 650;
+            break;
 
-            case 3: /* font name */
-                font_name = "none";
-                break;
+        case 3: /* font name */
+            font_name = "none";
+            break;
 
-            case 4: /* font size */
-                return 16;
-                break;
+        case 4: /* font size */
+            return 16;
+            break;
 
-            default:
-                vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
-                vpprender[vpprender_id].first.second->AddLog(
-                    "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
-                    "0 - read startup command\n"
-                    "1 - read width\n",
-                    "2 - read height\n",
-                    "3 - set variable font_name to the font name\n",
-                    "4 - read font size\n");
-                return 1;
-                break;
+        default:
+            vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
+            vpprender[vpprender_id].first.second->AddLog(
+                "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+                "0 - read startup command\n"
+                "1 - read width\n",
+                "2 - read height\n",
+                "3 - set variable font_name to the font name\n",
+                "4 - read font size\n");
+            return 1;
+            break;
         }
 
         return 1;
@@ -874,43 +878,43 @@ int Renderer::Settings(int id, float value)
 
     switch (id)
     {
-        case 0: /* startup command */
-            startup_command = std::string(json_object_get_string(j_startup_command));
-            break;
+    case 0: /* startup command */
+        startup_command = std::string(json_object_get_string(j_startup_command));
+        break;
 
-        case 1: /* read width */
-            return json_object_get_int(j_width);
-            break;
+    case 1: /* read width */
+        return json_object_get_int(j_width);
+        break;
 
-        case 2: /* read height */
-            return json_object_get_int(j_height);
-            break;
+    case 2: /* read height */
+        return json_object_get_int(j_height);
+        break;
 
-        case 3: /* font name */
-            font_name = std::string(json_object_get_string(j_font_name));
-            break;
+    case 3: /* font name */
+        font_name = std::string(json_object_get_string(j_font_name));
+        break;
 
-        case 4: /* font size */
-            return json_object_get_int(j_font_size);
-            break;
+    case 4: /* font size */
+        return json_object_get_int(j_font_size);
+        break;
 
-        default:
-            vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
-            vpprender[vpprender_id].first.second->AddLog(
-                "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
-                "0 - read startup command\n"
-                "1 - read width\n",
-                "2 - read height\n",
-                "3 - set variable font_name to the font name\n",
-                "4 - read font size\n");
-            return 1;
-            break;
+    default:
+        vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
+        vpprender[vpprender_id].first.second->AddLog(
+            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+            "0 - read startup command\n"
+            "1 - read width\n",
+            "2 - read height\n",
+            "3 - set variable font_name to the font name\n",
+            "4 - read font size\n");
+        return 1;
+        break;
     }
 
     return 0;
 }
 
-void Renderer::SetFont(ImGuiIO& io)
+void Renderer::SetFont(ImGuiIO &io)
 {
     char user[64];
     getlogin_r(user, 64);
@@ -931,60 +935,61 @@ void Renderer::SetFont(ImGuiIO& io)
     json_object_object_get_ex(parsed_json, "glyph-range", &j_glyph_range);
 
     std::string glyph_range_str = json_object_get_string(j_glyph_range);
-    
-    Settings(3, 0);
-	if (font_name != "default")
-	{
-		if (CheckFile(font_name.c_str()) == false)
-		{
-			printf("Cannot find font, loading default font...!\n");
-            return;
-		}
-	}
 
-    if (glyph_range_str == "korean") 
+    Settings(3, 0);
+    if (font_name != "default")
+    {
+        if (CheckFile(font_name.c_str()) == false)
+        {
+            printf("Cannot find font, loading default font...!\n");
+            return;
+        }
+    }
+
+    if (glyph_range_str == "korean")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesKorean());
     }
 
-    else if (glyph_range_str == "chinese_full") 
+    else if (glyph_range_str == "chinese_full")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesChineseFull());
     }
 
-    else if (glyph_range_str == "chinese_simplified_common") 
+    else if (glyph_range_str == "chinese_simplified_common")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     }
 
-    else if (glyph_range_str == "japanese") 
+    else if (glyph_range_str == "japanese")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesJapanese());
     }
 
-    else if (glyph_range_str == "cyrillic") 
+    else if (glyph_range_str == "cyrillic")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesCyrillic());
     }
 
-    else if (glyph_range_str == "thai") 
+    else if (glyph_range_str == "thai")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesThai());
     }
 
-    else if (glyph_range_str == "vietnamese") 
+    else if (glyph_range_str == "vietnamese")
     {
         io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesVietnamese());
     }
 
-    else if (glyph_range_str == "latin-ex-a") 
+    else if (glyph_range_str == "latin-ex-a")
     {
         /* Source of code: https://github.com/kmar/Sweet16Font/blob/master/Sweet16_ImGui.inl */
         static const ImWchar Sweet16_ranges[] =
-        {
-            0x0020, 0x017F, // Basic Latin + Latin supplement + Latin extended A
-            0,
-        };
+            {
+                0x0020,
+                0x017F, // Basic Latin + Latin supplement + Latin extended A
+                0,
+            };
 
         ImFontConfig config;
         config.OversampleH = 1;
@@ -992,7 +997,7 @@ void Renderer::SetFont(ImGuiIO& io)
         config.PixelSnapH = true;
         config.SizePixels = 16;
         // the proportional variant probably looks better with 1px extra horizontal spacing (just uncomment the following line)
-        //config.GlyphExtraSpacing.x = 1;
+        // config.GlyphExtraSpacing.x = 1;
 
         // copy font name manually to avoid warnings
         const char *name = "font/Sweet16.ttf, 16px";
@@ -1049,7 +1054,7 @@ void DrawTab()
         // Demo Trailing Tabs: click the "+" button to add a new tab (in your app you may want to use a font icon instead of the "+")
         // Note that we submit it before the regular tabs, but because of the ImGuiTabItemFlags_Trailing flag it will always appear at the end.
         if (show_trailing_button)
-            if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip))
+            if (ImGui::TabItemButton("+", ImGuiTabItemFlags_Trailing | ImGuiTabItemFlags_NoTooltip) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 active_tabs.push_back(next_tab_id++); // Add new tab
 
         // Submit our regular tabs
@@ -1058,11 +1063,11 @@ void DrawTab()
             bool open = true;
             char name[16] = "Termi";
             snprintf(name, IM_ARRAYSIZE(name), "%04d", n);
-            if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None))
+            if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 vpprender_id = n;
                 vpprender[vpprender_id].first.first->DrawMenu();
-                vpprender[n].first.second->Draw();
+                vpprender[vpprender_id].first.second->Draw();
                 ImGui::EndTabItem();
             }
 
@@ -1076,7 +1081,7 @@ void DrawTab()
     }
 }
 
-/* Main code for starting ImGui */
+/* Main code for starting Dear ImGui */
 void main_code()
 {
     /* ImGui window creation */
@@ -1110,12 +1115,6 @@ void main_code()
 
     /* Draw tabs and menu bar */
     DrawTab();
-
-    /* Font dialog */
-    if (vpprender[vpprender_id].second.first->font_change)
-    {
-        vpprender[vpprender_id].first.first->Font(NULL);
-    }
 
     /* Language dialog */
     if (vpprender[vpprender_id].second.first->language_dialog)
