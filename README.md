@@ -11,7 +11,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Termi is a powerful terminal written in C++.
 - It can run on Windows, macOS and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
 - The goal of Termi is create independent terminal, i.e. a separate kind of terminal use "own" GUI renedering system.
-- Has own commands that can be written using C, C++ or Rust.
+- Has own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
 - We accept contibutors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
