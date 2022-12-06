@@ -24,7 +24,6 @@ extern "C"
 	void list_dir(const std::vector<std::string>& vect);
 	void new_dir(const std::vector<std::string>& vect);
 	void openfile(const std::vector<std::string>& vect);
-	void ping(const std::vector<std::string>& vect);
 	void rm(const std::vector<std::string>& vect);
 	void sysfetch(const std::vector<std::string>& vect);
 	void ttime(const std::vector<std::string>& vect);

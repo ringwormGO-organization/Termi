@@ -129,14 +129,6 @@ openfile(file)
 ```
 
 ```c
-ping()
-/* 
-    Checks server connection (sorry that this is not placed in alphabetical order) and also
-    all passed arguments will be ignored.
-*/
-```
-
-```c
 rm(file)
 /* 
     Removes file which given name.

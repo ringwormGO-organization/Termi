@@ -690,39 +690,6 @@ void openfile(std::vector<std::string>& vect)
     Status(0);
 }
 
-void ping(const std::vector<std::string>& vect)
-{
-    try
-    {
-        if (vect.size() < 2)
-        {
-            AddLog("Not enough arguments!");
-            Status(1);
-            return;
-        }
-
-        if (_ping(vect[1].c_str()))
-        {
-            AddLog("$gPing is OK!");
-        }
-
-        else
-        {
-            AddLog("$rPing is NOT OK!");
-        }
-
-        Status(0);
-    }
-
-    catch(const std::exception& e)
-    {
-        AddLog("Exception occured: ");
-        AddLog(e.what());
-
-        Status(2);
-    }
-}
-
 void rm(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)

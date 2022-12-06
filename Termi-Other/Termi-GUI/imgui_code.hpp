@@ -57,7 +57,6 @@ extern "C"
             {"list", "list_dir"},
             {"mkdir", "new_dir"},
             {"openfile", "openfile"},
-            {"ping", "ping"},
             {"rm", "rm"},
             {"sysfetch", "sysfetch"},
             {"time", "ttime"},

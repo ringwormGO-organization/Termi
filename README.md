@@ -23,9 +23,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 ## Checklist
 ### Termi base part
 - [x] Windows version (moderately supported)
-- [x] GNU/Linux version (in `Termi-Other` folder/directory)
-- [x] BSD version (same folder/directory as GNU/Linux version, moderately supported)
-- [x] macOS version (same folder/directory as GNU/Linux version, unsupported)
+- [x] GNU/Linux version (in `Termi-Other` folder/directory, fully supported)
+- [x] BSD version (in `Termi-Other` folder/directory, moderately supported)
+- [x] macOS version (in `Termi-Other` folder/directory, unsupported)
 
 ### Termi advanced C++ part
 - [x] Arguments
@@ -36,7 +36,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Most of major commands
 - [ ] Networking
   - [ ] Package manager ([@StjepanBM1](https://github.com/StjepanBM1))
-  - [ ] SSH connection
+  - [ ] Remote connection
 - [ ] Serial port
 - [x] Translations
 - [x] User settings in JSON

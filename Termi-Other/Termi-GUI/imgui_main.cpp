@@ -575,12 +575,12 @@ void Renderer::DrawMenu()
             {
                 if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    /* enable ssh */
+                    /* enable remote connection */
                 }
 
                 if (ImGui::MenuItem(ChooseLanguage(13)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    /* disable ssh */
+                    /* disable remote connection */
                 }
 
                 ImGui::EndMenu();
