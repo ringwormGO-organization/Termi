@@ -10,7 +10,6 @@
 #include "Commands/base64.hpp"
 #include "Commands/sysfetch.hpp"
 #include "Commands/filesys.hpp"
-#include "Commands/ping.hpp"
 #include "Commands/Geocalc.h"
 
 #include <iostream>
