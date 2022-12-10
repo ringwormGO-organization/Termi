@@ -22,7 +22,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## Checklist
 ### Termi base part
-- [x] Windows version (moderately supported)
+- [x] Windows version (moderately supported, mostly Windows 7)
 - [x] GNU/Linux version (in `Termi-Other` folder/directory, fully supported)
 - [x] BSD version (in `Termi-Other` folder/directory, moderately supported)
 - [x] macOS version (in `Termi-Other` folder/directory, unsupported)
