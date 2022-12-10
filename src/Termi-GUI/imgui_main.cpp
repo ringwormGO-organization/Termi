@@ -1,11 +1,17 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for Dear ImGui
  */
 
 #include "imgui_code.hpp"
+
+#ifdef _WIN32
+    #pragma warning(disable : 4996)    
+#elif _WIN64
+    #pragma warning(disable : 4996)
+#endif
 
 /**
  * Function which colors text
@@ -154,6 +160,7 @@ Console::Console()
     Commands.push_back("credits");
     Commands.push_back("clear");
     Commands.push_back("cls");
+    Commands.push_back("loadtp");
     Commands.push_back("exit");
 
     for (auto &x : commands)
@@ -176,55 +183,273 @@ Console::~Console()
         free(History[i]);
 }
 
-void Console::LoadSO(std::vector<std::string> &vect, std::string function)
+void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string function)
 {
-    void *handle;
-    void (*func)(const std::vector<std::string> &);
-    char *error;
+    #ifdef _WIN32
+        typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
 
-    handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
-    if (!handle)
-    {
-        fputs(dlerror(), stderr);
-        puts(" ");
-        exit(1);
-    }
+        HINSTANCE hinstLib;
+        FUNC ProcAdd;
+        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
-    func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
-    if ((error = dlerror()) != NULL)
-    {
-        fputs(error, stderr);
-        exit(1);
-    }
+        // Get a handle to the DLL module.
+        hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
 
-    (*func)(vect);
-    dlclose(handle);
+        // If the handle is valid, try to get the function address.
+        if (hinstLib != NULL)
+        {
+            ProcAdd = (FUNC)GetProcAddress(hinstLib, function.c_str());
+
+            // If the function address is valid, call the function.
+            if (NULL != ProcAdd)
+            {
+                fRunTimeLinkSuccess = TRUE;
+                (ProcAdd)(vect);
+            }
+
+            // Free the DLL module.
+            fFreeResult = FreeLibrary(hinstLib);
+        }
+
+        // If unable to call the DLL function, use an alternative.
+        if (!fRunTimeLinkSuccess)
+        {
+            printf("Failed to run function from executable!\n");
+        }
+    #elif _WIN64
+        typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
+
+        HINSTANCE hinstLib;
+        FUNC ProcAdd;
+        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+        // Get a handle to the DLL module.
+        hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
+
+        // If the handle is valid, try to get the function address.
+        if (hinstLib != NULL)
+        {
+            ProcAdd = (FUNC)GetProcAddress(hinstLib, function.c_str());
+
+            // If the function address is valid, call the function.
+            if (NULL != ProcAdd)
+            {
+                fRunTimeLinkSuccess = TRUE;
+                (ProcAdd)(vect);
+            }
+
+            // Free the DLL module.
+            fFreeResult = FreeLibrary(hinstLib);
+        }
+
+        // If unable to call the DLL function, use an alternative.
+        if (!fRunTimeLinkSuccess)
+        {
+            printf("Failed to run function from executable!\n");
+        }
+    #elif __APPLE__ || __MACH__
+        void *handle;
+        void (*func)(const std::vector<std::string> &);
+        char *error;
+
+        handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
+        if (!handle)
+        {
+            fputs(dlerror(), stderr);
+            puts(" ");
+            exit(1);
+        }
+
+        func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
+        if ((error = dlerror()) != NULL)
+        {
+            fputs(error, stderr);
+            exit(1);
+        }
+
+        (*func)(vect);
+        dlclose(handle); 
+    #elif __linux__
+        void *handle;
+        void (*func)(const std::vector<std::string> &);
+        char *error;
+
+        handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
+        if (!handle)
+        {
+            fputs(dlerror(), stderr);
+            puts(" ");
+            exit(1);
+        }
+
+        func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
+        if ((error = dlerror()) != NULL)
+        {
+            fputs(error, stderr);
+            exit(1);
+        }
+
+        (*func)(vect);
+        dlclose(handle);
+    #elif __FreeBSD__
+        void *handle;
+        void (*func)(const std::vector<std::string> &);
+        char *error;
+
+        handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
+        if (!handle)
+        {
+            fputs(dlerror(), stderr);
+            puts(" ");
+            exit(1);
+        }
+
+        func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
+        if ((error = dlerror()) != NULL)
+        {
+            fputs(error, stderr);
+            exit(1);
+        }
+
+        (*func)(vect);
+        dlclose(handle);
+    #endif
 }
 
 int Console::LoadThirdParty(const char *path, const char *function, const char *value)
 {
-    void *handle;
-    void (*func)(const char *);
-    char *error;
+    #ifdef _WIN32
+        typedef void(__cdecl* THIRD_PARTY)(const char*);
 
-    handle = dlopen(path, RTLD_LAZY);
-    if (!handle)
-    {
-        printf("%s\n", dlerror());
-        printf("-------------\n");
-        return 1;
-    }
+        HINSTANCE hinstLib;
+        THIRD_PARTY ProcAdd;
+        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
-    func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
-    if ((error = dlerror()) != NULL)
-    {
-        printf("%s\n", error);
-        printf("-------------\n");
-        return 1;
-    }
+        // Get a handle to the DLL module.
+        hinstLib = LoadLibrary((LPCWSTR)path);
 
-    (*func)(value);
-    dlclose(handle);
+        // If the handle is valid, try to get the function address.
+        if (hinstLib != NULL)
+        {
+            ProcAdd = (THIRD_PARTY)GetProcAddress(hinstLib, function);
+
+            // If the function address is valid, call the function.
+            if (NULL != ProcAdd)
+            {
+                fRunTimeLinkSuccess = TRUE;
+                (ProcAdd)(value);
+            }
+
+            // Free the DLL module.
+            fFreeResult = FreeLibrary(hinstLib);
+        }
+
+        // If unable to call the DLL function, use an alternative.
+        if (!fRunTimeLinkSuccess)
+        {
+            printf("Failed to run function from executable!\n\n");
+        }
+    #elif _WIN64
+        typedef void(__cdecl* THIRD_PARTY)(const char*);
+
+        HINSTANCE hinstLib;
+        THIRD_PARTY ProcAdd;
+        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+        // Get a handle to the DLL module.
+        hinstLib = LoadLibrary((LPCWSTR)path);
+
+        // If the handle is valid, try to get the function address.
+        if (hinstLib != NULL)
+        {
+            ProcAdd = (THIRD_PARTY)GetProcAddress(hinstLib, function);
+
+            // If the function address is valid, call the function.
+            if (NULL != ProcAdd)
+            {
+                fRunTimeLinkSuccess = TRUE;
+                (ProcAdd)(value);
+            }
+
+            // Free the DLL module.
+            fFreeResult = FreeLibrary(hinstLib);
+        }
+
+        // If unable to call the DLL function, use an alternative.
+        if (!fRunTimeLinkSuccess)
+        {
+            printf("Failed to run function from executable!\n\n");
+        }
+    #elif __APPLE__ || __MACH__
+        void *handle;
+        void (*func)(const char *);
+        char *error;
+
+        handle = dlopen(path, RTLD_LAZY);
+        if (!handle)
+        {
+            printf("%s\n", dlerror());
+            printf("-------------\n");
+            return 1;
+        }
+
+        func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
+        if ((error = dlerror()) != NULL)
+        {
+            printf("%s\n", error);
+            printf("-------------\n");
+            return 1;
+        }
+
+        (*func)(value);
+        dlclose(handle);
+    #elif __linux__
+        void *handle;
+        void (*func)(const char *);
+        char *error;
+
+        handle = dlopen(path, RTLD_LAZY);
+        if (!handle)
+        {
+            printf("%s\n", dlerror());
+            printf("-------------\n");
+            return 1;
+        }
+
+        func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
+        if ((error = dlerror()) != NULL)
+        {
+            printf("%s\n", error);
+            printf("-------------\n");
+            return 1;
+        }
+
+        (*func)(value);
+        dlclose(handle);
+    #elif __FreeBSD__
+        void *handle;
+        void (*func)(const char *);
+        char *error;
+
+        handle = dlopen(path, RTLD_LAZY);
+        if (!handle)
+        {
+            printf("%s\n", dlerror());
+            printf("-------------\n");
+            return 1;
+        }
+
+        func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
+        if ((error = dlerror()) != NULL)
+        {
+            printf("%s\n", error);
+            printf("-------------\n");
+            return 1;
+        }
+
+        (*func)(value);
+        dlclose(handle);
+    #endif
 
     return 0;
 }
@@ -386,7 +611,7 @@ void Console::ExecCommand(std::string command_line, ...)
     if (command != commands.end())
     {
         auto result = commands.find(command_line);
-        LoadSO(arguments, result->second.c_str());
+        LoadDynamicLibrary(arguments, result->second.c_str());
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -418,6 +643,14 @@ void Console::ExecCommand(std::string command_line, ...)
 
     else if (Stricmp(command_line.c_str(), "loadtp") == 0)
     {
+        if (arguments.size() < 3)
+        {
+            AddLog("No enough arguments!\n");
+            AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
+
+            goto end;
+        }
+
         std::string argument;
         for (size_t i = 0; i < arguments.size(); i++)
         {
@@ -450,6 +683,7 @@ void Console::ExecCommand(std::string command_line, ...)
         AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
     }
 
+end:
     arguments.clear();
 
     // On command input, we scroll to bottom even if AutoScroll==false
@@ -792,11 +1026,32 @@ void Renderer::ImGuiDialog(bool *p_open)
 
 int Renderer::Settings(int id, float value)
 {
-    char user[64];
-    getlogin_r(user, 64);
+    #ifdef _WIN32
+        std::string file_path = " ";
+    #elif _WIN64
+        std::string file_path = " ";
+    #elif __APPLE__ || __MACH__
+        char user[64];
+        getlogin_r(user, 64);
 
-    std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
-    std::string file_path = folder_path + "settings.json";
+        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+        std::string file_path = folder_path + "settings.json";  
+    #elif __linux__
+        char user[64];
+        getlogin_r(user, 64);
+
+        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+        std::string file_path = folder_path + "settings.json";
+    #elif __FreeBSD__
+        char user[64];
+        getlogin_r(user, 64);
+
+        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+        std::string file_path = folder_path + "settings.json";
+    #else
+        std::string file_path = " ";
+    #endif
+    
     std::string default_json = "{\"startup_command\":\"none\",\"width\":650,\"height\":650,\"font_name\":\"none\",\"font_size\":16,\"glyph-range\":\"default\"}";
 
     auto mode = std::ios::app | std::ios::in;
@@ -916,11 +1171,31 @@ int Renderer::Settings(int id, float value)
 
 void Renderer::SetFont(ImGuiIO &io)
 {
-    char user[64];
-    getlogin_r(user, 64);
+    #ifdef _WIN32
+        std::string file_path = " ";
+    #elif _WIN64
+        std::string file_path = " ";
+    #elif __APPLE__ || __MACH__
+        char user[64];
+        getlogin_r(user, 64);
 
-    std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
-    std::string file_path = folder_path + "settings.json";
+        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+        std::string file_path = folder_path + "settings.json";  
+    #elif __linux__
+        char user[64];
+        getlogin_r(user, 64);
+
+        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+        std::string file_path = folder_path + "settings.json";
+    #elif __FreeBSD__
+        char user[64];
+        getlogin_r(user, 64);
+
+        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
+        std::string file_path = folder_path + "settings.json";
+    #else
+        std::string file_path = " ";
+    #endif
 
     FILE *file = fopen(file_path.c_str(), "r");
     char buffer[1024];

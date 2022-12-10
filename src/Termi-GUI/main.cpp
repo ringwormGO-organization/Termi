@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file
  * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
@@ -15,7 +15,18 @@
 #include <iostream>
 #include <string>
 #include <fstream>
-#include <signal.h>
+
+#ifdef _WIN32
+	#include <Windows.h>
+#elif _WIN64
+    #include <Windows.h>
+#elif __APPLE__ || __MACH__
+	#include <signal.h>
+#elif __linux__
+	#include <signal.h>
+#elif __FreeBSD__
+	#include <signal.h>
+#endif
 
 /* stb_image include */
 #define STB_IMAGE_IMPLEMENTATION
@@ -35,26 +46,132 @@
 /* GLFW 3 include */
 #include <GLFW/glfw3.h>
 
-struct sigaction sigIntHandler;
+int width = 0;
+int height = 0;
 
-int width;
-int height;
-
-void end(int sig)
-{
-	std::cout << "\nPress any key to continue...\n";
-	auto key = std::cin.get();
-	if (key != 10)
+#ifdef _WIN32
+	static BOOL WINAPI end(DWORD dwCtrlType)
 	{
-		/* we need to do something here; input is broken */
-		exit(sig);
-	}
+		int key;
 
-	else
-	{
-		exit(sig);
+		switch (dwCtrlType)
+		{
+		case CTRL_C_EVENT: // Ctrl+C
+			std::cout << "\nPress any key to continue...\n";
+			key = std::cin.get();
+			if (key != 10)
+			{
+				/* we need to do something here; input is broken */
+				exit(0);
+			}
+			else
+			{
+				exit(0);
+			}
+			break;
+		case CTRL_BREAK_EVENT: // Ctrl+Break
+			break;
+		case CTRL_CLOSE_EVENT: // Closing the console window
+			break;
+		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
+			break;
+		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
+			break;
+		}
+
+		// Return TRUE if handled this message, further handler functions won't be called.
+		// Return FALSE to pass this message to further handlers until default handler calls ExitProcess().
+		return FALSE;
 	}
-}
+#elif _WIN64
+	static BOOL WINAPI end(DWORD dwCtrlType)
+	{
+		int key;
+
+		switch (dwCtrlType)
+		{
+		case CTRL_C_EVENT: // Ctrl+C
+			std::cout << "\nPress any key to continue...\n";
+			key = std::cin.get();
+			if (key != 10)
+			{
+				/* we need to do something here; input is broken */
+				exit(0);
+			}
+			else
+			{
+				exit(0);
+			}
+			break;
+		case CTRL_BREAK_EVENT: // Ctrl+Break
+			break;
+		case CTRL_CLOSE_EVENT: // Closing the console window
+			break;
+		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
+			break;
+		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
+			break;
+		}
+
+		// Return TRUE if handled this message, further handler functions won't be called.
+		// Return FALSE to pass this message to further handlers until default handler calls ExitProcess().
+		return FALSE;
+	}
+#elif __APPLE__ || __MACH__
+	struct sigaction sigIntHandler;
+
+	void end(int sig)
+	{
+		std::cout << "\nPress any key to continue...\n";
+		auto key = std::cin.get();
+		if (key != 10)
+		{
+			/* we need to do something here; input is broken */
+			exit(sig);
+		}
+
+		else
+		{
+			exit(sig);
+		}
+	}
+#elif __linux__
+	struct sigaction sigIntHandler;
+
+	void end(int sig)
+	{
+		std::cout << "\nPress any key to continue...\n";
+		auto key = std::cin.get();
+		if (key != 10)
+		{
+			/* we need to do something here; input is broken */
+			exit(sig);
+		}
+
+		else
+		{
+			exit(sig);
+		}
+	}
+#elif __FreeBSD__
+	struct sigaction sigIntHandler;
+
+	void end(int sig)
+	{
+		std::cout << "\nPress any key to continue...\n";
+		auto key = std::cin.get();
+		if (key != 10)
+		{
+			/* we need to do something here; input is broken */
+			exit(sig);
+		}
+
+		else
+		{
+			exit(sig);
+		}
+	}
+#endif
 
 void tmain()
 {
@@ -72,11 +189,31 @@ void tmain()
 	Renderer *render = new Renderer();
 	bool iconReady = false;
 
-	/* Catch CTRL-C */
-	sigIntHandler.sa_handler = end;
-	sigemptyset(&sigIntHandler.sa_mask);
-	sigIntHandler.sa_flags = 0;
-	sigaction(SIGINT, &sigIntHandler, NULL);
+	#ifdef _WIN32
+		/* Catch CTRL-C */
+		SetConsoleCtrlHandler(end, TRUE);
+    #elif _WIN64
+		/* Catch CTRL-C */
+		SetConsoleCtrlHandler(end, TRUE);
+    #elif __APPLE__ || __MACH__
+		/* Catch CTRL-C */
+		sigIntHandler.sa_handler = end;
+		sigemptyset(&sigIntHandler.sa_mask);
+		sigIntHandler.sa_flags = 0;
+		sigaction(SIGINT, &sigIntHandler, NULL);
+    #elif __linux__
+		/* Catch CTRL-C */
+		sigIntHandler.sa_handler = end;
+		sigemptyset(&sigIntHandler.sa_mask);
+		sigIntHandler.sa_flags = 0;
+		sigaction(SIGINT, &sigIntHandler, NULL);
+    #elif __FreeBSD__
+		/* Catch CTRL-C */
+		sigIntHandler.sa_handler = end;
+		sigemptyset(&sigIntHandler.sa_mask);
+		sigIntHandler.sa_flags = 0;
+		sigaction(SIGINT, &sigIntHandler, NULL);
+    #endif
 
 	std::cout << "ooooooooooo                              " << std::endl;
 	std::cout << "    888      ooooooooooo                          o88   " << std::endl;
@@ -96,7 +233,7 @@ void tmain()
 
 		if (yn == "y")
 		{
-			system("wget https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/Termi-Linux-OpenGL/termi.png");
+			system("wget https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/Termi-OpenGL/termi.png");
 
 			if (render->CheckFile("termi.png"))
 			{

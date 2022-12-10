@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi-Linux version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file for Dear ImGui code
  */
@@ -25,10 +25,28 @@
 #include <string>
 #include <vector>
 
-#include <sys/stat.h>
-#include <unistd.h>
-#include <limits.h>
-#include <dlfcn.h>
+#ifdef _WIN32
+    #include <Windows.h>
+    #include <direct.h>
+#elif _WIN64
+    #include <Windows.h>
+    #include <direct.h>
+#elif __APPLE__ || __MACH__
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #include <limits.h>
+    #include <dlfcn.h>
+#elif __linux__
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #include <limits.h>
+    #include <dlfcn.h>
+#elif __FreeBSD__
+    #include <sys/stat.h>
+    #include <unistd.h>
+    #include <limits.h>
+    #include <dlfcn.h>
+#endif
 
 #include <json-c/json.h>
 
@@ -225,7 +243,7 @@ extern "C"
         };
 
     public:
-        void LoadSO(std::vector<std::string> &vect, std::string function);
+        void LoadDynamicLibrary(std::vector<std::string> &vect, std::string function);
         int LoadThirdParty(const char *path, const char *function, const char *value);
 
     public:
