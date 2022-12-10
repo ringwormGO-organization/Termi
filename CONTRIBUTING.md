@@ -11,17 +11,10 @@ Just drop a Pull Request :)
 [LABEL NAME] Name of Pull Request
 ```
 # Directory organization (OpenGL)
-## Windows version
-1. `Termi-Main` folder/directory is just C# projects which calls GUI code from `Termi-GUI.dll`.
-2. `Termi-GUI` is Visual Studio project for GUI code (calls `Termi-Commands.dll` at runtime).
-3. `Termi-Commands` is Visual Studio project for core commands (calls `Termi-GUI.dll` at runtime).
-
-## Other versions
-1. GNU/Linux version have own folder while Windows version is in `Termi-Windows` directory.
-2. Code is in "root" while header files for commands will be in `Commands` directory.
-3. `imgui_main.cpp` contains code about rendering windows and console.
-4. `imgui_commands.cpp` contains code for commands`.
-5. `imgui_code.hpp` is header file for `imgui_main.cpp` and `imgui_commands.cpp`.
+1. Code is in "root" while header files for commands will be in `Commands` directory.
+2. `imgui_main.cpp` contains code about rendering windows and console.
+3. `imgui_commands.cpp` contains code for commands`.
+4. `imgui_code.hpp` is header file for `imgui_main.cpp` and `imgui_commands.cpp`.
 
 # Add language (not programming language) to Termi
 1. Add new `std::vector` to `Translation.hpp` in `Translation` namespace.

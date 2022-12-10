@@ -1,4 +1,0 @@
-﻿  main.cpp
-D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\main.cpp(68,6): warning C4273: 'tmain': inconsistent dll linkage
-D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\imgui_code.hpp(225,15): message : see previous definition of 'tmain'
-  Termi-GUI.vcxproj -> D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\Termi-Windows\Termi-GUI\x64\Debug\Termi-GUI.dll
