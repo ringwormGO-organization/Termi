@@ -1,3 +1,0 @@
-/home/vangu/Documents/Programming/ringwormGO/Termi/Termi-Other/Termi-GUI/CMakeFiles/Termi-GUI.dir
-/home/vangu/Documents/Programming/ringwormGO/Termi/Termi-Other/Termi-GUI/CMakeFiles/edit_cache.dir
-/home/vangu/Documents/Programming/ringwormGO/Termi/Termi-Other/Termi-GUI/CMakeFiles/rebuild_cache.dir
