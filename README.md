@@ -22,7 +22,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## Checklist
 ### Termi base part
-- [x] Windows version (fully supported)
+- [x] Windows version (moderately supported)
 - [x] GNU/Linux version (in `Termi-Other` folder/directory, fully supported)
 - [x] BSD version (in `Termi-Other` folder/directory, moderately supported)
 - [x] macOS version (in `Termi-Other` folder/directory, unsupported)
@@ -50,6 +50,8 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 ### Required software:
 ### Windows
 - Visual Studio Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components - Windows.
+- vcpkg
+- json-c (vcpkg version, static x64)
 
 ### Other platforms
 - g++ complier
@@ -67,7 +69,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - CMake
   - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
-- json-c library
+- json-c library (non-vcpkg version)
   - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Debain based.
 
@@ -77,9 +79,10 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
     - If it doesn't work, see following instructions down below:
       - open properties of `Termi-GUI` project,
       - goto `VC++ Directories`,
-      - set your path (they are bundled with Termi (they are in `Libraries` folder/directory), but Visual Studio knows to set entire path (user directory, etc. so you need to change them)) of `Include Directories` and `Library Directories`
+      - set your path (they are bundled with Termi (they are in `Libraries` folder/directory), but Visual Studio knows to set entire path (user directory, etc. so you need to change them)) of `Include Directories` and `Library Directories`;
+      - Or you can check Victor Gordan's [video](https://www.youtube.com/watch?v=XpBGwZNyUh0).
   - ### Other platforms (macOS, (GNU/)Linux, BSD)
-    - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on (GNU/)Linux machine
+    - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on (GNU/)Linux machine.
 
     - For BSD based operating systems, follow instructions down below (it is pretty much same):
       - download glad header files (see video for more details),
