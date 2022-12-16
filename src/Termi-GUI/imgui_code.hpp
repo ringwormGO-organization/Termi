@@ -28,24 +28,46 @@
 #ifdef _WIN32
     #include <Windows.h>
     #include <direct.h>
+
+    #define PATH_MAX        4096    /* # chars in a path name including nul */
+
+    #if API_EXPORT
+        #define _API __declspec(dllexport)
+    #else
+        #define _API __declspec(dllimport)
+    #endif
 #elif _WIN64
     #include <Windows.h>
     #include <direct.h>
+
+    #define PATH_MAX        4096    /* # chars in a path name including nul */
+
+    #if API_EXPORT
+        #define _API __declspec(dllexport)
+    #else
+        #define _API __declspec(dllimport)
+    #endif
 #elif __APPLE__ || __MACH__
     #include <sys/stat.h>
     #include <unistd.h>
     #include <limits.h>
     #include <dlfcn.h>
+
+    #define _API 
 #elif __linux__
     #include <sys/stat.h>
     #include <unistd.h>
     #include <limits.h>
     #include <dlfcn.h>
+
+    #define _API 
 #elif __FreeBSD__
     #include <sys/stat.h>
     #include <unistd.h>
     #include <limits.h>
     #include <dlfcn.h>
+
+    #define _API 
 #endif
 
 #include <json-c/json.h>
@@ -162,7 +184,7 @@ extern "C"
     };
 
     /* Renderer class */
-    class Renderer
+    struct Renderer
     {
     public:
         void DrawMenu();
@@ -185,7 +207,7 @@ extern "C"
      * Console class - everything for drawing and managing console
      * Code from imgui_demo.cpp
      */
-    class Console : public Renderer
+    struct Console : public Renderer
     {
     protected:
         char InputBuf[256];
@@ -273,11 +295,11 @@ extern "C"
 
     extern Console console;
 
-    void tmain();
+    _API void tmain();
 
     /**
      * AddLog but outside of struct so it is visible from outside this shared library
      * @param fmt - string
      */
-    void AddLog(const char *fmt, ...);
+    _API void AddLog(const char *fmt, ...);
 };

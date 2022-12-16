@@ -326,7 +326,7 @@ int Console::LoadThirdParty(const char *path, const char *function, const char *
         BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
         // Get a handle to the DLL module.
-        hinstLib = LoadLibrary((LPCWSTR)path);
+        hinstLib = LoadLibrary((LPCSTR)path);
 
         // If the handle is valid, try to get the function address.
         if (hinstLib != NULL)
@@ -357,7 +357,7 @@ int Console::LoadThirdParty(const char *path, const char *function, const char *
         BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
         // Get a handle to the DLL module.
-        hinstLib = LoadLibrary((LPCWSTR)path);
+        hinstLib = LoadLibrary((LPCSTR)path);
 
         // If the handle is valid, try to get the function address.
         if (hinstLib != NULL)
@@ -1027,9 +1027,11 @@ void Renderer::ImGuiDialog(bool *p_open)
 int Renderer::Settings(int id, float value)
 {
     #ifdef _WIN32
-        std::string file_path = " ";
+        std::string folder_path = "settings/";
+        std::string file_path = folder_path + "settings.json";
     #elif _WIN64
-        std::string file_path = " ";
+        std::string folder_path = "settings/";
+        std::string file_path = folder_path + "settings.json";
     #elif __APPLE__ || __MACH__
         char user[64];
         getlogin_r(user, 64);
@@ -1059,7 +1061,7 @@ int Renderer::Settings(int id, float value)
 
     if (!std::filesystem::exists(folder_path) && !std::filesystem::is_directory(folder_path))
     {
-        mkdir(folder_path.c_str(), 0777);
+        std::filesystem::create_directory(folder_path);
     }
 
     if (!CheckFile(file_path.c_str()))
@@ -1172,9 +1174,11 @@ int Renderer::Settings(int id, float value)
 void Renderer::SetFont(ImGuiIO &io)
 {
     #ifdef _WIN32
-        std::string file_path = " ";
+        std::string folder_path = "settings/";
+        std::string file_path = folder_path + "settings.json";
     #elif _WIN64
-        std::string file_path = " ";
+        std::string folder_path = "settings/";
+        std::string file_path = folder_path + "settings.json";
     #elif __APPLE__ || __MACH__
         char user[64];
         getlogin_r(user, 64);

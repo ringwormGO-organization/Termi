@@ -12,11 +12,49 @@
 #include <vector>
 
 #ifdef _WIN32
-        
+	extern "C"
+	{
+		__declspec(dllexport) void __cdecl base64(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl calc(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl cd(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl change_setting(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl dencalc(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl echo(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl find_command(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl geocalc(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl list_dir(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl new_dir(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl openfile(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl rm(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl sysfetch(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl ttime(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl whoami(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl writefile(const std::vector<std::string>& vect);
+		__declspec(dllexport) auto __cdecl yes(const std::vector<std::string>& vect) -> void;
+	};
 #elif _WIN64
-	
+	extern "C"
+	{
+		__declspec(dllexport) void __cdecl base64(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl calc(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl cd(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl change_setting(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl dencalc(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl echo(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl find_command(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl geocalc(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl list_dir(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl new_dir(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl openfile(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl rm(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl sysfetch(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl ttime(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl whoami(const std::vector<std::string>& vect);
+		__declspec(dllexport) void __cdecl writefile(const std::vector<std::string>& vect);
+		__declspec(dllexport) auto __cdecl yes(const std::vector<std::string>& vect) -> void;
+	};
 #elif __APPLE__ || __MACH__
-	gextern "C"
+	extern "C"
 	{
 		void base64(const std::vector<std::string>& vect);
 		void calc(const std::vector<std::string>& vect);

@@ -32,6 +32,8 @@
     #include <libloaderapi.h>
     #include <wchar.h>
     #include <intrin.h>
+
+    #define VOID void __cdecl
 #elif _WIN64
     #include <Windows.h>
     #include <direct.h>
@@ -43,6 +45,8 @@
     #include <libloaderapi.h>
     #include <wchar.h>
     #include <intrin.h>
+
+    #define VOID void __cdecl
 #elif __APPLE__ || __MACH__
     #include <sys/types.h>
     #include <sys/stat.h>
@@ -52,6 +56,8 @@
 
     #include <dlfcn.h>
     #include <dirent.h>
+
+    #define VOID void
 #elif __linux__
     #include <sys/types.h>
     #include <sys/stat.h>
@@ -61,6 +67,8 @@
 
     #include <dlfcn.h>
     #include <dirent.h>
+
+    #define VOID void
 #elif __FreeBSD__
     #include <sys/types.h>
     #include <sys/stat.h>
@@ -70,6 +78,8 @@
 
     #include <dlfcn.h>
     #include <dirent.h>
+
+    #define VOID void __cdecl
 #endif
 
 using namespace std;
@@ -150,7 +160,7 @@ using namespace std;
             printf("Error!\n");
     }
 
-    static int LoadRust(const char* function, const char* value)
+    static int LoadRust(const char* path, const char* function, const char* value)
     {
         HINSTANCE hinstLib;
         RUST ProcAdd;
@@ -158,7 +168,7 @@ using namespace std;
 
         // Get a handle to the DLL module.
 
-        hinstLib = LoadLibrary(TEXT("rtest.dll"));
+        hinstLib = LoadLibrary(reinterpret_cast<LPCSTR>(path));
 
         // If the handle is valid, try to get the function address.
 
@@ -183,6 +193,19 @@ using namespace std;
             return 1;
 
         return 0;
+    }
+
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadDLL("AddLog", buf);
     }
 
     /*
@@ -339,6 +362,19 @@ using namespace std;
         return 0;
     }
 
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadDLL("AddLog", buf);
+    }
+
     /*
     * Commands main code
     * Return version of Windows operating system
@@ -455,6 +491,19 @@ using namespace std;
 
         return 0;
     }
+
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadSO("AddLog", buf);
+    }
 #elif __linux__
     template <typename T>
     void LoadSO(const char* function, T value)
@@ -527,6 +576,19 @@ using namespace std;
         dlclose(handle);
 
         return 0;
+    }
+
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadSO("AddLog", buf);
     }
 #elif __FreeBSD__
     template <typename T>
@@ -601,20 +663,20 @@ using namespace std;
 
         return 0;
     }
+
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadSO("AddLog", buf);
+    }
 #endif
-
-void AddLog(std::string fmt, ...)
-{
-    // FIXME-OPT
-    char buf[1024];
-    va_list args;
-    va_start(args, fmt);
-    vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
-    buf[sizeof(buf) - 1] = 0;
-    va_end(args);
-
-    LoadSO("AddLog", buf);
-}
 
 void Status(int error_code)
 {
@@ -636,7 +698,7 @@ void Status(int error_code)
 
 /* ------------------------------------------------------------------------------------------ */
 
-void base64(const std::vector<std::string>& vect)
+VOID base64(const std::vector<std::string>& vect)
 {
     if (vect.size() < 3)
     {
@@ -693,7 +755,7 @@ void base64(const std::vector<std::string>& vect)
     }
 }
 
-void calc(const std::vector<std::string>& vect)
+VOID calc(const std::vector<std::string>& vect)
 {
     if (vect.size() < 4)
     {
@@ -760,7 +822,7 @@ void calc(const std::vector<std::string>& vect)
     }
 }
 
-void cd(const std::vector<std::string>& vect)
+VOID cd(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -772,7 +834,7 @@ void cd(const std::vector<std::string>& vect)
     Status(chdir(vect[1].c_str()));
 }
 
-void dencalc(const std::vector<std::string>& vect)
+VOID dencalc(const std::vector<std::string>& vect)
 {
     if (vect.size() < 4)
     {
@@ -820,7 +882,7 @@ void dencalc(const std::vector<std::string>& vect)
     }
 }
 
-void echo(const std::vector<std::string>& vect)
+VOID echo(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -847,7 +909,7 @@ void echo(const std::vector<std::string>& vect)
     Status(0);
 }
 
-void find_command(const std::vector<std::string>& vect)
+VOID find_command(const std::vector<std::string>& vect)
 {        
     #if __APPLE__ || __MACH__
         if (vect.size() < 5)
@@ -962,7 +1024,7 @@ void find_command(const std::vector<std::string>& vect)
     Status(2);
 }
 
-void geocalc(const std::vector<std::string>& vect)
+VOID geocalc(const std::vector<std::string>& vect)
 {
     if (vect.size() < 5)
     {
@@ -1081,7 +1143,7 @@ void geocalc(const std::vector<std::string>& vect)
     }
 }
 
-void list_dir(const std::vector<std::string>& vect)
+VOID list_dir(const std::vector<std::string>& vect)
 {
     #ifdef _WIN32
         struct dirent* d;
@@ -1302,7 +1364,7 @@ void list_dir(const std::vector<std::string>& vect)
     Status(0);
 }
 
-void new_dir(const std::vector<std::string>& vect)
+VOID new_dir(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -1379,7 +1441,7 @@ void new_dir(const std::vector<std::string>& vect)
     #endif
 }
 
-void sysfetch(const std::vector<std::string>& vect)
+VOID sysfetch(const std::vector<std::string>& vect)
 {
     /* Username and computer name */
     #ifdef _WIN32
@@ -1394,8 +1456,11 @@ void sysfetch(const std::vector<std::string>& vect)
         char new_username[UNLEN];
         char new_computer[UNLEN];
 
-        wcstombs(new_username, username, wcslen(username) + 1);
-        wcstombs(new_computer, computer, wcslen(computer) + 1);
+        /*wcstombs(new_username, username, wcslen(username) + 1);
+        wcstombs(new_computer, computer, wcslen(computer) + 1);*/
+
+        strcpy_s(new_username, UNLEN, username);
+        strcpy_s(new_computer, UNLEN, computer);
     #elif _WIN64
         TCHAR username[UNLEN + 1];
         DWORD username_len = UNLEN + 1;
@@ -1423,27 +1488,23 @@ void sysfetch(const std::vector<std::string>& vect)
 
     /* OS */
     #ifdef _WIN32
-        info.OS = "Windows32";
+        /* info.OS = "Windows32"; */
     #elif _WIN64
-        info.OS = "Windows64";
+        /* info.OS = "Windows64"; */
     #elif __APPLE__ || __MACH__
-        info.OS = "Mac OSX";
+        /* info.OS = "Mac OSX"; */
     #elif __linux__
         info.OS = "(GNU/)Linux";
     #elif __FreeBSD__
-        info.OS = "FreeBSD";
+        /* info.OS = "FreeBSD"; */
     #elif __unix || __unix__
-        info.OS = "Unix";
+        /* info.OS = "Unix"; */
     #else
-        info.OS = "Other";
+        /* info.OS = "Other"; */
     #endif
 
     /* CPU */
-    #ifdef _WIN32
-        
-    #elif _WIN64
-        
-    #elif __linux__
+    #ifdef __linux__
         string cpu;
         string line_pre_array = parse("model name", "/proc/cpuinfo");
         vector<string> result = explode(line_pre_array, ':');
@@ -2224,7 +2285,7 @@ void sysfetch(const std::vector<std::string>& vect)
     Status(0);
 }
 
-void openfile(std::vector<std::string>& vect)
+VOID openfile(std::vector<std::string>& vect)
 {
     fstream my_file;
     string file = vect[1];
@@ -2258,7 +2319,7 @@ void openfile(std::vector<std::string>& vect)
     Status(0);
 }
 
-void rm(const std::vector<std::string>& vect)
+VOID rm(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -2270,14 +2331,14 @@ void rm(const std::vector<std::string>& vect)
     Status(remove(vect[1].c_str()));
 }
 
-void ttime(const std::vector<std::string>& vect)
+VOID ttime(const std::vector<std::string>& vect)
 {
     auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
     AddLog(ctime(&givemetime));
     Status(0);
 }
 
-void whoami(const std::vector<std::string>& vect)
+VOID whoami(const std::vector<std::string>& vect)
 {
     #ifdef _WIN32
         TCHAR username[UNLEN + 1];
@@ -2285,8 +2346,9 @@ void whoami(const std::vector<std::string>& vect)
         GetUserName((TCHAR*)username, &username_len);;
 
         char new_username[UNLEN];
-        wcstombs(new_username, username, wcslen(username) + 1);
+        /* wcstombs(new_username, username, wcslen(username) + 1); */
 
+        strcpy_s(new_username, UNLEN, username);
         AddLog(string(new_username) + "\n");
     #elif _WIN64
         TCHAR username[UNLEN + 1];
@@ -2317,7 +2379,7 @@ void whoami(const std::vector<std::string>& vect)
     Status(0);
 }
 
-void writefile(const std::vector<std::string>& vect)
+VOID writefile(const std::vector<std::string>& vect)
 {
     if (vect.size() < 3)
     {
@@ -2343,7 +2405,7 @@ void writefile(const std::vector<std::string>& vect)
 }
 
 /* Since we use this function for doing tests, I decided to put here some "modern C++ syntax" */
-auto yes(const std::vector<std::string>& vect) -> void
+auto __cdecl yes(const std::vector<std::string>& vect) -> void
 {
     /*while (true)
     {

@@ -33,10 +33,18 @@
 #include "stb_image.h"
 
 /* Glad include */
-#ifdef USE_PREINSTALLED_HEADERS
-#include "includes/glad.h"
+#ifdef _WIN32
+	#define USE_PREINSTALLED_HEADERS
+#elif _WIN64
+	#define USE_PREINSTALLED_HEADERS
 #else
-#include <glad/glad.h>
+	#undef USE_PREINSTALLED_HEADERS
+#endif
+
+#ifdef USE_PREINSTALLED_HEADERS
+	#include "includes/glad.h"
+#else
+	#include <glad/glad.h>
 #endif
 
 /* Termi's includes */
@@ -44,7 +52,13 @@
 #include "Settings.hpp"
 
 /* GLFW 3 include */
-#include <GLFW/glfw3.h>
+#ifdef _WIN32
+	#include "includes/GLFW/glfw3.h"
+#elif _WIN64
+	#include "includes/GLFW/glfw3.h"
+#else
+	#include <GLFW/glfw3.h>
+#endif
 
 int width = 0;
 int height = 0;

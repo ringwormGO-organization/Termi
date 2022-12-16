@@ -70,16 +70,27 @@
 #endif
 
 // GLFW
-#include <GLFW/glfw3.h>
+#ifdef _WIN32
+	#include "../includes/GLFW/glfw3.h"
+#elif _WIN64
+	#include "../includes/GLFW/glfw3.h"
+#else
+	#include <GLFW/glfw3.h>
+#endif
 
 #ifdef _WIN32
-#undef APIENTRY
-#define GLFW_EXPOSE_NATIVE_WIN32
-#include <GLFW/glfw3native.h>   // for glfwGetWin32Window()
+    #undef APIENTRY
+    #define GLFW_EXPOSE_NATIVE_WIN32
+
+    #include "../includes/GLFW/glfw3native.h"
+    // for glfwGetWin32Window()
 #endif
+
 #ifdef __APPLE__
-#define GLFW_EXPOSE_NATIVE_COCOA
-#include <GLFW/glfw3native.h>   // for glfwGetCocoaWindow()
+    #define GLFW_EXPOSE_NATIVE_COCOA
+
+	#include <GLFW/glfw3native.h>
+    // for glfwGetCocoaWindow()
 #endif
 
 #define GLFW_HAS_WINDOW_TOPMOST       (GLFW_VERSION_MAJOR * 1000 + GLFW_VERSION_MINOR * 100 >= 3200) // 3.2+ GLFW_FLOATING

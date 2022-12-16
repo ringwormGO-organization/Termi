@@ -22,7 +22,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## Checklist
 ### Termi base part
-- [x] Windows version (moderately supported, mostly Windows 7)
+- [x] Windows version (fully supported)
 - [x] GNU/Linux version (in `Termi-Other` folder/directory, fully supported)
 - [x] BSD version (in `Termi-Other` folder/directory, moderately supported)
 - [x] macOS version (in `Termi-Other` folder/directory, unsupported)
@@ -51,25 +51,25 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 ### Windows
 - Visual Studio Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components - Windows.
 
-### Other versions
+### Other platforms
 - g++ complier
   - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
 - build-essential
   - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S base-devel``` if not already installed on GNU/Linux machine, Arch based.
+
+### All platfoms
+- Git - for cloning repo
+  - Check Git website for Windows instructions or do `winget install git`
+  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
 - CMake
   - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
 - json-c library
   - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Debain based.
-
-### Both versions
-- Git - for cloning repo
-  - Check Git website for Windows instructions or do `winget install git`
-  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
-  - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
 
 - OpenGL - for OpenGL project part
   - ### Windows
@@ -99,15 +99,20 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 **Commands which requires package installation have to be runned with administartor/root access!**
 
 ### Build & Run - Windows
-1. Build `Termi-GUI` project and copy from `Termi-GUI/x64/Debug` `Termi-GUI.dll` file into `Termi-Main/bin/debug/net6.0`.
-2. Then copy from `Termi-Commands/x64/Debug` copy `Termi-Commands.dll` file into `Termi-Main/bin/debug/net6.0` folder/directory.
-3. Build `Termi-Main` project and run executable
+1. Open `Developer Powershell for Visual Studio 2022`
+2. Go to `Termi-Commands` folder/directory and run this command: `clear | cmake . | nmake`
+3. Go to `Termi-GUI` folder/directory, make `build` folder/directory, enter it and run `cmake ..`, but before that set a path where is `json-c` installed using `vcpkg` in `CMakeLists.txt` and copy `glfw3.lib` in `build` folder/directory from `Termi-GUI` folder/directory
+4. Go to `build` folder/directory, open Visual Studio solution and compile `ALL_BUILD` project
+5. Go to `Termi-Main` folder and run this command: `clear | mkdir build | cd build | cmake ..`
+6. Go to `build` folder/directory, open Visual Studio solution and compile `ALL_BUILD` project
+7. Now copy all DLLs to `Debug` folder/directory where is `Termi-Main` executable for Windows located
+8. Now run `Termi-Main` executable!
 
 ### Build & Run - Other platforms
-- Just run `compile_all.sh` (it won't compile test Rust command) script from `Termi-Other` folder or follow steps below:
+- Just run `compile_all.sh` (it won't compile test Rust command)
 1. Compile `Termi-Commands` project by running `cmake . && make`
 2. Compile `Termi-GUI` project by running `cmake . && make`
-3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` project.
+3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` folder/directory.
 4. Compile `Termi-Main` project by running ```cmake . && make && ./Termi-OpenGL```. If you can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video just in case there is something important!
 
 ### For those who want know more

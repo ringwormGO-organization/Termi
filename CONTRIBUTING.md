@@ -11,10 +11,9 @@ Just drop a Pull Request :)
 [LABEL NAME] Name of Pull Request
 ```
 # Directory organization (OpenGL)
-1. Code is in "root" while header files for commands will be in `Commands` directory.
-2. `imgui_main.cpp` contains code about rendering windows and console.
-3. `imgui_commands.cpp` contains code for commands`.
-4. `imgui_code.hpp` is header file for `imgui_main.cpp` and `imgui_commands.cpp`.
+1. `Termi-Commands` folder/directory - code for commands
+1. `Termi-GUI` folder/directory - code for GUI
+1. `Termi-Main` folder/directory - code for calling GUI
 
 # Add language (not programming language) to Termi
 1. Add new `std::vector` to `Translation.hpp` in `Translation` namespace.
@@ -94,18 +93,17 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
 ```
 
 # Add command / port application to Termi
-## Windows version
-### Core commands
+## Core commands
 1. Add function name in `Export.h` in `Termi-Commands` Visual Studio project.
 2. Add C++ code in `Commands.cpp` in `Termi-Commands` Visual Studio project.
 3. See example:
 ```cpp
 extern "C"
 {
-	__declspec(dllexport) void __cdecl example(const std::vector<std::string>& vect);
+	void example(const std::vector<std::string>& vect); /* __declspec(dllexport) void __cdecl if Windows */
 }; /* Export.h */
 
-void __cdecl example(const std::vector<std::string>& vect)
+VOID example(const std::vector<std::string>& vect)
 {
     int number = 30;
     std::string str = "Number is: " + std::to_string(number) + "\n";
@@ -116,43 +114,22 @@ void __cdecl example(const std::vector<std::string>& vect)
 } /* Commands.cpp */
 ```
 
-### Port application
+## Port application
+### Windows
 1. Create new Visual Studio DLL project.
 2. Copy all stuff to load DLL stuff (`AddLog` function mostly).
 3. Copy all `_declspec(dllexport)` stuff (see example for core commands).
 4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
 5. Call DLL from Termi (actually type any random command and fill the little form in terminal where you run Termi)
 
-## Other versions
-### Core commands
-1. Add function name in `Export.h` in `Termi-Commands` project.
-2. Add C++ code in `Commands.cpp` in `Termi-Commands` project.
-3. See example:
-```cpp
-extern "C"
-{
-	void example(const std::vector<std::string>& vect);
-}; /* Export.h */
-
-void example(const std::vector<std::string>& vect)
-{
-    int number = 30;
-    std::string str = "Number is: " + std::to_string(number) + "\n";
-    AddLog(str);
-
-    /* or */
-    AddLog("Number is: %d\n", number);
-} /* Commands.cpp */
-```
-
-### Port application
+### Other platforms
 1. Create new project with `CMakeLists.txt` file similar from `Termi-GUI` and `Termi-Commands` project
 2. Copy all stuff to load .so stuff (`AddLog` function mostly).
 3. Copy all `extern "C"` stuff (see example for core commands).
 4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
 5. Call DLL from Termi (actually type any random command and fill the little form in terminal where you run Termi)
 
-## For those who want more
+## For those who want know more
 ### Port application written in Rust
 1. Follow "C++ steps" to create new core command.
 2. Create new `LoadRust` function (just copy previous one, change name and path of .dll file).
