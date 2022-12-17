@@ -6,6 +6,17 @@ use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
 fn AddLog(fmt: &CStr) {
+    #[cfg(target_os = "windows")]
+    unsafe {
+        let lib = Library::new("Termi-GUI.so").unwrap();
+        let foo = lib
+            .get::<Symbol<extern "C" fn(*const c_char)>>(b"AddLog")
+            .unwrap();
+
+        foo(fmt.as_ptr());
+    }
+
+    #[cfg(target_os = "linux")]
     unsafe {
         let lib = Library::new("libTermi-GUI.so").unwrap();
         let foo = lib
