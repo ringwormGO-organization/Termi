@@ -33,7 +33,7 @@
     #include <wchar.h>
     #include <intrin.h>
 
-    #define VOID void __cdecl
+    #define _VOID void __cdecl
 #elif _WIN64
     #include <Windows.h>
     #include <direct.h>
@@ -46,7 +46,7 @@
     #include <wchar.h>
     #include <intrin.h>
 
-    #define VOID void __cdecl
+    #define _VOID void __cdecl
 #elif __APPLE__ || __MACH__
     #include <sys/types.h>
     #include <sys/stat.h>
@@ -57,7 +57,7 @@
     #include <dlfcn.h>
     #include <dirent.h>
 
-    #define VOID void
+    #define _VOID void
 #elif __linux__
     #include <sys/types.h>
     #include <sys/stat.h>
@@ -68,7 +68,7 @@
     #include <dlfcn.h>
     #include <dirent.h>
 
-    #define VOID void
+    #define _VOID void
 #elif __FreeBSD__
     #include <sys/types.h>
     #include <sys/stat.h>
@@ -79,7 +79,7 @@
     #include <dlfcn.h>
     #include <dirent.h>
 
-    #define VOID void __cdecl
+    #define _VOID void __cdecl
 #endif
 
 using namespace std;
@@ -90,10 +90,9 @@ using namespace std;
     #pragma comment(lib, "Kernel32.lib")
 
     typedef int(__cdecl* MYPROC)(const char*);
-    typedef int(__cdecl* MYPROC2)(int, float);
     typedef void(__cdecl* RUST)(const char*);
 
-    static void LoadDLL(const char* function, const char* text, ...)
+    static void LoadDLL(const char* path, const char* function, const char* text, ...)
     {
         HINSTANCE hinstLib;
         MYPROC ProcAdd;
@@ -101,7 +100,7 @@ using namespace std;
 
         // Get a handle to the DLL module.
 
-        hinstLib = LoadLibrary(TEXT("Termi-GUI.dll"));
+        hinstLib = LoadLibrary(LPCSTR(path));
 
         // If the handle is valid, try to get the function address.
 
@@ -127,39 +126,6 @@ using namespace std;
 
     }
 
-    static void LoadDLL(int id, float value)
-    {
-        HINSTANCE hinstLib;
-        MYPROC2 ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-
-        hinstLib = LoadLibrary(TEXT("Termi-GUI.dll"));
-
-        // If the handle is valid, try to get the function address.
-
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (MYPROC2)GetProcAddress(hinstLib, "Settings");
-
-            // If the function address is valid, call the function.
-
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(id, value);
-            }
-            // Free the DLL module.
-
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-            printf("Error!\n");
-    }
-
     static int LoadRust(const char* path, const char* function, const char* value)
     {
         HINSTANCE hinstLib;
@@ -168,7 +134,7 @@ using namespace std;
 
         // Get a handle to the DLL module.
 
-        hinstLib = LoadLibrary(reinterpret_cast<LPCSTR>(path));
+        hinstLib = LoadLibrary((LPCSTR)path);
 
         // If the handle is valid, try to get the function address.
 
@@ -205,7 +171,7 @@ using namespace std;
         buf[sizeof(buf) - 1] = 0;
         va_end(args);
 
-        LoadDLL("AddLog", buf);
+        LoadDLL("Termi-GUI.dll", "AddLog", buf);
     }
 
     /*
@@ -223,14 +189,14 @@ using namespace std;
 
         switch (vi.dwPlatformId)
         {
-        case VER_PLATFORM_WIN32s:
-            return "Windows 3.x";
-        case VER_PLATFORM_WIN32_WINDOWS:
-            return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-        case VER_PLATFORM_WIN32_NT:
-            return "Windows NT";
-        default:
-            return "Unknown";
+            case VER_PLATFORM_WIN32s:
+                return "Windows 3.x";
+            case VER_PLATFORM_WIN32_WINDOWS:
+                return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+            case VER_PLATFORM_WIN32_NT:
+                return "Windows NT";
+            default:
+                return "Unknown";
         }
     }
 
@@ -257,10 +223,9 @@ using namespace std;
     #pragma comment(lib, "Kernel32.lib")
 
     typedef int(__cdecl* MYPROC)(const char*);
-    typedef int(__cdecl* MYPROC2)(int, float);
     typedef void(__cdecl* RUST)(const char*);
 
-    static void LoadDLL(const char* function, const char* text, ...)
+    static void LoadDLL(const char* path, const char* function, const char* text, ...)
     {
         HINSTANCE hinstLib;
         MYPROC ProcAdd;
@@ -268,7 +233,7 @@ using namespace std;
 
         // Get a handle to the DLL module.
 
-        hinstLib = LoadLibrary(TEXT("Termi-GUI.dll"));
+        hinstLib = LoadLibrary(LPCSTR(path));
 
         // If the handle is valid, try to get the function address.
 
@@ -294,40 +259,7 @@ using namespace std;
 
     }
 
-    static void LoadDLL(int id, float value)
-    {
-        HINSTANCE hinstLib;
-        MYPROC2 ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-
-        hinstLib = LoadLibrary(TEXT("Termi-GUI.dll"));
-
-        // If the handle is valid, try to get the function address.
-
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (MYPROC2)GetProcAddress(hinstLib, "Settings");
-
-            // If the function address is valid, call the function.
-
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(id, value);
-            }
-            // Free the DLL module.
-
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-            printf("Error!\n");
-    }
-
-    static int LoadRust(const char* function, const char* value)
+    static int LoadRust(const char* path, const char* function, const char* value)
     {
         HINSTANCE hinstLib;
         RUST ProcAdd;
@@ -335,7 +267,7 @@ using namespace std;
 
         // Get a handle to the DLL module.
 
-        hinstLib = LoadLibrary(TEXT("rtest.dll"));
+        hinstLib = LoadLibrary((LPCSTR)path);
 
         // If the handle is valid, try to get the function address.
 
@@ -372,7 +304,7 @@ using namespace std;
         buf[sizeof(buf) - 1] = 0;
         va_end(args);
 
-        LoadDLL("AddLog", buf);
+        LoadDLL("Termi-GUI.dll", "AddLog", buf);
     }
 
     /*
@@ -390,14 +322,14 @@ using namespace std;
 
         switch (vi.dwPlatformId)
         {
-        case VER_PLATFORM_WIN32s:
-            return "Windows 3.x";
-        case VER_PLATFORM_WIN32_WINDOWS:
-            return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-        case VER_PLATFORM_WIN32_NT:
-            return "Windows NT";
-        default:
-            return "Unknown";
+            case VER_PLATFORM_WIN32s:
+                return "Windows 3.x";
+            case VER_PLATFORM_WIN32_WINDOWS:
+                return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
+            case VER_PLATFORM_WIN32_NT:
+                return "Windows NT";
+            default:
+                return "Unknown";
         }
     }
 
@@ -698,7 +630,7 @@ void Status(int error_code)
 
 /* ------------------------------------------------------------------------------------------ */
 
-VOID base64(const std::vector<std::string>& vect)
+_VOID base64(const std::vector<std::string>& vect)
 {
     if (vect.size() < 3)
     {
@@ -755,13 +687,18 @@ VOID base64(const std::vector<std::string>& vect)
     }
 }
 
-VOID calc(const std::vector<std::string>& vect)
+_VOID calc(const std::vector<std::string>& vect)
 {
     if (vect.size() < 4)
     {
         AddLog("Not enough arguments!");
         Status(1);
         return;
+    }
+
+    for (auto &x : vect)
+    {
+        std::cout << x << std::endl;
     }
 
     try
@@ -822,7 +759,7 @@ VOID calc(const std::vector<std::string>& vect)
     }
 }
 
-VOID cd(const std::vector<std::string>& vect)
+_VOID cd(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -834,7 +771,7 @@ VOID cd(const std::vector<std::string>& vect)
     Status(chdir(vect[1].c_str()));
 }
 
-VOID dencalc(const std::vector<std::string>& vect)
+_VOID dencalc(const std::vector<std::string>& vect)
 {
     if (vect.size() < 4)
     {
@@ -882,7 +819,7 @@ VOID dencalc(const std::vector<std::string>& vect)
     }
 }
 
-VOID echo(const std::vector<std::string>& vect)
+_VOID echo(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -909,7 +846,7 @@ VOID echo(const std::vector<std::string>& vect)
     Status(0);
 }
 
-VOID find_command(const std::vector<std::string>& vect)
+_VOID find_command(const std::vector<std::string>& vect)
 {        
     #if __APPLE__ || __MACH__
         if (vect.size() < 5)
@@ -1024,7 +961,7 @@ VOID find_command(const std::vector<std::string>& vect)
     Status(2);
 }
 
-VOID geocalc(const std::vector<std::string>& vect)
+_VOID geocalc(const std::vector<std::string>& vect)
 {
     if (vect.size() < 5)
     {
@@ -1143,7 +1080,7 @@ VOID geocalc(const std::vector<std::string>& vect)
     }
 }
 
-VOID list_dir(const std::vector<std::string>& vect)
+_VOID list_dir(const std::vector<std::string>& vect)
 {
     #ifdef _WIN32
         struct dirent* d;
@@ -1364,7 +1301,7 @@ VOID list_dir(const std::vector<std::string>& vect)
     Status(0);
 }
 
-VOID new_dir(const std::vector<std::string>& vect)
+_VOID new_dir(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -1441,7 +1378,7 @@ VOID new_dir(const std::vector<std::string>& vect)
     #endif
 }
 
-VOID sysfetch(const std::vector<std::string>& vect)
+_VOID sysfetch(const std::vector<std::string>& vect)
 {
     /* Username and computer name */
     #ifdef _WIN32
@@ -2285,7 +2222,7 @@ VOID sysfetch(const std::vector<std::string>& vect)
     Status(0);
 }
 
-VOID openfile(std::vector<std::string>& vect)
+_VOID openfile(std::vector<std::string>& vect)
 {
     fstream my_file;
     string file = vect[1];
@@ -2319,7 +2256,7 @@ VOID openfile(std::vector<std::string>& vect)
     Status(0);
 }
 
-VOID rm(const std::vector<std::string>& vect)
+_VOID rm(const std::vector<std::string>& vect)
 {
     if (vect.size() < 2)
     {
@@ -2331,14 +2268,14 @@ VOID rm(const std::vector<std::string>& vect)
     Status(remove(vect[1].c_str()));
 }
 
-VOID ttime(const std::vector<std::string>& vect)
+_VOID ttime(const std::vector<std::string>& vect)
 {
     auto givemetime = chrono::system_clock::to_time_t(chrono::system_clock::now());
     AddLog(ctime(&givemetime));
     Status(0);
 }
 
-VOID whoami(const std::vector<std::string>& vect)
+_VOID whoami(const std::vector<std::string>& vect)
 {
     #ifdef _WIN32
         TCHAR username[UNLEN + 1];
@@ -2379,7 +2316,7 @@ VOID whoami(const std::vector<std::string>& vect)
     Status(0);
 }
 
-VOID writefile(const std::vector<std::string>& vect)
+_VOID writefile(const std::vector<std::string>& vect)
 {
     if (vect.size() < 3)
     {
