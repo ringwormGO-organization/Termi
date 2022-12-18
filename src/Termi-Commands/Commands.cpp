@@ -2336,8 +2336,24 @@ _VOID writefile(const std::vector<std::string>& vect)
     Status(0);
 }
 
+#ifdef _WIN32
+    #define NEW_VOID auto __cdecl 
+#elif _WIN64
+    #define NEW_VOID auto __cdecl
+#elif __APPLE__ || __MACH__
+    #define NEW_VOID auto
+#elif __linux__
+    #define NEW_VOID auto
+#elif __FreeBSD__
+    #define NEW_VOID auto
+#elif __unix || __unix__
+    #define NEW_VOID auto
+#else
+    #define NEW_VOID auto
+#endif
+
 /* Since we use this function for doing tests, I decided to put here some "modern C++ syntax" */
-auto __cdecl yes(const std::vector<std::string>& vect) -> void
+NEW_VOID yes(const std::vector<std::string>& vect) -> void
 {
     /*while (true)
     {

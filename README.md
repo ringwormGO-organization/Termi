@@ -73,7 +73,10 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
 - json-c library (non-vcpkg version)
   - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
-  - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Debain based.
+  - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Arch based.
+- zmq library (non-vcpkg version)
+  - Install with `apt-get install libzmq3-dev` if not already installed on GNU/Linux machine, Debain based.
+  - Install with `pacman -S zmq` if not already installed on GNU/Linux machine, Arch based.
 
 - OpenGL - for OpenGL project part
   - ### Windows
@@ -82,7 +85,8 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
       - open properties of `Termi-GUI` project,
       - goto `VC++ Directories`,
       - set your path (they are bundled with Termi (they are in `Libraries` folder/directory), but Visual Studio knows to set entire path (user directory, etc. so you need to change them)) of `Include Directories` and `Library Directories`;
-      - Or you can check Victor Gordan's [video](https://www.youtube.com/watch?v=XpBGwZNyUh0).
+      - Or you can check Victor Gordan's [video](https://www.youtube.com/watch?v=XpBGwZNyUh0);
+      - Or you can check your `CMakeLists.txt` file.
   - ### Other platforms (macOS, (GNU/)Linux, BSD)
     - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on (GNU/)Linux machine.
 
@@ -141,14 +145,16 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - [stb](https://github.com/nothings/stb)
 - [Sweet16Font](https://github.com/kmar/Sweet16Font)
 - [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` for Windows
+- [ZeroMQ](https://zeromq.org/)
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
 - [Stack Overflow](https://stackoverflow.com/) - solution for most of problems
-- [Cherno](https://www.youtube.com/c/TheChernoProject) - he recommended Dear ImGui to us
+- [Cherno](https://www.youtube.com/c/TheChernoProject) - for recommending Dear ImGui
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
-- [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `neofetch`
+- [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `sysfetch`
 - [dl-libraries.html](https://tldp.org/HOWTO/Program-Library-HOWTO/dl-libraries.html) - for loading functions from .so files at runtime
+- [Low Level Learning](https://www.youtube.com/@LowLevelLearning) - for recommending ZeroMQ
 - Other artcicles about programming (web format, books, etc.)
 
 *Word `terminal` might not be the best word to describe this project*
