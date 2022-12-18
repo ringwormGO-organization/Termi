@@ -204,12 +204,6 @@ void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string fun
             if (NULL != ProcAdd)
             {
                 fRunTimeLinkSuccess = TRUE;
-                
-                for (auto& x : vect)
-                {
-                    std::cout << x << std::endl;
-                }
-
                 (ProcAdd)(vect);
             }
 

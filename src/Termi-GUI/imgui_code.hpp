@@ -30,7 +30,7 @@
     #include <direct.h>
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
-
+    
     #if API_EXPORT
         #define _API __declspec(dllexport)
     #else
@@ -41,7 +41,7 @@
     #include <direct.h>
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
-
+    
     #if API_EXPORT
         #define _API __declspec(dllexport)
     #else
@@ -71,6 +71,7 @@
 #endif
 
 #include <json-c/json.h>
+#include <zmq.hpp>
 
 extern "C"
 {

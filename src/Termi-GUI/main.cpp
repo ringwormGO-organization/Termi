@@ -15,6 +15,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <thread>
 
 #ifdef _WIN32
 	#include <Windows.h>
@@ -187,6 +188,15 @@ int height = 0;
 	}
 #endif
 
+void zmq_test()
+{
+	zmq::context_t ctx;
+	zmq::socket_t sock(ctx, zmq::socket_type::push);
+
+	sock.bind("localhost");
+	sock.send(zmq::str_buffer("Hello world"), zmq::send_flags::dontwait);
+}
+
 void tmain()
 {
 	std::cout << "\n\n";
@@ -228,6 +238,9 @@ void tmain()
 		sigIntHandler.sa_flags = 0;
 		sigaction(SIGINT, &sigIntHandler, NULL);
     #endif
+
+	//std::thread networking_test(zmq_test);
+	//networking_test.detach();
 
 	std::cout << "ooooooooooo                              " << std::endl;
 	std::cout << "    888      ooooooooooo                          o88   " << std::endl;

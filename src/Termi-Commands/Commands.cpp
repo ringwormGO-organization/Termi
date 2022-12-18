@@ -696,11 +696,6 @@ _VOID calc(const std::vector<std::string>& vect)
         return;
     }
 
-    for (auto &x : vect)
-    {
-        std::cout << x << std::endl;
-    }
-
     try
     {
         string op = vect[1];

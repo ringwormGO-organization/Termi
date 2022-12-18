@@ -1,18 +1,18 @@
 cmake_minimum_required(VERSION 3.16)
 
-IF (WIN32)
+IF(WIN32)
     set(CMAKE_BUILD_TYPE Debug)
-ELSE ()
+ELSE()
     set(CMAKE_BUILD_TYPE Release)
-ENDIF ()
+ENDIF()
 
 project(Termi-Commands)
 
-IF (WIN32)
+IF(WIN32)
     set(CMAKE_CXX_FLAGS "/EHsc /std:c++20")
-ELSE ()
+ELSE()
     set(CMAKE_CXX_FLAGS "-std=c++20")
-ENDIF ()
+ENDIF()
 
 file(GLOB SRC CONFIGURE_DEPENDS "*.h" "*.cpp")
 
