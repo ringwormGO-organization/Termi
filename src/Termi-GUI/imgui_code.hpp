@@ -30,12 +30,7 @@
     #include <direct.h>
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
-    
-    #if API_EXPORT
-        #define _API __declspec(dllexport)
-    #else
-        #define _API __declspec(dllimport)
-    #endif
+    #define _API __declspec(dllexport)
 #elif _WIN64
     #include <Windows.h>
     #include <direct.h>

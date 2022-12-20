@@ -113,6 +113,8 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 7. Now copy all DLLs to `Debug` folder/directory where is `Termi-Main` executable for Windows located
 8. Now run `Termi-Main` executable!
 
+**Don't forget to use `Release` mode!**
+
 ### Build & Run - Other platforms
 - Just run `compile_all.sh` (it won't compile test Rust command)
 1. Compile `Termi-Commands` project by running `cmake . && make`

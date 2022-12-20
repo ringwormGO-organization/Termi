@@ -1,10 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-IF(WIN32)
-    set(CMAKE_BUILD_TYPE Debug)
-ELSE()
-    set(CMAKE_BUILD_TYPE Release)
-ENDIF()
+set(CMAKE_BUILD_TYPE Release)
 
 project(Termi-Commands)
 
