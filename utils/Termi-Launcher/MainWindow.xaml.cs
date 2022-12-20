@@ -24,8 +24,8 @@ namespace Termi_Launcher
     /// </summary>
     public partial class MainWindow : Window
     {
-        public static string version_link = "https://drive.google.com/uc?export=download&id=1Zgbp2Gef2xbTiK51cr2Yr1SORHXOtF-5";
-        public static string zip_link = "https://drive.google.com/uc?export=download&id=1xruLFebdpdswNMiy1juYfh9-9pqdYv-y";
+        public static string zip_link = "https://github.com/ringwormGO-organization/Termi/raw/main/windows-release/Release.zip";
+        public static string version_link = "https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/windows-release/Version.txt";
 
         private string rootPath;
         private string versionFile;
@@ -77,9 +77,9 @@ namespace Termi_Launcher
             InitializeComponent();
 
             rootPath = Directory.GetCurrentDirectory();
-            versionFile = Path.Combine(rootPath, "Version2.txt");
-            TermiZip = Path.Combine(rootPath, "Termi-OpenGL.zip");
-            TermiExe = Path.Combine(rootPath, "Debug", "Termi-OpenGL.exe");
+            versionFile = Path.Combine(rootPath, "Version.txt");
+            TermiZip = Path.Combine(rootPath, "Release.zip");
+            TermiExe = Path.Combine(rootPath, "Release", "Termi-Main.exe");
             IsAdministrator();
         }
 
@@ -171,7 +171,7 @@ namespace Termi_Launcher
             if (File.Exists(TermiExe) && Status == LauncherStatus.ready)
             {
                 ProcessStartInfo startInfo = new ProcessStartInfo(TermiExe);
-                startInfo.WorkingDirectory = Path.Combine(rootPath, "Debug");
+                startInfo.WorkingDirectory = Path.Combine(rootPath, "Release");
                 Process.Start(startInfo);
 
                 Close();
