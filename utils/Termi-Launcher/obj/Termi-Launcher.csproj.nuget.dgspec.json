@@ -1,27 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "D:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj": {}
+    "D:\\AndrejBackup\\Programming\\RingwormGo\\RingwormGO\\GitHub\\Termi\\utils\\Termi-Launcher\\Termi-Launcher.csproj": {}
   },
   "projects": {
-    "D:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj": {
+    "D:\\AndrejBackup\\Programming\\RingwormGo\\RingwormGO\\GitHub\\Termi\\utils\\Termi-Launcher\\Termi-Launcher.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj",
+        "projectUniqueName": "D:\\AndrejBackup\\Programming\\RingwormGo\\RingwormGO\\GitHub\\Termi\\utils\\Termi-Launcher\\Termi-Launcher.csproj",
         "projectName": "Termi-Launcher",
-        "projectPath": "D:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\Termi-Launcher.csproj",
+        "projectPath": "D:\\AndrejBackup\\Programming\\RingwormGo\\RingwormGO\\GitHub\\Termi\\utils\\Termi-Launcher\\Termi-Launcher.csproj",
         "packagesPath": "C:\\Users\\vangu\\.nuget\\packages\\",
-        "outputPath": "D:\\AndrejBackup\\Andrej\\PRIVATNO-duboko\\Ostali\\RingwormGo\\RingwormGO\\GitHub\\Termi\\Termi-Windows\\Termi-Launcher\\obj\\",
+        "outputPath": "D:\\AndrejBackup\\Programming\\RingwormGo\\RingwormGO\\GitHub\\Termi\\utils\\Termi-Launcher\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\vangu\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
-          "net5.0-windows7.0"
+          "net5.0-windows"
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Users\\vangu\\AppData\\Roaming\\Cosmos User Kit\\packages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -45,7 +46,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -57,7 +59,7 @@
               "privateAssets": "none"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.200\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.100\\RuntimeIdentifierGraph.json"
         }
       }
     }
