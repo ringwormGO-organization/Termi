@@ -7,6 +7,8 @@ Just drop a Pull Request :)
 3. Use following style **WITH LOGIC**, check labels:
 4. Use spaces, size 4.
 
+*Please run `zip_file.ps1` after when you sure your code will run on Windows!*
+
 ```
 [LABEL NAME] Name of Pull Request
 ```
@@ -39,9 +41,9 @@ Example:
      * 8: Change language
      * 9: About Termi
      * 10: About Dear ImGui
-     * 11: SSH
-     * 12: Enable SSH
-     * 13: Disable SSH
+     * 11: Remote connection
+     * 12: Server
+     * 13: Client
      */
 ```
 ```cpp

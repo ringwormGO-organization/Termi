@@ -36,12 +36,7 @@
     #include <direct.h>
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
-    
-    #if API_EXPORT
-        #define _API __declspec(dllexport)
-    #else
-        #define _API __declspec(dllimport)
-    #endif
+    #define _API __declspec(dllexport)
 #elif __APPLE__ || __MACH__
     #include <sys/stat.h>
     #include <unistd.h>
@@ -177,6 +172,9 @@ extern "C"
         bool imgui_dialog = false;
         bool settings_dialog = false;
         bool alReadyFocusOnInputBar = false;
+
+        bool server = false;
+        bool client = false;
     };
 
     /* Renderer class */
@@ -281,6 +279,15 @@ extern "C"
         }
 
         int TextEditCallback(ImGuiInputTextCallbackData *data);
+    };
+
+    class Networking : public Renderer
+    {
+    public:
+        Networking(int type);
+        ~Networking();
+    private:
+        int type = 0;
     };
 
     /* Function which draws tabs */

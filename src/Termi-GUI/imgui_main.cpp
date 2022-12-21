@@ -135,9 +135,9 @@ void split_str(std::string const &str, const char delim, std::vector<std::string
 
 /** Vector which represents one std::pair representing two std::pairs (see down below for more details)
  * @param _T1 - pair of Renderer and Console
- * @param _T2 - pair of Vars and nullptr, I had to put that nullptr so I can compile code but otherwise you should not use it
+ * @param _T2 - pair of Vars and Networking
  */
-std::vector<std::pair<std::pair<Renderer *, Console *>, std::pair<Vars *, std::nullptr_t>>> vpprender;
+std::vector<std::pair<std::pair<Renderer *, Console *>, std::pair<Vars *, Networking *>>> vpprender;
 
 /**
  * Current vpprender element in use
@@ -809,12 +809,28 @@ void Renderer::DrawMenu()
             {
                 if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    /* enable remote connection */
+                    if (!vpprender[vpprender_id].second.first->server)
+                    {
+                        vpprender[vpprender_id].second.first->server = true;
+                    }
+
+                    else
+                    {
+                        vpprender[vpprender_id].second.first->server = false;
+                    }
                 }
 
                 if (ImGui::MenuItem(ChooseLanguage(13)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    /* disable remote connection */
+                    if (!vpprender[vpprender_id].second.first->client)
+                    {
+                        vpprender[vpprender_id].second.first->client = true;
+                    }
+
+                    else
+                    {
+                        vpprender[vpprender_id].second.first->client = false;
+                    }
                 }
 
                 ImGui::EndMenu();
@@ -1308,6 +1324,16 @@ bool Renderer::CheckFile(const char *name)
 
     file.close();
     return true;
+}
+
+Networking::Networking(int type)
+{
+    
+}
+
+Networking::~Networking()
+{
+
 }
 
 /* Function which draws tabs */
