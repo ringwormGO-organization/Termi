@@ -38,6 +38,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
   - [ ] Package manager ([@StjepanBM1](https://github.com/StjepanBM1))
   - [ ] Remote connection
 - [ ] Serial port
+- [ ] Themes
 - [x] Translations
 - [x] User settings in JSON
 - [x] [UTF-8 support](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#glyph-range-utf-8-support)
