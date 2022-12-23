@@ -21,6 +21,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <random>
 #include <sstream>
 #include <string>
 #include <vector>
@@ -165,6 +166,9 @@ extern "C"
     struct Vars
     {
         std::string language = "english";
+        std::string theme = "none";
+
+        std::vector<std::string> themes = {"dark_red", "aqua"};
 
         bool isDarkTheme = false;
         bool language_dialog = false;
@@ -181,7 +185,7 @@ extern "C"
     struct Renderer
     {
     public:
-        void DrawMenu();
+        void DrawMenu(ImGuiStyle& style);
 
         const char *ChooseLanguage(int id);
         void ChooseLanguageDialog(bool *p_open);
@@ -285,10 +289,10 @@ extern "C"
     void CreateServer(int type);
 
     /* Function which draws tabs */
-    void DrawTab();
+    void DrawTab(ImGuiStyle& style);
 
     /* Main code for starting Dear ImGui */
-    void main_code();
+    void main_code(ImGuiStyle& style);
 
     extern Console console;
 

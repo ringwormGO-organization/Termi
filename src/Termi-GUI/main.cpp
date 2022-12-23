@@ -296,10 +296,14 @@ void tmain()
 	/* Initialize Dear ImGui */
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
+
 	ImGuiIO &io = ImGui::GetIO();
 	(void)io;
 	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
-	ImGui::StyleColorsDark();
+
+	ImGuiStyle& style = ImGui::GetStyle();
+	(void)style;
+
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
@@ -325,7 +329,7 @@ void tmain()
 		ImGui::SetNextWindowSize(ImVec2(window_width, window_height));
 
 		/* main Dear ImGui code */
-		main_code();
+		main_code(style);
 
 #ifdef PRINT_FPS_CONSOLE
 		printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);

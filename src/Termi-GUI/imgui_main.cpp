@@ -846,7 +846,7 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData *data)
 }
 
 /* Draw context menu */
-void Renderer::DrawMenu()
+void Renderer::DrawMenu(ImGuiStyle& style)
 {
     if (ImGui::BeginMenuBar())
     {
@@ -870,7 +870,7 @@ void Renderer::DrawMenu()
                         {
                             vpprender[vpprender_id].second.first->client = true;
 
-                            std::thread client(CreateServer, 1);
+                            std::thread client(CreateServer, 2);
                             client.detach();
                         }
                     }
@@ -906,16 +906,41 @@ void Renderer::DrawMenu()
         {
             if (ImGui::MenuItem(ChooseLanguage(7)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (!vpprender[vpprender_id].second.first->isDarkTheme)
+                if (vpprender[vpprender_id].second.first->isDarkTheme)
                 {
                     ImGui::StyleColorsLight();
-                    vpprender[vpprender_id].second.first->isDarkTheme = true;
+                    vpprender[vpprender_id].second.first->isDarkTheme = false;
                 }
 
                 else
                 {
                     ImGui::StyleColorsDark();
-                    vpprender[vpprender_id].second.first->isDarkTheme = false;
+                    vpprender[vpprender_id].second.first->isDarkTheme = true;
+                }
+            }
+
+            if (ImGui::MenuItem(ChooseLanguage(14)))
+            {
+                again:
+                std::random_device dev;
+                std::mt19937 rng(dev());
+                std::uniform_int_distribution<std::mt19937::result_type> dist(0, vpprender[vpprender_id].second.first->themes.size() - 1);
+
+                if (vpprender[vpprender_id].second.first->theme == vpprender[vpprender_id].second.first->themes.at(static_cast<int>(dist(rng))))
+                {
+                    goto again;
+                }
+
+                vpprender[vpprender_id].second.first->theme = vpprender[vpprender_id].second.first->themes.at(static_cast<int>(dist(rng)));
+
+                if (vpprender[vpprender_id].second.first->theme == "dark_red")
+                {
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(84, 3, 34);
+                }
+
+                else if (vpprender[vpprender_id].second.first->theme == "aqua")
+                {
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(0, 255, 255);
                 }
             }
 
@@ -1459,7 +1484,7 @@ void CreateServer(int type)
 }
 
 /* Function which draws tabs */
-void DrawTab()
+void DrawTab(ImGuiStyle& style)
 {
     static ImVector<int> active_tabs;
     static int next_tab_id = 0;
@@ -1493,7 +1518,7 @@ void DrawTab()
             if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 vpprender_id = n;
-                vpprender[vpprender_id].first.first->DrawMenu();
+                vpprender[vpprender_id].first.first->DrawMenu(style);
                 vpprender[vpprender_id].first.second->Draw();
                 ImGui::EndTabItem();
             }
@@ -1509,7 +1534,7 @@ void DrawTab()
 }
 
 /* Main code for starting Dear ImGui */
-void main_code()
+void main_code(ImGuiStyle& style)
 {
     /* ImGui window creation */
     ImGui::Begin("Termi",
@@ -1541,7 +1566,7 @@ void main_code()
             std::make_pair(new Vars(), nullptr)));
 
     /* Draw tabs and menu bar */
-    DrawTab();
+    DrawTab(style);
 
     /* Language dialog */
     if (vpprender[vpprender_id].second.first->language_dialog)
