@@ -135,9 +135,9 @@ void split_str(std::string const &str, const char delim, std::vector<std::string
 
 /** Vector which represents one std::pair representing two std::pairs (see down below for more details)
  * @param _T1 - pair of Renderer and Console
- * @param _T2 - pair of Vars and Networking
+ * @param _T2 - pair of Vars and nullptr, I had to put that nullptr so I can compile code but otherwise you should not use it
  */
-std::vector<std::pair<std::pair<Renderer *, Console *>, std::pair<Vars *, Networking *>>> vpprender;
+std::vector<std::pair<std::pair<Renderer *, Console *>, std::pair<Vars *, std::nullptr_t>>> vpprender;
 
 /**
  * Current vpprender element in use
@@ -859,11 +859,20 @@ void Renderer::DrawMenu()
                     if (!vpprender[vpprender_id].second.first->server)
                     {
                         vpprender[vpprender_id].second.first->server = true;
+
+                        std::thread server(CreateServer, 1);
+                        server.detach();
                     }
 
                     else
                     {
-                        vpprender[vpprender_id].second.first->server = false;
+                        if (!vpprender[vpprender_id].second.first->client)
+                        {
+                            vpprender[vpprender_id].second.first->client = true;
+
+                            std::thread client(CreateServer, 1);
+                            client.detach();
+                        }
                     }
                 }
 
@@ -1384,28 +1393,69 @@ bool Renderer::CheckFile(const char *name)
     return true;
 }
 
-Networking::Networking(int type)
+/* Function which creates a server */
+void CreateServer(int type)
 {
+    return;
+
+    /* Code is broken, I might return in future, probably not */
+
     /* 1 - server, 2 - client */
     if (type == 1)
     {
+        //  Prepare our context and socket
+        zmq::context_t context(1);
+        zmq::socket_t socket(context, ZMQ_REP);
+        //socket.bind ("tcp://*:5555");
+        socket.bind("ipc:///tmp/test");
 
+        while (true) {
+            zmq::message_t request;
+
+            //  Wait for next request from client
+            socket.recv(&request);
+            std::cout << "Received Hello" << std::endl;
+
+            //  Do some 'work'
+            Sleep(1000);
+
+            //  Send reply back to client
+            zmq::message_t reply(5);
+            memcpy((void*)reply.data(), "World", 5);
+            socket.send(reply);
+        }
     }
 
     else if (type == 2)
     {
+        zmq::context_t context(1);
 
+        //  Socket to talk to server
+        printf("Connecting to hello world server…\n");
+        zmq::socket_t sock(context, ZMQ_REQ);
+        //sock.connect("tcp://localhost:5555");
+        sock.connect("ipc:///tmp/test");
+
+        int request_nbr;
+        for (request_nbr = 0; request_nbr != 10; request_nbr++) {
+            zmq::message_t request((void*)"Hello", 5, NULL);
+            //        zmq::msg_init_size (&request, 5);
+              //        memcpy (zmq::msg_data (&request), "Hello", 5);
+            printf("Sending Hello %d…\n", request_nbr);
+            sock.send(&request, 0);
+            //zmq::msg_close (&request);
+
+            zmq::message_t reply;
+            sock.recv(&reply, 0);
+            printf("Received World %d\n", request_nbr);
+        }
+        sock.close();
     }
 
     else
     {
 
     }
-}
-
-Networking::~Networking()
-{
-
 }
 
 /* Function which draws tabs */

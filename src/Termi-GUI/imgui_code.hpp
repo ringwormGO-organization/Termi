@@ -281,14 +281,8 @@ extern "C"
         int TextEditCallback(ImGuiInputTextCallbackData *data);
     };
 
-    class Networking : public Renderer
-    {
-    public:
-        Networking(int type);
-        ~Networking();
-    private:
-        int type = 0;
-    };
+    /* Function which creates a server */
+    void CreateServer(int type);
 
     /* Function which draws tabs */
     void DrawTab();
