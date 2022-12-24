@@ -529,7 +529,7 @@ void Console::Draw()
     {
         // TODO: display items starting from the bottom
 
-    // Reserve enough left-over height for 1 separator + 1 input text
+        // Reserve enough left-over height for 1 separator + 1 input text
         const float footer_height_to_reserve = ImGui::GetStyle().ItemSpacing.y + ImGui::GetFrameHeightWithSpacing();
         ImGui::BeginChild("ScrollingRegion", ImVec2(0, -footer_height_to_reserve), false, ImGuiWindowFlags_HorizontalScrollbar);
         if (ImGui::BeginPopupContextWindow())
@@ -601,9 +601,36 @@ void Console::Draw()
         {
             s = InputBuf;
             Strtrim(s);
+
             if (s[0])
+            {
                 ExecCommand(s);
+            }
+
             strcpy(s, "");
+            reclaim_focus = true;
+        }
+
+        // Auto-focus on window apparition
+        ImGui::SetItemDefaultFocus();
+        if (reclaim_focus)
+            ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
+    }
+
+    else
+    {
+        bool reclaim_focus = false;
+
+        char cwd[PATH_MAX];
+        getcwd(cwd, sizeof(cwd));
+
+        static char str_hold[1024] = "Termi> ";
+
+        /* The textbox flags.This will make `InputTextMultiline` return true when[Enter] is pressed */
+        ImGuiInputTextFlags flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CtrlEnterForNewLine | ImGuiInputTextFlags_AutoSelectAll;
+        if (ImGui::InputTextMultiline("", str_hold, 1024, ImGui::GetWindowSize(), flags)) {
+            /* The code in this if - statement only executes when[Enter] is pressed */
+            strcat(str_hold, "\nTermi> ");
             reclaim_focus = true;
         }
 
@@ -941,6 +968,11 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                 else if (vpprender[vpprender_id].second.first->theme == "aqua")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(0, 255, 255);
+                }
+
+                else if (vpprender[vpprender_id].second.first->theme == "some_yellow")
+                {
+                    style.Colors[ImGuiCol_WindowBg] = ImColor(204, 163, 80);
                 }
             }
 

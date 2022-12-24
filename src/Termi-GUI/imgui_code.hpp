@@ -168,7 +168,7 @@ extern "C"
         std::string language = "english";
         std::string theme = "none";
 
-        std::vector<std::string> themes = {"dark_red", "aqua"};
+        std::vector<std::string> themes = {"dark_red", "aqua", "some_yellow"};
 
         bool isDarkTheme = false;
         bool language_dialog = false;
