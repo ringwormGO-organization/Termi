@@ -3,7 +3,7 @@
 
 **Syncing Windows version may not be regular!**
 
-**[Latest stable release](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)**
+**[Latest stable release (v3.0.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.0.0)**
 
 A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
@@ -18,7 +18,8 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## Releases
 - [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
-- [Latest release (v2.0.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)
+- [v2.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)
+- [Latest release (v3.0.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.0.0)
 
 ## Checklist
 ### Termi base part
