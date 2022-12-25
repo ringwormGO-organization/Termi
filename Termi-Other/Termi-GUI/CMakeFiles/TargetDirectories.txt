@@ -1,3 +1,0 @@
-/home/stjepanbm/Other/Termi-Pr/Termi/Termi-Other/Termi-GUI/CMakeFiles/Termi-GUI.dir
-/home/stjepanbm/Other/Termi-Pr/Termi/Termi-Other/Termi-GUI/CMakeFiles/edit_cache.dir
-/home/stjepanbm/Other/Termi-Pr/Termi/Termi-Other/Termi-GUI/CMakeFiles/rebuild_cache.dir
