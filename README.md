@@ -36,7 +36,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
 - [x] Networking
-  - [ ] Package manager
+  - [ ] [Ping](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
   - [ ] Remote connection
 - [ ] Serial port
 - [x] Themes
