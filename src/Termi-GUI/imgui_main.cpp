@@ -887,8 +887,8 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                     {
                         vpprender[vpprender_id].second.first->server = true;
 
-                        std::thread server(CreateServer, 1);
-                        server.detach();
+                        /*std::thread server(CreateServer, 1);
+                        server.detach();*/
                     }
 
                     else
@@ -897,8 +897,8 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                         {
                             vpprender[vpprender_id].second.first->client = true;
 
-                            std::thread client(CreateServer, 2);
-                            client.detach();
+                            /*std::thread client(CreateServer, 2);
+                            client.detach();*/
                         }
                     }
                 }
@@ -1458,7 +1458,7 @@ void CreateServer(int type)
     /* Code is broken, I might return in future, probably not */
 
     /* 1 - server, 2 - client */
-    if (type == 1)
+    /*if (type == 1)
     {
         //  Prepare our context and socket
         zmq::context_t context(1);
@@ -1512,7 +1512,7 @@ void CreateServer(int type)
     else
     {
 
-    }
+    }*/
 }
 
 /* Function which draws tabs */

@@ -14,16 +14,14 @@ file(GLOB SRC CONFIGURE_DEPENDS "*.hpp" "*.cpp" "imgui/*.h" "imgui/*.cpp")
 
 IF(WIN32)
     set(json-c_DIR "C:\\src\\vcpkg\\installed\\x64-windows-static\\share\\json-c")
-    set(ZeroMQ_DIR "C:\\src\\vcpkg\\installed\\x64-windows\\share\\zeromq")
-    set(cppzmq_DIR "C:\\src\\vcpkg\\installed\\x64-windows\\share\\cppzmq")
 
     find_package(json-c CONFIG REQUIRED)
     find_package(ZeroMQ CONFIG REQUIRED)
     find_package(cppzmq CONFIG REQUIRED)
     
     add_library(${PROJECT_NAME} SHARED ${SRC} glad.c)
-    target_link_libraries(${PROJECT_NAME} PRIVATE json-c::json-c libzmq cppzmq opengl32 glfw3)
+    target_link_libraries(${PROJECT_NAME} PRIVATE json-c::json-c opengl32 glfw3)
 ELSE()
     add_library(${PROJECT_NAME} SHARED ${SRC} glad.c)
-    target_link_libraries(${PROJECT_NAME} GL dl glfw json-c zmq)
+    target_link_libraries(${PROJECT_NAME} GL dl glfw json-c)
 ENDIF()
