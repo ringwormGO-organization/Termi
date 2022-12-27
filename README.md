@@ -36,7 +36,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
 - [x] Networking
-  - [ ] [Ping](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
+  - [x] [Ping](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
   - [ ] Remote connection
 - [ ] Serial port
 - [x] Themes
@@ -102,7 +102,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
     - Or you can **try** to use header files included with Termi, see instructions down below:
       - check are they in `Termi-Other/Termi-GUI/includes`,
       - install or compile GLFW package through your package manager,
-      - enable such option in `Settings.hpp`.
+      - enable such option in `Settings.hpp` and in `main.cpp`.
 
 - Rust - required for building Rust commands (optional)
   - Check Rust's website for download instructions
