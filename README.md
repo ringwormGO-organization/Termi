@@ -134,7 +134,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 ## Known issues
 - OpenGL might now open when reading from .txt file, remove `render->Settings(1, 0)` and `render->Settings(2, 0)` to size which you want.
 - Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**.
-- Running `Termi-Main` can result: `libTermi-GUI.so: cannot open shared object file: No such file or directory` error; run `Termi-Main` with this command: `LD_LIBRARY_PATH=. ./Termi-Main`
+- Running `Termi-Main` can result: `libTermi-GUI.so: cannot open shared object file: No such file or directory` error; run `Termi-Main` with this command: `LD_LIBRARY_PATH=. ./Termi-Main`.
+- `cd` command disables autofocus on input bar.
+- You have to press button for other themes (not light/dark) to be able to switch between light and dark themes.
 
 ## Development pictures (pictures may be late)
 ![image](https://user-images.githubusercontent.com/83548580/191842065-6c5fdfec-cd70-49f5-8268-4f7b255796dc.png)
