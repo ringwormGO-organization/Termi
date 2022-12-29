@@ -34,24 +34,18 @@
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
 
-/* Glad include */
-#ifdef _WIN32
-	#define USE_PREINSTALLED_HEADERS
-#elif _WIN64
-	#define USE_PREINSTALLED_HEADERS
-#else
-	#define USE_PREINSTALLED_HEADERS
-#endif
+/* We need this include to be right here */
+#include "Settings.hpp"
 
+/* Glad include */
 #ifdef USE_PREINSTALLED_HEADERS
 	#include "includes/glad.h"
 #else
 	#include <glad/glad.h>
 #endif
 
-/* Termi's includes */
+/* Termi's includes except Settings.hpp */
 #include "imgui_code.hpp"
-#include "Settings.hpp"
 
 /* GLFW 3 include */
 #ifdef _WIN32

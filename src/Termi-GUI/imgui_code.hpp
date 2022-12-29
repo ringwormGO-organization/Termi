@@ -62,7 +62,6 @@
 #endif
 
 #include <json-c/json.h>
-#include <zmq.hpp>
 
 extern "C"
 {

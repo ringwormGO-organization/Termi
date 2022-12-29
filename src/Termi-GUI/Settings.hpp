@@ -8,13 +8,7 @@
 
 #pragma once
 
-#ifdef _WIN32
-	#define USE_PREINSTALLED_HEADERS
-#elif _WIN64
-	#define USE_PREINSTALLED_HEADERS
-#else
-	#define USE_PREINSTALLED_HEADERS
-#endif
+#define USE_PREINSTALLED_HEADERS
 
 #define PRINT_WHEN_WINDOW_IS_CREATED
 #undef PRINT_FPS_CONSOLE

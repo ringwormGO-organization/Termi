@@ -16,8 +16,6 @@ IF(WIN32)
     set(json-c_DIR "C:\\src\\vcpkg\\installed\\x64-windows-static\\share\\json-c")
 
     find_package(json-c CONFIG REQUIRED)
-    find_package(ZeroMQ CONFIG REQUIRED)
-    find_package(cppzmq CONFIG REQUIRED)
     
     add_library(${PROJECT_NAME} SHARED ${SRC} glad.c)
     target_link_libraries(${PROJECT_NAME} PRIVATE json-c::json-c opengl32 glfw3)

@@ -36,7 +36,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
 - [x] Most of major commands
 - [x] Networking
-  - [x] [Ping](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
+  - [x] [Ping command](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
   - [ ] Remote connection
 - [ ] Serial port
 - [x] Themes
@@ -54,8 +54,6 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Visual Studio Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components - Windows.
 - vcpkg
   - json-c (vcpkg version, static x64)
-  - zeromq (vcpkg version, x64)
-  - cppzmq (vcpkg version,  x64)
 
 ### Other platforms
 - g++ complier
@@ -76,9 +74,6 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - json-c library (non-vcpkg version)
   - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Arch based.
-- zmq library (non-vcpkg version)
-  - Install with `apt-get install libzmq3-dev` if not already installed on GNU/Linux machine, Debain based.
-  - Install with `pacman -S zmq` if not already installed on GNU/Linux machine, Arch based.
 
 - OpenGL - for OpenGL project part
   - ### Windows
@@ -99,7 +94,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
       - copy GLFW header files to `/usr/include/GLFW`,
       - copy `libglfw.so` and `libGL.so` to `/usr/lib/`.
 
-    - Or you can **try** to use header files included with Termi, see instructions down below:
+    - Or you can use header files included with Termi which is default behaviour (enabled for the sake of Andrej, Stjepan and Windows version), see instructions down below:
       - check are they in `Termi-Other/Termi-GUI/includes`,
       - install or compile GLFW package through your package manager,
       - enable such option in `Settings.hpp` and in `main.cpp`.
@@ -164,6 +159,8 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - Other artcicles about programming (web format, books, etc.)
 
 *Word `terminal` might not be the best word to describe this project*
+
+*[GitLab mirror](https://gitlab.com/ringwormgo/Termi)*
 ____________________________________
 
 Thank you for choosing Termi.
