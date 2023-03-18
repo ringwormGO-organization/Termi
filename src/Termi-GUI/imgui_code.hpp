@@ -26,39 +26,19 @@
 #include <string>
 #include <vector>
 
-#ifdef _WIN32
+#if defined _WIN32 || defined _WIN64
     #include <Windows.h>
     #include <direct.h>
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
     #define _API __declspec(dllexport)
-#elif _WIN64
-    #include <Windows.h>
-    #include <direct.h>
-
-    #define PATH_MAX        4096    /* # chars in a path name including nul */
-    #define _API __declspec(dllexport)
-#elif __APPLE__ || __MACH__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
     #include <sys/stat.h>
     #include <unistd.h>
     #include <limits.h>
     #include <dlfcn.h>
 
-    #define _API 
-#elif __linux__
-    #include <sys/stat.h>
-    #include <unistd.h>
-    #include <limits.h>
-    #include <dlfcn.h>
-
-    #define _API 
-#elif __FreeBSD__
-    #include <sys/stat.h>
-    #include <unistd.h>
-    #include <limits.h>
-    #include <dlfcn.h>
-
-    #define _API 
+    #define _API
 #endif
 
 #include <json-c/json.h>

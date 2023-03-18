@@ -7,10 +7,8 @@
 
 #include "imgui_code.hpp"
 
-#ifdef _WIN32
+#if defined _WIN32 || defined _WIN64
     #pragma warning(disable : 4996)    
-#elif _WIN64
-    #pragma warning(disable : 4996)
 #endif
 
 /**
@@ -211,7 +209,7 @@ Console::~Console()
 
 void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string function)
 {
-    #ifdef _WIN32
+    #if defined _WIN32 || defined _WIN64
         typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
 
         HINSTANCE hinstLib;
@@ -242,38 +240,7 @@ void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string fun
         {
             printf("Failed to run function from executable!\n");
         }
-    #elif _WIN64
-        typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
-
-        HINSTANCE hinstLib;
-        FUNC ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-        hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
-
-        // If the handle is valid, try to get the function address.
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (FUNC)GetProcAddress(hinstLib, function.c_str());
-
-            // If the function address is valid, call the function.
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(vect);
-            }
-
-            // Free the DLL module.
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-        {
-            printf("Failed to run function from executable!\n");
-        }
-    #elif __APPLE__ || __MACH__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
         void *handle;
         void (*func)(const std::vector<std::string> &);
         char *error;
@@ -295,56 +262,12 @@ void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string fun
 
         (*func)(vect);
         dlclose(handle); 
-    #elif __linux__
-        void *handle;
-        void (*func)(const std::vector<std::string> &);
-        char *error;
-
-        handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
-        if (!handle)
-        {
-            fputs(dlerror(), stderr);
-            puts(" ");
-            exit(1);
-        }
-
-        func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
-        if ((error = dlerror()) != NULL)
-        {
-            fputs(error, stderr);
-            exit(1);
-        }
-
-        (*func)(vect);
-        dlclose(handle);
-    #elif __FreeBSD__
-        void *handle;
-        void (*func)(const std::vector<std::string> &);
-        char *error;
-
-        handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
-        if (!handle)
-        {
-            fputs(dlerror(), stderr);
-            puts(" ");
-            exit(1);
-        }
-
-        func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
-        if ((error = dlerror()) != NULL)
-        {
-            fputs(error, stderr);
-            exit(1);
-        }
-
-        (*func)(vect);
-        dlclose(handle);
     #endif
 }
 
 int Console::LoadThirdParty(const char *path, const char *function, const char *value)
 {
-    #ifdef _WIN32
+    #if defined _WIN32 || defined _WIN64
         typedef void(__cdecl* THIRD_PARTY)(const char*);
 
         HINSTANCE hinstLib;
@@ -375,84 +298,7 @@ int Console::LoadThirdParty(const char *path, const char *function, const char *
         {
             printf("Failed to run function from executable!\n\n");
         }
-    #elif _WIN64
-        typedef void(__cdecl* THIRD_PARTY)(const char*);
-
-        HINSTANCE hinstLib;
-        THIRD_PARTY ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-        hinstLib = LoadLibrary((LPCSTR)path);
-
-        // If the handle is valid, try to get the function address.
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (THIRD_PARTY)GetProcAddress(hinstLib, function);
-
-            // If the function address is valid, call the function.
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(value);
-            }
-
-            // Free the DLL module.
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-        {
-            printf("Failed to run function from executable!\n\n");
-        }
-    #elif __APPLE__ || __MACH__
-        void *handle;
-        void (*func)(const char *);
-        char *error;
-
-        handle = dlopen(path, RTLD_LAZY);
-        if (!handle)
-        {
-            printf("%s\n", dlerror());
-            printf("-------------\n");
-            return 1;
-        }
-
-        func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)
-        {
-            printf("%s\n", error);
-            printf("-------------\n");
-            return 1;
-        }
-
-        (*func)(value);
-        dlclose(handle);
-    #elif __linux__
-        void *handle;
-        void (*func)(const char *);
-        char *error;
-
-        handle = dlopen(path, RTLD_LAZY);
-        if (!handle)
-        {
-            printf("%s\n", dlerror());
-            printf("-------------\n");
-            return 1;
-        }
-
-        func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)
-        {
-            printf("%s\n", error);
-            printf("-------------\n");
-            return 1;
-        }
-
-        (*func)(value);
-        dlclose(handle);
-    #elif __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
         void *handle;
         void (*func)(const char *);
         char *error;
@@ -1155,30 +1001,15 @@ void Renderer::ImGuiDialog(bool *p_open)
 
 int Renderer::Settings(int id, float value)
 {
-    #ifdef _WIN32
+    #if defined _WIN32 || defined _WIN64
         std::string folder_path = "settings/";
         std::string file_path = folder_path + "settings.json";
-    #elif _WIN64
-        std::string folder_path = "settings/";
-        std::string file_path = folder_path + "settings.json";
-    #elif __APPLE__ || __MACH__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
         char user[64];
         getlogin_r(user, 64);
 
         std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
         std::string file_path = folder_path + "settings.json";  
-    #elif __linux__
-        char user[64];
-        getlogin_r(user, 64);
-
-        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
-        std::string file_path = folder_path + "settings.json";
-    #elif __FreeBSD__
-        char user[64];
-        getlogin_r(user, 64);
-
-        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
-        std::string file_path = folder_path + "settings.json";
     #else
         std::string file_path = " ";
     #endif
@@ -1313,30 +1144,15 @@ int Renderer::Settings(int id, float value)
 
 void Renderer::SetFont(ImGuiIO &io)
 {
-    #ifdef _WIN32
+    #if defined _WIN32 || defined _WIN64
         std::string folder_path = "settings/";
         std::string file_path = folder_path + "settings.json";
-    #elif _WIN64
-        std::string folder_path = "settings/";
-        std::string file_path = folder_path + "settings.json";
-    #elif __APPLE__ || __MACH__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
         char user[64];
         getlogin_r(user, 64);
 
         std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
         std::string file_path = folder_path + "settings.json";  
-    #elif __linux__
-        char user[64];
-        getlogin_r(user, 64);
-
-        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
-        std::string file_path = folder_path + "settings.json";
-    #elif __FreeBSD__
-        char user[64];
-        getlogin_r(user, 64);
-
-        std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
-        std::string file_path = folder_path + "settings.json";
     #else
         std::string file_path = " ";
     #endif
