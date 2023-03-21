@@ -1,8 +1,0 @@
-{
-  "runtimeOptions": {
-    "additionalProbingPaths": [
-      "C:\\Users\\vangu\\.dotnet\\store\\|arch|\\|tfm|",
-      "C:\\Users\\vangu\\.nuget\\packages"
-    ]
-  }
-}

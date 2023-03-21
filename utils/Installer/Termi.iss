@@ -45,12 +45,11 @@ Name: "english"; MessagesFile: "compiler:Default.isl"
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 
 [Files]
-Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net5.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.pdb"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.dev.json"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net5.0-windows\Termi-Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net6.0-windows\{#MyAppExeName}"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net6.0-windows\Termi-Launcher.deps.json"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net6.0-windows\Termi-Launcher.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net6.0-windows\Termi-Launcher.pdb"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\AndrejBackup\Programming\RingwormGo\RingwormGO\GitHub\Termi\utils\Termi-Launcher\bin\Debug\net6.0-windows\Termi-Launcher.runtimeconfig.json"; DestDir: "{app}"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
 [Registry]

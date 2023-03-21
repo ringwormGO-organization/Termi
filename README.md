@@ -51,7 +51,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 ## Build & Runs
 ### Required software:
 ### Windows
-- Visual Studio Visual Studio 2022, ```Desktop development with C++```, ```.NET 5.0 Runtime``` and ```.NET 6 Runtime``` components - Windows.
+- Visual Studio Visual Studio 2022, ```Desktop development with C++```, and ```.NET 6 Runtime``` components - Windows.
 - vcpkg
   - json-c (vcpkg version, static x64)
 
