@@ -14,8 +14,8 @@ namespace Translation
 {
     static std::vector<std::string> English = {"Input", "Terminal", "Edit", "About", "New Tab", "New profile", "Exit", "Change theme (light/dark)", "Change language", "About Termi", "About Dear ImGui", "Remote connection", "Server", "Client", "Change theme"};
     static std::vector<std::string> Croatian = {"Unos", "Terminal", "Uredi", "O Termiju", "Nova kartica", "Novi profil", "Izađi", "Promijeni temu (svijetla/tamna)", "Promijeni jezik", "O Termiju", "O Dear ImGui-u", "Veza na daljinu", "Server", "Klijent", "Promijeni temu"};
-    static std::vector<std::string> Vietnamese = {"Nhập vào", "Giao diện dòng lệnh", "Chỉnh sửa", "Về ... (Termi)", "Thẻ mới", "Hồ sơ mới", "Thoát", "Đổi chủ đề cho giao diện (sáng/tối)", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui", "Kết nối từ xa", "Người phục vụ", "Khách hàng", "Thay đổi chủ đề cho giao diện"};
-    // static std::vector<std::string> Vietnamese = {"Nhap vao", "Giao dien dong lenh", "Chinh sua", "Ve ... (Termi)" "The moi", "Ho so moi", "Thoat", "Doi chu de cho giao dien", "Doi ngon ngu", "Ve Termi", "Ve Dear ImGui"};
+    static std::vector<std::string> Vietnamese = {"Nhập vào", "Dòng lệnh", "Chỉnh sửa", "Giới thiệu", "Thẻ mới", "Hồ sơ mới", "Thoát", "Đổi chủ đề nền (sáng/tối)", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui", "Kết nối", "Máy chủ", "Máy khách", "Đổi chủ đề nền"};
+    // static std::vector<std::string> Vietnamese = {"Nhap vao", "Dong lenh", "Chinh sua", "Gioi thieu" "The moi", "Ho so moi", "Thoat", "Doi chu de nen (sang/toi)", "Doi ngon ngu", "Ve Termi", "Ve Dear ImGui", "Ket noi", "May chu", "May khach", "Doi chu de nen"};
     // Without native Vietnamese character
     /**
      * Naming convention for IDs fot strings
