@@ -447,7 +447,7 @@ if (func1())
 ```
 
 ### Naming
-*Part called "Naming" is wrote by ringwormGO itself*
+*Part called "Naming" is written by ringwormGO itself*
 
 #### Naming functions
 1. Name a function by capital letter.
@@ -504,18 +504,9 @@ Wrong:
 //
 ```
 
-### Null, false and 0
-1. The null pointer should be written as NULL.
-2. In the rare case that your environment recommends a different null pointer (e.g. C++11 nullptr), you may use this one of course. Just don’t use the value 0.
-
-### Notes on reformatting existing code
-1. Never totally reformat a file and put a code change into it. Do this in separate commits.
-2. If a commit only consists of formatting changes, say this clearly in the commit message by preceding it with [FORMATTING].
-
 ### Other points
 1. Do not use `LARGE_INTEGER`/`ULARGE_INTEGER` unless needed for using APIs. Use `int64`/`uint64` instead
 2. Use `#pragma once` instead of guard defines in headers
-3. Don't specify a calling convention for a function unless required (usually for APIs or exported symbols)
 
 ### Resources used for this coding style:
-* https://reactos.org/wiki/Coding_Style (some parts are modificeted)
+* https://reactos.org/wiki/Coding_Style
