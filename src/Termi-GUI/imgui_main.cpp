@@ -131,11 +131,11 @@ void split_str(std::string const &str, const char delim, std::vector<std::string
     }
 }
 
-/** Vector which represents one std::pair representing two std::pairs (see down below for more details)
+/** Vector holding std::tuple type representing renderer, console and variable of all tabs
  * @param _T1 - pair of Renderer and Console
  * @param _T2 - pair of Vars and nullptr, I had to put that nullptr so I can compile code but otherwise you should not use it
  */
-std::vector<std::pair<std::pair<Renderer *, Console *>, std::pair<Vars *, std::nullptr_t>>> vpprender;
+std::vector<std::tuple<Renderer*, Console*, Vars*>> vpprender;
 
 /**
  * Current vpprender element in use
@@ -149,7 +149,7 @@ int vpprender_id;
  */
 Console::Console()
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         FullClearLog();
         memset(InputBuf, 0, sizeof(InputBuf));
@@ -199,7 +199,7 @@ Console::Console()
 
 Console::~Console()
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         FullClearLog();
         for (int i = 0; i < History.Size; i++)
@@ -328,7 +328,7 @@ int Console::LoadThirdParty(const char *path, const char *function, const char *
 
 void Console::ClearLog()
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         for (int i = 0; i < Items.Size; i++)
             free(Items[i]);
@@ -340,7 +340,7 @@ void Console::ClearLog()
 
 void Console::FullClearLog()
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     { 
         for (int i = 0; i < Items.Size; i++)
             free(Items[i]);
@@ -350,7 +350,7 @@ void Console::FullClearLog()
 
 void Console::AddLog(const char *fmt, ...)
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         // FIXME-OPT
         char buf[1024];
@@ -371,7 +371,7 @@ void Console::AddLog(const char *fmt, ...)
 
 void Console::Draw()
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         // TODO: display items starting from the bottom
 
@@ -433,10 +433,10 @@ void Console::Draw()
         ImGui::Separator();
 
         bool reclaim_focus = false;
-        if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !vpprender[vpprender_id].second.first->alReadyFocusOnInputBar)
+        if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !std::get<2>(vpprender[vpprender_id])->alReadyFocusOnInputBar)
         {
             ImGui::SetKeyboardFocusHere(0);
-            vpprender[vpprender_id].second.first->alReadyFocusOnInputBar = true;
+            std::get<2>(vpprender[vpprender_id])->alReadyFocusOnInputBar = true;
         }
 
         char cwd[PATH_MAX];
@@ -489,7 +489,7 @@ void Console::Draw()
 
 void Console::ExecCommand(std::string command_line, ...)
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         /*
      * Insert into history. First find matchand delete it so it can be pushed to the back.
@@ -607,7 +607,7 @@ void Console::ExecCommand(std::string command_line, ...)
 
 void Console::TypeTermi()
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         AddLog("\nTermi> ");
     }
@@ -615,7 +615,7 @@ void Console::TypeTermi()
 
 int Console::TextEditCallback(ImGuiInputTextCallbackData *data)
 {
-    if (Settings(6, 0) == 0)
+    if (Settings(6) == 0)
     {
         // AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
         switch (data->EventFlag)
@@ -729,36 +729,33 @@ void Renderer::DrawMenu(ImGuiStyle& style)
             {
                 if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    if (!vpprender[vpprender_id].second.first->server)
+                    if (!std::get<2>(vpprender[vpprender_id])->server)
                     {
-                        vpprender[vpprender_id].second.first->server = true;
-
-                        /*std::thread server(CreateServer, 1);
-                        server.detach();*/
+                        std::get<2>(vpprender[vpprender_id])->server = true;
+                        CreateServer();
                     }
 
                     else
                     {
-                        if (!vpprender[vpprender_id].second.first->client)
+                        if (!std::get<2>(vpprender[vpprender_id])->client)
                         {
-                            vpprender[vpprender_id].second.first->client = true;
-
-                            /*std::thread client(CreateServer, 2);
-                            client.detach();*/
+                            std::get<2>(vpprender[vpprender_id])->server = false;
+                            CreateClient();
                         }
                     }
                 }
 
                 if (ImGui::MenuItem(ChooseLanguage(13)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    if (!vpprender[vpprender_id].second.first->client)
+                    if (!std::get<2>(vpprender[vpprender_id])->client)
                     {
-                        vpprender[vpprender_id].second.first->client = true;
+                        std::get<2>(vpprender[vpprender_id])->client = true;
+                        std::cout << "client = true\n";
                     }
 
                     else
                     {
-                        vpprender[vpprender_id].second.first->client = false;
+                        std::get<2>(vpprender[vpprender_id])->client = false;
                     }
                 }
 
@@ -779,16 +776,16 @@ void Renderer::DrawMenu(ImGuiStyle& style)
         {
             if (ImGui::MenuItem(ChooseLanguage(7)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (vpprender[vpprender_id].second.first->isDarkTheme)
+                if (std::get<2>(vpprender[vpprender_id])->isDarkTheme)
                 {
                     ImGui::StyleColorsLight();
-                    vpprender[vpprender_id].second.first->isDarkTheme = false;
+                    std::get<2>(vpprender[vpprender_id])->isDarkTheme = false;
                 }
 
                 else
                 {
                     ImGui::StyleColorsDark();
-                    vpprender[vpprender_id].second.first->isDarkTheme = true;
+                    std::get<2>(vpprender[vpprender_id])->isDarkTheme = true;
                 }
             }
 
@@ -797,26 +794,26 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                 again:
                 std::random_device dev;
                 std::mt19937 rng(dev());
-                std::uniform_int_distribution<std::mt19937::result_type> dist(0, vpprender[vpprender_id].second.first->themes.size() - 1);
+                std::uniform_int_distribution<std::mt19937::result_type> dist(0, std::get<2>(vpprender[vpprender_id])->themes.size() - 1);
 
-                if (vpprender[vpprender_id].second.first->theme == vpprender[vpprender_id].second.first->themes.at(static_cast<int>(dist(rng))))
+                if (std::get<2>(vpprender[vpprender_id])->theme == std::get<2>(vpprender[vpprender_id])->themes.at(static_cast<int>(dist(rng))))
                 {
                     goto again;
                 }
 
-                vpprender[vpprender_id].second.first->theme = vpprender[vpprender_id].second.first->themes.at(static_cast<int>(dist(rng)));
+                std::get<2>(vpprender[vpprender_id])->theme = std::get<2>(vpprender[vpprender_id])->themes.at(static_cast<int>(dist(rng)));
 
-                if (vpprender[vpprender_id].second.first->theme == "dark_red")
+                if (std::get<2>(vpprender[vpprender_id])->theme == "dark_red")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(84, 3, 34);
                 }
 
-                else if (vpprender[vpprender_id].second.first->theme == "aqua")
+                else if (std::get<2>(vpprender[vpprender_id])->theme == "aqua")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(0, 255, 255);
                 }
 
-                else if (vpprender[vpprender_id].second.first->theme == "some_yellow")
+                else if (std::get<2>(vpprender[vpprender_id])->theme == "some_yellow")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(204, 163, 80);
                 }
@@ -826,9 +823,9 @@ void Renderer::DrawMenu(ImGuiStyle& style)
 
             if (ImGui::MenuItem(ChooseLanguage(8)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (!vpprender[vpprender_id].second.first->language_dialog)
+                if (!std::get<2>(vpprender[vpprender_id])->language_dialog)
                 {
-                    vpprender[vpprender_id].second.first->language_dialog = true;
+                    std::get<2>(vpprender[vpprender_id])->language_dialog = true;
                     ChooseLanguageDialog(NULL);
                 }
             }
@@ -840,18 +837,18 @@ void Renderer::DrawMenu(ImGuiStyle& style)
         {
             if (ImGui::MenuItem(ChooseLanguage(9)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (vpprender[vpprender_id].second.first->termi_dialog == false)
-                    vpprender[vpprender_id].second.first->termi_dialog = true;
+                if (std::get<2>(vpprender[vpprender_id])->termi_dialog == false)
+                    std::get<2>(vpprender[vpprender_id])->termi_dialog = true;
                 else
-                    vpprender[vpprender_id].second.first->termi_dialog = false;
+                    std::get<2>(vpprender[vpprender_id])->termi_dialog = false;
             }
 
             if (ImGui::MenuItem(ChooseLanguage(10)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (vpprender[vpprender_id].second.first->imgui_dialog == false)
-                    vpprender[vpprender_id].second.first->imgui_dialog = true;
+                if (std::get<2>(vpprender[vpprender_id])->imgui_dialog == false)
+                    std::get<2>(vpprender[vpprender_id])->imgui_dialog = true;
                 else
-                    vpprender[vpprender_id].second.first->imgui_dialog = false;
+                    std::get<2>(vpprender[vpprender_id])->imgui_dialog = false;
             }
 
             ImGui::EndMenu();
@@ -864,17 +861,17 @@ void Renderer::DrawMenu(ImGuiStyle& style)
 /* Choose language function - return word on specified language */
 const char *Renderer::ChooseLanguage(int id)
 {
-    if (vpprender[vpprender_id].second.first->language == "english")
+    if (std::get<2>(vpprender[vpprender_id])->language == "english")
     {
         return Translation::English.at(id).c_str();
     }
 
-    else if (vpprender[vpprender_id].second.first->language == "croatian")
+    else if (std::get<2>(vpprender[vpprender_id])->language == "croatian")
     {
         return Translation::Croatian.at(id).c_str();
     }
 
-    else if (vpprender[vpprender_id].second.first->language == "vietnamese")
+    else if (std::get<2>(vpprender[vpprender_id])->language == "vietnamese")
     {
         return Translation::Vietnamese.at(id).c_str();
     }
@@ -898,7 +895,7 @@ void Renderer::ChooseLanguageDialog(bool *p_open)
     {
         if (ImGui::Button("Close window"))
         {
-            vpprender[vpprender_id].second.first->language_dialog = false;
+            std::get<2>(vpprender[vpprender_id])->language_dialog = false;
         }
 
         ImGui::EndPopup();
@@ -909,24 +906,24 @@ void Renderer::ChooseLanguageDialog(bool *p_open)
 
     if (ImGui::Button("English (default)") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        vpprender[vpprender_id].second.first->language = "english";
+        std::get<2>(vpprender[vpprender_id])->language = "english";
     }
 
     if (ImGui::Button("Croatian / Hrvatski") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        vpprender[vpprender_id].second.first->language = "croatian";
+        std::get<2>(vpprender[vpprender_id])->language = "croatian";
     }
 
     if (ImGui::Button("Vietnamese / Tiếng Việt") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        vpprender[vpprender_id].second.first->language = "vietnamese";
+        std::get<2>(vpprender[vpprender_id])->language = "vietnamese";
     }
 
-    /* if (ImGui::Button("Vietnamese / Tieng Viet")) vpprender[vpprender_id].second.first->language = "vietnamese"; */
+    /* if (ImGui::Button("Vietnamese / Tieng Viet")) std::get<2>(vpprender[vpprender_id])->language = "vietnamese"; */
 
     if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        vpprender[vpprender_id].second.first->language_dialog = false;
+        std::get<2>(vpprender[vpprender_id])->language_dialog = false;
     }
 
     ImGui::End();
@@ -947,7 +944,7 @@ void Renderer::TermiDialog(bool *p_open)
     {
         if (ImGui::Button("Close window"))
         {
-            vpprender[vpprender_id].second.first->termi_dialog = false;
+            std::get<2>(vpprender[vpprender_id])->termi_dialog = false;
         }
 
         ImGui::EndPopup();
@@ -955,7 +952,7 @@ void Renderer::TermiDialog(bool *p_open)
 
     if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        vpprender[vpprender_id].second.first->termi_dialog = false;
+        std::get<2>(vpprender[vpprender_id])->termi_dialog = false;
     }
 
     ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic");
@@ -982,7 +979,7 @@ void Renderer::ImGuiDialog(bool *p_open)
     {
         if (ImGui::Button("Close window"))
         {
-            vpprender[vpprender_id].second.first->imgui_dialog = false;
+            std::get<2>(vpprender[vpprender_id])->imgui_dialog = false;
         }
 
         ImGui::EndPopup();
@@ -990,7 +987,7 @@ void Renderer::ImGuiDialog(bool *p_open)
 
     if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        vpprender[vpprender_id].second.first->imgui_dialog = false;
+        std::get<2>(vpprender[vpprender_id])->imgui_dialog = false;
     }
 
     ImGui::Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
@@ -999,7 +996,7 @@ void Renderer::ImGuiDialog(bool *p_open)
     ImGui::End();
 }
 
-int Renderer::Settings(int id, float value)
+int Renderer::Settings(int id)
 {
     #if defined _WIN32 || defined _WIN64
         std::string folder_path = "settings/";
@@ -1062,8 +1059,8 @@ int Renderer::Settings(int id, float value)
             break;
 
         default:
-            vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
-            vpprender[vpprender_id].first.second->AddLog(
+            std::get<1>(vpprender[vpprender_id])->AddLog("Invalid id %d!\n", id);
+            std::get<1>(vpprender[vpprender_id])->AddLog(
                 "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
                 "0 - read startup command\n"
                 "1 - read width\n",
@@ -1126,8 +1123,8 @@ int Renderer::Settings(int id, float value)
         break;
 
     default:
-        vpprender[vpprender_id].first.second->AddLog("Invalid id %d!\n", id);
-        vpprender[vpprender_id].first.second->AddLog(
+        std::get<1>(vpprender[vpprender_id])->AddLog("Invalid id %d!\n", id);
+        std::get<1>(vpprender[vpprender_id])->AddLog(
             "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
             "0 - read startup command\n"
             "1 - read width\n",
@@ -1171,7 +1168,7 @@ void Renderer::SetFont(ImGuiIO &io)
 
     std::string glyph_range_str = json_object_get_string(j_glyph_range);
 
-    Settings(3, 0);
+    Settings(3);
     if (font_name != "default")
     {
         if (CheckFile(font_name.c_str()) == false)
@@ -1183,37 +1180,37 @@ void Renderer::SetFont(ImGuiIO &io)
 
     if (glyph_range_str == "korean")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesKorean());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesKorean());
     }
 
     else if (glyph_range_str == "chinese_full")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesChineseFull());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesChineseFull());
     }
 
     else if (glyph_range_str == "chinese_simplified_common")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
     }
 
     else if (glyph_range_str == "japanese")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesJapanese());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesJapanese());
     }
 
     else if (glyph_range_str == "cyrillic")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesCyrillic());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesCyrillic());
     }
 
     else if (glyph_range_str == "thai")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesThai());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesThai());
     }
 
     else if (glyph_range_str == "vietnamese")
     {
-        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4, 0), NULL, io.Fonts->GetGlyphRangesVietnamese());
+        io.Fonts->AddFontFromFileTTF(font_name.c_str(), Settings(4), NULL, io.Fonts->GetGlyphRangesVietnamese());
     }
 
     else if (glyph_range_str == "latin-ex-a")
@@ -1266,69 +1263,16 @@ bool Renderer::CheckFile(const char *name)
     return true;
 }
 
-/* Function which creates a server */
-void CreateServer(int type)
+/* Function for a server */
+void CreateServer()
 {
     return;
+}
 
-    /* Code is broken, I might return in future, probably not */
-
-    /* 1 - server, 2 - client */
-    /*if (type == 1)
-    {
-        //  Prepare our context and socket
-        zmq::context_t context(1);
-        zmq::socket_t socket(context, ZMQ_REP);
-        //socket.bind ("tcp://*:5555");
-        socket.bind("ipc:///tmp/test");
-
-        while (true) {
-            zmq::message_t request;
-
-            //  Wait for next request from client
-            socket.recv(&request);
-            std::cout << "Received Hello" << std::endl;
-
-            //  Do some 'work'
-            Sleep(1000);
-
-            //  Send reply back to client
-            zmq::message_t reply(5);
-            memcpy((void*)reply.data(), "World", 5);
-            socket.send(reply);
-        }
-    }
-
-    else if (type == 2)
-    {
-        zmq::context_t context(1);
-
-        //  Socket to talk to server
-        printf("Connecting to hello world server…\n");
-        zmq::socket_t sock(context, ZMQ_REQ);
-        //sock.connect("tcp://localhost:5555");
-        sock.connect("ipc:///tmp/test");
-
-        int request_nbr;
-        for (request_nbr = 0; request_nbr != 10; request_nbr++) {
-            zmq::message_t request((void*)"Hello", 5, NULL);
-            //        zmq::msg_init_size (&request, 5);
-              //        memcpy (zmq::msg_data (&request), "Hello", 5);
-            printf("Sending Hello %d…\n", request_nbr);
-            sock.send(&request, 0);
-            //zmq::msg_close (&request);
-
-            zmq::message_t reply;
-            sock.recv(&reply, 0);
-            printf("Received World %d\n", request_nbr);
-        }
-        sock.close();
-    }
-
-    else
-    {
-
-    }*/
+/* Function for a client */
+void CreateClient()
+{
+    return;
 }
 
 /* Function which draws tabs */
@@ -1366,8 +1310,8 @@ void DrawTab(ImGuiStyle& style)
             if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 vpprender_id = n;
-                vpprender[vpprender_id].first.first->DrawMenu(style);
-                vpprender[vpprender_id].first.second->Draw();
+                std::get<0>(vpprender[vpprender_id])->DrawMenu(style);
+                std::get<1>(vpprender[vpprender_id])->Draw();
                 ImGui::EndTabItem();
             }
 
@@ -1408,30 +1352,31 @@ void main_code(ImGuiStyle& style)
 #endif
 
     /* Staring values */
-    vpprender.push_back(
-        std::make_pair(
-            std::make_pair(new Renderer(), new Console()),
-            std::make_pair(new Vars(), nullptr)));
+    vpprender.push_back({
+        new Renderer(),
+        new Console(),
+        new Vars()
+    });
 
     /* Draw tabs and menu bar */
     DrawTab(style);
 
     /* Language dialog */
-    if (vpprender[vpprender_id].second.first->language_dialog)
+    if (std::get<2>(vpprender[vpprender_id])->language_dialog)
     {
-        vpprender[vpprender_id].first.first->ChooseLanguageDialog(NULL);
+        std::get<0>(vpprender[vpprender_id])->ChooseLanguageDialog(NULL);
     }
 
     /* About Termi dialog */
-    if (vpprender[vpprender_id].second.first->termi_dialog)
+    if (std::get<2>(vpprender[vpprender_id])->termi_dialog)
     {
-        vpprender[vpprender_id].first.first->TermiDialog(NULL);
+        std::get<0>(vpprender[vpprender_id])->TermiDialog(NULL);
     }
 
     /* About ImGui dialog */
-    if (vpprender[vpprender_id].second.first->imgui_dialog)
+    if (std::get<2>(vpprender[vpprender_id])->imgui_dialog)
     {
-        vpprender[vpprender_id].first.first->ImGuiDialog(NULL);
+        std::get<0>(vpprender[vpprender_id])->ImGuiDialog(NULL);
     }
 
     /* Get window width and height */
@@ -1454,5 +1399,5 @@ void main_code(ImGuiStyle& style)
  */
 void AddLog(const char *fmt, ...)
 {
-    vpprender[vpprender_id].first.second->AddLog(fmt);
+    std::get<1>(vpprender[vpprender_id])->AddLog(fmt);
 }

@@ -24,6 +24,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <tuple>
 #include <vector>
 
 #if defined _WIN32 || defined _WIN64
@@ -172,7 +173,7 @@ extern "C"
         void TermiDialog(bool *p_open);
         void ImGuiDialog(bool *p_open);
 
-        int Settings(int id, float value);
+        int Settings(int id);
         void SetFont(ImGuiIO &io);
         bool CheckFile(const char *name);
 
@@ -264,8 +265,11 @@ extern "C"
         int TextEditCallback(ImGuiInputTextCallbackData *data);
     };
 
-    /* Function which creates a server */
-    void CreateServer(int type);
+    /* Function for a server */
+    void CreateServer();
+
+    /* Function for a client */
+    void CreateClient();
 
     /* Function which draws tabs */
     void DrawTab(ImGuiStyle& style);

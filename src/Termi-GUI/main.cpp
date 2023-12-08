@@ -258,7 +258,7 @@ void tmain()
 	}
 
 	glfwInit();
-	GLFWwindow *window = glfwCreateWindow(render->Settings(1, 0), render->Settings(2, 0), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(render->Settings(1), render->Settings(2), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
 	if (window == NULL)
@@ -302,7 +302,7 @@ void tmain()
 	ImGui_ImplOpenGL3_Init("#version 330");
 
 	render->SetFont(io);
-	render->Settings(0, 0);
+	render->Settings(0);
 
 	delete render;
 
