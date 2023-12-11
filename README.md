@@ -154,7 +154,7 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `sysfetch`
 - [dl-libraries.html](https://tldp.org/HOWTO/Program-Library-HOWTO/dl-libraries.html) - for loading functions from .so files at runtime
-- [c-chatroom](https://github.com/lovenery/c-chatroom)
+- [c-chatroom](https://github.com/lovenery/c-chatroom) - for server & client implementation
 - ...
 
 *Word `terminal` might not be the best word to describe this project*
