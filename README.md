@@ -12,7 +12,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
 - The goal of Termi is create independent terminal, i.e. a separate kind of terminal use "own" GUI renedering system.
 - Has own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
-- We accept contibutors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
+- We accept contributors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
 - And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 
@@ -94,7 +94,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
       - copy GLFW header files to `/usr/include/GLFW`,
       - copy `libglfw.so` and `libGL.so` to `/usr/lib/`.
 
-    - Or you can use header files included with Termi which is default behaviour (enabled for the sake of Andrej, Stjepan and Windows version), see instructions down below:
+    - Or you can use header files included with Termi which is default behavior (enabled for the sake of Andrej, Stjepan and Windows version), see instructions down below:
       - check are they in `Termi-Other/Termi-GUI/includes`,
       - install or compile GLFW package through your package manager,
       - enable such option in `Settings.hpp` and in `main.cpp`.
@@ -102,7 +102,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Rust - required for building Rust commands (optional)
   - Check Rust's website for download instructions
   
-**Commands which requires package installation have to be runned with administartor/root access!**
+**Commands which requires package installation have to be ran with administrator/root access!**
 
 ### Build & Run - Windows
 1. Open `Developer Powershell for Visual Studio 2022`
@@ -146,7 +146,6 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - [stb](https://github.com/nothings/stb)
 - [Sweet16Font](https://github.com/kmar/Sweet16Font)
 - [dirent](https://github.com/tronkko/dirent) - ```dirent.h``` for Windows
-- [ZeroMQ](https://zeromq.org/)
 
 ## Credits
 - [Background launcher picture](https://pixabay.com/photos/leaf-maple-autumn-foliage-botany-3865014/)
@@ -155,8 +154,8 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 - [Victor Gordan](https://www.youtube.com/c/VictorGordan) - for OpenGL window code
 - [cppfetch](https://github.com/Phate6660/cppfetch) - for Termi's `sysfetch`
 - [dl-libraries.html](https://tldp.org/HOWTO/Program-Library-HOWTO/dl-libraries.html) - for loading functions from .so files at runtime
-- [Low Level Learning](https://www.youtube.com/@LowLevelLearning) - for recommending ZeroMQ
-- Other artcicles about programming (web format, books, etc.)
+- [c-chatroom](https://github.com/lovenery/c-chatroom)
+- ...
 
 *Word `terminal` might not be the best word to describe this project*
 

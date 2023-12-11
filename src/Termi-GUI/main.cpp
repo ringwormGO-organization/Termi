@@ -3,7 +3,6 @@
  * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file
- * INFORAMTION: Install OpenGL and run this command in terminal: clear && cmake . && make && ./Termi-OpenGL
  */
 
 /* Dear ImGui includes */
@@ -35,7 +34,7 @@
 #include "stb_image.h"
 
 /* We need this include to be right here */
-#include "Settings.hpp"
+#include "settings.hpp"
 
 /* Glad include */
 #ifdef USE_PREINSTALLED_HEADERS

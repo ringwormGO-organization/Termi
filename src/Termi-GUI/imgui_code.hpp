@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file for Dear ImGui code
  */
@@ -12,8 +12,10 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "font.inl"
 
-#include "Settings.hpp"
-#include "Translation.hpp"
+#include "client.hpp"
+#include "server.hpp"
+#include "settings.hpp"
+#include "translation.hpp"
 
 #include <algorithm>
 #include <filesystem>
@@ -24,6 +26,7 @@
 #include <random>
 #include <sstream>
 #include <string>
+#include <thread>
 #include <tuple>
 #include <vector>
 
@@ -54,8 +57,10 @@ extern "C"
 
     static bool alReadyPrinted = false;
 
-    /*
-     * Commands map - name of command | name of function
+    /**
+     * Commands map
+     * @param first name of command
+     * @param second function name of command
      */
     static std::map<const std::string, const std::string> commands =
         {
@@ -165,16 +170,53 @@ extern "C"
     struct Renderer
     {
     public:
+
+        /**
+         * Draw top menu
+         * @param style
+        */
         void DrawMenu(ImGuiStyle& style);
 
+        /**
+         * Choose language
+         * @param id language id
+        */
         const char *ChooseLanguage(int id);
+
+        /**
+         * Dialog for choosing a language
+         * @param p_open is dialog open?
+        */
         void ChooseLanguageDialog(bool *p_open);
 
+        /**
+         * Dialog showing informations about Termi
+         * @param p_open is dialog open?
+        */
         void TermiDialog(bool *p_open);
+
+        /**
+         * Dialog showing informations about ImGui
+         * @param p_open is dialog open?
+        */
         void ImGuiDialog(bool *p_open);
 
+        /**
+         * Get setting
+         * @param id setting to get
+        */
         int Settings(int id);
+
+        /**
+         * Set font
+         * @param io
+        */
         void SetFont(ImGuiIO &io);
+
+        /**
+         * Check if file exists
+         * @param name name of the file
+        */
         bool CheckFile(const char *name);
 
         std::string font_name;
@@ -243,15 +285,54 @@ extern "C"
         };
 
     public:
+
+        /**
+         * Load commands from Termi-Commands (or any other project which uses std::vector for arguments)
+         * @param vect function arguments
+         * @param function name of the function
+        */
         void LoadDynamicLibrary(std::vector<std::string> &vect, std::string function);
+
+        /**
+         * Load commands from any project using `const char*` for arguments
+         * @param path path to the .so/.dll file
+         * @param function function name
+         * @param value arguments
+        */
         int LoadThirdParty(const char *path, const char *function, const char *value);
 
     public:
+
+        /**
+         * Clear entire console, but print `Termi >`
+        */
         void ClearLog();
+
+        /**
+         * Same as `ClearLog()`, but don't print `Termi >`
+        */
         void FullClearLog();
+
+        /**
+         * `printf()` for our console
+         * @param fmt string
+        */
         void AddLog(const char *fmt, ...);
+
+        /**
+         * Draw console
+        */
         void Draw();
+
+        /**
+         * Execute command
+         * @param command_line user's input
+        */
         void ExecCommand(std::string command_line, ...);
+
+        /**
+         * Print `Termi >`
+        */
         void TypeTermi();
 
     protected:
@@ -265,24 +346,37 @@ extern "C"
         int TextEditCallback(ImGuiInputTextCallbackData *data);
     };
 
-    /* Function for a server */
+    /**
+     * Entry point for server
+    */
     void CreateServer();
 
-    /* Function for a client */
+    /**
+     * Entry point for client
+    */
     void CreateClient();
 
-    /* Function which draws tabs */
+    /**
+     * Draw tabs
+     * @param style 
+    */
     void DrawTab(ImGuiStyle& style);
 
-    /* Main code for starting Dear ImGui */
+    /**
+     * Entry point for ImGui part of Termi
+     * @param style
+    */
     void main_code(ImGuiStyle& style);
 
     extern Console console;
 
+    /**
+     * Entry point for whole Termi-GUI project
+    */
     _API void tmain();
 
     /**
-     * AddLog but outside of struct so it is visible from outside this shared library
+     * AddLog but outside of struct so it is visible from .so/.dll files
      * @param fmt - string
      */
     _API void AddLog(const char *fmt, ...);

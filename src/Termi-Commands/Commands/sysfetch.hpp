@@ -1,5 +1,5 @@
 /**
- * @author Andrej Bartulin
+ * @author Cpt.Howdy, Andrej Bartulin
  * PROJECT: Termi version
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: sysfetch header file
@@ -97,7 +97,7 @@
 
     /* ------------------------------------- */
 
-    static struct Inforamtion
+    static struct INFORMATION
     {
         char computer[256];
         char user[64];

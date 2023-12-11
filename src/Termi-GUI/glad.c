@@ -23,7 +23,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "Settings.hpp"
+#include "settings.hpp"
 
 #ifdef USE_PREINSTALLED_HEADERS
    	#include "includes/glad.h"

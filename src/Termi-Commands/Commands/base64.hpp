@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Header file encoding/decoding Base64
 */

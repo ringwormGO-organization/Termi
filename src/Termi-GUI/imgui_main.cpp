@@ -1,6 +1,6 @@
 /**
  * @author Andrej Bartulin
- * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
+ * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Main file for Dear ImGui
  */
@@ -491,10 +491,10 @@ void Console::ExecCommand(std::string command_line, ...)
 {
     if (Settings(6) == 0)
     {
-        /*
-     * Insert into history. First find matchand delete it so it can be pushed to the back.
-     * This isn't trying to be smart or optimal
-     */
+        /**
+         * Insert into history. First find matchand delete it so it can be pushed to the back.
+         * This isn't trying to be smart or optimal
+        */
         HistoryPos = -1;
         for (int i = History.Size - 1; i >= 0; i--)
         {
@@ -732,7 +732,9 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                     if (!std::get<2>(vpprender[vpprender_id])->server)
                     {
                         std::get<2>(vpprender[vpprender_id])->server = true;
-                        CreateServer();
+
+                        std::thread server(CreateServer);
+                        server.detach();
                     }
 
                     else
@@ -740,7 +742,6 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                         if (!std::get<2>(vpprender[vpprender_id])->client)
                         {
                             std::get<2>(vpprender[vpprender_id])->server = false;
-                            CreateClient();
                         }
                     }
                 }
@@ -750,7 +751,9 @@ void Renderer::DrawMenu(ImGuiStyle& style)
                     if (!std::get<2>(vpprender[vpprender_id])->client)
                     {
                         std::get<2>(vpprender[vpprender_id])->client = true;
-                        std::cout << "client = true\n";
+                        
+                        std::thread client(CreateClient);
+                        client.detach();
                     }
 
                     else
@@ -1263,19 +1266,151 @@ bool Renderer::CheckFile(const char *name)
     return true;
 }
 
-/* Function for a server */
+/**
+ * Entry point for server
+*/
 void CreateServer()
 {
+    int server_sockfd = 0;
+    int client_sockfd = 0;
+
+    ClientList* now;
+
+    /* Create socket */
+    server_sockfd = socket(AF_INET , SOCK_STREAM , 0);
+    if (server_sockfd == -1) 
+    {
+        printf("Failed to create a socket!\n");
+        return;
+    }
+
+    /* Socket information */
+    struct sockaddr_in server_info, client_info;
+    int s_addrlen = sizeof(server_info);
+    int c_addrlen = sizeof(client_info);
+    memset(&server_info, 0, s_addrlen);
+    memset(&client_info, 0, c_addrlen);
+    server_info.sin_family = PF_INET;
+    server_info.sin_addr.s_addr = INADDR_ANY;
+    server_info.sin_port = htons(5555);
+
+    /* Bind and listen */
+    bind(server_sockfd, (struct sockaddr *)&server_info, s_addrlen);
+    listen(server_sockfd, 5);
+
+    /* Print server IP */
+    getsockname(server_sockfd, (struct sockaddr*) &server_info, (socklen_t*) &s_addrlen);
+    printf("Game started on: %s:%d!\n", inet_ntoa(server_info.sin_addr), ntohs(server_info.sin_port));
+
+    /* Initial linked list for clients */
+    root = newNode(server_sockfd, inet_ntoa(server_info.sin_addr));
+    now = root;
+
+    while (1) 
+    {
+        client_sockfd = accept(server_sockfd, (struct sockaddr*) &client_info, (socklen_t*) &c_addrlen);
+
+        /* Print client IP */
+        getpeername(client_sockfd, (struct sockaddr*) &client_info, (socklen_t*) &c_addrlen);
+        printf("Client %s:%d joined the game!\n", inet_ntoa(client_info.sin_addr), ntohs(client_info.sin_port));
+
+        /* Append linked list for clients */
+        ClientList *c = newNode(client_sockfd, inet_ntoa(client_info.sin_addr));
+        c->prev = now;
+        now->link = c;
+        now = c;
+
+        ClientArg arguments;
+
+        arguments.now = now;
+        arguments.p_client = c;
+
+        pthread_t id;
+        if (pthread_create(&id, NULL, client_handler, (void *)&arguments) != 0) 
+        {
+            perror("Create pthread error!\n");
+            return;
+        }
+    }
+
     return;
 }
 
-/* Function for a client */
+/**
+ * Entry point for client
+*/
 void CreateClient()
 {
-    return;
+    char ip[64] = "127.0.0.1";
+    char nickname[64] = "andrej";
+
+    uint16_t port = 5555;
+
+    if (strlen(nickname) < 2 || strlen(nickname) >= LENGTH_NAME - 1) 
+    {
+        printf("\nName must be more than one and less than thirty characters.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    printf("\n");
+
+    /* Create socket */
+    sockfd = socket(AF_INET , SOCK_STREAM , 0);
+    if (sockfd == -1) 
+    {
+        printf("Fail to create a socket.");
+        exit(EXIT_FAILURE);
+    }
+
+    /* Socket information */
+    struct sockaddr_in server_info, client_info;
+    int s_addrlen = sizeof(server_info);
+    int c_addrlen = sizeof(client_info);
+    memset(&server_info, 0, s_addrlen);
+    memset(&client_info, 0, c_addrlen);
+    server_info.sin_family = PF_INET;
+    server_info.sin_addr.s_addr = inet_addr(ip);
+    server_info.sin_port = htons(port);
+
+    /* Connect to server */
+    int err = connect(sockfd, (struct sockaddr *)&server_info, s_addrlen);
+    if (err == -1) 
+    {
+        printf("Connection to Server error!\n");
+        exit(EXIT_FAILURE);
+    }
+    
+    /* Names */
+    getsockname(sockfd, (struct sockaddr*) &client_info, (socklen_t*) &c_addrlen);
+    getpeername(sockfd, (struct sockaddr*) &server_info, (socklen_t*) &s_addrlen);
+    printf("Connect to Server: %s:%d\n", inet_ntoa(server_info.sin_addr), ntohs(server_info.sin_port));
+    printf("You are: %s:%d\n", inet_ntoa(client_info.sin_addr), ntohs(client_info.sin_port));
+
+    printf("\n");
+
+    send(sockfd, nickname, LENGTH_NAME, 0);
+
+    pthread_t send_msg_thread;
+    if (pthread_create(&send_msg_thread, NULL, reinterpret_cast<void* (*)(void*)>(send_msg_handler), NULL) != 0) 
+    {
+        printf("Create pthread error!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    pthread_t recv_msg_thread;
+    if (pthread_create(&recv_msg_thread, NULL, reinterpret_cast<void* (*)(void*)>(recv_msg_handler), NULL) != 0) 
+    {
+        printf("Create pthread error!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    close(sockfd);
 }
 
-/* Function which draws tabs */
+/**
+ * Draw tabs
+ * @param style 
+*/
 void DrawTab(ImGuiStyle& style)
 {
     static ImVector<int> active_tabs;
@@ -1325,7 +1460,10 @@ void DrawTab(ImGuiStyle& style)
     }
 }
 
-/* Main code for starting Dear ImGui */
+/**
+ * Entry point for ImGui part of Termi
+ * @param style
+*/
 void main_code(ImGuiStyle& style)
 {
     /* ImGui window creation */
@@ -1394,7 +1532,7 @@ void main_code(ImGuiStyle& style)
 }
 
 /**
- * AddLog but outside of struct so it is visible from outside this shared library
+ * AddLog but outside of struct so it is visible from .so/.dll files
  * @param fmt - string
  */
 void AddLog(const char *fmt, ...)

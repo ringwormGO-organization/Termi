@@ -1,8 +1,6 @@
 /**
- * @author(S):
-        original: StjepanBM1
-        OpenGL: Andrej Bartulin
- * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
+ * @author Stjepan Bilić Matišić, Andrej Bartulin
+ * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
  * DESCRIPTION: Geocalc helper functions
 */

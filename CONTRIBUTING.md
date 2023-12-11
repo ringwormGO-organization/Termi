@@ -50,7 +50,7 @@ Example:
 /* imgui_main.cpp */
 const char* Renderer::ChooseLanguage(Vars* vars, int id)
 {
-    /* be careful which word you put in `ChooseLanguageDialog` funtion */
+    /* be careful which word you put in `ChooseLanguageDialog` function */
     if (vars->language == "spanish")
     {
         return Translation::English.at(id).c_str();
@@ -121,15 +121,15 @@ VOID example(const std::vector<std::string>& vect)
 1. Create new Visual Studio DLL project.
 2. Copy all stuff to load DLL stuff (`AddLog` function mostly).
 3. Copy all `_declspec(dllexport)` stuff (see example for core commands).
-4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for information and warnings).
 5. Call DLL from Termi (actually type any random command and fill the little form in terminal where you run Termi)
 
 ### Other platforms
-1. Create new project with `CMakeLists.txt` file similar from `Termi-GUI` and `Termi-Commands` project
+1. Create new project with `CMakeLists.txt` file similar to `Termi-Commands` project
 2. Copy all stuff to load .so stuff (`AddLog` function mostly).
 3. Copy all `extern "C"` stuff (see example for core commands).
-4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for informations and warnings).
-5. Call DLL from Termi (actually type any random command and fill the little form in terminal where you run Termi)
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for information and warnings).
+5. Call .so from Termi (actually type any random command and fill the little form in terminal where you run Termi)
 
 ## For those who want know more
 ### Port application written in Rust
@@ -209,8 +209,8 @@ vect[i]; /* argument while `i` represents order of argument */
 - `vietnamese`
 - `latin-ex-a`- Basic Latin + Latin supplement + Latin extended A; only usable with `Sweet16.tff` located in `font` folder/directory accessible to `Termi-Main` executable
 
-# Coding sytle for Pull Requests
-**Coding sytle shown below only applies to C and C++. If you use Rust, please use Rust's coding style!**
+# Coding style for Pull Requests
+**Coding style shown below only applies to C and C++. If you use Rust, please use Rust's coding style!**
 
 ### Indentation and line width
 1. Line width much be at most **100** characters.
@@ -457,7 +457,7 @@ if (func1())
 **Wrong:** `void test();`
 
 #### Naming structs, classes, unions and variables
-2. Name a struct, class, union etc. with cappital letter and variable which lowercase letter
+2. Name a struct, class, union etc. with capital letter and variable which lowercase letter
 
 **Right:**
 ```c
@@ -505,8 +505,7 @@ Wrong:
 ```
 
 ### Other points
-1. Do not use `LARGE_INTEGER`/`ULARGE_INTEGER` unless needed for using APIs. Use `int64`/`uint64` instead
-2. Use `#pragma once` instead of guard defines in headers
+- Use `#pragma once` instead of guard defines in headers
 
 ### Resources used for this coding style:
 * https://reactos.org/wiki/Coding_Style
