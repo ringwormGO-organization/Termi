@@ -23,6 +23,7 @@
 #include <iostream>
 #include <list>
 #include <map>
+#include <memory>
 #include <random>
 #include <sstream>
 #include <string>
