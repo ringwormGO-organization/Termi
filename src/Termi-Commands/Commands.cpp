@@ -35,7 +35,8 @@
 
     #define _VOID void __cdecl
 
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+    __NetBSD__
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <sys/stat.h>
@@ -183,7 +184,8 @@ using namespace std;
     {
         return GetTickCount64() / 3600000;
     }
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+    __NetBSD__
     template <typename T>
     void LoadSO(const char* function, T value)
     {
