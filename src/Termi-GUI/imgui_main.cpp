@@ -729,37 +729,38 @@ void Renderer::DrawMenu(ImGuiStyle& style)
             {
                 if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    if (!std::get<2>(vpprender[vpprender_id])->server)
-                    {
-                        std::get<2>(vpprender[vpprender_id])->server = true;
+                    #if __linux
+                        if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
+                        {
+                            std::get<2>(vpprender[vpprender_id])->server = true;
 
-                        std::thread server(CreateServer);
-                        server.detach();
-                    }
+                            std::thread server(CreateServer);
+                            server.detach();
+                        }
 
-                    else
-                    {
-                        if (!std::get<2>(vpprender[vpprender_id])->client)
+                        else /* server is on */
                         {
                             std::get<2>(vpprender[vpprender_id])->server = false;
                         }
-                    }
+                    #endif
                 }
 
                 if (ImGui::MenuItem(ChooseLanguage(13)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
                 {
-                    if (!std::get<2>(vpprender[vpprender_id])->client)
-                    {
-                        std::get<2>(vpprender[vpprender_id])->client = true;
-                        
-                        std::thread client(CreateClient);
-                        client.detach();
-                    }
+                    #if __linux__
+                        if (!std::get<2>(vpprender[vpprender_id])->client) /* client is off */
+                        {
+                            std::get<2>(vpprender[vpprender_id])->client = true;
+                            
+                            std::thread client(CreateClient);
+                            client.detach();
+                        }
 
-                    else
-                    {
-                        std::get<2>(vpprender[vpprender_id])->client = false;
-                    }
+                        else /* client is on */
+                        {
+                            std::get<2>(vpprender[vpprender_id])->client = false;
+                        }
+                    #endif
                 }
 
                 ImGui::EndMenu();
