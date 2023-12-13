@@ -506,7 +506,8 @@ _VOID echo(const std::vector<std::string>& vect)
 
 _VOID find_command(const std::vector<std::string>& vect)
 {        
-    #if __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #if __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         if (vect.size() < 5)
         {
             AddLog("Not enough arguments!");
@@ -719,7 +720,8 @@ _VOID list_dir(const std::vector<std::string>& vect)
             AddLog("Fatal error with directory!\n");
             Status(2);
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         if (vect[1] != "")
         {
             chdir(vect[1].c_str());
@@ -783,7 +785,8 @@ _VOID new_dir(const std::vector<std::string>& vect)
             AddLog("Directory '" + vect[1] + "' created!\n");
             Status(0);
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         if (mkdir(vect[1].c_str(), 0777) == -1)
         {
             AddLog("Error while creating directory!\n");
@@ -819,7 +822,8 @@ _VOID sysfetch(const std::vector<std::string>& vect)
 
         strcpy_s(new_username, UNLEN, username);
         strcpy_s(new_computer, UNLEN, computer);
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         gethostname(info.computer, 256);
         getlogin_r(info.user, 64);
     #endif
@@ -833,8 +837,12 @@ _VOID sysfetch(const std::vector<std::string>& vect)
         /* info.OS = "Mac OSX"; */
     #elif __linux__
         info.OS = "(GNU/)Linux";
-    #elif __FreeBSD__
+    #elif __FreeBSD__ 
         /* info.OS = "FreeBSD"; */
+    #elif __OpenBSD__
+        /* info.OS = "OpenBSD" */
+    #elif __NetBSD__
+        /* info.OS = "NetBSD" */
     #elif __unix || __unix__
         /* info.OS = "Unix"; */
     #else
@@ -914,7 +922,8 @@ _VOID sysfetch(const std::vector<std::string>& vect)
         {
             AddLog("\t Uptime: " + std::to_string(UptimeH()) + " hours\n");
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         AddLog("\n");
         AddLog("\t " + string(info.user) + " @ " + string(info.computer) + "\n");
         AddLog("--------------------------------------------\n");
@@ -1318,7 +1327,8 @@ _VOID whoami(const std::vector<std::string>& vect)
 
         strcpy_s(new_username, UNLEN, username);
         AddLog(string(new_username) + "\n");
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         char user[64];
         getlogin_r(user, 64);
 
@@ -1355,7 +1365,8 @@ _VOID writefile(const std::vector<std::string>& vect)
 
 #if defined _WIN32 || defined _WIN64
     #define NEW_VOID auto __cdecl 
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __unix || __unix__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \ 
+    __NetBSD__ || __unix || __unix__
     #define NEW_VOID auto
 #else
     #define NEW_VOID auto
