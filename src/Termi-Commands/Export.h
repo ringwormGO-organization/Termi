@@ -32,7 +32,8 @@
 		__declspec(dllexport) void __cdecl writefile(const std::vector<std::string>& vect);
 		__declspec(dllexport) auto __cdecl yes(const std::vector<std::string>& vect) -> void;
 	};
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
 	extern "C"
 	{
 		void base64(const std::vector<std::string>& vect);
