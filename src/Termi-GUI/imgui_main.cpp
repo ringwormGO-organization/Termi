@@ -135,7 +135,7 @@ void split_str(std::string const &str, const char delim, std::vector<std::string
  * @param _T1 - pair of Renderer and Console
  * @param _T2 - pair of Vars and nullptr, I had to put that nullptr so I can compile code but otherwise you should not use it
  */
-std::vector<std::tuple<Renderer*, Console*, Vars*>> vpprender;
+std::vector<std::tuple<std::unique_ptr<Renderer>, std::unique_ptr<Console>, std::unique_ptr<Vars>>> vpprender;
 
 /**
  * Current vpprender element in use
@@ -1492,9 +1492,9 @@ void main_code(ImGuiStyle& style)
 
     /* Staring values */
     vpprender.push_back({
-        new Renderer(),
-        new Console(),
-        new Vars()
+        std::make_unique<Renderer>(),
+        std::make_unique<Console>(),
+        std::make_unique<Vars>()
     });
 
     /* Draw tabs and menu bar */
@@ -1524,12 +1524,6 @@ void main_code(ImGuiStyle& style)
 
     /* End of window */
     ImGui::End();
-
-    /*for (auto x : vprender)
-    {
-        delete x.first;
-        delete x.second;
-    }*/
 }
 
 /**
