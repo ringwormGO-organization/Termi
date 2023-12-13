@@ -2,7 +2,8 @@
 
 #if defined _WIN32 || defined _WIN64
     #include <Windows.h>
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+    __NetBSD__
     #include <dlfcn.h>
 #endif
 
@@ -69,7 +70,8 @@
             std::cout << GetLastErrorAsString() << std::endl << std::endl;
         }
     }
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+    __NetBSD__
     void LoadDynamicLibrary(const char* path, const char* function)
     {
         void *handle;
@@ -98,7 +100,8 @@ int main()
 {
     #if defined _WIN32 || defined _WIN64
         LoadDynamicLibrary("Termi-GUI.dll", "tmain");
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
+        __NetBSD__
         LoadDynamicLibrary("libTermi-GUI.so", "tmain");
     #endif
 

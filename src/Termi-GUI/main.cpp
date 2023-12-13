@@ -25,7 +25,7 @@
 	#include <signal.h>
 #elif __linux__
 	#include <signal.h>
-#elif __FreeBSD__
+#elif __FreeBSD__ || __OpenBSD__ || __NetBSD__
 	#include <signal.h>
 #endif
 
@@ -162,7 +162,7 @@ int height = 0;
 			exit(sig);
 		}
 	}
-#elif __FreeBSD__
+#elif __FreeBSD__ || __OpenBSD__ || __NetBSD__
 	struct sigaction sigIntHandler;
 
 	void end(int sig)
@@ -216,7 +216,7 @@ void tmain()
 		sigemptyset(&sigIntHandler.sa_mask);
 		sigIntHandler.sa_flags = 0;
 		sigaction(SIGINT, &sigIntHandler, NULL);
-    #elif __FreeBSD__
+    #elif __FreeBSD__ || __OpenBSD__ || __NetBSD__
 		/* Catch CTRL-C */
 		sigIntHandler.sa_handler = end;
 		sigemptyset(&sigIntHandler.sa_mask);
