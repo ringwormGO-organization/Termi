@@ -48,12 +48,11 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
 - [x] Lanucher and updater - C#
 
-## Build & Runs
+## Build & Run
 ### Required software:
 ### Windows
-- Visual Studio Visual Studio 2022, ```Desktop development with C++```, and ```.NET 6 Runtime``` components - Windows.
+- Visual Studio Visual Studio 2022 with ```Desktop development with C++```, and ```.NET 6 Runtime``` components.
 - vcpkg
-  - json-c (vcpkg version, static x64)
 
 ### Other platforms
 - g++ complier
@@ -72,32 +71,42 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
   - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
 - json-c library (non-vcpkg version)
+  - Install it using vcpkg using on Windows (static x64)
   - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Arch based.
 
-- OpenGL - for OpenGL project part
+- OpenGL & its dependencies
   - ### Windows
+    #### Generating files (optional)
+    - Check [this](https://www.youtube.com/watch?v=XpBGwZNyUh0) video and copy new files where old ones are.
+
+    #### Using a files
     - Visual Studio 2022 solution should work without any additional configuration.
     - If it doesn't work, see following instructions down below:
-      - open properties of `Termi-GUI` project,
-      - goto `VC++ Directories`,
-      - set your path (they are bundled with Termi (they are in `Libraries` folder/directory), but Visual Studio knows to set entire path (user directory, etc. so you need to change them)) of `Include Directories` and `Library Directories`;
-      - Or you can check Victor Gordan's [video](https://www.youtube.com/watch?v=XpBGwZNyUh0);
-      - Or you can check your `CMakeLists.txt` file.
-  - ### Other platforms (macOS, (GNU/)Linux, BSD)
-    - Check [this video](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) to install it on (GNU/)Linux machine.
+      1. open properties of solution,
+      2. go to `VC++ Directories`,
+      3. set path of `Include Directories` to `includes` folder,
+      4. set path of `Library Directories` to `Termi-GUI` folder where `glfw3.lib` is located;
+      5. if you get in trouble, check [this](https://www.youtube.com/watch?v=XpBGwZNyUh0) video.
+  - ### macOS & (GNU/)Linux
+    #### Generating files (optional)
+      1. go to https://glad.dav1d.de/,
+      2. generate glad with following properties:
+          - `gl`: Version 3.3,
+          - `Profile`: Core;
+      3. download generated `glad.zip`,
+      4. extract `glad.zip`,
+      5. copy `/include/glad` folder to `/usr/include`,
+      6. install `glfw` package;
 
-    - For BSD based operating systems, follow instructions down below (it is pretty much same):
-      - download glad header files (see video for more details),
-      - place them in `/usr/include` (see video for more details),
-      - compile GLFW,
-      - copy GLFW header files to `/usr/include/GLFW`,
-      - copy `libglfw.so` and `libGL.so` to `/usr/lib/`.
+      - if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
 
-    - Or you can use header files included with Termi which is default behavior (enabled for the sake of Andrej, Stjepan and Windows version), see instructions down below:
-      - check are they in `Termi-Other/Termi-GUI/includes`,
-      - install or compile GLFW package through your package manager,
-      - enable such option in `Settings.hpp` and in `main.cpp`.
+  - ### BSD
+    - Steps are same as for (GNU/Linux), but:
+      - copy `GLFW` to `/usr/local/lib`,
+      - copy `gl.h` to `/usr/X11R6/lib`.
+
+  *NOTE: There is option in `Settings.hpp` to use headers in this repository*
 
 - Rust - required for building Rust commands (optional)
   - Check Rust's website for download instructions
@@ -121,7 +130,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 1. Compile `Termi-Commands` project by running `cmake . && make`
 2. Compile `Termi-GUI` project by running `cmake . && make`
 3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` folder/directory.
-4. Compile `Termi-Main` project by running ```cmake . && make && ./Termi-OpenGL```. If you can't compile project check [this video](hhttps://www.youtube.com/watch?v=CIbJ5Iw0yAs), check description of video just in case there is something important!
+4. Compile `Termi-Main` project by running ```cmake . && make && ./Termi-OpenGL```.
 
 ### For those who want know more
 1. You can compile `rtest` Rust project by `cargo build` (and then copy .dll or .so file in folder/directory where are other .dll or .so files) if you want to have `yes` command mainly written in Rust 
