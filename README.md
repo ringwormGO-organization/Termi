@@ -96,15 +96,17 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
           - `Profile`: Core;
       3. download generated `glad.zip`,
       4. extract `glad.zip`,
-      5. copy `/include/glad` folder to `/usr/include`,
+      5. copy `./include/glad` folder to `/usr/include`,
       6. install `glfw` package;
 
       - if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
 
   - ### BSD
-    - Steps are same as for (GNU/Linux), but:
-      - copy `GLFW` to `/usr/local/lib`,
-      - copy `gl.h` to `/usr/X11R6/lib`.
+    - Steps are same as for (GNU/Linux), but there is some notice:
+      - The glfw header and libraries are installed on /usr/local/include and /usr/local/lib (OpenBSD, other *BSD should be same)
+      - The GL/gl.h header is installed on /usr/X11R6/include (OpenBSD)
+      - I think the GL library is also installed on /usr/X11R6/lib
+    - The header include and library search path will be included on Termi-GUI's CMakeLists.txt
 
   *NOTE: There is option in `Settings.hpp` to use headers in this repository*
 
