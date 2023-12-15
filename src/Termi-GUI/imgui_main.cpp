@@ -434,6 +434,11 @@ void Console::Draw()
         ImGui::EndChild();
         ImGui::Separator();
 
+        if (std::get<2>(vpprender[vpprender_id])->server)
+        {
+            
+        }
+
         bool reclaim_focus = false;
         if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !std::get<2>(vpprender[vpprender_id])->alReadyFocusOnInputBar)
         {
@@ -727,45 +732,22 @@ void Renderer::DrawMenu(ImGuiStyle& style)
     {
         if (ImGui::BeginMenu(ChooseLanguage(1)))
         {
-            if (ImGui::BeginMenu(ChooseLanguage(11)))
+            if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
-                {
-                    #if __linux
-                        if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
-                        {
-                            std::get<2>(vpprender[vpprender_id])->server = true;
+                #if __linux
+                    if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
+                    {
+                        std::get<2>(vpprender[vpprender_id])->server = true;
 
-                            std::thread server(CreateServer);
-                            server.detach();
-                        }
+                        std::thread server(CreateServer);
+                        server.detach();
+                    }
 
-                        else /* server is on */
-                        {
-                            std::get<2>(vpprender[vpprender_id])->server = false;
-                        }
-                    #endif
-                }
-
-                if (ImGui::MenuItem(ChooseLanguage(13)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
-                {
-                    #if __linux__
-                        if (!std::get<2>(vpprender[vpprender_id])->client) /* client is off */
-                        {
-                            std::get<2>(vpprender[vpprender_id])->client = true;
-                            
-                            std::thread client(CreateClient);
-                            client.detach();
-                        }
-
-                        else /* client is on */
-                        {
-                            std::get<2>(vpprender[vpprender_id])->client = false;
-                        }
-                    #endif
-                }
-
-                ImGui::EndMenu();
+                    else /* server is on */
+                    {
+                        std::get<2>(vpprender[vpprender_id])->server = false;
+                    }
+                #endif
             }
 
             ImGui::Separator();
@@ -1342,77 +1324,6 @@ void CreateServer()
 }
 
 /**
- * Entry point for client
-*/
-void CreateClient()
-{
-    char ip[64] = "127.0.0.1";
-    char nickname[64] = "andrej";
-
-    uint16_t port = 5555;
-
-    if (strlen(nickname) < 2 || strlen(nickname) >= LENGTH_NAME - 1) 
-    {
-        printf("\nName must be more than one and less than thirty characters.\n");
-        exit(EXIT_FAILURE);
-    }
-
-    printf("\n");
-
-    /* Create socket */
-    sockfd = socket(AF_INET , SOCK_STREAM , 0);
-    if (sockfd == -1) 
-    {
-        printf("Fail to create a socket.");
-        exit(EXIT_FAILURE);
-    }
-
-    /* Socket information */
-    struct sockaddr_in server_info, client_info;
-    int s_addrlen = sizeof(server_info);
-    int c_addrlen = sizeof(client_info);
-    memset(&server_info, 0, s_addrlen);
-    memset(&client_info, 0, c_addrlen);
-    server_info.sin_family = PF_INET;
-    server_info.sin_addr.s_addr = inet_addr(ip);
-    server_info.sin_port = htons(port);
-
-    /* Connect to server */
-    int err = connect(sockfd, (struct sockaddr *)&server_info, s_addrlen);
-    if (err == -1) 
-    {
-        printf("Connection to Server error!\n");
-        exit(EXIT_FAILURE);
-    }
-    
-    /* Names */
-    getsockname(sockfd, (struct sockaddr*) &client_info, (socklen_t*) &c_addrlen);
-    getpeername(sockfd, (struct sockaddr*) &server_info, (socklen_t*) &s_addrlen);
-    printf("Connect to Server: %s:%d\n", inet_ntoa(server_info.sin_addr), ntohs(server_info.sin_port));
-    printf("You are: %s:%d\n", inet_ntoa(client_info.sin_addr), ntohs(client_info.sin_port));
-
-    printf("\n");
-
-    send(sockfd, nickname, LENGTH_NAME, 0);
-
-    pthread_t send_msg_thread;
-    if (pthread_create(&send_msg_thread, NULL, reinterpret_cast<void* (*)(void*)>(send_msg_handler), NULL) != 0) 
-    {
-        printf("Create pthread error!\n");
-        exit(EXIT_FAILURE);
-    }
-
-    pthread_t recv_msg_thread;
-    if (pthread_create(&recv_msg_thread, NULL, reinterpret_cast<void* (*)(void*)>(recv_msg_handler), NULL) != 0) 
-    {
-        printf("Create pthread error!\n");
-        exit(EXIT_FAILURE);
-    }
-
-    close(sockfd);
-}
-
-/**
  * Draw tabs
  * @param style 
 */
@@ -1537,4 +1448,12 @@ void main_code(ImGuiStyle& style)
 void AddLog(const char *fmt, ...)
 {
     std::get<1>(vpprender[vpprender_id])->AddLog(fmt);
+
+    if (!vpprender.empty())
+    {
+        if (std::get<2>(vpprender[vpprender_id])->server)
+        {
+            send_to_all_clients(fmt);
+        }
+    }
 }

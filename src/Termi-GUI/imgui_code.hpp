@@ -12,7 +12,6 @@
 #include "imgui/imgui_impl_opengl3.h"
 #include "font.inl"
 
-#include "client.hpp"
 #include "server.hpp"
 #include "settings.hpp"
 #include "translation.hpp"
@@ -165,7 +164,6 @@ extern "C"
         bool alReadyFocusOnInputBar = false;
 
         bool server = false;
-        bool client = false;
     };
 
     /* Renderer class */
@@ -352,11 +350,6 @@ extern "C"
      * Entry point for server
     */
     void CreateServer();
-
-    /**
-     * Entry point for client
-    */
-    void CreateClient();
 
     /**
      * Draw tabs

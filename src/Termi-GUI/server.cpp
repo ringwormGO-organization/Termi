@@ -21,6 +21,26 @@ ClientList* newNode(int sockfd, char* ip)
     return np;
 }
 
+void polish_str(char *str)
+{
+    int len = strlen(str);
+    int tail = 0;
+
+    for (int i = 0; i < len; ++i) {
+        if (str[i] != '\t') {
+            str[tail++] = str[i];
+        }
+    }
+
+    // Check if the string ends with '\n', and if not, add it
+    if (tail == 0 || str[tail - 1] != '\n') {
+        str[tail++] = '\n';
+    }
+
+    // Null-terminate the result string
+    str[tail] = '\0';
+}
+
 char* trim_whitespace(char* str)
 {
     size_t len = 0;
@@ -63,14 +83,23 @@ char* trim_whitespace(char* str)
 
 /* ------------------------------------ */
 
-void send_to_all_clients(char tmp_buffer[]) 
+void send_to_all_clients(const char* fmt, ...) 
 {
     ClientList *tmp = root->link;
 
+    char buf[1024];
+    va_list args;
+    va_start(args, fmt);
+    vsnprintf(buf, sizeof(buf), fmt, args);
+    buf[sizeof(buf) - 1] = 0;
+    va_end(args);
+
     while (tmp != NULL) 
     {
-        printf("Send to sockfd %d: %s \n", tmp->data, trim_whitespace(tmp_buffer));
-        send(tmp->data, tmp_buffer, LENGTH_SEND, 0);
+        polish_str(buf);
+
+        printf("Send to sockfd %d: %s", tmp->data, buf);
+        send(tmp->data, buf, LENGTH_SEND, 0);
 
         tmp = tmp->link;
     }
@@ -96,8 +125,8 @@ void* client_handler(void* client_arg)
     else 
     {
         strncpy(np->name, nickname, LENGTH_NAME);
-        printf("%s (%s)(%d) joined the game!\n\n", np->name, np->ip, np->data);
-        sprintf(send_buffer, "%s (%s) joined the game!\n", np->name, np->ip);
+        printf("%s (%s)(%d) joined!\n\n", np->name, np->ip, np->data);
+        sprintf(send_buffer, "%s (%s)!\n", np->name, np->ip);
         send_to_all_clients(send_buffer);
     }
 
@@ -105,24 +134,37 @@ void* client_handler(void* client_arg)
     send_to_all_clients(send_buffer);
 
     // Conversation
-    while (1) {
-        if (leave_flag) {
+    while (1) 
+    {
+        if (leave_flag) 
+        {
             break;
         }
+
         int receive = recv(np->data, recv_buffer, LENGTH_MSG, 0);
-        if (receive > 0) {
-            if (strlen(recv_buffer) == 0) {
+        if (receive > 0) 
+        {
+            if (strlen(recv_buffer) == 0) 
+            {
                 continue;
             }
-            sprintf(send_buffer, "%s:%s from %s", np->name, recv_buffer, np->ip);
-        } else if (receive == 0 || strcmp(recv_buffer, "exit") == 0) {
-            printf("%s(%s)(%d) leave the chatroom.\n", np->name, np->ip, np->data);
-            sprintf(send_buffer, "%s(%s) leave the chatroom.", np->name, np->ip);
+
+            sprintf(send_buffer, "%s:%s from %s\n", np->name, recv_buffer, np->ip);
+        } 
+        
+        else if (receive == 0 || strcmp(recv_buffer, "exit") == 0) 
+        {
+            printf("%s(%s)(%d) left!\n", np->name, np->ip, np->data);
+            sprintf(send_buffer, "%s(%s) left!\n", np->name, np->ip);
             leave_flag = 1;
-        } else {
+        } 
+        
+        else 
+        {
             printf("Fatal Error: -1\n");
             leave_flag = 1;
         }
+
         send_to_all_clients(send_buffer);
     }
 

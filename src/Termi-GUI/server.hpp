@@ -8,6 +8,7 @@
 
 #pragma once
 
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -72,9 +73,9 @@ void catch_ctrl_c_and_exit(int sig);
 
 /**
  * Send number to all clients
- * @param tmp_buffer message to send to all clients
+ * @param fmt message to send to all clients
 */
-void send_to_all_clients(char tmp_buffer[]);
+void send_to_all_clients(const char* fmt, ...);
 
 /**
  * Handle clients
