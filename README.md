@@ -56,23 +56,23 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ### Other platforms
 - g++ complier
-  - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
 - build-essential
-  - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S base-devel``` if not already installed on GNU/Linux machine, Arch based.
 
 ### All platfoms
 - Git - for cloning repo
   - Check Git website for Windows instructions or do `winget install git`
-  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
 - CMake
-  - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
 - json-c library (non-vcpkg version)
   - Install it using vcpkg using on Windows (static x64)
-  - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
+  - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debian based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Arch based.
 
 - OpenGL & its dependencies
