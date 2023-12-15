@@ -56,23 +56,23 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ### Other platforms
 - g++ complier
-  - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
 - build-essential
-  - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S base-devel``` if not already installed on GNU/Linux machine, Arch based.
 
 ### All platfoms
 - Git - for cloning repo
   - Check Git website for Windows instructions or do `winget install git`
-  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
 - CMake
-  - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debain based.
+  - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debian based.
   - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
 - json-c library (non-vcpkg version)
   - Install it using vcpkg using on Windows (static x64)
-  - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debain based.
+  - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debian based.
   - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Arch based.
 
 - OpenGL & its dependencies
@@ -96,15 +96,17 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
           - `Profile`: Core;
       3. download generated `glad.zip`,
       4. extract `glad.zip`,
-      5. copy `/include/glad` folder to `/usr/include`,
+      5. copy `./include/glad` folder to `/usr/include`,
       6. install `glfw` package;
 
       - if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
 
   - ### BSD
-    - Steps are same as for (GNU/Linux), but:
-      - copy `GLFW` to `/usr/local/lib`,
-      - copy `gl.h` to `/usr/X11R6/lib`.
+    - Steps are same as for (GNU/Linux), but there is some notice:
+      - The glfw header and libraries are installed on /usr/local/include and /usr/local/lib (OpenBSD, other *BSD should be same)
+      - The GL/gl.h header is installed on /usr/X11R6/include (OpenBSD)
+      - I think the GL library is also installed on /usr/X11R6/lib
+    - The header include and library search path will be included on Termi-GUI's CMakeLists.txt
 
   *NOTE: There is option in `Settings.hpp` to use headers in this repository*
 
