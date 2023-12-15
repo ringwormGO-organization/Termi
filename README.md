@@ -170,7 +170,7 @@ Termi running `calc` and `base64` commands on GNU/Linux, Arch Linux
 
 *Word `terminal` might not be the best word to describe this project*
 
-*[GitLab mirror](https://gitlab.com/ringwormgo/Termi)*
+*[Codeberg mirror](https://codeberg.org/ringwormGO/Termi)*
 ____________________________________
 
 Thank you for choosing Termi.
