@@ -8,6 +8,8 @@
 
 #include "server.hpp"
 
+#ifdef _WIN32
+#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
 ClientList* root;
 
 ClientList* newNode(int sockfd, char* ip)
@@ -188,3 +190,4 @@ void* client_handler(void* client_arg)
     free(np);
     return NULL;
 }
+#endif

@@ -734,7 +734,8 @@ void Renderer::DrawMenu(ImGuiStyle& style)
         {
             if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                #if __linux
+                #ifdef _WIN32
+                #elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
                     if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
                     {
                         std::get<2>(vpprender[vpprender_id])->server = true;

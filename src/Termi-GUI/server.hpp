@@ -8,6 +8,8 @@
 
 #pragma once
 
+#ifdef _WIN32
+#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -82,3 +84,4 @@ void send_to_all_clients(const char* fmt, ...);
  * @param client_arg arguments in struct because we pass this function to `pthread_create`
 */
 void* client_handler(void* client_arg);
+#endif
