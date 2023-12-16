@@ -6,6 +6,8 @@ project(Termi-GUI)
 
 IF(WIN32)
     set(CMAKE_CXX_FLAGS "/EHsc /std:c++20")
+ELSEIF(BSD)
+    set(CMAKE_CXX_FLAGS "-I /usr/local/include -I /usr/X11R6/include -L /usr/local/lib -L /usr/X11R6/lib -v -std=c++20 -g")
 ELSE()
     set(CMAKE_CXX_FLAGS "-std=c++20 -g")
 ENDIF()
