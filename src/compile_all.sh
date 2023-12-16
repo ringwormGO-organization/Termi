@@ -5,21 +5,29 @@ if [ -z $1 ]; then
 else
     threads=$1
 fi
+
 echo "Number of threads: $threads"
+
 cd Termi-Commands
-cmake --build . --target clean
+if [ $2 = "clean" ]; then
+    cmake --build . --target clean
+fi
 cmake . && make -j $threads
 cp libTermi-Commands.so ../Termi-Main
 echo " "
 
 cd ../Termi-GUI
-cmake --build . --target clean
+if [ $2 = "clean" ]; then
+    cmake --build . --target clean
+fi
 cmake . && make -j $threads
 cp libTermi-GUI.so ../Termi-Main
 echo " "
 
 cd ../Termi-Main
-cmake --build . --target clean
+if [ $2 = "clean" ]; then
+    cmake --build . --target clean
+fi
 cmake . && make -j $threads
 
 echo " "

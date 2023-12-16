@@ -107,7 +107,6 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
       - The glfw header and libraries are installed on /usr/local/include and /usr/local/lib (OpenBSD, other *BSD should be same)
       - The GL/gl.h header is installed on /usr/X11R6/include (OpenBSD)
       - I think the GL library is also installed on /usr/X11R6/lib
-    - The header include and library search path will be included on Termi-GUI's CMakeLists.txt
 
   *NOTE: There is option in `Settings.hpp` to use headers in this repository*
 
@@ -130,6 +129,8 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ### Build & Run - Other platforms
 - Just run `compile_all.sh` (it won't compile test Rust command)
+  - first argument is number of threads
+  - second argument is do you want clean build
 1. Compile `Termi-Commands` project by running `cmake . && make`
 2. Compile `Termi-GUI` project by running `cmake . && make`
 3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` folder/directory.
