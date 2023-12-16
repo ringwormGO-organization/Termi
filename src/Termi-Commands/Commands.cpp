@@ -1365,7 +1365,7 @@ _VOID writefile(const std::vector<std::string>& vect)
 
 #if defined _WIN32 || defined _WIN64
     #define NEW_VOID auto __cdecl 
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \ 
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
     __NetBSD__ || __unix || __unix__
     #define NEW_VOID auto
 #else
