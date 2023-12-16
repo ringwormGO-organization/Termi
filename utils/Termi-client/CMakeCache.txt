@@ -216,15 +216,6 @@ CMAKE_TAPI:FILEPATH=CMAKE_TAPI-NOTFOUND
 CMAKE_VERBOSE_MAKEFILE:BOOL=FALSE
 
 //Value Computed by CMake
-Termi-Main_BINARY_DIR:STATIC=/home/vangu/Documents/Programming/ringwormGO/Termi/utils/Termi-client
-
-//Value Computed by CMake
-Termi-Main_IS_TOP_LEVEL:STATIC=ON
-
-//Value Computed by CMake
-Termi-Main_SOURCE_DIR:STATIC=/home/vangu/Documents/Programming/ringwormGO/Termi/utils/Termi-client
-
-//Value Computed by CMake
 Termi-client_BINARY_DIR:STATIC=/home/vangu/Documents/Programming/ringwormGO/Termi/utils/Termi-client
 
 //Value Computed by CMake
