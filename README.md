@@ -80,7 +80,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
     #### Generating files (optional)
     - Check [this](https://www.youtube.com/watch?v=XpBGwZNyUh0) video and copy new files where old ones are.
 
-    #### Using a files
+    #### Continuing with installation
     - Visual Studio 2022 solution should work without any additional configuration.
     - If it doesn't work, see following instructions down below:
       1. open properties of solution,
@@ -97,8 +97,8 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
       3. download generated `glad.zip`,
       4. extract `glad.zip`,
       5. copy `./include/glad` folder to `/usr/include`,
-      6. install `glfw` package;
-
+  #### Continuing with installation
+      1. install `glfw` package;
       - if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
 
   - ### BSD
