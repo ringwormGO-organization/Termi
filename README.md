@@ -97,9 +97,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
       3. download generated `glad.zip`,
       4. extract `glad.zip`,
       5. copy `./include/glad` folder to `/usr/include`,
-  #### Continuing with installation
+    #### Continuing with installation
       1. install `glfw` package;
-      - if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
+      2. if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
 
   - ### BSD
     - Steps are same as for (GNU/Linux), but there is some notice:
