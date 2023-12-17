@@ -7,14 +7,16 @@
 
 A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
-## About Termi
-- Termi is a powerful terminal written in C++.
-- It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
-- The goal of Termi is create independent terminal, i.e. a separate kind of terminal use "own" GUI renedering system.
-- Has own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
-- We accept contributors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
-- [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
-- And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
+## Introducing Termi
+Termi is a robust terminal application developed using C++. It's designed to be platform-independent and can operate on Windows, macOS, GNU/Linux, BSD, and any other platforms that support the C++ standard library, .dll, .so files, and GLFW.
+
+The primary objective of Termi is to establish an independent terminal that utilizes its own GUI rendering system. It supports commands written in C, C++, Rust, and potentially any language that can be compiled into a shared library.
+
+We welcome contributions! If you're interested in contributing, please create a **Pull Request**. Before you do, make sure to check out [our coding style guidelines](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests).
+
+For a list of commands and their explanations, visit [this page](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md).
+
+Lastly, we recommend reading the [code organization section](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) for information on our directory structure.
 
 ## Releases
 - [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
