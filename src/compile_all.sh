@@ -9,7 +9,7 @@ fi
 echo "Number of threads: $threads"
 
 cd Termi-Commands
-if [ $2 = "clean" ]; then
+if [ -n "$2" ] && [ "$2" = "clean" ]; then
     cmake --build . --target clean
 fi
 cmake . && make -j $threads
@@ -17,7 +17,7 @@ cp libTermi-Commands.so ../Termi-Main
 echo " "
 
 cd ../Termi-GUI
-if [ $2 = "clean" ]; then
+if [ -n "$2" ] && [ "$2" = "clean" ]; then
     cmake --build . --target clean
 fi
 cmake . && make -j $threads
@@ -25,7 +25,7 @@ cp libTermi-GUI.so ../Termi-Main
 echo " "
 
 cd ../Termi-Main
-if [ $2 = "clean" ]; then
+if [ -n "$2" ] && [ "$2" = "clean" ]; then
     cmake --build . --target clean
 fi
 cmake . && make -j $threads

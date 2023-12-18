@@ -58,7 +58,7 @@
 int width = 0;
 int height = 0;
 
-#ifdef _WIN32
+#if defined _WIN32 || defined _WIN64
 	static BOOL WINAPI end(DWORD dwCtrlType)
 	{
 		int key;
@@ -92,77 +92,7 @@ int height = 0;
 		// Return FALSE to pass this message to further handlers until default handler calls ExitProcess().
 		return FALSE;
 	}
-#elif _WIN64
-	static BOOL WINAPI end(DWORD dwCtrlType)
-	{
-		int key;
-
-		switch (dwCtrlType)
-		{
-		case CTRL_C_EVENT: // Ctrl+C
-			std::cout << "\nPress any key to continue...\n";
-			key = std::cin.get();
-			if (key != 10)
-			{
-				/* we need to do something here; input is broken */
-				exit(0);
-			}
-			else
-			{
-				exit(0);
-			}
-			break;
-		case CTRL_BREAK_EVENT: // Ctrl+Break
-			break;
-		case CTRL_CLOSE_EVENT: // Closing the console window
-			break;
-		case CTRL_LOGOFF_EVENT: // User logs off. Passed only to services!
-			break;
-		case CTRL_SHUTDOWN_EVENT: // System is shutting down. Passed only to services!
-			break;
-		}
-
-		// Return TRUE if handled this message, further handler functions won't be called.
-		// Return FALSE to pass this message to further handlers until default handler calls ExitProcess().
-		return FALSE;
-	}
-#elif __APPLE__ || __MACH__
-	struct sigaction sigIntHandler;
-
-	void end(int sig)
-	{
-		std::cout << "\nPress any key to continue...\n";
-		auto key = std::cin.get();
-		if (key != 10)
-		{
-			/* we need to do something here; input is broken */
-			exit(sig);
-		}
-
-		else
-		{
-			exit(sig);
-		}
-	}
-#elif __linux__
-	struct sigaction sigIntHandler;
-
-	void end(int sig)
-	{
-		std::cout << "\nPress any key to continue...\n";
-		auto key = std::cin.get();
-		if (key != 10)
-		{
-			/* we need to do something here; input is broken */
-			exit(sig);
-		}
-
-		else
-		{
-			exit(sig);
-		}
-	}
-#elif __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
 	struct sigaction sigIntHandler;
 
 	void end(int sig)
@@ -192,31 +122,13 @@ void tmain()
 	 * while render is always getting value
 	 */
 
-	Vars *vars = new Vars();
-	vars->language = "english";
-
 	Renderer *render = new Renderer();
 	bool iconReady = false;
 
-	#ifdef _WIN32
+	#if defined _WIN32 || defined _WIN64
 		/* Catch CTRL-C */
 		SetConsoleCtrlHandler(end, TRUE);
-    #elif _WIN64
-		/* Catch CTRL-C */
-		SetConsoleCtrlHandler(end, TRUE);
-    #elif __APPLE__ || __MACH__
-		/* Catch CTRL-C */
-		sigIntHandler.sa_handler = end;
-		sigemptyset(&sigIntHandler.sa_mask);
-		sigIntHandler.sa_flags = 0;
-		sigaction(SIGINT, &sigIntHandler, NULL);
-    #elif __linux__
-		/* Catch CTRL-C */
-		sigIntHandler.sa_handler = end;
-		sigemptyset(&sigIntHandler.sa_mask);
-		sigIntHandler.sa_flags = 0;
-		sigaction(SIGINT, &sigIntHandler, NULL);
-    #elif __FreeBSD__ || __OpenBSD__ || __NetBSD__
+    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
 		/* Catch CTRL-C */
 		sigIntHandler.sa_handler = end;
 		sigemptyset(&sigIntHandler.sa_mask);

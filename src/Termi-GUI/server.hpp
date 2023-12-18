@@ -3,13 +3,17 @@
  * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: MIT license
  * DESCRIPTION: Server header file
-
  */
 
 #pragma once
 
 #ifdef _WIN32
 #elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+
+#include <iostream>
+#include <string>
+#include <mutex>
+
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -27,6 +31,10 @@
 #define LENGTH_NAME 31
 #define LENGTH_MSG 101
 #define LENGTH_SEND 201
+
+/* Client input is copied here so it is visible from thread where console is drawn */
+extern std::string client_input;
+extern std::mutex client_input_mutex;
 
 /**
  * Struct containing client's information

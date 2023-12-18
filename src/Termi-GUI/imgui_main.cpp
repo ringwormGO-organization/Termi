@@ -434,9 +434,24 @@ void Console::Draw()
         ImGui::EndChild();
         ImGui::Separator();
 
+        /* Retrieve client's command */
+        bool execute_command = false;
         if (std::get<2>(vpprender[vpprender_id])->server)
         {
-            
+            std::unique_lock<std::mutex> lock(client_input_mutex);
+
+            if (client_input == "")
+            {
+                goto skip;
+            }
+
+            std::cout << "Output: " + client_input;
+            strncpy(InputBuf, client_input.c_str(), 256);
+            execute_command = true;
+            client_input = "";
+
+skip:
+            lock.unlock();
         }
 
         bool reclaim_focus = false;
@@ -450,7 +465,7 @@ void Console::Draw()
         getcwd(cwd, sizeof(cwd));
 
         ImGuiInputTextFlags input_text_flags = ImGuiInputTextFlags_EnterReturnsTrue | ImGuiInputTextFlags_CallbackCompletion | ImGuiInputTextFlags_CallbackHistory;
-        if (ImGui::InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
+        if (execute_command || ImGui::InputText(cwd, InputBuf, IM_ARRAYSIZE(InputBuf), input_text_flags, &TextEditCallbackStub, (void*)this))
         {
             s = InputBuf;
             Strtrim(s);
@@ -462,6 +477,8 @@ void Console::Draw()
 
             strcpy(s, "");
             reclaim_focus = true;
+
+            execute_command = false;
         }
 
         // Auto-focus on window apparition
@@ -723,6 +740,8 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData *data)
         }
         return 0;
     }
+
+    return 0;
 }
 
 /* Draw context menu */

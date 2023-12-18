@@ -3,7 +3,6 @@
  * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: MIT license
  * DESCRIPTION: Server file
-
  */
 
 #include "server.hpp"
@@ -11,6 +10,9 @@
 #ifdef _WIN32
 #elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
 ClientList* root;
+
+std::string client_input = "";
+std::mutex client_input_mutex;
 
 ClientList* newNode(int sockfd, char* ip)
 {
@@ -152,6 +154,14 @@ void* client_handler(void* client_arg)
             }
 
             sprintf(send_buffer, "%s:%s from %s\n", np->name, recv_buffer, np->ip);
+
+            /* Lock the mutex before accessing */
+            std::unique_lock<std::mutex> lock(client_input_mutex);
+
+            client_input = recv_buffer;
+
+            /* Unlock the mutex when done */
+            lock.unlock();
         } 
         
         else if (receive == 0 || strcmp(recv_buffer, "exit") == 0) 

@@ -96,17 +96,19 @@ void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
 
 # Add command / port application to Termi
 ## Core commands
-1. Add function name in `Export.h` in `Termi-Commands` Visual Studio project.
-2. Add C++ code in `Commands.cpp` in `Termi-Commands` Visual Studio project.
+1. Add function name in `Export.h` in `Termi-Commands` project.
+2. Add C++ code in `Commands.cpp` in `Termi-Commands` project.
 3. See example:
 ```cpp
 extern "C"
 {
-	void example(const std::vector<std::string>& vect); /* __declspec(dllexport) void __cdecl if Windows */
+	EXPORT example(const std::vector<std::string>& vect);
 }; /* Export.h */
 
 VOID example(const std::vector<std::string>& vect)
 {
+    /* AddLog is "printf" function of console */
+
     int number = 30;
     std::string str = "Number is: " + std::to_string(number) + "\n";
     AddLog(str);
@@ -119,19 +121,129 @@ VOID example(const std::vector<std::string>& vect)
 ## Port application
 ### Windows
 1. Create new Visual Studio DLL project.
-2. Copy all stuff to load DLL stuff (`AddLog` function mostly).
-3. Copy all `_declspec(dllexport)` stuff (see example for core commands).
-4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for information and warnings).
-5. Call DLL from Termi (actually type any random command and fill the little form in terminal where you run Termi)
+2. Copy all stuff to load DLL function (`AddLog` function mostly).
+```cpp
+    #pragma warning(disable: 4996)
+    #pragma comment(lib, "Advapi32.lib")
+    #pragma comment(lib, "Kernel32.lib")
+
+    typedef int(__cdecl* MYPROC)(const char*);
+
+    static void LoadDLL(const char* path, const char* function, const char* text, ...)
+    {
+        HINSTANCE hinstLib;
+        MYPROC ProcAdd;
+        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
+
+        // Get a handle to the DLL module.
+
+        hinstLib = LoadLibrary(LPCSTR(path));
+
+        // If the handle is valid, try to get the function address.
+
+        if (hinstLib != NULL)
+        {
+            ProcAdd = (MYPROC)GetProcAddress(hinstLib, function);
+
+            // If the function address is valid, call the function.
+
+            if (NULL != ProcAdd)
+            {
+                fRunTimeLinkSuccess = TRUE;
+                (ProcAdd)(text);
+            }
+            // Free the DLL module.
+
+            fFreeResult = FreeLibrary(hinstLib);
+        }
+
+        // If unable to call the DLL function, use an alternative.
+        if (!fRunTimeLinkSuccess)
+            printf("Error!\n");
+
+    }
+
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadDLL("Termi-GUI.dll", "AddLog", buf);
+    }
+```
+3. Mark function to be called from program as `_declspec(dllexport)` stuff inside `extern "C"` in .h file and as `void __cdecl` in .cpp file
+```cpp
+    extern "C"
+    {
+        __declspec(dllexport) void __cdecl program(const char* arguments);
+    }; /* .h file */
+
+    void __cdecl program(const char* arguments); /* .cpp file */
+```
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function.
+5. Compile and use Termi's `loadtp` command to test it!
 
 ### Other platforms
 1. Create new project with `CMakeLists.txt` file similar to `Termi-Commands` project
-2. Copy all stuff to load .so stuff (`AddLog` function mostly).
-3. Copy all `extern "C"` stuff (see example for core commands).
-4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for information and warnings).
-5. Call .so from Termi (actually type any random command and fill the little form in terminal where you run Termi)
+2. Copy all stuff to load .so functions (`AddLog` function mostly).
+```cpp
+    template <typename T>
+    void LoadSO(const char* function, T value)
+    {
+        void *handle;
+        void (*func)(T);
+        char *error;
 
-## For those who want know more
+        handle = dlopen ("libTermi-GUI.so", RTLD_LAZY);
+        if (!handle) {
+            fputs (dlerror(), stderr);
+            puts(" ");
+            exit(1);
+        }
+
+        func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
+        if ((error = dlerror()) != NULL)  {
+            fputs(error, stderr);
+            exit(1);
+        }
+
+        (*func)(value); /* ignore this argument */
+        dlclose(handle);
+    }
+
+    void AddLog(std::string fmt, ...)
+    {
+        // FIXME-OPT
+        char buf[1024];
+        va_list args;
+        va_start(args, fmt);
+        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
+        buf[sizeof(buf) - 1] = 0;
+        va_end(args);
+
+        LoadSO("AddLog", buf);
+    }
+```
+3. Put public function inside `extern "C"` in .h file.
+```cpp
+    extern "C"
+    {
+        void program(const char* arguments);
+    }; /* .h file */
+
+    void program(const char* arguments); /* .cpp file */
+```
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for information and warnings).
+5. Compile and use Termi's `loadtp` command to test it!
+
+*`loadtp` only accepts one `const char*` argument so do parsing inside your program!*
+
+## For those who want to know more
 ### Port application written in Rust
 1. Follow "C++ steps" to create new core command.
 2. Create new `LoadRust` function (just copy previous one, change name and path of .dll file).
