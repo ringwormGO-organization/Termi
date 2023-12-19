@@ -1017,7 +1017,7 @@ int Renderer::Settings(int id)
         std::string file_path = " ";
     #endif
     
-    std::string default_json = "{\"startup_command\": \"none\",\"width\" : 650,\"height\" : 650,\"font_name\" : \"default\",\"font_size\" : 16,\"glyph-range\" : \"default\",\"gui-model\" : 0}";
+    std::string default_json = "{\"startup_command\":\"none\",\"width\":650,\"height\":650,\"font_name\":\"default\",\"font_size\":16,\"glyph-range\":\"default\",\"gui-model\":0,\"port\":5555}";
 
     auto mode = std::ios::app | std::ios::in;
     std::string temp_str = "";
@@ -1063,6 +1063,9 @@ int Renderer::Settings(int id)
         case 6: /* gui model */
             return 0;
             break;
+        case 7: /* port */
+            return 5555;
+            break;
 
         default:
             std::get<1>(vpprender[vpprender_id])->AddLog("Invalid id %d!\n", id);
@@ -1073,7 +1076,8 @@ int Renderer::Settings(int id)
                 "2 - read height\n",
                 "3 - set variable font_name to the font name\n",
                 "4 - read font size\n",
-                "6 - read gui model type\n");
+                "6 - read gui model type\n",
+                "7 - get server port\n");
             return 1;
             break;
         }
@@ -1093,6 +1097,7 @@ int Renderer::Settings(int id)
     struct json_object *j_font_name;
     struct json_object *j_font_size;
     struct json_object* j_gui_model;
+    struct json_object* j_port;
 
     parsed_json = json_tokener_parse(buffer);
     json_object_object_get_ex(parsed_json, "startup_command", &j_startup_command);
@@ -1101,6 +1106,7 @@ int Renderer::Settings(int id)
     json_object_object_get_ex(parsed_json, "font_name", &j_font_name);
     json_object_object_get_ex(parsed_json, "font_size", &j_font_size);
     json_object_object_get_ex(parsed_json, "gui-model", &j_gui_model);
+    json_object_object_get_ex(parsed_json, "port", &j_port);
 
     switch (id)
     {
@@ -1127,17 +1133,21 @@ int Renderer::Settings(int id)
     case 6: /* gui model */
         return json_object_get_int(j_gui_model);
         break;
+    case 7: /* port */
+        return json_object_get_int(j_port);
+        break;
 
     default:
         std::get<1>(vpprender[vpprender_id])->AddLog("Invalid id %d!\n", id);
         std::get<1>(vpprender[vpprender_id])->AddLog(
-            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s",
+            "ID list: \n%s%s%s%s%s%s%s%s%s%s%s%s",
             "0 - read startup command\n"
             "1 - read width\n",
             "2 - read height\n",
             "3 - set variable font_name to the font name\n",
             "4 - read font size\n",
-            "6 - read gui model type\n");
+            "6 - read gui model type\n",
+            "7 - get server port\n");
         return 1;
         break;
     }
@@ -1298,7 +1308,7 @@ void CreateServer()
     memset(&client_info, 0, c_addrlen);
     server_info.sin_family = PF_INET;
     server_info.sin_addr.s_addr = INADDR_ANY;
-    server_info.sin_port = htons(5555);
+    server_info.sin_port = htons(std::get<0>(vpprender[vpprender_id])->Settings(7));
 
     /* Bind and listen */
     bind(server_sockfd, (struct sockaddr *)&server_info, s_addrlen);

@@ -14,6 +14,7 @@ ALL_BUILD.vcxproj.user
 Termi-GUI.sln
 Termi-GUI.vcxproj
 Termi-GUI.vcxproj.filters
+Termi-GUI.vcxproj.user
 ZERO_CHECK.vcxproj
 ZERO_CHECK.vcxproj.filters
 Termi-GUI.dll

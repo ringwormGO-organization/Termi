@@ -23,6 +23,10 @@ ClientList* newNode(int sockfd, char* ip)
     return np;
 }
 
+/**
+ * Remove`\t` and add `\n` if it's missing
+ * @param str string
+*/
 void polish_str(char *str)
 {
     int len = strlen(str);
@@ -43,6 +47,11 @@ void polish_str(char *str)
     str[tail] = '\0';
 }
 
+/**
+ * Trim whitespace from string
+ * @param original string
+ * @return char*
+*/
 char* trim_whitespace(char* str)
 {
     size_t len = 0;

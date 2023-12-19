@@ -14,6 +14,7 @@ ALL_BUILD.vcxproj.user
 Termi-Main.sln
 Termi-Main.vcxproj
 Termi-Main.vcxproj.filters
+Termi-Main.vcxproj.user
 ZERO_CHECK.vcxproj
 ZERO_CHECK.vcxproj.filters
 Termi-Main.dll

@@ -11,6 +11,7 @@ ALL_BUILD.vcxproj.user
 Termi-Commands.sln
 Termi-Commands.vcxproj
 Termi-Commands.vcxproj.filters
+Termi-Commands.vcxproj.user
 ZERO_CHECK.vcxproj
 ZERO_CHECK.vcxproj.filters
 Termi-Commands.dll
