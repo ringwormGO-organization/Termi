@@ -14,7 +14,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - Has own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
 - We accept contributors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
-- And plese read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
+- And please read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
 
 ## Releases
 - [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
@@ -23,9 +23,9 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ## Checklist
 ### Termi base part
-- [x] Windows version (moderately supported)
+- [x] Windows version (fully supported with delays)
 - [x] GNU/Linux version (fully supported)
-- [x] BSD version (moderately supported)
+- [x] BSD version (moderately supported) [(@hahahahacker2009)](https://github.com/hahahahacker2009)
 - [x] macOS version (unsupported)
 
 ### Termi advanced C++ part
@@ -37,7 +37,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - [x] Most of major commands
 - [x] Networking
   - [x] [Ping command](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
-  - [ ] Remote connection
+  - [x] Remote connection
 - [ ] Serial port
 - [x] Themes
 - [x] Translations
@@ -46,7 +46,7 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ### Windows - installer and launcher
 - [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
-- [x] Lanucher and updater - C#
+- [x] Launcher and updater - C#
 
 ## Build & Run
 ### Required software:
@@ -116,16 +116,14 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 **Commands which requires package installation have to be ran with administrator/root access!**
 
 ### Build & Run - Windows
-1. Open `Developer Powershell for Visual Studio 2022`
-2. Go to `Termi-Commands` folder/directory and run this command: `clear | cmake . | nmake`
-3. Go to `Termi-GUI` folder/directory, make `build` folder/directory, enter it and run `cmake ..`, but before that set a path where is `json-c` installed using `vcpkg` in `CMakeLists.txt` and copy `glfw3.lib` in `build` folder/directory from `Termi-GUI` folder/directory
-4. Go to `build` folder/directory, open Visual Studio solution and compile `ALL_BUILD` project
-5. Go to `Termi-Main` folder and run this command: `clear | mkdir build | cd build | cmake ..`
-6. Go to `build` folder/directory, open Visual Studio solution and compile `ALL_BUILD` project
-7. Now copy all DLLs to `Debug` folder/directory where is `Termi-Main` executable for Windows located
-8. Now run `Termi-Main` executable!
+1. Open terminal.
+2. Go to `Termi-Commands` folder/directory and run this command: `cmake .` command.
+3. Open Visual Studio solution and compile it.
+4. Repeat steps for other projects.
+5. Copy `Termi-Commands.dll` and `Termi-GUI.dll` from `Debug` or `Release` mode to `Debug` or `Release` folder where `Termi-Main` is located.
+6. Now run `Termi-Main` executable!
 
-**Don't forget to use `Release` mode!**
+**Don't forget to use `Release` mode! and zip it in `windows-release` so it's available to Termi-Launcher**
 
 ### Build & Run - Other platforms
 - Just run `compile_all.sh` (it won't compile test Rust command)

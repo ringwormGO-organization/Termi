@@ -7,12 +7,10 @@
 
 #include "server.hpp"
 
-#ifdef _WIN32
-#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
-ClientList* root;
-
 std::string client_input = "";
 std::mutex client_input_mutex;
+
+ClientList* root;
 
 ClientList* newNode(int sockfd, char* ip)
 {
@@ -89,6 +87,8 @@ char* trim_whitespace(char* str)
 
 void send_to_all_clients(const char* fmt, ...) 
 {
+#ifdef _WIN32
+#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
     ClientList *tmp = root->link;
 
     char buf[1024];
@@ -107,10 +107,13 @@ void send_to_all_clients(const char* fmt, ...)
 
         tmp = tmp->link;
     }
+#endif
 }
 
 void* client_handler(void* client_arg)
 {
+#ifdef _WIN32
+#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
     ClientArg *args = (ClientArg *)client_arg;
 
     int leave_flag = 0;
@@ -199,5 +202,7 @@ void* client_handler(void* client_arg)
 
     free(np);
     return NULL;
-}
 #endif
+    
+    return NULL;
+}

@@ -753,21 +753,18 @@ void Renderer::DrawMenu(ImGuiStyle& style)
         {
             if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                #ifdef _WIN32
-                #elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
-                    if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
-                    {
-                        std::get<2>(vpprender[vpprender_id])->server = true;
+                if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
+                {
+                    std::get<2>(vpprender[vpprender_id])->server = true;
 
-                        std::thread server(CreateServer);
-                        server.detach();
-                    }
+                    std::thread server(CreateServer);
+                    server.detach();
+                }
 
-                    else /* server is on */
-                    {
-                        std::get<2>(vpprender[vpprender_id])->server = false;
-                    }
-                #endif
+                else /* server is on */
+                {
+                    std::get<2>(vpprender[vpprender_id])->server = false;
+                }
             }
 
             ImGui::Separator();
@@ -1278,6 +1275,8 @@ bool Renderer::CheckFile(const char *name)
 */
 void CreateServer()
 {
+#ifdef _WIN32
+#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
     int server_sockfd = 0;
     int client_sockfd = 0;
 
@@ -1341,6 +1340,7 @@ void CreateServer()
     }
 
     return;
+#endif
 }
 
 /**

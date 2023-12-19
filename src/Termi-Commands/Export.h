@@ -13,7 +13,7 @@
 
 #if defined _WIN32 || defined _WIN64
 	#define EXPORT __declspec(dllexport) void __cdecl
-	#define EXPORT_AUTO __declspec(dllexport) void __cdecl
+	#define EXPORT_AUTO __declspec(dllexport) auto __cdecl
 #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
         __NetBSD__
 	#define EXPORT void

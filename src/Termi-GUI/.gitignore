@@ -6,3 +6,21 @@ Termi-GUI/*.o
 
 build/*
 build
+
+.vs/
+ALL_BUILD.vcxproj
+ALL_BUILD.vcxproj.filters
+ALL_BUILD.vcxproj.user
+Termi-GUI.sln
+Termi-GUI.vcxproj
+Termi-GUI.vcxproj.filters
+ZERO_CHECK.vcxproj
+ZERO_CHECK.vcxproj.filters
+Termi-GUI.dll
+Termi-GUI.dll.manifest
+Termi-GUI.exp
+Termi-GUI.lib
+Debug/
+Release/
+Termi-GUI.dir/
+x64/
