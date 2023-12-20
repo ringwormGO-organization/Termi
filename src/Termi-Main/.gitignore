@@ -1,4 +1,6 @@
-.so
+*.so
+*.core
+Termi-Main
 CMakeFiles/
 cmake_install.cmake
 CMakeCache.txt
