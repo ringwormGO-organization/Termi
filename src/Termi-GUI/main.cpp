@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi version with OpenGL and Dear ImGui rendering system
- * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
+ * LICENSE: MIT
  * DESCRIPTION: Main file
  */
 
