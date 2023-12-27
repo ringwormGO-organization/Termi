@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
- * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
+ * LICENSE: MIT
  * DESCRIPTION: Main file for Dear ImGui
  */
 
@@ -596,7 +596,7 @@ void Console::ExecCommand(std::string command_line, ...)
             AddLog("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic");
             AddLog("ABOUT > A powerful independent terminal made in C++ which use OpenGL and Dear ImGui. If you have issue check our GitHub repo and report issue.");
             AddLog("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-            AddLog("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
+            AddLog("LICENSE > MIT");
             AddLog("REPO > https://github.com/ringwormGO-organization/Termi");
 
             AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
@@ -987,7 +987,7 @@ void Renderer::TermiDialog(bool *p_open)
     ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic");
     ImGui::Text("ABOUT > A powerful terminal made in C++ which use OpenGL and ImGui.\nIf you have issue check our GitHub repo and report issue.");
     ImGui::Text("If you know how to fix fell free to contribute it through pull requests on GitHub.");
-    ImGui::Text("LICENSE > ringwormGO General License 1.0 | (RGL) 2022");
+    ImGui::Text("LICENSE > MIT");
     ImGui::Text("REPO > https://github.com/ringwormGO-organization/Termi");
 
     ImGui::End();

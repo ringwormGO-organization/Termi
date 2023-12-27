@@ -1,3 +1,10 @@
+/**
+ * @author Andrej Bartulin
+ * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
+ * LICENSE: MIT
+ * DESCRIPTION: Main file for implementing core commands code
+ */
+
 #include <iostream>
 
 #if defined _WIN32 || defined _WIN64

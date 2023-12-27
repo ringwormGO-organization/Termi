@@ -1,7 +1,7 @@
 /**
  * @author Andrej Bartulin
  * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
- * LICENSE: ringwormGO General License 1.0 | (RGL) 2022
+ * LICENSE: MIT
  * DESCRIPTION: Export stuff
 */
 
