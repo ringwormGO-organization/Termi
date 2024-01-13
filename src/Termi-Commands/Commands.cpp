@@ -506,7 +506,7 @@ _VOID echo(const std::vector<std::string>& vect)
 
 _VOID find_command(const std::vector<std::string>& vect)
 {        
-    #if defined __APPLE__ || defined__MACH__ || defined __linux__ || \
+    #if defined __APPLE__ || defined __MACH__ || defined __linux__ || \
         defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         if (vect.size() < 5)
         {
