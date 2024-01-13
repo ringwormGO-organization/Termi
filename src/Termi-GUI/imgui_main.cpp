@@ -264,8 +264,8 @@ void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string fun
         {
             printf("Failed to run function from executable!\n");
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         void *handle;
         void (*func)(const std::vector<std::string> &);
         char *error;
@@ -323,8 +323,8 @@ int Console::LoadThirdParty(const char *path, const char *function, const char *
         {
             printf("Failed to run function from executable!\n\n");
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         void *handle;
         void (*func)(const char *);
         char *error;
@@ -1030,8 +1030,8 @@ int Renderer::Settings(int id)
     #if defined _WIN32 || defined _WIN64
         std::string folder_path = "settings/";
         std::string file_path = folder_path + "settings.json";
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         char user[64];
         getlogin_r(user, 64);
 
@@ -1184,8 +1184,8 @@ void Renderer::SetFont(ImGuiIO &io)
     #if defined _WIN32 || defined _WIN64
         std::string folder_path = "settings/";
         std::string file_path = folder_path + "settings.json";
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         char user[64];
         getlogin_r(user, 64);
 
@@ -1309,8 +1309,8 @@ bool Renderer::CheckFile(const char *name)
 */
 void CreateServer()
 {
-#ifdef _WIN32
-#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
+    defined __NetBSD__
     int server_sockfd = 0;
     int client_sockfd = 0;
 

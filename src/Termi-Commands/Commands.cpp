@@ -35,8 +35,8 @@
 
     #define _VOID void __cdecl
 
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-    __NetBSD__
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     #include <sys/types.h>
     #include <sys/stat.h>
     #include <sys/stat.h>
@@ -184,8 +184,8 @@ using namespace std;
     {
         return GetTickCount64() / 3600000;
     }
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-    __NetBSD__
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     template <typename T>
     void LoadSO(const char* function, T value)
     {
@@ -506,8 +506,8 @@ _VOID echo(const std::vector<std::string>& vect)
 
 _VOID find_command(const std::vector<std::string>& vect)
 {        
-    #if __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #if defined __APPLE__ || defined__MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         if (vect.size() < 5)
         {
             AddLog("Not enough arguments!");
@@ -720,8 +720,8 @@ _VOID list_dir(const std::vector<std::string>& vect)
             AddLog("Fatal error with directory!\n");
             Status(2);
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         if (vect[1] != "")
         {
             chdir(vect[1].c_str());
@@ -785,8 +785,8 @@ _VOID new_dir(const std::vector<std::string>& vect)
             AddLog("Directory '" + vect[1] + "' created!\n");
             Status(0);
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         if (mkdir(vect[1].c_str(), 0777) == -1)
         {
             AddLog("Error while creating directory!\n");
@@ -822,28 +822,28 @@ _VOID sysfetch(const std::vector<std::string>& vect)
 
         strcpy_s(new_username, UNLEN, username);
         strcpy_s(new_computer, UNLEN, computer);
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         gethostname(info.computer, 256);
         getlogin_r(info.user, 64);
     #endif
 
     /* OS */
-    #ifdef _WIN32
+    #if defined _WIN32
         /* info.OS = "Windows32"; */
-    #elif _WIN64
+    #elif defined _WIN64
         /* info.OS = "Windows64"; */
-    #elif __APPLE__ || __MACH__
+    #elif defined __APPLE__ || defined __MACH__
         /* info.OS = "Mac OSX"; */
-    #elif __linux__
+    #elif defined __linux__
         info.OS = "(GNU/)Linux";
-    #elif __FreeBSD__ 
+    #elif defined __FreeBSD__
         /* info.OS = "FreeBSD"; */
-    #elif __OpenBSD__
+    #elif defined __OpenBSD__
         /* info.OS = "OpenBSD" */
-    #elif __NetBSD__
+    #elif defined __NetBSD__
         /* info.OS = "NetBSD" */
-    #elif __unix || __unix__
+    #elif defined __unix || defined __unix__
         /* info.OS = "Unix"; */
     #else
         /* info.OS = "Other"; */
@@ -864,7 +864,7 @@ _VOID sysfetch(const std::vector<std::string>& vect)
         MEMORYSTATUSEX statex;
         statex.dwLength = sizeof(statex);
         GlobalMemoryStatusEx(&statex);
-    #elif __linux__
+    #elif defined __linux__
         string total_line = parse("MemTotal", "/proc/meminfo");
         vector<string> total_line_vector = explode(total_line, ' ');
         int total_size = stoi(total_line_vector[1]);
@@ -922,8 +922,8 @@ _VOID sysfetch(const std::vector<std::string>& vect)
         {
             AddLog("\t Uptime: " + std::to_string(UptimeH()) + " hours\n");
         }
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         AddLog("\n");
         AddLog("\t " + string(info.user) + " @ " + string(info.computer) + "\n");
         AddLog("--------------------------------------------\n");
@@ -1327,8 +1327,8 @@ _VOID whoami(const std::vector<std::string>& vect)
 
         strcpy_s(new_username, UNLEN, username);
         AddLog(string(new_username) + "\n");
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-        __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         char user[64];
         getlogin_r(user, 64);
 
@@ -1365,8 +1365,8 @@ _VOID writefile(const std::vector<std::string>& vect)
 
 #if defined _WIN32 || defined _WIN64
     #define NEW_VOID auto __cdecl 
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-    __NetBSD__ || __unix || __unix__
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     #define NEW_VOID auto
 #else
     #define NEW_VOID auto

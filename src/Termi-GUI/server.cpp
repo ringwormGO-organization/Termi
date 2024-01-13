@@ -118,8 +118,8 @@ char* trim_whitespace(char* str)
 
 void send_to_all_clients(const char* fmt, ...) 
 {
-#ifdef _WIN32
-#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
+    defined __NetBSD__
     ClientList *tmp = root->link;
 
     char buf[1024];
@@ -143,8 +143,8 @@ void send_to_all_clients(const char* fmt, ...)
 
 void* client_handler(void* client_arg)
 {
-#ifdef _WIN32
-#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
+    defined __NetBSD__
     ClientArg *args = (ClientArg *)client_arg;
 
     int leave_flag = 0;

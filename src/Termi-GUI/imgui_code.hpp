@@ -37,8 +37,8 @@
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
     #define _API __declspec(dllexport)
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || \
-    __NetBSD__
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     #include <sys/stat.h>
     #include <unistd.h>
     #include <limits.h>

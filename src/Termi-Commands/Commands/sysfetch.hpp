@@ -7,8 +7,8 @@
 
 #pragma once
 
-#ifdef _WIN32
-#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
+    defined __NetBSD__
     #include <iostream>
     #include <string>
     #include <regex>

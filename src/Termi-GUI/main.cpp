@@ -17,15 +17,15 @@
 #include <string_view>
 #include <thread>
 
-#ifdef _WIN32
+#if defined _WIN32
 	#include <Windows.h>
-#elif _WIN64
+#elif defined _WIN64
     #include <Windows.h>
-#elif __APPLE__ || __MACH__
+#elif defined __APPLE__ || defined __MACH__
 	#include <signal.h>
-#elif __linux__
+#elif defined __linux__
 	#include <signal.h>
-#elif __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#elif defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 	#include <signal.h>
 #endif
 
@@ -92,7 +92,8 @@ int height = 0;
 		// Return FALSE to pass this message to further handlers until default handler calls ExitProcess().
 		return FALSE;
 	}
-#elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 	struct sigaction sigIntHandler;
 
 	void end(int sig)
@@ -128,7 +129,8 @@ void tmain()
 	#if defined _WIN32 || defined _WIN64
 		/* Catch CTRL-C */
 		SetConsoleCtrlHandler(end, TRUE);
-    #elif __APPLE__ || __MACH__ || __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 		/* Catch CTRL-C */
 		sigIntHandler.sa_handler = end;
 		sigemptyset(&sigIntHandler.sa_mask);
