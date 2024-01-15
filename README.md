@@ -5,16 +5,16 @@
 
 **[Latest stable release (v3.1.1)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.1)**
 
-A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
+A Powerful terminal emulator with an optional shell written in C++ with OpenGL and Dear ImGui with own commands
 
 ## About Termi
-- Termi is a powerful terminal written in C++.
+- Termi is a powerful terminal emulator with a shell written in C++.
 - It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
-- The goal of Termi is create independent terminal, i.e. a separate kind of terminal use "own" GUI renedering system.
-- Has own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
+- The goal of Termi is to create independent terminal emulator, i.e. a separate kind of terminal emulator use "own" GUI renedering system.
+- Has its own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
 - We accept contributors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
-- And please read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talk about directory organization.
+- And please read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talks about directory organization.
 
 ## Releases
 - [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
@@ -57,25 +57,27 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 - vcpkg
 
 ### Other platforms
-- g++ complier
-  - Install with ```apt-get install gcc g++``` if not already installed on GNU/Linux machine, Debian based.
-  - Install with ```pacman -S gcc g++``` if not already installed on GNU/Linux machine, Arch based.
-- build-essential
-  - Install with ```apt-get install build-essential``` if not already installed on GNU/Linux machine, Debian based.
-  - Install with ```pacman -S base-devel``` if not already installed on GNU/Linux machine, Arch based.
+- c++ complier: GCC and Clang are both supported (they are compatible)
+- c & c++ headers: you should have them by default. If not, you can try
+  installing what's called base-devel or build-essentials or build-base.
+  Strictly speaking, they are a collection of tools required to build the
+  whose Linux distribution, including kernel.
+  Linux packaging often split package into binary components and header, the
+  header usually contain the postfix -dev or -devel
+On BSD, you can get all of them with the "compiler" sets.
 
 ### All platfoms
-- Git - for cloning repo
+- (Optional) Git - for cloning repo
   - Check Git website for Windows instructions or do `winget install git`
-  - Install with ```apt-get install git``` if not already installed on GNU/Linux machine, Debian based.
-  - Install with ```pacman -S git``` if not already installed on GNU/Linux machine, Arch based.
+  - Use your package manager or [get the software from the official website](git-scm.com/download).
+
 - CMake
-  - Install with ```apt-get install cmake``` if not already installed on GNU/Linux machine, Debian based.
-  - Install with ```pacman -S cmake``` if not already installed on GNU/Linux machine, Arch based.
-- json-c library (non-vcpkg version)
+  - Visual Studio have option for installing cmake
+  - Use your package manager or [get the software at their official website](cmake.org/download/).
+
+- json-c library header (non-vcpkg version)
   - Install it using vcpkg using on Windows (static x64)
-  - Install with `apt-get install libjson-c-dev` if not already installed on GNU/Linux machine, Debian based.
-  - Install with `pacman -S json-c` if not already installed on GNU/Linux machine, Arch based.
+  - Use your package manager, or [download it](github.com/json-c/json-c)
 
 - OpenGL & its dependencies
   - ### Windows
@@ -98,17 +100,21 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
           - `Profile`: Core;
       3. download generated `glad.zip`,
       4. extract `glad.zip`,
-      5. copy `./include/glad` folder to `/usr/include`,
+      5. copy `./include/glad` folder to `/usr/include` (Linux), or `/usr/local/include`
+         (or even /usr/pkg/include), (for BSD and maybe macOS).
 
     #### Continuing with installation
-      1. install `glfw` package;
+      1. install `glfw` package: both the shared object and the header;
+         You can use your package manager.
       2. if you get in trouble, check [this](https://www.youtube.com/watch?v=CIbJ5Iw0yAs) video.
-
-  - ### BSD
-    - Steps are same as for (GNU/Linux), but there is some notice:
-      - The glfw header and libraries are installed on /usr/local/include and /usr/local/lib (OpenBSD, other *BSD should be same)
-      - The GL/gl.h header is installed on /usr/X11R6/include (OpenBSD)
-      - I think the GL library is also installed on /usr/X11R6/lib
+      - (Developer notes) Linux (package managers) do not use the /usr/local
+        hierarchy, while BSD do, for "third-party software".
+        NetBSD use the /usr/pkg hierarchy instead of /usr/local;
+        OpenBSD and NetBSD have X by default, so they use /usr/X11R6 and
+        /usr/X11R7 hierarchy to store X file, whereas on FreeBSD X is
+        third-party software so it is installed on /usr/local .
+        The compilation flags for each system is all added, no need to worry
+        here.
 
   *NOTE: There is option in `Settings.hpp` to use headers in this repository*
 
@@ -129,12 +135,10 @@ A Powerful terminal made in C++ with OpenGL and Dear ImGui with own commands
 
 ### Build & Run - Other platforms
 - Just run `compile_all.sh` (it won't compile test Rust command)
-  - first argument is number of threads
-  - second argument is do you want clean build
-1. Compile `Termi-Commands` project by running `cmake . && make`
-2. Compile `Termi-GUI` project by running `cmake . && make`
-3. Copy `libTermi-GUI.so` and `libTermi-Commands.so` files into `Termi-Main` folder/directory.
-4. Compile `Termi-Main` project by running ```cmake . && make && ./Termi-OpenGL```.
+  - first argument is number of threads, by default, we use 2 threads
+    for a faster build experience.
+  - second argument is do you want clean build, if you do, specify clean
+  - example: `./compile_all.sh 4 clean`
 
 ### For those who want know more
 1. You can compile `rtest` Rust project by `cargo build` (and then copy .dll or .so file in folder/directory where are other .dll or .so files) if you want to have `yes` command mainly written in Rust 

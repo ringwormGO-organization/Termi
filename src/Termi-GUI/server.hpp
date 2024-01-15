@@ -37,8 +37,8 @@
 extern std::string client_input;
 extern std::mutex client_input_mutex;
 
-#ifdef _WIN32
-#elif __linux__ || __FreeBSD__ || __OpenBSD__ || __NetBSD__
+#if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
+    defined __NetBSD__
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
