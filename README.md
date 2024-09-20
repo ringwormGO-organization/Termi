@@ -1,11 +1,5 @@
 # Termi
-**If you want use non-OpenGL version, manually install files from commits history!**
-
-**Syncing Windows version may not be regular!**
-
-**[Latest stable release (v3.1.1)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.1)**
-
-A Powerful terminal emulator with an optional shell written in C++ with OpenGL and Dear ImGui with own commands
+A powerful terminal emulator with an optional custom shell written in C++ with OpenGL and Dear ImGui
 
 ## About Termi
 - Termi is a powerful terminal emulator with a shell written in C++.
@@ -57,8 +51,8 @@ A Powerful terminal emulator with an optional shell written in C++ with OpenGL a
 - vcpkg
 
 ### Other platforms
-- c++ complier: GCC and Clang are both supported (they are compatible)
-- c & c++ headers: you should have them by default. If not, you can try
+- C++ complier: GCC and Clang are both supported (they are compatible)
+- C & C++ headers: you should have them by default. If not, you can try
   installing what's called base-devel or build-essentials or build-base.
   Strictly speaking, they are a collection of tools required to build the
   whose Linux distribution, including kernel.
@@ -115,8 +109,6 @@ On BSD, you can get all of them with the "compiler" sets.
         third-party software so it is installed on /usr/local .
         The compilation flags for each system is all added, no need to worry
         here.
-
-  *NOTE: There is option in `Settings.hpp` to use headers in this repository*
 
 - Rust - required for building Rust commands (optional)
   - Check Rust's website for download instructions

@@ -37,19 +37,13 @@
 #include "settings.hpp"
 
 /* Glad include */
-#ifdef USE_PREINSTALLED_HEADERS
-	#include "includes/glad.h"
-#else
-	#include <glad/glad.h>
-#endif
+#include <glad/glad.h>
 
 /* Termi's includes except Settings.hpp */
 #include "imgui_code.hpp"
 
 /* GLFW 3 include */
-#ifdef _WIN32
-	#include "includes/GLFW/glfw3.h"
-#elif _WIN64
+#if defined _WIN32 || defined _WIN64
 	#include "includes/GLFW/glfw3.h"
 #else
 	#include <GLFW/glfw3.h>
