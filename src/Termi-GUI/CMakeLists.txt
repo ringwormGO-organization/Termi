@@ -19,7 +19,7 @@ ENDIF()
 file(GLOB SRC CONFIGURE_DEPENDS "*.hpp" "*.cpp" "imgui/*.h" "imgui/*.cpp")
 
 IF(WIN32)
-    set(json-c_DIR "C:\\src\\vcpkg\\installed\\x64-windows-static\\share\\json-c")
+    set(json-c_DIR "C:\\vcpkg\\installed\\x64-windows-static\\share\\json-c")
 
     find_package(json-c CONFIG REQUIRED)
     

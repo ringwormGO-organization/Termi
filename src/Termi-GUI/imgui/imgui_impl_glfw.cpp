@@ -93,11 +93,10 @@
 #pragma clang diagnostic ignored "-Wsign-conversion"    // warning: implicit conversion changes signedness
 #endif
 
-// GLFW
 #if defined _WIN32 || defined _WIN64
-	#include "includes/GLFW/glfw3.h"
+    #include "../Libraries/include/GLFW/glfw3.h"
 #else
-	#include <GLFW/glfw3.h>
+    #include <GLFW/glfw3.h>
 #endif
 
 #ifdef _WIN32
@@ -105,7 +104,7 @@
 #ifndef GLFW_EXPOSE_NATIVE_WIN32
 #define GLFW_EXPOSE_NATIVE_WIN32
 #endif
-#include <GLFW/glfw3native.h>   // for glfwGetWin32Window()
+#include "../Libraries/include/GLFW/glfw3native.h"   // for glfwGetWin32Window()
 #endif
 #ifdef __APPLE__
 #ifndef GLFW_EXPOSE_NATIVE_COCOA

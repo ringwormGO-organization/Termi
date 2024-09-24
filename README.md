@@ -19,7 +19,7 @@ A powerful terminal emulator with an optional custom shell written in C++ with O
 
 ## Checklist
 ### Termi base part
-- [x] Windows version (fully supported with delays)
+- [x] Windows version (fully supported)
 - [x] GNU/Linux version (fully supported)
 - [x] BSD version (moderately supported) [(@hahahahacker2009)](https://github.com/hahahahacker2009)
 - [x] macOS version (unsupported)
@@ -70,25 +70,42 @@ On BSD, you can get all of them with the "compiler" sets.
   - Use your package manager or [get the software at their official website](cmake.org/download/).
 
 - json-c library header (non-vcpkg version)
-  - Install it using vcpkg using on Windows (static x64)
+  - Install it using vcpkg using on Windows (static x64) (`vcpkg install json-c:x64-windows-static`)
   - Use your package manager, or [download it](github.com/json-c/json-c)
 
 - OpenGL & its dependencies
   - ### Windows
-    #### Generating files (optional)
-    - Check [this](https://www.youtube.com/watch?v=XpBGwZNyUh0) video and copy new files where old ones are.
+    #### Generating files
+    1. Download [GLFW](https://www.glfw.org/),
+    2. go to https://glad.dav1d.de/,
+    3. generate glad with following properties:
+          - `gl`: Version 3.3,
+          - `Profile`: Core;
+    4. download generated `glad.zip`,
+    5. extract zip archives,
+    6. open `cmake-gui` program and set following parameters:
+          - `Where is the source code`: /path-to-extracted-glfw-folder,
+          - `Where to build binaries`: /path-to-extracted-glfw-folder/build,
+          - click `Configure`,
+          - select `GLFW_BUILD_DOCS`, `GLFW_BUILD_EXAMPLES`, `GLFW_BUILD_TESTS`, `GLFW_INSTALL` and `GLFW_MSVC_RUNTIME_LIBRARY_DLL`,
+          - click `Generate`,
+          - enter `/path-to-extracted-glfw-folder/build`, open a solution in Visual Studio and build the solution;
+    7. in `Termi-GUI` folder create `Libraries` folder with `include` and `lib` subfolders,
+    8. copy `glfw3.lib` found in `/path-to-extracted-glfw-folder/build/src/Debug` to `Termi-GUI/Libraries/lib`,
+    9. copy `GLFW` folder found in `/path-to-extracted-glfw-folder/include` to `Termi-GUI/Libraries/include`,
+    10. copy `glad` and `KHR` folders found in `/path-to-extracted-glad-folder/include` to `Termi-GUI/Libraries/include`;
+    11. check [this](https://www.youtube.com/watch?v=XpBGwZNyUh0) video if you are stuck.
 
     #### Continuing with installation
-    - Visual Studio 2022 solution should work without any additional configuration.
-    - If it doesn't work, see following instructions down below:
-      1. open properties of solution,
+    - Configure `Termi-GUI` solution:
+      1. open properties of `Termi-GUI` **project**,
       2. go to `VC++ Directories`,
-      3. set path of `Include Directories` to `includes` folder,
-      4. set path of `Library Directories` to `Termi-GUI` folder where `glfw3.lib` is located;
+      3. set path of `Include Directories` to `Libraries/includes` folder,
+      4. set path of `Library Directories` to `Termi-GUI` `Libraries/lib`;
       5. if you get in trouble, check [this](https://www.youtube.com/watch?v=XpBGwZNyUh0) video.
-  - ### macOS & (GNU/)Linux
-    #### Generating files (optional)
-      1. go to https://glad.dav1d.de/,
+  - ### macOS, (GNU/)Linux & BSD
+    #### Generating files
+      1. Go to https://glad.dav1d.de/,
       2. generate glad with following properties:
           - `gl`: Version 3.3,
           - `Profile`: Core;
@@ -117,13 +134,13 @@ On BSD, you can get all of them with the "compiler" sets.
 
 ### Build & Run - Windows
 1. Open terminal.
-2. Go to `Termi-Commands` folder/directory and run this command: `cmake .` command.
+2. Go to `Termi-Commands` folder/directory, create `build` folder and `cmake ..` from newly created folder.
 3. Open Visual Studio solution and compile it.
 4. Repeat steps for other projects.
-5. Copy `Termi-Commands.dll` and `Termi-GUI.dll` from `Debug` or `Release` mode to `Debug` or `Release` folder where `Termi-Main` is located.
+5. Copy `Termi-Commands.dll` and `Termi-GUI.dll` from `Debug` or `Release` folder to `Termi-Main`'s `Debug` or `Release` folder.
 6. Now run `Termi-Main` executable!
 
-**Don't forget to use `Release` mode! and zip it in `windows-release` so it's available to Termi-Launcher**
+**(Developer notes) Don't forget to use `Release` mode, zip it in `windows-release` and update version file so it's available to Termi-Launcher!**
 
 ### Build & Run - Other platforms
 - Just run `compile_all.sh` (it won't compile test Rust command)

@@ -37,14 +37,18 @@
 #include "settings.hpp"
 
 /* Glad include */
-#include <glad/glad.h>
+#if defined _WIN32 || defined _WIN64
+	#include "Libraries/include/glad/glad.h"
+#else
+	#include <glad/glad.h>
+#endif
 
 /* Termi's includes except Settings.hpp */
 #include "imgui_code.hpp"
 
 /* GLFW 3 include */
 #if defined _WIN32 || defined _WIN64
-	#include "includes/GLFW/glfw3.h"
+	#include "Libraries/include/GLFW/glfw3.h"
 #else
 	#include <GLFW/glfw3.h>
 #endif

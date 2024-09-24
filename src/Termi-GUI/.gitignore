@@ -26,3 +26,6 @@ Debug/
 Release/
 Termi-GUI.dir/
 x64/
+
+Libraries/*
+Libraries/
