@@ -107,13 +107,7 @@
 
 int main()
 {
-    try {
-        auto func = LoadDynamicLibrary<int(*)(int)>(LIB_NAME, "tmain");
-        func(12);
-    } catch (const std::exception& e) {
-        std::cerr << e.what() << std::endl;
-        return 1;
-    }
+    LoadDynamicLibrary(LIB_NAME, "tmain");
 
     return 0;
 }
