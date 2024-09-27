@@ -9,9 +9,11 @@
 
 #if defined _WIN32 || defined _WIN64
     #include <Windows.h>
+    #define LIB_NAME "Termi-GUI.dll"
 #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
     defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     #include <dlfcn.h>
+    #define LIB_NAME "libTermi-GUI.so"
 #endif
 
 /* -------------------------- */
@@ -105,12 +107,13 @@
 
 int main()
 {
-    #if defined _WIN32 || defined _WIN64
-        LoadDynamicLibrary("Termi-GUI.dll", "tmain");
-    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
-        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
-        LoadDynamicLibrary("libTermi-GUI.so", "tmain");
-    #endif
+    try {
+        auto func = LoadDynamicLibrary<int(*)(int)>(LIB_NAME, "tmain");
+        func(12);
+    } catch (const std::exception& e) {
+        std::cerr << e.what() << std::endl;
+        return 1;
+    }
 
     return 0;
 }
