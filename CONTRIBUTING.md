@@ -2,20 +2,19 @@
 Just drop a Pull Request :)
 
 # Pull Request style
-1. Use LF. Set up your Git settings with this: `git config --global core.autocrlf false` and check if it is OK by `git config --global core.autocrlf`. It need to return `false` or nothing.
-2. Use CRLF for Windows code, LF for (GNU/)Linux code.
-3. Use following style **WITH LOGIC**, check labels:
-4. Use spaces, size 4.
+1. Use CRLF for Windows code, LF for (GNU/)Linux code (`git config --global core.autocrlf).
+2. Use following style **WITH LOGIC**, check labels:
+3. Use spaces, size 4.
 
-*Please run `zip_file.ps1` after when you sure your code will run on Windows!*
+*Please run `zip_file.ps1` after you verified that code can run on Windows!*
 
 ```
 [LABEL NAME] Name of Pull Request
 ```
 # Directory organization (OpenGL)
-1. `Termi-Commands` folder/directory - code for commands
-1. `Termi-GUI` folder/directory - code for GUI
-1. `Termi-Main` folder/directory - code for calling GUI
+1. `Termi-Commands` folder/directory - core commands
+1. `Termi-GUI` folder/directory - GUI
+1. `Termi-Main` folder/directory - call GUI
 
 # Add language (not programming language) to Termi
 1. Add new `std::vector` to `Translation.hpp` in `Translation` namespace.
@@ -619,5 +618,5 @@ Wrong:
 ### Other points
 - Use `#pragma once` instead of guard defines in headers
 
-### Resources used for this coding style:
+### Coding style derived from:
 * https://reactos.org/wiki/Coding_Style
