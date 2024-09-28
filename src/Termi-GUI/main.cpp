@@ -17,24 +17,16 @@
 #include <string_view>
 #include <thread>
 
-#if defined _WIN32
+#if defined _WIN32 || defined _WIN64
 	#include <Windows.h>
-#elif defined _WIN64
-    #include <Windows.h>
-#elif defined __APPLE__ || defined __MACH__
-	#include <signal.h>
-#elif defined __linux__
-	#include <signal.h>
-#elif defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 	#include <signal.h>
 #endif
 
 /* stb_image include */
 #define STB_IMAGE_IMPLEMENTATION
 #include "stb_image.h"
-
-/* We need this include to be right here */
-#include "settings.hpp"
 
 /* Glad include */
 #if defined _WIN32 || defined _WIN64
@@ -43,8 +35,9 @@
 	#include <glad/glad.h>
 #endif
 
-/* Termi's includes except Settings.hpp */
+/* Termi's includes */
 #include "imgui_code.hpp"
+#include "settings.hpp"
 
 /* GLFW 3 include */
 #if defined _WIN32 || defined _WIN64
@@ -111,6 +104,83 @@ int height = 0;
 	}
 #endif
 
+void SetFont(Settings& settings, ImGuiIO& io)
+{
+	std::string font_name = settings.GetFontName();
+	std::string glyph_range_str = settings.GetGlyphRange();
+
+	int font_size = settings.GetFontSize();
+
+	if (glyph_range_str == "korean")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesKorean());
+	}
+
+	else if (glyph_range_str == "chinese_full")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesChineseFull());
+	}
+
+	else if (glyph_range_str == "chinese_simplified_common")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesChineseSimplifiedCommon());
+	}
+
+	else if (glyph_range_str == "japanese")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesJapanese());
+	}
+
+	else if (glyph_range_str == "cyrillic")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesCyrillic());
+	}
+
+	else if (glyph_range_str == "thai")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesThai());
+	}
+
+	else if (glyph_range_str == "vietnamese")
+	{
+		io.Fonts->AddFontFromFileTTF(font_name.c_str(), font_size, NULL, io.Fonts->GetGlyphRangesVietnamese());
+	}
+
+	else if (glyph_range_str == "latin-ex-a")
+	{
+		/* Source of code: https://github.com/kmar/Sweet16Font/blob/master/Sweet16_ImGui.inl */
+		static const ImWchar Sweet16_ranges[] =
+		{
+			0x0020,
+			0x017F, // Basic Latin + Latin supplement + Latin extended A
+			0,
+		};
+
+		ImFontConfig config;
+		config.OversampleH = 1;
+		config.OversampleV = 1;
+		config.PixelSnapH = true;
+		config.SizePixels = 16;
+		// the proportional variant probably looks better with 1px extra horizontal spacing (just uncomment the following line)
+		// config.GlyphExtraSpacing.x = 1;
+
+		// copy font name manually to avoid warnings
+		const char* name = "font/Sweet16.ttf, 16px";
+		char* dst = config.Name;
+
+		while (*name)
+			*dst++ = *name++;
+		*dst = '\0';
+
+		io.Fonts->AddFontFromMemoryCompressedBase85TTF(Sweet16_compressed_data_base85, config.SizePixels, &config, Sweet16_ranges);
+	}
+
+	else
+	{
+		/* ignore */
+	}
+}
+
 void tmain()
 {
 	std::cout << "\n\n";
@@ -121,15 +191,14 @@ void tmain()
 	 * while render is always getting value
 	 */
 
-	Renderer *render = new Renderer();
+	Settings settings;
 	bool iconReady = false;
 
+	/* Catch CTRL-C */
 	#if defined _WIN32 || defined _WIN64
-		/* Catch CTRL-C */
 		SetConsoleCtrlHandler(end, TRUE);
     #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
         defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
-		/* Catch CTRL-C */
 		sigIntHandler.sa_handler = end;
 		sigemptyset(&sigIntHandler.sa_mask);
 		sigIntHandler.sa_flags = 0;
@@ -144,7 +213,8 @@ void tmain()
 	std::cout << "   o888o    o888ooo8888 o888o      o888o888o888o o888o " << std::endl;
 	std::cout << "------------------------------------------------------- " << std::endl;
 
-	if (render->CheckFile("termi.png") == false)
+	std::string icon_path = "termi.png";
+	if (!std::filesystem::exists(icon_path) || !std::filesystem::is_regular_file(icon_path))
 	{
 		std::cout << "Icon wasn't found!\n";
 		std::cout << "Do you want download it [y (requires curl) /n]? : " << std::endl;
@@ -156,7 +226,7 @@ void tmain()
 		{
 			system("wget https://raw.githubusercontent.com/ringwormGO-organization/Termi/main/Termi-OpenGL/termi.png");
 
-			if (render->CheckFile("termi.png"))
+			if (!std::filesystem::exists(icon_path) || !std::filesystem::is_regular_file(icon_path))
 			{
 				iconReady = true;
 			}
@@ -169,9 +239,10 @@ void tmain()
 	}
 
 	glfwInit();
-	GLFWwindow *window = glfwCreateWindow(render->Settings(1), render->Settings(2), "Termi (OpenGL)", NULL, NULL);
+	GLFWwindow *window = glfwCreateWindow(settings.GetWidth(), settings.GetHeight(), "Termi (OpenGL)", NULL, NULL);
 	glfwMakeContextCurrent(window);
 	gladLoadGLLoader((GLADloadproc)glfwGetProcAddress);
+
 	if (window == NULL)
 	{
 		std::cout << "Unable to create OpenGL window!\nExiting...\n";
@@ -180,15 +251,13 @@ void tmain()
 
 	else
 	{
-#ifdef PRINT_WHEN_WINDOW_IS_CREATED
 		std::cout << "OpenGL window is created.\n";
-#endif
 	}
 
 	if (iconReady)
 	{
 		GLFWimage images[1];
-		images[0].pixels = stbi_load("termi.png", &images[0].width, &images[0].height, 0, 4); /* rgba channels */
+		images[0].pixels = stbi_load(icon_path.c_str(), &images[0].width, &images[0].height, 0, 4); /* rgba channels */
 		glfwSetWindowIcon(window, 1, images);
 		stbi_image_free(images[0].pixels);
 	}
@@ -212,10 +281,7 @@ void tmain()
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-	render->SetFont(io);
-	render->Settings(0);
-
-	delete render;
+	SetFont(settings, io);
 
 	while (!glfwWindowShouldClose(window))
 	{
@@ -235,10 +301,6 @@ void tmain()
 
 		/* main Dear ImGui code */
 		main_code(style);
-
-#ifdef PRINT_FPS_CONSOLE
-		printf("Application average %.3f ms/frame (%.1f FPS)\r", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-#endif
 
 		/* Renders the Dear ImGui elements */
 		ImGui::Render();

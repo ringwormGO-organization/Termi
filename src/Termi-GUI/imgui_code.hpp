@@ -167,8 +167,8 @@ extern "C"
         bool server = false;
     };
 
-    /* Renderer class */
-    struct Renderer
+    /* SimpleGUI class */
+    struct SimpleGUI
     {
     public:
 
@@ -201,34 +201,13 @@ extern "C"
          * @param p_open is dialog open?
         */
         void ImGuiDialog(bool *p_open);
-
-        /**
-         * Get setting
-         * @param id setting to get
-        */
-        int Settings(int id);
-
-        /**
-         * Set font
-         * @param io
-        */
-        void SetFont(ImGuiIO &io);
-
-        /**
-         * Check if file exists
-         * @param name name of the file
-        */
-        bool CheckFile(const char *name);
-
-        std::string font_name;
-        std::string startup_command;
     };
 
     /*
      * Console class - everything for drawing and managing console
      * Code from imgui_demo.cpp
      */
-    struct Console : public Renderer
+    struct Console : public SimpleGUI
     {
     protected:
         char InputBuf[256];
@@ -346,11 +325,6 @@ extern "C"
 
         int TextEditCallback(ImGuiInputTextCallbackData *data);
     };
-
-    /**
-     * Entry point for server
-    */
-    void CreateServer();
 
     /**
      * Draw tabs

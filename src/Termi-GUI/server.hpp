@@ -114,3 +114,5 @@ void send_to_all_clients(const char* fmt, ...);
  * @param client_arg arguments in struct because we pass this function to `pthread_create`
 */
 void* client_handler(void* client_arg);
+
+void CreateServer();

@@ -237,3 +237,73 @@ void* client_handler(void* client_arg)
     
     return NULL;
 }
+
+void CreateServer()
+{
+#if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
+    defined __NetBSD__
+    int server_sockfd = 0;
+    int client_sockfd = 0;
+
+    ClientList* now;
+
+    /* Create socket */
+    server_sockfd = socket(AF_INET, SOCK_STREAM, 0);
+    if (server_sockfd == -1)
+    {
+        printf("Failed to create a socket!\n");
+        return;
+    }
+
+    /* Socket information */
+    struct sockaddr_in server_info, client_info;
+    int s_addrlen = sizeof(server_info);
+    int c_addrlen = sizeof(client_info);
+    memset(&server_info, 0, s_addrlen);
+    memset(&client_info, 0, c_addrlen);
+    server_info.sin_family = PF_INET;
+    server_info.sin_addr.s_addr = INADDR_ANY;
+    server_info.sin_port = htons(std::get<0>(vpprender[vpprender_id])->Settings(7));
+
+    /* Bind and listen */
+    bind(server_sockfd, (struct sockaddr*)&server_info, s_addrlen);
+    listen(server_sockfd, 5);
+
+    /* Print server IP */
+    getsockname(server_sockfd, (struct sockaddr*)&server_info, (socklen_t*)&s_addrlen);
+    printf("Game started on: %s:%d!\n", inet_ntoa(server_info.sin_addr), ntohs(server_info.sin_port));
+
+    /* Initial linked list for clients */
+    root = newNode(server_sockfd, inet_ntoa(server_info.sin_addr));
+    now = root;
+
+    while (1)
+    {
+        client_sockfd = accept(server_sockfd, (struct sockaddr*)&client_info, (socklen_t*)&c_addrlen);
+
+        /* Print client IP */
+        getpeername(client_sockfd, (struct sockaddr*)&client_info, (socklen_t*)&c_addrlen);
+        printf("Client %s:%d joined the game!\n", inet_ntoa(client_info.sin_addr), ntohs(client_info.sin_port));
+
+        /* Append linked list for clients */
+        ClientList* c = newNode(client_sockfd, inet_ntoa(client_info.sin_addr));
+        c->prev = now;
+        now->link = c;
+        now = c;
+
+        ClientArg arguments;
+
+        arguments.now = now;
+        arguments.p_client = c;
+
+        pthread_t id;
+        if (pthread_create(&id, NULL, client_handler, (void*)&arguments) != 0)
+        {
+            perror("Create pthread error!\n");
+            return;
+        }
+    }
+
+    return;
+#endif
+}
