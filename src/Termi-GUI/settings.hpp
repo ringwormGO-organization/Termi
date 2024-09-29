@@ -12,6 +12,9 @@
 #include <iostream>
 #include <string>
 
+#include <string.h>
+#include <unistd.h>
+
 #include <json-c/json.h>
 
 /* Settings class */

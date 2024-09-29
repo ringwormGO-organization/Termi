@@ -240,7 +240,7 @@ void Settings::CreateFile()
     char user[64];
     getlogin_r(user, 64);
 
-    std::string folder_path = "/home/" + std::string(user) + "/.config/termi/"
+    std::string folder_path = "/home/" + std::string(user) + "/.config/termi/";
 #else
     std::string folder_path = "settings/";
 #endif

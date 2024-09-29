@@ -242,6 +242,9 @@ void CreateServer()
 {
 #if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
     defined __NetBSD__
+
+    Settings settings;
+
     int server_sockfd = 0;
     int client_sockfd = 0;
 
@@ -263,7 +266,7 @@ void CreateServer()
     memset(&client_info, 0, c_addrlen);
     server_info.sin_family = PF_INET;
     server_info.sin_addr.s_addr = INADDR_ANY;
-    server_info.sin_port = htons(std::get<0>(vpprender[vpprender_id])->Settings(7));
+    server_info.sin_port = htons(static_cast<uint16_t>(settings.GetPort()));
 
     /* Bind and listen */
     bind(server_sockfd, (struct sockaddr*)&server_info, s_addrlen);
@@ -271,7 +274,7 @@ void CreateServer()
 
     /* Print server IP */
     getsockname(server_sockfd, (struct sockaddr*)&server_info, (socklen_t*)&s_addrlen);
-    printf("Game started on: %s:%d!\n", inet_ntoa(server_info.sin_addr), ntohs(server_info.sin_port));
+    printf("Termi server started on: %s:%d!\n", inet_ntoa(server_info.sin_addr), ntohs(server_info.sin_port));
 
     /* Initial linked list for clients */
     root = newNode(server_sockfd, inet_ntoa(server_info.sin_addr));
