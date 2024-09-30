@@ -17,8 +17,6 @@
 #include "translation.hpp"
 
 #include <algorithm>
-#include <filesystem>
-#include <fstream>
 #include <iostream>
 #include <list>
 #include <map>
@@ -28,7 +26,6 @@
 #include <sstream>
 #include <string>
 #include <thread>
-#include <tuple>
 #include <vector>
 
 #if defined _WIN32 || defined _WIN64
@@ -47,6 +44,8 @@
     #define _API
 #endif
 
+#include <stddef.h>
+
 #include <json-c/json.h>
 
 extern "C"
@@ -61,8 +60,8 @@ extern "C"
 
     /**
      * Commands map
-     * @param first name of command
-     * @param second function name of command
+     * @param first name
+     * @param second function name in Termi-Commands
      */
     static std::map<const std::string, const std::string> commands =
         {
@@ -84,9 +83,9 @@ extern "C"
             {"yes", "yes"}};
 
     /**
-     * Check if some string start with some std::string value
-     * @param fullString - entire string
-     * @param starting - string with which we check if fullString starts with this string
+     * Check if the string starts with substring
+     * @param fullString - string
+     * @param starting - substring
      */
     static bool isStarting(std::string const &fullString, std::string const &starting)
     {
@@ -94,6 +93,7 @@ extern "C"
         {
             return true;
         }
+        
         else
         {
             return false;
@@ -121,7 +121,7 @@ extern "C"
     };
 
     /**
-     * Function which colors text
+     * Colorize text
      * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
      * @param text - string to colorize
      * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
@@ -141,18 +141,22 @@ extern "C"
        orange = {1.00f, 0.36f, 0.09f, 1};
 
     /**
-     * Function to split the given string using the getline() function
+     * Split given string using the getline() function
      * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
      * @param str - string
-     * @param delim - char with which we separate strings
-     * @param out - vector which has seperated strings
+     * @param delim - separator
+     * @param out - output vector
      */
     void split_str(std::string const &str, const char delim, std::vector<std::string> &out);
 
-    /* Variables */
-    struct Vars
+    /**
+     * Class containing runtime GUI settings
+     * This GUI model is simple and does not support sending interaction with executing process
+     */
+    class SimpleVars
     {
-        std::string language = "english";
+    public:
+        std::string language = "English";
         std::string theme = "none";
 
         std::vector<std::string> themes = {"dark_red", "aqua", "some_yellow"};
@@ -164,25 +168,28 @@ extern "C"
         bool settings_dialog = false;
         bool alReadyFocusOnInputBar = false;
 
-        bool server = false;
+        bool server = false; 
     };
 
-    /* SimpleGUI class */
-    struct SimpleGUI
+    /**
+     * Class containing implementation of GUI model 0
+     * This GUI model is simple and does not support sending interaction with executing process
+     */
+    class SimpleGUI : public SimpleVars
     {
     public:
 
         /**
-         * Draw top menu
+         * Draw a top menu
          * @param style
         */
         void DrawMenu(ImGuiStyle& style);
 
         /**
-         * Choose language
-         * @param id language id
+         * Return English text or its translated counterpart
+         * @param text some text
         */
-        const char *ChooseLanguage(int id);
+        std::string ChooseLanguage(std::string text);
 
         /**
          * Dialog for choosing a language
@@ -204,10 +211,11 @@ extern "C"
     };
 
     /*
-     * Console class - everything for drawing and managing console
+     * Class handling console
+     * This GUI model is simple and does not support sending interaction with executing process
      * Code from imgui_demo.cpp
      */
-    struct Console : public SimpleGUI
+    class SimpleConsole : public SimpleGUI
     {
     protected:
         char InputBuf[256];
@@ -222,8 +230,8 @@ extern "C"
         char *s;
 
     public:
-        Console();
-        ~Console();
+        SimpleConsole();
+        ~SimpleConsole();
 
     protected:
         // Portable helpers
@@ -300,12 +308,12 @@ extern "C"
         void AddLog(const char *fmt, ...);
 
         /**
-         * Draw console
+         * Draw the console
         */
         void Draw();
 
         /**
-         * Execute command
+         * Execute a command
          * @param command_line user's input
         */
         void ExecCommand(std::string command_line, ...);
@@ -319,7 +327,7 @@ extern "C"
         // In C++11 you'd be better off using lambdas for this sort of forwarding callbacks
         static int TextEditCallbackStub(ImGuiInputTextCallbackData *data)
         {
-            Console *con = (Console *)data->UserData;
+            SimpleConsole *con = (SimpleConsole *)data->UserData;
             return con->TextEditCallback(data);
         }
 
@@ -338,7 +346,7 @@ extern "C"
     */
     void main_code(ImGuiStyle& style);
 
-    extern Console console;
+    extern SimpleConsole console;
 
     /**
      * Entry point for whole Termi-GUI project
@@ -346,7 +354,7 @@ extern "C"
     _API void tmain();
 
     /**
-     * AddLog but outside of struct so it is visible from .so/.dll files
+     * AddLog but outside the so it is visible from .so/.dll files
      * @param fmt - string
      */
     _API void AddLog(const char *fmt, ...);

@@ -11,12 +11,6 @@
     #pragma warning(disable : 4996)    
 #endif
 
-/**
- * Function which colors text
- * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
- * @param text - string to colorize
- * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
- */
 void ColorfulText(const std::string &text, const std::list<std::pair<char, ImVec4>> &colors)
 {
     auto p = ImGui::GetCursorScreenPos();
@@ -112,13 +106,6 @@ void ColorfulText(const std::string &text, const std::list<std::pair<char, ImVec
     ImGui::Dummy({max_x - p.x, p.y - first_py});
 };
 
-/**
- * Function to split the given string using the getline() function
- * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
- * @param str - string
- * @param delim - char with which we separate strings
- * @param out - vector which has seperated strings
- */
 void split_str(std::string const &str, const char delim, std::vector<std::string> &out)
 {
     /* create a stream from the string */
@@ -131,23 +118,17 @@ void split_str(std::string const &str, const char delim, std::vector<std::string
     }
 }
 
-/** Vector holding std::tuple type representing SimpleGUI, console and variable of all tabs
- * @param _T1 - pair of SimpleGUI and Console
- * @param _T2 - pair of Vars and nullptr, I had to put that nullptr so I can compile code but otherwise you should not use it
+/** 
+ * Vector holding unique pointer(s) of SimpleConsole class
  */
-std::vector<std::tuple<std::unique_ptr<SimpleGUI>, std::unique_ptr<Console>, std::unique_ptr<Vars>>> vpprender;
+std::vector<std::unique_ptr<SimpleConsole>> vrenderer;
 
 /**
- * Current vpprender element in use
+ * Current vrenderer element in use
  */
-int vpprender_id;
+size_t vrenderer_id;
 
-/*
- * Console class - everything for drawing and managing console
- * Code for functions here
- * Code from imgui_demo.cpp
- */
-Console::Console()
+SimpleConsole::SimpleConsole()
 {
     FullClearLog();
     memset(InputBuf, 0, sizeof(InputBuf));
@@ -174,14 +155,14 @@ Console::Console()
     AddLog("Termi> ");
 }
 
-Console::~Console()
+SimpleConsole::~SimpleConsole()
 {
     FullClearLog();
     for (int i = 0; i < History.Size; i++)
         free(History[i]);
 }
 
-void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string function)
+void SimpleConsole::LoadDynamicLibrary(std::vector<std::string> &vect, std::string function)
 {
     #if defined _WIN32 || defined _WIN64
         typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
@@ -240,7 +221,7 @@ void Console::LoadDynamicLibrary(std::vector<std::string> &vect, std::string fun
     #endif
 }
 
-int Console::LoadThirdParty(const char *path, const char *function, const char *value)
+int SimpleConsole::LoadThirdParty(const char *path, const char *function, const char *value)
 {
     #if defined _WIN32 || defined _WIN64
         typedef void(__cdecl* THIRD_PARTY)(const char*);
@@ -302,7 +283,7 @@ int Console::LoadThirdParty(const char *path, const char *function, const char *
     return 0;
 }
 
-void Console::ClearLog()
+void SimpleConsole::ClearLog()
 {
     for (int i = 0; i < Items.Size; i++)
         free(Items[i]);
@@ -311,14 +292,14 @@ void Console::ClearLog()
     TypeTermi();
 }
 
-void Console::FullClearLog()
+void SimpleConsole::FullClearLog()
 {
     for (int i = 0; i < Items.Size; i++)
         free(Items[i]);
     Items.clear();
 }
 
-void Console::AddLog(const char *fmt, ...)
+void SimpleConsole::AddLog(const char *fmt, ...)
 {
     // FIXME-OPT
     char buf[1024];
@@ -336,7 +317,7 @@ void Console::AddLog(const char *fmt, ...)
     Items.push_back(Strdup(buf));
 }
 
-void Console::Draw()
+void SimpleConsole::Draw()
 {
     // TODO: display items starting from the bottom
 
@@ -399,7 +380,7 @@ void Console::Draw()
 
     /* Retrieve client's command */
     bool execute_command = false;
-    if (std::get<2>(vpprender[vpprender_id])->server)
+    if (vrenderer[vrenderer_id]->server)
     {
         std::unique_lock<std::mutex> lock(client_input_mutex);
 
@@ -418,10 +399,10 @@ skip:
     }
 
     bool reclaim_focus = false;
-    if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !std::get<2>(vpprender[vpprender_id])->alReadyFocusOnInputBar)
+    if (!ImGui::IsAnyItemActive() && !ImGui::IsMouseClicked(0) && !vrenderer[vrenderer_id]->alReadyFocusOnInputBar)
     {
         ImGui::SetKeyboardFocusHere(0);
-        std::get<2>(vpprender[vpprender_id])->alReadyFocusOnInputBar = true;
+        vrenderer[vrenderer_id]->alReadyFocusOnInputBar = true;
     }
 
     char cwd[PATH_MAX];
@@ -450,7 +431,7 @@ skip:
         ImGui::SetKeyboardFocusHere(-1); // Auto focus previous widget
 }
 
-void Console::ExecCommand(std::string command_line, ...)
+void SimpleConsole::ExecCommand(std::string command_line, ...)
 {
     /**
         * Insert into history. First find matchand delete it so it can be pushed to the back.
@@ -565,12 +546,12 @@ end:
     TypeTermi();
 }
 
-void Console::TypeTermi()
+void SimpleConsole::TypeTermi()
 {
     AddLog("\nTermi> ");
 }
 
-int Console::TextEditCallback(ImGuiInputTextCallbackData *data)
+int SimpleConsole::TextEditCallback(ImGuiInputTextCallbackData *data)
 {
     // AddLog("cursor: %d, selection: %d-%d", data->CursorPos, data->SelectionStart, data->SelectionEnd);
     switch (data->EventFlag)
@@ -672,18 +653,17 @@ int Console::TextEditCallback(ImGuiInputTextCallbackData *data)
     return 0;
 }
 
-/* Draw context menu */
 void SimpleGUI::DrawMenu(ImGuiStyle& style)
 {
     if (ImGui::BeginMenuBar())
     {
-        if (ImGui::BeginMenu(ChooseLanguage(1)))
+        if (ImGui::BeginMenu(ChooseLanguage("Terminal").c_str()))
         {
-            if (ImGui::MenuItem(ChooseLanguage(12)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+            if (ImGui::MenuItem(ChooseLanguage("Server").c_str()) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (!std::get<2>(vpprender[vpprender_id])->server) /* server is off */
+                if (!vrenderer[vrenderer_id]->server) /* server is off */
                 {
-                    std::get<2>(vpprender[vpprender_id])->server = true;
+                    vrenderer[vrenderer_id]->server = true;
 
                     std::thread server(CreateServer);
                     server.detach();
@@ -691,13 +671,13 @@ void SimpleGUI::DrawMenu(ImGuiStyle& style)
 
                 else /* server is on */
                 {
-                    std::get<2>(vpprender[vpprender_id])->server = false;
+                    vrenderer[vrenderer_id]->server = false;
                 }
             }
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem(ChooseLanguage(6)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+            if (ImGui::MenuItem(ChooseLanguage("Exit").c_str()) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
                 exit(0);
             }
@@ -705,48 +685,42 @@ void SimpleGUI::DrawMenu(ImGuiStyle& style)
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu(ChooseLanguage(2)))
+        if (ImGui::BeginMenu(ChooseLanguage("Edit").c_str()))
         {
-            if (ImGui::MenuItem(ChooseLanguage(7)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+            if (ImGui::MenuItem(ChooseLanguage("Change theme (light/dark)").c_str()) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (std::get<2>(vpprender[vpprender_id])->isDarkTheme)
+                if (vrenderer[vrenderer_id]->isDarkTheme)
                 {
                     ImGui::StyleColorsLight();
-                    std::get<2>(vpprender[vpprender_id])->isDarkTheme = false;
+                    vrenderer[vrenderer_id]->isDarkTheme = false;
                 }
 
                 else
                 {
                     ImGui::StyleColorsDark();
-                    std::get<2>(vpprender[vpprender_id])->isDarkTheme = true;
+                    vrenderer[vrenderer_id]->isDarkTheme = true;
                 }
             }
 
-            if (ImGui::MenuItem(ChooseLanguage(14)))
+            if (ImGui::MenuItem(ChooseLanguage("Change theme").c_str()))
             {
-                again:
                 std::random_device dev;
                 std::mt19937 rng(dev());
-                std::uniform_int_distribution<std::mt19937::result_type> dist(0, std::get<2>(vpprender[vpprender_id])->themes.size() - 1);
+                std::uniform_int_distribution<std::mt19937::result_type> dist(0, vrenderer[vrenderer_id]->themes.size() - 1);
 
-                if (std::get<2>(vpprender[vpprender_id])->theme == std::get<2>(vpprender[vpprender_id])->themes.at(static_cast<int>(dist(rng))))
-                {
-                    goto again;
-                }
+                vrenderer[vrenderer_id]->theme = vrenderer[vrenderer_id]->themes.at(static_cast<int>(dist(rng)));
 
-                std::get<2>(vpprender[vpprender_id])->theme = std::get<2>(vpprender[vpprender_id])->themes.at(static_cast<int>(dist(rng)));
-
-                if (std::get<2>(vpprender[vpprender_id])->theme == "dark_red")
+                if (vrenderer[vrenderer_id]->theme == "dark_red")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(84, 3, 34);
                 }
 
-                else if (std::get<2>(vpprender[vpprender_id])->theme == "aqua")
+                else if (vrenderer[vrenderer_id]->theme == "aqua")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(0, 255, 255);
                 }
 
-                else if (std::get<2>(vpprender[vpprender_id])->theme == "some_yellow")
+                else if (vrenderer[vrenderer_id]->theme == "some_yellow")
                 {
                     style.Colors[ImGuiCol_WindowBg] = ImColor(204, 163, 80);
                 }
@@ -754,11 +728,11 @@ void SimpleGUI::DrawMenu(ImGuiStyle& style)
 
             ImGui::Separator();
 
-            if (ImGui::MenuItem(ChooseLanguage(8)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+            if (ImGui::MenuItem(ChooseLanguage("Change language").c_str()) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (!std::get<2>(vpprender[vpprender_id])->language_dialog)
+                if (!vrenderer[vrenderer_id]->language_dialog)
                 {
-                    std::get<2>(vpprender[vpprender_id])->language_dialog = true;
+                    vrenderer[vrenderer_id]->language_dialog = true;
                     ChooseLanguageDialog(NULL);
                 }
             }
@@ -766,22 +740,22 @@ void SimpleGUI::DrawMenu(ImGuiStyle& style)
             ImGui::EndMenu();
         }
 
-        if (ImGui::BeginMenu(ChooseLanguage(3)))
+        if (ImGui::BeginMenu(ChooseLanguage("About").c_str()))
         {
-            if (ImGui::MenuItem(ChooseLanguage(9)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+            if (ImGui::MenuItem(ChooseLanguage("About Termi").c_str()) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (std::get<2>(vpprender[vpprender_id])->termi_dialog == false)
-                    std::get<2>(vpprender[vpprender_id])->termi_dialog = true;
+                if (vrenderer[vrenderer_id]->termi_dialog == false)
+                    vrenderer[vrenderer_id]->termi_dialog = true;
                 else
-                    std::get<2>(vpprender[vpprender_id])->termi_dialog = false;
+                    vrenderer[vrenderer_id]->termi_dialog = false;
             }
 
-            if (ImGui::MenuItem(ChooseLanguage(10)) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+            if (ImGui::MenuItem(ChooseLanguage("About Dear ImGui").c_str()) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                if (std::get<2>(vpprender[vpprender_id])->imgui_dialog == false)
-                    std::get<2>(vpprender[vpprender_id])->imgui_dialog = true;
+                if (vrenderer[vrenderer_id]->imgui_dialog == false)
+                    vrenderer[vrenderer_id]->imgui_dialog = true;
                 else
-                    std::get<2>(vpprender[vpprender_id])->imgui_dialog = false;
+                    vrenderer[vrenderer_id]->imgui_dialog = false;
             }
 
             ImGui::EndMenu();
@@ -791,29 +765,39 @@ void SimpleGUI::DrawMenu(ImGuiStyle& style)
     }
 }
 
-/* Choose language function - return word on specified language */
-const char *SimpleGUI::ChooseLanguage(int id)
+std::string SimpleGUI::ChooseLanguage(std::string text)
 {
-    if (std::get<2>(vpprender[vpprender_id])->language == "english")
+    if (vrenderer[vrenderer_id]->language == "English")
     {
-        return Translation::English.at(id).c_str();
+        return text;
     }
 
-    else if (std::get<2>(vpprender[vpprender_id])->language == "croatian")
+    size_t language_id = 0;
+    auto it = std::find(Translation::language_id.begin(), Translation::language_id.end(), vrenderer[vrenderer_id]->language);
+
+    if (it != Translation::language_id.begin())
     {
-        return Translation::Croatian.at(id).c_str();
+        language_id = it - Translation::language_id.begin();
     }
 
-    else if (std::get<2>(vpprender[vpprender_id])->language == "vietnamese")
+    else
     {
-        return Translation::Vietnamese.at(id).c_str();
+        std::cout << "Language '" << vrenderer[vrenderer_id]->language << "' has not been found in `language_id`!\n";
+        return text;
     }
 
-    /* nothing matches */
-    return "Unknown word";
+    for (auto it = Translation::text.begin(); it != Translation::text.end(); ++it)
+    {
+        if (it->first == text)
+        {
+            /* -1 because English is not in map's vector */
+            return it->second.at(language_id - 1).c_str();
+        }
+    }
+
+    return text;
 }
 
-/* Choose a language using dialog */
 void SimpleGUI::ChooseLanguageDialog(bool *p_open)
 {
     ImGui::SetWindowPos(ImVec2(200, 200));
@@ -828,7 +812,7 @@ void SimpleGUI::ChooseLanguageDialog(bool *p_open)
     {
         if (ImGui::Button("Close window"))
         {
-            std::get<2>(vpprender[vpprender_id])->language_dialog = false;
+            vrenderer[vrenderer_id]->language_dialog = false;
         }
 
         ImGui::EndPopup();
@@ -839,35 +823,47 @@ void SimpleGUI::ChooseLanguageDialog(bool *p_open)
 
     if (ImGui::Button("English (default)") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        std::get<2>(vpprender[vpprender_id])->language = "english";
+        vrenderer[vrenderer_id]->language = "English";
     }
 
     if (ImGui::Button("Croatian / Hrvatski") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        std::get<2>(vpprender[vpprender_id])->language = "croatian";
+        vrenderer[vrenderer_id]->language = "Croatian";
+    }
+
+    if (ImGui::Button("Esperanto / Esperanto") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vrenderer[vrenderer_id]->language = "Esperanto";
+    }
+
+    if (ImGui::Button("German / Deutsch") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vrenderer[vrenderer_id]->language = "German";
+    }
+
+    if (ImGui::Button("Spanish / Español") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
+    {
+        vrenderer[vrenderer_id]->language = "Spanish";
     }
 
     if (ImGui::Button("Vietnamese / Tiếng Việt") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        std::get<2>(vpprender[vpprender_id])->language = "vietnamese";
+        vrenderer[vrenderer_id]->language = "Vietnamese";
     }
-
-    /* if (ImGui::Button("Vietnamese / Tieng Viet")) std::get<2>(vpprender[vpprender_id])->language = "vietnamese"; */
 
     if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        std::get<2>(vpprender[vpprender_id])->language_dialog = false;
+        vrenderer[vrenderer_id]->language_dialog = false;
     }
 
     ImGui::End();
 }
 
-/* Dialog about Termi */
 void SimpleGUI::TermiDialog(bool *p_open)
 {
     ImGui::SetWindowPos(ImVec2(200, 200));
     ImGui::SetWindowSize(ImVec2(500, 700));
-    if (!ImGui::Begin(ChooseLanguage(9), p_open))
+    if (!ImGui::Begin(ChooseLanguage("About Termi").c_str(), p_open))
     {
         ImGui::End();
         return;
@@ -877,7 +873,7 @@ void SimpleGUI::TermiDialog(bool *p_open)
     {
         if (ImGui::Button("Close window"))
         {
-            std::get<2>(vpprender[vpprender_id])->termi_dialog = false;
+            vrenderer[vrenderer_id]->termi_dialog = false;
         }
 
         ImGui::EndPopup();
@@ -885,7 +881,7 @@ void SimpleGUI::TermiDialog(bool *p_open)
 
     if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        std::get<2>(vpprender[vpprender_id])->termi_dialog = false;
+        vrenderer[vrenderer_id]->termi_dialog = false;
     }
 
     ImGui::Text("AUTHORS > Andrej Bartulin and Stjepan Bilic Matisic");
@@ -897,12 +893,11 @@ void SimpleGUI::TermiDialog(bool *p_open)
     ImGui::End();
 }
 
-/* Dialog about ImGui */
 void SimpleGUI::ImGuiDialog(bool *p_open)
 {
     ImGui::SetWindowPos(ImVec2(200, 200));
     ImGui::SetWindowSize(ImVec2(500, 300));
-    if (!ImGui::Begin(ChooseLanguage(10), p_open))
+    if (!ImGui::Begin(ChooseLanguage("About Dear ImGui").c_str(), p_open))
     {
         ImGui::End();
         return;
@@ -912,7 +907,7 @@ void SimpleGUI::ImGuiDialog(bool *p_open)
     {
         if (ImGui::Button("Close window"))
         {
-            std::get<2>(vpprender[vpprender_id])->imgui_dialog = false;
+            vrenderer[vrenderer_id]->imgui_dialog = false;
         }
 
         ImGui::EndPopup();
@@ -920,7 +915,7 @@ void SimpleGUI::ImGuiDialog(bool *p_open)
 
     if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
     {
-        std::get<2>(vpprender[vpprender_id])->imgui_dialog = false;
+        vrenderer[vrenderer_id]->imgui_dialog = false;
     }
 
     ImGui::Text("ABOUT > Dear ImGui: Bloat-free Graphical User interface\nfor C++ with minimal dependencies.");
@@ -929,10 +924,6 @@ void SimpleGUI::ImGuiDialog(bool *p_open)
     ImGui::End();
 }
 
-/**
- * Draw tabs
- * @param style 
-*/
 void DrawTab(ImGuiStyle& style)
 {
     static ImVector<int> active_tabs;
@@ -966,9 +957,9 @@ void DrawTab(ImGuiStyle& style)
             snprintf(name, IM_ARRAYSIZE(name), "%04d", n);
             if (ImGui::BeginTabItem(name, &open, ImGuiTabItemFlags_None) || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
             {
-                vpprender_id = n;
-                std::get<0>(vpprender[vpprender_id])->DrawMenu(style);
-                std::get<1>(vpprender[vpprender_id])->Draw();
+                vrenderer_id = n;
+                vrenderer[vrenderer_id]->DrawMenu(style);
+                vrenderer[vrenderer_id]->Draw();
                 ImGui::EndTabItem();
             }
 
@@ -982,10 +973,6 @@ void DrawTab(ImGuiStyle& style)
     }
 }
 
-/**
- * Entry point for ImGui part of Termi
- * @param style
-*/
 void main_code(ImGuiStyle& style)
 {
     /* ImGui window creation */
@@ -1000,7 +987,7 @@ void main_code(ImGuiStyle& style)
 
     if (!alReadyPrinted)
     {
-        std::cout << "Dear ImGui window is created.\n";
+        std::cout << "Dear ImGui has been initialized.\n";
         alReadyPrinted = true;
     }
 
@@ -1008,31 +995,29 @@ void main_code(ImGuiStyle& style)
     ImGui::TextColored(ImVec4(0, 0.88f, 0.73f, 1.00f), "(%.3f ms/frame, %.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 
     /* Staring values */
-    vpprender.push_back({
-        std::make_unique<SimpleGUI>(),
-        std::make_unique<Console>(),
-        std::make_unique<Vars>()
+    vrenderer.push_back({
+        std::make_unique<SimpleConsole>(),
     });
 
     /* Draw tabs and menu bar */
     DrawTab(style);
 
     /* Language dialog */
-    if (std::get<2>(vpprender[vpprender_id])->language_dialog)
+    if (vrenderer[vrenderer_id]->language_dialog)
     {
-        std::get<0>(vpprender[vpprender_id])->ChooseLanguageDialog(NULL);
+        vrenderer[vrenderer_id]->ChooseLanguageDialog(NULL);
     }
 
     /* About Termi dialog */
-    if (std::get<2>(vpprender[vpprender_id])->termi_dialog)
+    if (vrenderer[vrenderer_id]->termi_dialog)
     {
-        std::get<0>(vpprender[vpprender_id])->TermiDialog(NULL);
+        vrenderer[vrenderer_id]->TermiDialog(NULL);
     }
 
     /* About ImGui dialog */
-    if (std::get<2>(vpprender[vpprender_id])->imgui_dialog)
+    if (vrenderer[vrenderer_id]->imgui_dialog)
     {
-        std::get<0>(vpprender[vpprender_id])->ImGuiDialog(NULL);
+        vrenderer[vrenderer_id]->ImGuiDialog(NULL);
     }
 
     /* Get window width and height */
@@ -1043,19 +1028,12 @@ void main_code(ImGuiStyle& style)
     ImGui::End();
 }
 
-/**
- * AddLog but outside of struct so it is visible from .so/.dll files
- * @param fmt - string
- */
 void AddLog(const char *fmt, ...)
 {
-    std::get<1>(vpprender[vpprender_id])->AddLog(fmt);
+    vrenderer[vrenderer_id]->AddLog(fmt);
 
-    if (!vpprender.empty())
+    if (vrenderer[vrenderer_id]->server)
     {
-        if (std::get<2>(vpprender[vpprender_id])->server)
-        {
-            send_to_all_clients(fmt);
-        }
+        send_to_all_clients(fmt);
     }
 }

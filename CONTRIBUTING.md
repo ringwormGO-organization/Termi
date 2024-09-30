@@ -17,79 +17,14 @@ Just drop a Pull Request :)
 1. `Termi-Main` folder/directory - call GUI
 
 # Add language (not programming language) to Termi
-1. Add new `std::vector` to `Translation.hpp` in `Translation` namespace.
-2. Follow strings' IDs.
-3. Add new language in `ChooseLanguageDialog` function.
-4. Add new language in `ChooseLanguage` function.
-
-Example:
+1. Add language name in English in `language_id` vector in `translation.hpp`.
+2. **Don't forget to capitalize its name and sort it alphabetically, but keep English first!**
+3. Add translated text to vector in map **making sure it's aligned as in `language_id` vector.
+4. Add button to change language in `ChooseLanguageDialog` dialog in `imgui.cpp`:
 ```cpp
-    /* Translation.hpp */
-    static std::vector<std::string> Spanish = {"spanish words"};
-
-    /**
-     * Naming convention for IDs fot strings
-     * 0: Input
-     * 1: Terminal
-     * 2: Edit
-     * 3: About
-     * 4: New Tab
-     * 5: New profile
-     * 6: Exit
-     * 7: Change theme
-     * 8: Change language
-     * 9: About Termi
-     * 10: About Dear ImGui
-     * 11: Remote connection
-     * 12: Server
-     * 13: Client
-     */
-```
-```cpp
-/* imgui_main.cpp */
-const char* Renderer::ChooseLanguage(Vars* vars, int id)
+if (ImGui::Button("English name / Native name") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
 {
-    /* be careful which word you put in `ChooseLanguageDialog` function */
-    if (vars->language == "spanish")
-    {
-        return Translation::English.at(id).c_str();
-    }
-
-    /* nothing matches */
-    return "Unknown word";
-}
-
-/* Choose a language using dialog */
-void Renderer::ChooseLanguageDialog(Vars* vars, bool *p_open)
-{
-    ImGui::SetWindowPos(ImVec2(200, 200));
-    ImGui::SetWindowSize(ImVec2(500, 500));
-    if (!ImGui::Begin("Language dialog", p_open))
-    {
-        ImGui::End();
-        return;
-    }
-
-    if (ImGui::BeginPopupContextWindow())
-    {
-        if (ImGui::Button("Close window")) language_dialog = false;
-        ImGui::EndPopup();
-    }
-
-    ImGui::Text("Choose language / Odaberi jezik");
-    ImGui::Text(" "); /* empty space */
-
-    if (ImGui::Button("Spanish / Español") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
-    {
-        vpprender[vpprender_id].second.first->language = "spanish";
-    }
-
-    if (ImGui::Button("X") || (ImGui::IsItemFocused() && ImGui::IsKeyPressed(ImGuiKey_Enter)))
-    {
-        vpprender[vpprender_id].second.first->language_dialog = false;
-    }
-
-    ImGui::End();
+    vrenderer[vrenderer_id]->language = "English name";
 }
 ```
 

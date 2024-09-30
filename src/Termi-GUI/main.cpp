@@ -11,11 +11,9 @@
 #include "imgui/imgui_impl_opengl3.h"
 
 /* Standard library includes */
-#include <fstream>
+#include <filesystem>
 #include <iostream>
 #include <string>
-#include <string_view>
-#include <thread>
 
 #if defined _WIN32 || defined _WIN64
 	#include <Windows.h>
@@ -185,12 +183,6 @@ void tmain()
 {
 	std::cout << "\n\n";
 
-	/*
-	 * Creating variables which points to struct(s) or class(es)
-	 * vars gets value once,
-	 * while render is always getting value
-	 */
-
 	Settings settings;
 	bool iconReady = false;
 
@@ -216,8 +208,8 @@ void tmain()
 	std::string icon_path = "termi.png";
 	if (!std::filesystem::exists(icon_path) || !std::filesystem::is_regular_file(icon_path))
 	{
-		std::cout << "Icon wasn't found!\n";
-		std::cout << "Do you want download it [y (requires curl) /n]? : " << std::endl;
+		std::cout << "Icon hasn't been found!\n";
+		std::cout << "Do you want to download it [y (requires wget) /n]? : " << std::endl;
 
 		std::string yn;
 		std::cin >> yn;
@@ -251,7 +243,7 @@ void tmain()
 
 	else
 	{
-		std::cout << "OpenGL window is created.\n";
+		std::cout << "OpenGL window has been created.\n";
 	}
 
 	if (iconReady)

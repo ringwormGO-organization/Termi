@@ -7,34 +7,44 @@
 
 #pragma once
 
-#include <vector>
+#include <map>
 #include <string>
+#include <vector>
 
 namespace Translation
 {
-    static std::vector<std::string> English = {"Input", "Terminal", "Edit", "About", "New Tab", "New profile", "Exit", "Change theme (light/dark)", "Change language", "About Termi", "About Dear ImGui", "Remote connection", "Server", "Client", "Change theme"};
-    static std::vector<std::string> Croatian = {"Unos", "Terminal", "Uredi", "O Termiju", "Nova kartica", "Novi profil", "Izađi", "Promijeni temu (svijetla/tamna)", "Promijeni jezik", "O Termiju", "O Dear ImGui-u", "Veza na daljinu", "Server", "Klijent", "Promijeni temu"};
-    static std::vector<std::string> Vietnamese = {"Nhập vào", "Dòng lệnh", "Chỉnh sửa", "Giới thiệu", "Thẻ mới", "Hồ sơ mới", "Thoát", "Đổi chủ đề nền (sáng/tối)", "Đổi ngôn ngữ", "Về Termi", "Về Dear ImGui", "Kết nối", "Máy chủ", "Máy khách", "Đổi chủ đề nền"};
-    static std::vector<std::string> German = {"Eingabe", "Terminal", "Bearbeiten", "Über", "Neuer Tab", "Neues Profil", "Beenden", "Thema wechseln (hell/dunkel)", "Sprache ändern", "Über Termi", "Über Dear ImGui", "Fernverbindung", "Server", "Client", "Thema wechseln"};
-    static std::vector<std::string> Spanish = {"Entrada", "Terminal", "Editar", "Acerca de", "Nueva pestaña", "Nuevo perfil", "Salir", "Cambiar tema (claro/oscuro)", "Cambiar idioma", "Acerca de Termi", "Acerca de Dear ImGui", "Conexión remota", "Servidor", "Cliente", "Cambiar tema"};
-    static std::vector<std::string> Esperanto = {"Enigo", "Terminalo", "Redakti", "Pri", "Nova langeto", "Nova profilo", "Eliri", "Ŝanĝi temon (luma/malhelma)", "Ŝanĝi lingvon", "Pri Termi", "Pri Dear ImGui", "Fora konekto", "Servilo", "Kliento", "Ŝanĝi temon"};
-    // Without native Vietnamese character
     /**
-     * Naming convention for IDs fot strings
-     * 0: Input
-     * 1: Terminal
-     * 2: Edit
-     * 3: About
-     * 4: New Tab
-     * 5: New profile
-     * 6: Exit
-     * 7: Change theme (light/dark)
-     * 8: Change language
-     * 9: About Termi
-     * 10: About Dear ImGui
-     * 11: Remote connection
-     * 12: Server
-     * 13: Client
-     * 14: Change theme
-     */
+    * Order of languages in `text` map.
+    * Put English at the front and sort rest alphabetically.
+    */
+    static std::vector<std::string> language_id = {"English", "Croatian", "Esperanto", "German", "Spanish", "Vietnamese"};
+    
+    /**
+    * Map conststing of the original English text and its translations.
+    * Use `language_id` vector to determine position of language in vector.
+    * 
+    * @param first English text
+    * @param second vector containing translated texts, check `language_id` vector to determine position of language
+    */
+    static std::map<std::string, std::vector<std::string>> text =
+    {
+        {"Terminal", {"Terminal", "Terminalo", "Terminal", "Terminal", "Dòng lệnh"}},
+        {"Server", {"Server", "Servilo", "Server", "Servidor", "Máy chủ"}},
+        {"Exit", {"Izađi", "Eliri", "Beenden", "Salir", "Thoát"}},
+
+        {"Edit", {"Uredi", "Redakti", "Bearbeiten", "Editar", "Chỉnh sửa"}},
+        {"Change theme (light/dark)", {"Promijeni temu (svijetla/tamna)", "Ŝanĝi temon (luma/malhelma)", "Thema wechseln (hell/dunkel)", "Cambiar tema (claro/oscuro)", "Đổi chủ đề nền (sáng/tối)"}},
+        {"Change theme", {"Promijeni temu", "Ŝanĝi temon", "Thema wechseln", "Cambiar tema", "Đổi chủ đề nền"}},
+        {"Change language", {"Promijeni jezik", "Ŝanĝi lingvon", "Sprache ändern", "Cambiar idioma", "Đổi ngôn ngữ"}},
+
+        {"About", {"O Termiju", "Pri", "Über", "Acerca de", "Giới thiệu"}},
+        {"About Termi", {"O Termiju", "Pri Termi", "Über Termi", "Acerca de Termi", "Về Termi"}},
+        {"About Dear ImGui", {"O Dear ImGui-u", "Pri Dear ImGui", "Über Dear ImGui", "Acerca de Dear ImGui", "Về Dear ImGui"}},
+
+        {"Input", {"Unos", "Enigo", "Eingabe", "Entrada", "Nhập vào"}},
+        {"New Tab", {"Nova kartica", "Nova langeto", "Neuer Tab", "Nueva pestaña", "Thẻ mới"}},
+        {"New profile", {"Novi profil", "Nova profilo", "Neues Profil", "Nuevo perfil", "Hồ sơ mới"}},
+        {"Remote connection", {"Mrežno povezivanje", "Fora konekto", "Fernverbindung", "Conexión remota", "Kết nối"}},
+        {"Client", {"Klijent", "Kliento", "Client", "Cliente", "Máy khách"}},
+    };
 };

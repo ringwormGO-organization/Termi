@@ -13,7 +13,11 @@
 #include <string>
 
 #include <string.h>
+
+#if defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
 #include <unistd.h>
+#endif
 
 #include <json-c/json.h>
 

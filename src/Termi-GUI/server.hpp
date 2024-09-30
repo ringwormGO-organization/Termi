@@ -41,19 +41,18 @@ extern std::mutex client_input_mutex;
 
 #if defined __linux__ || defined __FreeBSD__ || defined __OpenBSD__ || \
     defined __NetBSD__
+#include <arpa/inet.h>
+#include <ctype.h>
+#include <netinet/in.h>
+#include <pthread.h>
+#include <signal.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <signal.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <sys/socket.h>
-#include <netinet/in.h>
-#include <arpa/inet.h>
-#include <pthread.h>
-
-#include <ctype.h>
+#include <sys/types.h>
+#include <unistd.h>
 
 #define LENGTH_NAME 31
 #define LENGTH_MSG 101
@@ -106,7 +105,7 @@ typedef struct ClientArg
 void catch_ctrl_c_and_exit(int sig);
 
 /**
- * Send number to all clients
+ * Send message to all clients
  * @param fmt message to send to all clients
 */
 void send_to_all_clients(const char* fmt, ...);
@@ -117,4 +116,7 @@ void send_to_all_clients(const char* fmt, ...);
 */
 void* client_handler(void* client_arg);
 
+/**
+ * Start the server
+ */
 void CreateServer();
