@@ -2,7 +2,7 @@
  * @author Andrej Bartulin
  * PROJECT: Termi - powerful terminal with OpenGL & Dear ImGui rendering system
  * LICENSE: MIT
- * DESCRIPTION: Main file for implementing core commands code
+ * DESCRIPTION: Implementation of core commands
 */
 
 #include "Export.h"
@@ -12,10 +12,10 @@
 #include "Commands/filesys.hpp"
 #include "Commands/Geocalc.h"
 
-#include <iostream>
 #include <chrono>
 #include <filesystem>
 #include <fstream>
+#include <iostream>
 #include <string>
 #include <vector>
 
@@ -29,7 +29,6 @@
 
     #include <lmcons.h>
     #include <tchar.h>
-    #include <libloaderapi.h>
     #include <wchar.h>
     #include <intrin.h>
 
@@ -43,255 +42,12 @@
     #include <unistd.h>
     #include <limits.h>
 
-    #include <dlfcn.h>
     #include <dirent.h>
 
     #define _VOID void
 #endif
 
 using namespace std;
-
-#if defined _WIN32 || defined _WIN64
-    #pragma warning(disable: 4996)
-    #pragma comment(lib, "Advapi32.lib")
-    #pragma comment(lib, "Kernel32.lib")
-
-    typedef int(__cdecl* MYPROC)(const char*);
-    typedef void(__cdecl* RUST)(const char*);
-
-    static void LoadDLL(const char* path, const char* function, const char* text, ...)
-    {
-        HINSTANCE hinstLib;
-        MYPROC ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-
-        hinstLib = LoadLibrary(LPCSTR(path));
-
-        // If the handle is valid, try to get the function address.
-
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (MYPROC)GetProcAddress(hinstLib, function);
-
-            // If the function address is valid, call the function.
-
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(text);
-            }
-            // Free the DLL module.
-
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-            printf("Error!\n");
-
-    }
-
-    static int LoadRust(const char* path, const char* function, const char* value)
-    {
-        HINSTANCE hinstLib;
-        RUST ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-
-        hinstLib = LoadLibrary((LPCSTR)path);
-
-        // If the handle is valid, try to get the function address.
-
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (RUST)GetProcAddress(hinstLib, function);
-
-            // If the function address is valid, call the function.
-
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(value); /* ignore this number */
-            }
-            // Free the DLL module.
-
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-            return 1;
-
-        return 0;
-    }
-
-    void AddLog(std::string fmt, ...)
-    {
-        // FIXME-OPT
-        char buf[1024];
-        va_list args;
-        va_start(args, fmt);
-        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
-        buf[sizeof(buf) - 1] = 0;
-        va_end(args);
-
-        LoadDLL("Termi-GUI.dll", "AddLog", buf);
-    }
-
-    /*
-    * Commands main code
-    * Return version of Windows operating system
-    */
-    static const char* OperatingSystem()
-    {
-        OSVERSIONINFO vi;
-        vi.dwOSVersionInfoSize = sizeof(vi);
-        if (GetVersionEx(&vi) == 0)
-        {
-            return 0;
-        }
-
-        switch (vi.dwPlatformId)
-        {
-            case VER_PLATFORM_WIN32s:
-                return "Windows 3.x";
-            case VER_PLATFORM_WIN32_WINDOWS:
-                return vi.dwMinorVersion == 0 ? "Windows 95" : "Windows 98";
-            case VER_PLATFORM_WIN32_NT:
-                return "Windows NT";
-            default:
-                return "Unknown";
-        }
-    }
-
-    /* Return uptime time in seoconds */
-    uint64_t UptimeS()
-    {
-        return GetTickCount64() / 1000;
-    }
-
-    /* Return uptime time in minutes */
-    uint64_t UptimeM()
-    {
-        return GetTickCount64() / 60000;
-    }
-
-    /* Return uptime time in hours */
-    uint64_t UptimeH()
-    {
-        return GetTickCount64() / 3600000;
-    }
-#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
-    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
-    template <typename T>
-    void LoadSO(const char* function, T value)
-    {
-        void *handle;
-        void (*func)(T);
-        char *error;
-
-        handle = dlopen ("libTermi-GUI.so", RTLD_LAZY);
-        if (!handle) {
-            fputs (dlerror(), stderr);
-            puts(" ");
-            exit(1);
-        }
-
-        func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)  {
-            fputs(error, stderr);
-            exit(1);
-        }
-
-        (*func)(value); /* ignore this argument */
-        dlclose(handle);
-    }
-
-    void LoadSO(int id, float value)
-    {
-        void *handle;
-        void (*func)(int, float);
-        char *error;
-
-        handle = dlopen ("libTermi-GUI.so", RTLD_LAZY);
-        if (!handle) {
-            fputs (dlerror(), stderr);
-            puts(" ");
-            exit(1);
-        }
-
-        func = reinterpret_cast<void (*)(int, float)>(dlsym(handle, "tmain"));
-        if ((error = dlerror()) != NULL)  {
-            fputs(error, stderr);
-            exit(1);
-        }
-
-        (*func)(id, value);
-        dlclose(handle);
-    }
-
-    int LoadRust(const char* path, const char* function, const char* value)
-    {
-        void *handle;
-        void (*func)(const char*);
-        char *error;
-
-        handle = dlopen (path, RTLD_LAZY);
-        if (!handle) {
-            printf("%s\n", dlerror());
-            printf("-------------\n");
-            return 1;
-        }
-
-        func = reinterpret_cast<void (*)(const char*)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)  {
-            printf("%s\n", error);
-            printf("-------------\n");
-            return 1;
-        }
-
-        (*func)(value);
-        dlclose(handle);
-
-        return 0;
-    }
-
-    void AddLog(std::string fmt, ...)
-    {
-        // FIXME-OPT
-        char buf[1024];
-        va_list args;
-        va_start(args, fmt);
-        vsnprintf(buf, sizeof(buf), fmt.c_str(), args);
-        buf[sizeof(buf) - 1] = 0;
-        va_end(args);
-
-        LoadSO("AddLog", buf);
-    }
-#endif
-
-void Status(int error_code)
-{
-    switch (error_code)
-    {
-    case 0:
-        AddLog("$g\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Successfully executed!");
-        break;
-
-    case 1:
-        AddLog("$b\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, user error!");
-        break;
-
-    case 2: /* system error */
-        AddLog("$r\t\t\t\t\t\t\t\t\t\t\t\t\t\t\t Not successfully executed, system error!");
-        break;
-    }
-}
-
-/* ------------------------------------------------------------------------------------------ */
 
 _VOID base64(const std::vector<std::string>& vect)
 {
@@ -1375,15 +1131,18 @@ _VOID writefile(const std::vector<std::string>& vect)
 /* Since we use this function for doing tests, I decided to put here some "modern C++ syntax" */
 NEW_VOID yes(const std::vector<std::string>& vect) -> void
 {
-    /*while (true)
-    {
-        AddLog("yes\n");
-    }*/
-
     AddLog("This function is test function which test connection between stuff written in Rust and C++ core!");
     AddLog("Trying to load function from Rust (rtest.dll)...\n");
 
-    if (LoadRust("librtest.so", "rust_function", "Test argument") == 1)
+#if defined _WIN32 || defined _WIN64
+    #define RUST_PATH "librtest.dll"
+#elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
+    defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
+    #define RUST_PATH "librtest.so"
+#endif
+
+    // Template is explicitly instantiated to be visible from extern "C" block
+    if (LoadDynamicLibrary<const char*>(RUST_PATH, "rust_function", "Test argument") != 0)
     {
         AddLog("Couldn't load function from Rust!");
         AddLog("Switching to C++ code...\n");

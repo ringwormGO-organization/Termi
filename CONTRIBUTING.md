@@ -42,20 +42,19 @@ extern "C"
 VOID example(const std::vector<std::string>& vect)
 {
     /* AddLog is "printf" function of console */
+    /* Call Status() function at the end */
 
     int number = 30;
-    std::string str = "Number is: " + std::to_string(number) + "\n";
-    AddLog(str);
-
-    /* or */
     AddLog("Number is: %d\n", number);
+
+    Status(0);
 } /* Commands.cpp */
 ```
 
 ## Port application
 ### Windows
 1. Create new Visual Studio DLL project.
-2. Copy all stuff to load DLL function (`AddLog` function mostly).
+2. Copy `AddLog` and `LoadDynamicLibrary` functions.
 ```cpp
     #pragma warning(disable: 4996)
     #pragma comment(lib, "Advapi32.lib")
@@ -63,39 +62,50 @@ VOID example(const std::vector<std::string>& vect)
 
     typedef int(__cdecl* MYPROC)(const char*);
 
-    static void LoadDLL(const char* path, const char* function, const char* text, ...)
+    template <typename T>
+    int LoadDynamicLibrary(const char* path, const char* function, T value)
     {
         HINSTANCE hinstLib;
         MYPROC ProcAdd;
         BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
-        // Get a handle to the DLL module.
-
+        // Get a handle to the DLL module
         hinstLib = LoadLibrary(LPCSTR(path));
 
         // If the handle is valid, try to get the function address.
-
         if (hinstLib != NULL)
         {
             ProcAdd = (MYPROC)GetProcAddress(hinstLib, function);
 
             // If the function address is valid, call the function.
-
             if (NULL != ProcAdd)
             {
                 fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(text);
+                (ProcAdd)(value);
             }
-            // Free the DLL module.
 
+            else
+            {
+                printf("Error loading function '%s' from '%s'!\n", function, path);
+                return 1;
+            }
+
+            // Free the DLL module.
             fFreeResult = FreeLibrary(hinstLib);
         }
 
         // If unable to call the DLL function, use an alternative.
         if (!fRunTimeLinkSuccess)
-            printf("Error!\n");
+        {
+            printf("Error loading function '%s' from '%s'!\n", function, path);
+            return 1;
+        }
 
+        return 0;
     }
+
+    // Explicitly instantiate a template if `LoadDynamicLibrary()` function has to be called from extern "C" block
+    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* value);
 
     void AddLog(std::string fmt, ...)
     {
@@ -107,7 +117,7 @@ VOID example(const std::vector<std::string>& vect)
         buf[sizeof(buf) - 1] = 0;
         va_end(args);
 
-        LoadDLL("Termi-GUI.dll", "AddLog", buf);
+        LoadDynamicLibrary("/path/", "AddLog", buf);
     }
 ```
 3. Mark function to be called from program as `_declspec(dllexport)` stuff inside `extern "C"` in .h file and as `void __cdecl` in .cpp file
@@ -119,36 +129,44 @@ VOID example(const std::vector<std::string>& vect)
 
     void __cdecl program(const char* arguments); /* .cpp file */
 ```
-4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function.
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function. `AddLog` works like `printf`.
 5. Compile and use Termi's `loadtp` command to test it!
 
 ### Other platforms
 1. Create new project with `CMakeLists.txt` file similar to `Termi-Commands` project
-2. Copy all stuff to load .so functions (`AddLog` function mostly).
+2. Copy `AddLog` and `LoadDynamicLibrary` functions.
 ```cpp
     template <typename T>
-    void LoadSO(const char* function, T value)
+    int LoadDynamicLibrary(const char* path, const char* function, T value)
     {
         void *handle;
         void (*func)(T);
         char *error;
 
-        handle = dlopen ("libTermi-GUI.so", RTLD_LAZY);
-        if (!handle) {
+        handle = dlopen(path, RTLD_LAZY);
+        if (!handle) 
+        {
             fputs (dlerror(), stderr);
             puts(" ");
-            exit(1);
+
+            return 1;
         }
 
         func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)  {
+        if ((error = dlerror()) != NULL)  
+        {
             fputs(error, stderr);
-            exit(1);
+            return 1;
         }
 
-        (*func)(value); /* ignore this argument */
+        (*func)(value);
         dlclose(handle);
+
+        return 0;
     }
+
+    // Explicitly instantiate a template if `LoadDynamicLibrary()` function has to be called from extern "C" block
+    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* value);
 
     void AddLog(std::string fmt, ...)
     {
@@ -160,7 +178,7 @@ VOID example(const std::vector<std::string>& vect)
         buf[sizeof(buf) - 1] = 0;
         va_end(args);
 
-        LoadSO("AddLog", buf);
+        LoadDynamicLibrary("/path/", "AddLog", buf);
     }
 ```
 3. Put public function inside `extern "C"` in .h file.
@@ -172,7 +190,7 @@ VOID example(const std::vector<std::string>& vect)
 
     void program(const char* arguments); /* .cpp file */
 ```
-4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function (see example for core commands for information and warnings).
+4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function. `AddLog` works like `printf`.
 5. Compile and use Termi's `loadtp` command to test it!
 
 *`loadtp` only accepts one `const char*` argument so do parsing inside your program!*
