@@ -17,10 +17,10 @@
 	 * Load a function from .so file, aka dynamic library
 	 * @param path path to the file
 	 * @param function function name
-	 * @param value function's argument
+	 * @param argument function's argument
 	 */
 	template <typename T>
-	int LoadDynamicLibrary(const char* path, const char* function, T value);
+	int LoadDynamicLibrary(const char* path, const char* function, T argument);
 
 	/*
 	* Return version of Windows operating system
@@ -54,10 +54,10 @@
 	 * Load a function from .so file, aka dynamic library 
 	 * @param path path to the file
 	 * @param function function name
-	 * @param value function's argument
+	 * @param argument function's argument
 	 */
     template <typename T>
-    int LoadDynamicLibrary(const char* path, const char* function, T value);
+    int LoadDynamicLibrary(const char* path, const char* function, T argument);
 #endif
 
 /**

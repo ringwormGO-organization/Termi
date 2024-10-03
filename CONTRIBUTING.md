@@ -60,11 +60,11 @@ VOID example(const std::vector<std::string>& vect)
     #pragma comment(lib, "Advapi32.lib")
     #pragma comment(lib, "Kernel32.lib")
 
-    typedef int(__cdecl* MYPROC)(const char*);
-
     template <typename T>
-    int LoadDynamicLibrary(const char* path, const char* function, T value)
+    int LoadDynamicLibrary(const char* path, const char* function, T argument)
     {
+        typedef int(__cdecl* MYPROC)(T);
+
         HINSTANCE hinstLib;
         MYPROC ProcAdd;
         BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
@@ -81,7 +81,7 @@ VOID example(const std::vector<std::string>& vect)
             if (NULL != ProcAdd)
             {
                 fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(value);
+                (ProcAdd)(argument);
             }
 
             else
@@ -254,7 +254,7 @@ pub extern "C" fn rust_function(arg: *const c_char) {
 ```
 
 ### Note/Notes
-1. Passed argument to third party commands/applications is one string combined with arguments entered by user plus space between each argument, do parsing inside your command/application.
+1. Passed argument to third party commands/applications is one combined string. Do parsing inside your command/application, arguments are separated by space.
 
 ### Informations about elements in vector:
 ```cpp

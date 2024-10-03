@@ -23,11 +23,11 @@
     #pragma comment(lib, "Advapi32.lib")
     #pragma comment(lib, "Kernel32.lib")
 
-    typedef int(__cdecl* MYPROC)(const char*);
-
     template <typename T>
-    int LoadDynamicLibrary(const char* path, const char* function, T value)
+    int LoadDynamicLibrary(const char* path, const char* function, T argument)
     {
+        typedef int(__cdecl* MYPROC)(T);
+
         HINSTANCE hinstLib;
         MYPROC ProcAdd;
         BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
@@ -44,7 +44,7 @@
             if (NULL != ProcAdd)
             {
                 fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(value);
+                (ProcAdd)(argument);
             }
 
             else
@@ -68,7 +68,7 @@
     }
 
     // This explicit template instantiation is making `LoadDynamicLibrary` function available from extern "C" block
-    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* value);
+    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* argument);
 
     const char* OperatingSystem()
     {
@@ -110,7 +110,7 @@
 #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
     defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     template <typename T>
-    int LoadDynamicLibrary(const char* path, const char* function, T value)
+    int LoadDynamicLibrary(const char* path, const char* function, T argument)
     {
         void *handle;
         void (*func)(T);
@@ -126,20 +126,20 @@
         }
 
         func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)  
+        if ((error = dlerror()) != NULL)
         {
             fputs(error, stderr);
             return 1;
         }
 
-        (*func)(value);
+        (*func)(argument);
         dlclose(handle);
 
         return 0;
     }
 
     // This explicit template instantiation is making `LoadDynamicLibrary` function available from extern "C" block
-    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* value);
+    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* argument);
 #endif
 
 void AddLog(std::string fmt, ...)

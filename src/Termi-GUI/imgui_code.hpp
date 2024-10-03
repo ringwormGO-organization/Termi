@@ -34,6 +34,8 @@
 
     #define PATH_MAX        4096    /* # chars in a path name including nul */
     #define _API __declspec(dllexport)
+
+    #define COMMANDS_PATH "Termi-Commands.dll"
 #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
     defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
     #include <sys/stat.h>
@@ -42,119 +44,119 @@
     #include <dlfcn.h>
 
     #define _API
+
+    #define COMMANDS_PATH "libTermi-Commands.so"
 #endif
 
 #include <stddef.h>
 
 #include <json-c/json.h>
 
-extern "C"
-{
-    /* All global variables which we need */
-    static float pos_x = 0;
-    static float pos_y = 0;
-    static float window_width = 650;
-    static float window_height = 650;
+/* All global variables which we need */
+static float pos_x = 0;
+static float pos_y = 0;
+static float window_width = 650;
+static float window_height = 650;
 
-    static bool alReadyPrinted = false;
+static bool alReadyPrinted = false;
 
-    /**
-     * Commands map
-     * @param first name
-     * @param second function name in Termi-Commands
-     */
-    static std::map<const std::string, const std::string> commands =
-        {
-            {"base64", "base64"},
-            {"calc", "calc"},
-            {"cd", "cd"},
-            {"dencalc", "dencalc"},
-            {"echo", "echo"},
-            {"find", "find_command"},
-            {"geocalc", "geocalc"},
-            {"list", "list_dir"},
-            {"mkdir", "new_dir"},
-            {"openfile", "openfile"},
-            {"rm", "rm"},
-            {"sysfetch", "sysfetch"},
-            {"time", "ttime"},
-            {"whoami", "whoami"},
-            {"writefile", "writefile"},
-            {"yes", "yes"}};
-
-    /**
-     * Check if the string starts with substring
-     * @param fullString - string
-     * @param starting - substring
-     */
-    static bool isStarting(std::string const &fullString, std::string const &starting)
+/**
+ * Commands map
+ * @param first name
+ * @param second function name in Termi-Commands
+ */
+static std::map<const std::string, const std::string> commands =
     {
-        if (fullString.length() <= starting.length())
-        {
-            return true;
-        }
-        
-        else
-        {
-            return false;
-        }
+        {"base64", "base64"},
+        {"calc", "calc"},
+        {"cd", "cd"},
+        {"dencalc", "dencalc"},
+        {"echo", "echo"},
+        {"find", "find_command"},
+        {"geocalc", "geocalc"},
+        {"list", "list_dir"},
+        {"mkdir", "new_dir"},
+        {"openfile", "openfile"},
+        {"rm", "rm"},
+        {"sysfetch", "sysfetch"},
+        {"time", "ttime"},
+        {"whoami", "whoami"},
+        {"writefile", "writefile"},
+        {"yes", "yes"}};
+
+/**
+ * Check if the string starts with substring
+ * @param fullString - string
+ * @param starting - substring
+ */
+static bool isStarting(std::string const &fullString, std::string const &starting)
+{
+    if (fullString.length() <= starting.length())
+    {
+        return true;
+    }
+    
+    else
+    {
+        return false;
+    }
+}
+
+/**
+ * Function to calculate whitespaces
+ * Credits: https://www.geeksforgeeks.org/isspace-in-c-and-its-application-to-count-whitespace-characters/
+ * @param str - string
+ */
+static int whitespaces(std::string &str)
+{
+    int count = 0;
+    int length = str.length();
+
+    for (int i = 0; i < length; i++)
+    {
+        int c = str[i];
+        if (isspace(c))
+            count++;
     }
 
-    /**
-     * Function to calculate whitespaces
-     * Credits: https://www.geeksforgeeks.org/isspace-in-c-and-its-application-to-count-whitespace-characters/
-     * @param str - string
-     */
-    static int whitespaces(std::string &str)
-    {
-        int count = 0;
-        int length = str.length();
+    return count;
+};
 
-        for (int i = 0; i < length; i++)
-        {
-            int c = str[i];
-            if (isspace(c))
-                count++;
-        }
+/**
+ * Colorize text
+ * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
+ * @param text - string to colorize
+ * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
+ */
+void ColorfulText(const std::string &text, const std::list<std::pair<char, ImVec4>> &colors);
 
-        return count;
-    };
+static const ImVec4 &
+    white = {1, 1, 1, 1},
+    blue = {0.000f, 0.703f, 0.917f, 1},
+    red = {0.976f, 0.117f, 0.265f, 1},
+    grey = {0.230f, 0.226f, 0.289f, 1},
+    lgrey = {0.630f, 0.626f, 0.689f, 1},
+    green = {0.5f, 1.0f, 0.5f, 1.0f},
+    lime = {0.55f, 0.90f, 0.06f, 1},
+    yellow = {0.91f, 1.00f, 0.21f, 1},
+    purple = {1, 0, 1, 1},
+    orange = {1.00f, 0.36f, 0.09f, 1};
 
-    /**
-     * Colorize text
-     * Credits: https://github.com/ocornut/imgui/issues/902#issuecomment-1103072284
-     * @param text - string to colorize
-     * @param colors - std::pair of letter representing color and ImVec4 representing color values in 4D vector
-     */
-    void ColorfulText(const std::string &text, const std::list<std::pair<char, ImVec4>> &colors);
+/**
+ * Split given string using the getline() function
+ * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
+ * @param str - string
+ * @param delim - separator
+ * @param out - output vector
+ */
+void split_str(std::string const &str, const char delim, std::vector<std::string> &out);
 
-    static const ImVec4 &
-        white = {1, 1, 1, 1},
-       blue = {0.000f, 0.703f, 0.917f, 1},
-       red = {0.976f, 0.117f, 0.265f, 1},
-       grey = {0.230f, 0.226f, 0.289f, 1},
-       lgrey = {0.630f, 0.626f, 0.689f, 1},
-       green = {0.5f, 1.0f, 0.5f, 1.0f},
-       lime = {0.55f, 0.90f, 0.06f, 1},
-       yellow = {0.91f, 1.00f, 0.21f, 1},
-       purple = {1, 0, 1, 1},
-       orange = {1.00f, 0.36f, 0.09f, 1};
-
-    /**
-     * Split given string using the getline() function
-     * Credits: https://www.javatpoint.com/how-to-split-strings-in-cpp
-     * @param str - string
-     * @param delim - separator
-     * @param out - output vector
-     */
-    void split_str(std::string const &str, const char delim, std::vector<std::string> &out);
-
-    /**
-     * Class containing runtime GUI settings
-     * This GUI model is simple and does not support sending interaction with executing process
-     */
-    class SimpleVars
-    {
+/**
+ * Class containing runtime GUI settings
+ * This GUI model is simple and does not support sending interaction with executing process
+ */
+class SimpleVars
+{
     public:
         std::string language = "English";
         std::string theme = "none";
@@ -169,14 +171,14 @@ extern "C"
         bool alReadyFocusOnInputBar = false;
 
         bool server = false; 
-    };
+};
 
-    /**
-     * Class containing implementation of GUI model 0
-     * This GUI model is simple and does not support sending interaction with executing process
-     */
-    class SimpleGUI : public SimpleVars
-    {
+/**
+ * Class containing implementation of GUI model 0
+ * This GUI model is simple and does not support sending interaction with executing process
+ */
+class SimpleGUI : public SimpleVars
+{
     public:
 
         /**
@@ -208,15 +210,15 @@ extern "C"
          * @param p_open is dialog open?
         */
         void ImGuiDialog(bool *p_open);
-    };
+};
 
-    /*
-     * Class handling console
-     * This GUI model is simple and does not support sending interaction with executing process
-     * Code from imgui_demo.cpp
-     */
-    class SimpleConsole : public SimpleGUI
-    {
+/*
+    * Class handling console
+    * This GUI model is simple and does not support sending interaction with executing process
+    * Code from imgui_demo.cpp
+    */
+class SimpleConsole : public SimpleGUI
+{
     protected:
         char InputBuf[256];
         ImVector<char *> Items;
@@ -275,19 +277,13 @@ extern "C"
     public:
 
         /**
-         * Load commands from Termi-Commands (or any other project which uses std::vector for arguments)
-         * @param vect function arguments
-         * @param function name of the function
-        */
-        void LoadDynamicLibrary(std::vector<std::string> &vect, std::string function);
-
-        /**
-         * Load commands from any project using `const char*` for arguments
+         * Load function from dynamic library
          * @param path path to the .so/.dll file
-         * @param function function name
-         * @param value arguments
+         * @param function name of function
+         * @param argument function's argument
         */
-        int LoadThirdParty(const char *path, const char *function, const char *value);
+        template <typename T>
+        int LoadDynamicLibrary(const char* path, const char* function, T argument);
 
     public:
 
@@ -332,22 +328,24 @@ extern "C"
         }
 
         int TextEditCallback(ImGuiInputTextCallbackData *data);
-    };
+};
 
-    /**
-     * Draw tabs
-     * @param style 
-    */
-    void DrawTab(ImGuiStyle& style);
+/**
+ * Draw tabs
+ * @param style 
+*/
+void DrawTab(ImGuiStyle& style);
 
-    /**
-     * Entry point for ImGui part of Termi
-     * @param style
-    */
-    void main_code(ImGuiStyle& style);
+/**
+ * Entry point for ImGui part of Termi
+ * @param style
+*/
+void main_code(ImGuiStyle& style);
 
-    extern SimpleConsole console;
+extern SimpleConsole console;
 
+extern "C"
+{
     /**
      * Entry point for whole Termi-GUI project
     */

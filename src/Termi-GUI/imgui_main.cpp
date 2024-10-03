@@ -162,28 +162,35 @@ SimpleConsole::~SimpleConsole()
         free(History[i]);
 }
 
-void SimpleConsole::LoadDynamicLibrary(std::vector<std::string> &vect, std::string function)
+template <typename T>
+int SimpleConsole::LoadDynamicLibrary(const char* path, const char* function, T argument)
 {
     #if defined _WIN32 || defined _WIN64
-        typedef int(__cdecl* FUNC)(const std::vector<std::string>&);
+        typedef int(__cdecl* FUNC)(T);
 
         HINSTANCE hinstLib;
         FUNC ProcAdd;
         BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
 
-        // Get a handle to the DLL module.
-        hinstLib = LoadLibrary(TEXT("Termi-Commands.dll"));
-
+        // Get a handle to the DLL module
+        hinstLib = LoadLibrary(LPCSTR(path));
+        
         // If the handle is valid, try to get the function address.
         if (hinstLib != NULL)
         {
-            ProcAdd = (FUNC)GetProcAddress(hinstLib, function.c_str());
+            ProcAdd = (FUNC)GetProcAddress(hinstLib, function);
 
             // If the function address is valid, call the function.
             if (NULL != ProcAdd)
             {
                 fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(vect);
+                (ProcAdd)(argument);
+            }
+
+            else
+            {
+                printf("Error loading function '%s' from '%s'!\n", function, path);
+                return 1;
             }
 
             // Free the DLL module.
@@ -193,94 +200,41 @@ void SimpleConsole::LoadDynamicLibrary(std::vector<std::string> &vect, std::stri
         // If unable to call the DLL function, use an alternative.
         if (!fRunTimeLinkSuccess)
         {
-            printf("Failed to run function from executable!\n");
+            printf("Error loading function '%s' from '%s'!\n", function, path);
+            return 1;
         }
+
+        return 0;
+
     #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
         defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
         void *handle;
-        void (*func)(const std::vector<std::string> &);
-        char *error;
-
-        handle = dlopen("libTermi-Commands.so", RTLD_LAZY);
-        if (!handle)
-        {
-            fputs(dlerror(), stderr);
-            puts(" ");
-            exit(1);
-        }
-
-        func = reinterpret_cast<void (*)(const std::vector<std::string> &)>(dlsym(handle, function.c_str()));
-        if ((error = dlerror()) != NULL)
-        {
-            fputs(error, stderr);
-            exit(1);
-        }
-
-        (*func)(vect);
-        dlclose(handle); 
-    #endif
-}
-
-int SimpleConsole::LoadThirdParty(const char *path, const char *function, const char *value)
-{
-    #if defined _WIN32 || defined _WIN64
-        typedef void(__cdecl* THIRD_PARTY)(const char*);
-
-        HINSTANCE hinstLib;
-        THIRD_PARTY ProcAdd;
-        BOOL fFreeResult, fRunTimeLinkSuccess = FALSE;
-
-        // Get a handle to the DLL module.
-        hinstLib = LoadLibrary((LPCSTR)path);
-
-        // If the handle is valid, try to get the function address.
-        if (hinstLib != NULL)
-        {
-            ProcAdd = (THIRD_PARTY)GetProcAddress(hinstLib, function);
-
-            // If the function address is valid, call the function.
-            if (NULL != ProcAdd)
-            {
-                fRunTimeLinkSuccess = TRUE;
-                (ProcAdd)(value);
-            }
-
-            // Free the DLL module.
-            fFreeResult = FreeLibrary(hinstLib);
-        }
-
-        // If unable to call the DLL function, use an alternative.
-        if (!fRunTimeLinkSuccess)
-        {
-            printf("Failed to run function from executable!\n\n");
-        }
-    #elif defined __APPLE__ || defined __MACH__ || defined __linux__ || \
-        defined __FreeBSD__ || defined __OpenBSD__ || defined __NetBSD__
-        void *handle;
-        void (*func)(const char *);
+        void (*func)(T);
         char *error;
 
         handle = dlopen(path, RTLD_LAZY);
-        if (!handle)
+        if (!handle) 
         {
-            printf("%s\n", dlerror());
-            printf("-------------\n");
+            fputs (dlerror(), stderr);
+            puts(" ");
+
             return 1;
         }
 
-        func = reinterpret_cast<void (*)(const char *)>(dlsym(handle, function));
+        func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
         if ((error = dlerror()) != NULL)
         {
-            printf("%s\n", error);
-            printf("-------------\n");
+            fputs(error, stderr);
             return 1;
         }
 
-        (*func)(value);
+        (*func)(argument);
         dlclose(handle);
+
+        return 0;
     #endif
 
-    return 0;
+    return 1;
 }
 
 void SimpleConsole::ClearLog()
@@ -466,7 +420,7 @@ void SimpleConsole::ExecCommand(std::string command_line, ...)
     if (command != commands.end())
     {
         auto result = commands.find(command_line);
-        LoadDynamicLibrary(arguments, result->second.c_str());
+        LoadDynamicLibrary(COMMANDS_PATH, result->second.c_str(), arguments);
     }
 
     else if (Stricmp(command_line.c_str(), "clear") == 0 || Stricmp(command_line.c_str(), "cls") == 0)
@@ -521,7 +475,7 @@ void SimpleConsole::ExecCommand(std::string command_line, ...)
             }
         }
 
-        LoadThirdParty(arguments[1].c_str(), arguments[2].c_str(), argument.c_str());
+        LoadDynamicLibrary(arguments[1].c_str(), arguments[2].c_str(), argument.c_str());
     }
 
     else if (Stricmp(command_line.c_str(), "exit") == 0)
