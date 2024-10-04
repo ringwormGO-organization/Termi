@@ -105,7 +105,7 @@ VOID example(const std::vector<std::string>& vect)
     }
 
     // Explicitly instantiate a template if `LoadDynamicLibrary()` function has to be called from extern "C" block
-    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* value);
+    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* argument);
 
     void AddLog(std::string fmt, ...)
     {
