@@ -15,7 +15,8 @@ A powerful terminal emulator with an optional custom shell written in C++ with O
 - [v2.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)
 - [v3.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.0.0)
 - [v3.1.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.0)
-- [Latest release (v3.1.1)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.1)
+- [v3.1.1](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.1)
+- [Latest release (v3.2.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.2.0)
 
 ## Checklist
 ### Termi base part
