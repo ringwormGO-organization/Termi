@@ -137,7 +137,7 @@ VOID example(const std::vector<std::string>& vect)
 2. Copy `AddLog` and `LoadDynamicLibrary` functions.
 ```cpp
     template <typename T>
-    int LoadDynamicLibrary(const char* path, const char* function, T value)
+    int LoadDynamicLibrary(const char* path, const char* function, T argument)
     {
         void *handle;
         void (*func)(T);
@@ -153,20 +153,20 @@ VOID example(const std::vector<std::string>& vect)
         }
 
         func = reinterpret_cast<void (*)(T)>(dlsym(handle, function));
-        if ((error = dlerror()) != NULL)  
+        if ((error = dlerror()) != NULL)
         {
             fputs(error, stderr);
             return 1;
         }
 
-        (*func)(value);
+        (*func)(argument);
         dlclose(handle);
 
         return 0;
     }
 
-    // Explicitly instantiate a template if `LoadDynamicLibrary()` function has to be called from extern "C" block
-    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* value);
+    // This explicit template instantiation is making `LoadDynamicLibrary` function available from extern "C" block
+    template int LoadDynamicLibrary<const char*>(const char* path, const char* function, const char* argument);
 
     void AddLog(std::string fmt, ...)
     {
@@ -193,15 +193,12 @@ VOID example(const std::vector<std::string>& vect)
 4. Replace all other functions for printing to console (like `printf`, `std::cout`, etc.) to `AddLog` function. `AddLog` works like `printf`.
 5. Compile and use Termi's `loadtp` command to test it!
 
-*`loadtp` only accepts one `const char*` argument so do parsing inside your program!*
+*Passed argument to a third party commands/applications using `loadtp` command is one combined string. Do parsing inside your command/application, arguments are separated by space.program!*
 
 ## For those who want to know more
 ### Port application written in Rust
-1. Follow "C++ steps" to create new core command.
-2. Create new `LoadRust` function (just copy previous one, change name and path of .dll file).
-3. Replace command code (in `Termi-Commands`) by your `LoadRust` function.
-4. Create new Rust library by using cargo - `cargo new --lib name`.
-5. Change `Cargo.toml` content to (change `name` and `version`):
+1. Create new Rust library by using cargo - `cargo new --lib name`.
+2. Change `Cargo.toml` content to (change `name` and `version`):
 ```c
 [package]
 name = "your package name"
@@ -215,7 +212,7 @@ crate-type = ["cdylib"]
 libloading = "0.7"
 ```
 
-6. Change `lib.rs` content to (change path to .dll or .so file):
+3. Change `lib.rs` content to (change path to .dll or .so file):
 ```rs
 #![allow(non_snake_case)]
 
@@ -224,6 +221,7 @@ use libloading::{Library, Symbol};
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
 
+/// `printf()` for Termi's console
 fn AddLog(fmt: &CStr) {
     unsafe {
         let lib = Library::new("path do .dll or .so file").unwrap();
@@ -235,12 +233,21 @@ fn AddLog(fmt: &CStr) {
     }
 }
 
-fn GetArgument(arg: *const c_char) -> CString {
+/// Separate string into arguments intended for this Rust program
+/// 
+/// Returns vector of `CString`
+fn GetArguments(arg: *const c_char) -> Vec<CString> {
+    let mut vec = Vec::new();
+
     let arg_buf = unsafe { CStr::from_ptr(arg) };
     let arg_str = arg_buf.to_str().unwrap();
-    let argument = CString::new(arg_str).expect("CString::new failed!");
 
-    return argument;
+    for word in arg_str.split(' ') {
+        let c_string = CString::new(word).expect("Failed to create CString");
+        vec.push(c_string);
+    }
+
+    return vec;
 }
 
 #[no_mangle]
@@ -253,8 +260,7 @@ pub extern "C" fn rust_function(arg: *const c_char) {
 
 ```
 
-### Note/Notes
-1. Passed argument to third party commands/applications is one combined string. Do parsing inside your command/application, arguments are separated by space.
+*Passed argument to a third party commands/applications using `loadtp` command is one combined string. Do parsing inside your command/application, arguments are separated by space.program!*
 
 ### Informations about elements in vector:
 ```cpp
