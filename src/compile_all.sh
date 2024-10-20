@@ -8,28 +8,40 @@ fi
 
 echo "Number of threads: $threads"
 
-cd Termi-Commands
-if [ -n "$2" ] && [ "$2" = "clean" ]; then
-    cmake --build . --target clean
-fi
-cmake . && make -j $threads
-cp libTermi-Commands.so ../Termi-Main
-echo " "
+build() {
+    cd "$1"
 
-cd ../Termi-GUI
-if [ -n "$2" ] && [ "$2" = "clean" ]; then
-    cmake --build . --target clean
-fi
-cmake . && make -j $threads
-cp libTermi-GUI.so ../Termi-Main
-echo " "
+    mkdir -p build/
+    cd build
 
-cd ../Termi-Main
-if [ -n "$2" ] && [ "$2" = "clean" ]; then
-    cmake --build . --target clean
-fi
-cmake . && make -j $threads
+    if [ -n "$2" ] && [ "$2" = "clean" ]; then
+        cmake --build . --target clean
+    fi
 
-echo " "
+    cmake .. && make -j $threads
+
+    if [ -n "$3" ] && [ "$3" = "library" ]; then
+        cp "lib$1.so" ../../Termi-Main/build
+    elif [ -n "$2" ] && [ "$2" = "library" ]; then
+        cp "lib$1.so" ../../Termi-Main/build
+    fi
+
+    echo " "
+    cd ../../
+}
+
+if [ -n "$2" ] && [ "$2" = "clean" ]; then
+    build Termi-Main clean executable
+    build Termi-Commands clean library
+    build Termi-GUI clean library
+else
+    build Termi-Main executable
+    build Termi-Commands library
+    build Termi-GUI library
+fi
+
+cd Termi-Main/build
+cp ../termi.png .
+
 LD_LIBRARY_PATH=. ./Termi-Main
 cd ../
