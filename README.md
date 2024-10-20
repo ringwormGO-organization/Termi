@@ -1,11 +1,13 @@
 # Termi
-A powerful terminal emulator with an optional custom shell written in C++ with OpenGL and Dear ImGui
+A powerful terminal emulator with an optional custom shell written in C++ with OpenGL and Dear ImGui.
+
+The goal is to create an independent terminal environment which is still able to access other environments.
 
 ## About Termi
 - Termi is a powerful terminal emulator with a shell written in C++.
 - It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
-- The goal of Termi is to create independent terminal emulator, i.e. a separate kind of terminal emulator use "own" GUI renedering system.
-- Has its own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in form of shared library.
+- The goal of Termi is to create independent terminal emulator, i.e. a separate kind of terminal emulator which uses "own" GUI rendering system.
+- Has its own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in a form of shared library.
 - We accept contributors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
 - [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
 - And please read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talks about directory organization.
