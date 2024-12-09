@@ -34,7 +34,7 @@ public:
 	std::string GetFontName();
 	int GetFontSize();
 	std::string GetGlyphRange();
-	int GetGuiModel();
+	int GetConsoleModel();
 	int GetPort();
 
 private:

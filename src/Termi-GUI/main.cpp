@@ -35,7 +35,7 @@
 
 /* Termi's includes */
 #include "imgui_code.hpp"
-#include "settings.hpp"
+#include "utils/settings.hpp"
 
 /* GLFW 3 include */
 #if defined _WIN32 || defined _WIN64

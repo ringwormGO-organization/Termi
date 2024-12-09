@@ -16,16 +16,16 @@ ELSE()
     set(CMAKE_CXX_FLAGS "-std=c++20 -g")
 ENDIF()
 
-file(GLOB SRC CONFIGURE_DEPENDS "*.hpp" "*.cpp" "imgui/*.h" "imgui/*.cpp")
+file(GLOB SRC CONFIGURE_DEPENDS "*.c" "*.cpp" "imgui/*.cpp" "network/*.cpp" "utils/*.cpp")
 
 IF(WIN32)
     set(json-c_DIR "C:\\vcpkg\\installed\\x64-windows-static\\share\\json-c")
 
     find_package(json-c CONFIG REQUIRED)
     
-    add_library(${PROJECT_NAME} SHARED ${SRC} glad.c)
+    add_library(${PROJECT_NAME} SHARED ${SRC})
     target_link_libraries(${PROJECT_NAME} PRIVATE json-c::json-c opengl32 glfw3)
 ELSE()
-    add_library(${PROJECT_NAME} SHARED ${SRC} glad.c)
+    add_library(${PROJECT_NAME} SHARED ${SRC})
     target_link_libraries(${PROJECT_NAME} GL glfw json-c)
 ENDIF()

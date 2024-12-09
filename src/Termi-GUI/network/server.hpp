@@ -33,7 +33,7 @@
 #include <mutex>
 #include <string>
 
-#include "settings.hpp"
+#include "../utils/settings.hpp"
 
 /* Client input is copied here so it is visible from thread where console is drawn */
 extern std::string client_input;

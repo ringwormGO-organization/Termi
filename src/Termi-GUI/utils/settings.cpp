@@ -179,7 +179,7 @@ std::string Settings::GetGlyphRange()
     return "";
 }
 
-int Settings::GetGuiModel()
+int Settings::GetConsoleModel()
 {
     struct json_object_iterator it;
     struct json_object_iterator itEnd;
@@ -194,7 +194,7 @@ int Settings::GetGuiModel()
         const char* key = json_object_iter_peek_name(&it);
         json_object* val = json_object_iter_peek_value(&it);
 
-        if (strcmp(key, "gui-model") == 0)
+        if (strcmp(key, "console-model") == 0)
         {
             return json_object_get_int(val);
         }
@@ -246,7 +246,7 @@ void Settings::CreateFile()
 #endif
 
     std::string file_path = folder_path + "settings.json";
-    std::string default_json = "{\"startup_command\":\"none\",\"width\":650,\"height\":650,\"font_name\":\"default\",\"font_size\":16,\"glyph-range\":\"default\",\"gui-model\":0,\"port\":5555}";
+    std::string default_json = "{\"startup_command\":\"none\",\"width\":650,\"height\":650,\"font_name\":\"default\",\"font_size\":16,\"glyph-range\":\"default\",\"console-model\":0,\"port\":5555}";
 
     auto mode = std::ios::app | std::ios::in;
     std::string temp_str = "";
