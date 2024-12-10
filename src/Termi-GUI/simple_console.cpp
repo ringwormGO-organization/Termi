@@ -5,7 +5,7 @@
  * DESCRIPTION: Main file for simple console model
  */
 
-#include "simple_gui.hpp"
+#include "simple_console.hpp"
 
 void ColorfulText(const std::string &text, const std::list<std::pair<char, ImVec4>> &colors)
 {

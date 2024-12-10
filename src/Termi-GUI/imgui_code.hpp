@@ -150,8 +150,9 @@ class ConsoleBase : public GUI
 /* ------------------------------------------------------------------------- */
 
 /**
- * Draw tabs
- * @param style 
+ * Draw tabs.
+ * Each tab contains its own instance of GUI and console.
+ * @param style
 */
 void DrawTab(ImGuiStyle& style);
 
