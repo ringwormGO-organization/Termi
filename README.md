@@ -5,12 +5,12 @@ The goal is to create an independent terminal environment which is still able to
 
 ## About Termi
 - Termi is a powerful terminal emulator with a shell written in C++.
-- It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support C++ standard library, something like .dll and .so files and GLFW
-- The goal of Termi is to create independent terminal emulator, i.e. a separate kind of terminal emulator which uses "own" GUI rendering system.
-- Has its own commands that can be written using C, C++ or Rust and possibly any language that can be compiled in a form of shared library.
-- We accept contributors; create a **Pull Request** to contribute and check [our coding style](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#coding-sytle-for-pull-requests)
-- [Commands list and explanation](https://github.com/ringwormGO-organization/Termi/blob/main/Commands.md)
-- And please read [organize part](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#code-organization) which talks about directory organization.
+- It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support used technologies.
+- The goal of Termi is to create an independent terminal emulator emulator, i.e. a separate kind of terminal emulator which uses "own" rendering and shell system.
+- Has two distinct running modes:
+  - `simple console mode` - can only execute commands from dynamic libraries that are designed to support Termi
+  - `advanced console mode` - can execute anything as any other terminal emulator
+- Read [CONTRIBUTING.md](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md) and [CODE.md](https://github.com/ringwormGO-organization/Termi/blob/main/CODE.md) for more information.
 
 ## Releases
 - [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
@@ -20,33 +20,6 @@ The goal is to create an independent terminal environment which is still able to
 - [v3.1.1](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.1)
 - [Latest release (v3.2.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.2.0)
 
-## Checklist
-### Termi base part
-- [x] Windows version (fully supported)
-- [x] GNU/Linux version (fully supported)
-- [x] BSD version (moderately supported) [(@hahahahacker2009)](https://github.com/hahahahacker2009)
-- [x] macOS version (unsupported)
-
-### Termi advanced C++ part
-- [x] Arguments
-- [x] Better arguments for Rust commands/applications
-- [x] Colors in console
-- [x] GUI models (actually do something with model 1)
-- [x] Loading executables (.dll files for Windows, .so files for macOS, GNU/Linux, BSD, etc.)
-- [x] Most of major commands
-- [x] Networking
-  - [x] [Ping command](https://github.com/ringwormGO-organization/Ping) - [@StjepanBM1](https://github.com/StjepanBM1)
-  - [x] Remote connection
-- [ ] Serial port
-- [x] Themes
-- [x] Translations
-- [x] User settings in JSON
-- [x] [UTF-8 support](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md#glyph-range-utf-8-support)
-
-### Windows - installer and launcher
-- [x] Installer in [Inno Setup](https://github.com/jrsoftware/issrc)
-- [x] Launcher and updater - C#
-
 ## Build & Run
 ### Required software:
 ### Windows
@@ -54,7 +27,7 @@ The goal is to create an independent terminal environment which is still able to
 - vcpkg
 
 ### Other platforms
-- C++ complier: GCC and Clang are both supported (they are compatible)
+- C++ compiler: GCC and Clang are both supported (they are compatible)
 - C & C++ headers: you should have them by default. If not, you can try
   installing what's called base-devel or build-essentials or build-base.
   Strictly speaking, they are a collection of tools required to build the
@@ -137,7 +110,7 @@ On BSD, you can get all of them with the "compiler" sets.
 
 ### Build & Run - Windows
 1. Open terminal.
-2. Go to `Termi-Commands` folder/directory, create `build` folder and `cmake ..` from newly created folder.
+2. Go to `Termi-Commands` folder/directory, create `build` folder and run `cmake ..` from newly created folder.
 3. Open Visual Studio solution and compile it.
 4. Repeat steps for other projects.
 5. Copy `Termi-Commands.dll` and `Termi-GUI.dll` from `Debug` or `Release` folder to `Termi-Main`'s `Debug` or `Release` folder.
@@ -156,9 +129,8 @@ On BSD, you can get all of them with the "compiler" sets.
 1. You can compile `rtest` Rust project by `cargo build` (and then copy .dll or .so file in folder/directory where are other .dll or .so files) if you want to have `yes` command mainly written in Rust 
 
 ## Known issues
-- OpenGL might now open when reading from .txt file, remove `render->Settings(1, 0)` and `render->Settings(2, 0)` to size which you want.
 - Dear ImGui might cause segmentation fault on BSD based operating systems **(we are fixing this currently)**.
-- Running `Termi-Main` can result: `libTermi-GUI.so: cannot open shared object file: No such file or directory` error; run `Termi-Main` with this command: `LD_LIBRARY_PATH=. ./Termi-Main`.
+- Running `Termi-Main` can result in: `libTermi-GUI.so: cannot open shared object file: No such file or directory` error; run `Termi-Main` with this command: `LD_LIBRARY_PATH=. ./Termi-Main`.
 - `cd` command disables autofocus on input bar.
 - You have to press button for other themes (not light/dark) to be able to switch between light and dark themes.
 
