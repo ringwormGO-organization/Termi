@@ -7,7 +7,7 @@ project(Termi-Main)
 IF(WIN32)
     set(CMAKE_CXX_FLAGS "/EHsc /std:c++20")
 ELSE()
-    set(CMAKE_CXX_FLAGS "-std=c++20 -g")
+    set(CMAKE_CXX_FLAGS "-std=c++20")
 ENDIF()
 
 file(GLOB SRC CONFIGURE_DEPENDS "*.cpp")

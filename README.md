@@ -5,20 +5,21 @@ The goal is to create an independent terminal environment which is still able to
 
 ## About Termi
 - Termi is a powerful terminal emulator with a shell written in C++.
-- It can run on Windows, (macOS) and GNU/Linux, BSD and all other platforms which support used technologies.
-- The goal of Termi is to create an independent terminal emulator emulator, i.e. a separate kind of terminal emulator which uses "own" rendering and shell system.
+- It can run on Windows, (macOS), (GNU/)Linux, BSD and all other platforms which support used technologies.
+- The goal of Termi is to create an independent terminal environment, i.e. a separate kind of terminal emulator which uses "own" rendering and shell system.
 - Has two distinct running modes:
-  - `simple console mode` - can only execute commands from dynamic libraries that are designed to support Termi
-  - `advanced console mode` - can execute anything as any other terminal emulator
+  - `simple console mode` - can only execute commands from dynamic libraries that are designed to support Termi,
+  - `advanced console mode` - can execute anything as any other terminal emulator.
 - Read [CONTRIBUTING.md](https://github.com/ringwormGO-organization/Termi/blob/main/CONTRIBUTING.md) and [CODE.md](https://github.com/ringwormGO-organization/Termi/blob/main/CODE.md) for more information.
 
 ## Releases
-- [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0).
+- [v1.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v1.0.0)
 - [v2.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v2.0.0)
 - [v3.0.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.0.0)
 - [v3.1.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.0)
 - [v3.1.1](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.1.1)
-- [Latest release (v3.2.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.2.0)
+- [v3.2.0](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.2.0)
+- [Latest release (v3.3.0)](https://github.com/ringwormGO-organization/Termi/releases/tag/v3.3.0)
 
 ## Build & Run
 ### Required software:
